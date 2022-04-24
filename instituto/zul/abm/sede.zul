@@ -1,0 +1,137 @@
+<?page title="Sedes" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="Sede" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.abm.SedeVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<hlayout vflex="1">
+			
+				<vlayout hflex="1" vflex="1">
+
+					<hbox pack="end" hflex="1" >
+
+						<button label="Agregar"
+							iconSclass=" z-icon-plus" onClick="@command('modalSedeAgregar')" disabled="@load(!vm.opCrearSede)" />
+
+					</hbox>
+
+					<listbox emptyMessage="lista vacía..." mold="paging"
+						vflex="1" model="@load(vm.lSedes)" checkmark="true">
+
+						<listhead>
+
+							<listheader width="30px" align="center" />
+							<listheader label="ID" align="right"
+								width="30px" />
+							<listheader label="Sede" align="left"
+								width="100px" />
+							<listheader label="Descripción" align="left"
+								width="250px" />
+							<listheader label="Direccion" align="left"
+								width="250px" />
+							<listheader label="Telefono" align="left"
+								width="250px" />
+							<listheader label="Email" align="left"
+								width="250px" />
+							<listheader align="center" />
+
+
+						</listhead>
+
+
+						<auxhead>
+
+							<auxheader />
+							<auxheader />
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[0])" instant="true"
+									onChange="@command('filtrarSede')" hflex="1" />
+							</auxheader>
+
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[1])" instant="true"
+									onChange="@command('filtrarSede')" hflex="1" />
+							</auxheader>
+							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[2])" instant="true"
+									onChange="@command('filtrarSede')" hflex="1" />
+							</auxheader>
+							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[3])" instant="true"
+									onChange="@command('filtrarSede')" hflex="1" />
+							</auxheader>
+							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[4])" instant="true"
+									onChange="@command('filtrarSede')" hflex="1" />
+							</auxheader>
+
+							<auxheader />
+						</auxhead>
+
+						<template name="model">
+
+							<listitem>
+								<listcell />
+								<listcell label="@load(each.sedeid)" />
+								<listcell label="@load(each.sede)" />
+								<listcell
+									label="@load(each.descripcion)" />
+								<listcell
+									label="@load(each.direccion)" />
+								<listcell
+									label="@load(each.telefono)" />
+								<listcell
+									label="@load(each.email)" />
+
+								<listcell>
+									<hlayout>
+
+										<button iconSclass="z-icon-edit"
+											onClick="@command('modalSede', sedeid=each.sedeid)"
+											tooltiptext="Editar" disabled="@load(!vm.opEditarSede)"/>
+										<button
+											iconSclass="z-icon-trash-o" style="background-color:red"
+											onClick="@command('borrarSedeConfirmacion', sede=each)"
+											tooltiptext="Borrar" disabled="@load(!vm.opBorrarSede)"/>
+
+
+									</hlayout>
+
+
+								</listcell>
+
+
+							</listitem>
+
+
+						</template>
+
+						<listfoot>
+							<listfooter span="4" align="left">
+								<hlayout>
+									<label
+										value="@load(vm.lSedes.size())" />
+									<label value="items" />
+								</hlayout>
+							</listfooter>
+						</listfoot>
+
+
+					</listbox>
+
+				</vlayout>
+
+		
+			
+		</hlayout>
+
+	</window>
+</zk>
