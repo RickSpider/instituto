@@ -126,12 +126,57 @@ public class SedeVM extends TemplateViewModel {
 		modal.doModal();
 
 	}
+	
+	private boolean verificarCampos() {
+		
+		if (this.sedeSelected.getSede() == null || this.sedeSelected.getSede().length() <= 0) {
+			
+			return false;
+			
+		}
+		
+		if (this.sedeSelected.getDescripcion() == null || this.sedeSelected.getDescripcion().length() <= 0) {
+			
+			return false;
+			
+		}
+		
+		if (this.sedeSelected.getCiudad() == null) {
+			
+			return false;
+			
+		}
+		
+		if (this.sedeSelected.getDireccion() == null || this.sedeSelected.getDireccion().length() <= 0) {
+			
+			return false;
+			
+		}
+		
+		if (this.sedeSelected.getTelefono() == null || this.sedeSelected.getTelefono().length() <= 0) {
+			
+			return false;
+			
+		}
+		
+		if (this.sedeSelected.getEmail() == null || this.sedeSelected.getEmail().length() <= 0) {
+			
+			return false;
+			
+		}
+		
+		return true;
+	}	
 
 	@Command
 	@NotifyChange("lSedes")
 	public void guardar() {
+		
+		if (!verificarCampos()) {
+			return;
+		}
 
-		this.reg.saveObject(sedeSelected, getCurrentUser().getAccount());
+		this.save(sedeSelected);
 
 		this.sedeSelected = null;
 

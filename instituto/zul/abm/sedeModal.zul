@@ -10,8 +10,9 @@
 				<hbox width="130px">
 					<label value="Sede: " style="font-weight:bold" />
 				</hbox>
-				<textbox value="@bind(vm.sedeSelected.sede)"
-					readonly="@load(vm.editar)" width="150px" />
+				<textbox value="@load(vm.sedeSelected.sede) @save(vm.sedeSelected.sede, before='guardar')"
+					readonly="@load(vm.editar)" width="150px" 
+					constraint="no empty: Es campo obligatorio."/>
 			</hlayout>
 
 			<hlayout>
@@ -20,7 +21,8 @@
 					<label value="Descripción: "
 						style="font-weight:bold" />
 				</hbox>
-				<textbox value="@bind(vm.sedeSelected.descripcion)"
+				<textbox value="@load(vm.sedeSelected.descripcion) @save(vm.sedeSelected.descripcion, before='guardar')"
+					constraint="no empty: Es campo obligatorio."
 					width="150px" />
 
 			</hlayout>
@@ -32,7 +34,8 @@
 					<label value="Ciudad: " style="font-weight:bold" />
 				</hbox>
 
-				<bandbox id="bd" value="@load(vm.buscarCiudad)"
+				<bandbox id="bd" value="@load(vm.buscarCiudad) @save(vm.buscarCiudad, before='guardar')"
+					constraint="no empty: Es campo obligatorio."
 					mold="rounded" autodrop="true" width="150px"
 					onClick="@command('generarListaBuscarCiudad')" readonly="true">
 					<bandpopup>
@@ -99,7 +102,8 @@
 				<hbox width="130px">
 					<label value="Dirección: " style="font-weight:bold" />
 				</hbox>
-				<textbox value="@bind(vm.sedeSelected.direccion)"
+				<textbox value="@load(vm.sedeSelected.direccion) @save(vm.sedeSelected.direccion, before='guardar')"
+					constraint="no empty: Es campo obligatorio."
 					width="150px" />
 
 			</hlayout>
@@ -108,8 +112,9 @@
 
 				<hbox width="130px">
 					<label value="Telefono: " style="font-weight:bold" />
-				</hbox>
-				<textbox value="@bind(vm.sedeSelected.telefono)"
+				</hbox> 
+				<textbox value="@load(vm.sedeSelected.telefono) @save(vm.sedeSelected.telefono, before='guardar')"
+					constraint="no empty: Es campo obligatorio."
 					width="150px" />
 
 			</hlayout>
@@ -119,7 +124,9 @@
 				<hbox width="130px">
 					<label value="Email: " style="font-weight:bold" />
 				</hbox>
-				<textbox value="@bind(vm.sedeSelected.email)"
+				<textbox type="email" value="@bind(vm.sedeSelected.email)"
+					constraint="/.+@.+\.[a-z]+/"
+					placeholder="example@domain"
 					width="150px" />
 
 			</hlayout>
@@ -128,7 +135,7 @@
 
 			<hlayout>
 
-				<button label="Aceptar" onClick="@command('guardar')" />
+				<button label="Aceptar" onClick="@command('guardar')"/>
 
 			</hlayout>
 
