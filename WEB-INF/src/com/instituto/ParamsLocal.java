@@ -14,9 +14,15 @@ public class ParamsLocal extends Params {
 	
 	 */
 	
-	
+	//Sede
 	public static final String OP_CREAR_SEDE = "CrearSede";
 	public static final String OP_EDITAR_SEDE = "EditarSede";
 	public static final String OP_BORRAR_SEDE = "BorrarSede";
+	
+	//UsuarioSede
+	public static final String OP_AGREGAR_SEDE = "AgregarSede";
+	public static final String OP_QUITAR_SEDE = "QuitarSede";
+	
+	
 
 }

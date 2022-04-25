@@ -1,0 +1,257 @@
+<?page title="Usuarios Sedes" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Usuario Sede" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.configuracion.UsuarioSedeVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<hlayout vflex="1" hflex="1">
+			<groupbox width="700px" vflex="1">
+				<caption label="Usuarios" />
+
+				<vlayout hflex="1" vflex="1">
+
+				
+
+					<listbox emptyMessage="lista vacía..." mold="paging"
+						vflex="1" model="@load(vm.lUsuarios)" checkmark="true">
+
+						<listhead>
+
+							<listheader width="30px" align="center" />
+							<listheader label="ID" align="right"
+								width="30px" />
+							<listheader label="Usuario" align="left"
+								width="100px" />
+							<listheader label="Nombre Completo"
+								align="left" width="200px" />
+							<listheader label="Email" align="left"
+								width="250px" />
+							<listheader label="activo" align="center"
+								 />
+
+
+
+						</listhead>
+
+						<auxhead>
+
+							<auxheader />
+							<auxheader />
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumnsUsuario[0])" instant="true"
+									onChange="@command('filtrarUsuario')" hflex="1"  />
+							</auxheader>
+
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumnsUsuario[1])" instant="true"
+									onChange="@command('filtrarUsuario')" hflex="1" />
+							</auxheader>
+
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumnsUsuario[2])" instant="true"
+									onChange="@command('filtrarUsuario')" hflex="1" />
+							</auxheader>
+
+
+							<auxheader />
+
+
+						</auxhead>
+
+						<template name="model">
+
+							<listitem
+								onClick="@command('refrescarSedes', usuario = each )">
+
+								<listcell />
+								<listcell label="@load(each.usuarioid)" />
+								<listcell label="@load(each.account)" />
+								<listcell label="@load(each.fullName)" />
+								<listcell label="@load(each.email)" />
+								<listcell>
+
+									<if test="@load(each.activo)">
+										<label value="Si" />
+									</if>
+
+
+									<if test="@load(!each.activo)">
+										<label value="No" />
+									</if>
+
+								</listcell>
+
+
+							</listitem>
+
+
+						</template>
+						<listfoot>
+							<listfooter span="7" align="left">
+								<hlayout>
+									<label
+										value="@load(vm.lUsuarios.size())" />
+									<label value="items" />
+								</hlayout>
+							</listfooter>
+						</listfoot>
+
+					</listbox>
+				</vlayout>
+			</groupbox>
+
+			<groupbox vflex="1" hflex="1">
+				<caption label="Sedes por Usuario" />
+
+				<vlayout hflex="1" vflex="1">
+
+					<hbox pack="end" hflex="1">
+
+						<!-- 	<button label="Agregar" iconSclass=" z-icon-plus"
+							onClick="@command('modalBuscarSede')" />  -->
+
+						<bandbox id="bd" value = "@load(vm.buscarSede)" mold="rounded" autodrop="true"
+							width="250px" onClick="@command('generarListaBuscarSede')"
+							readonly="true">
+							<bandpopup>
+
+								<vbox>
+
+									<hbox>
+
+										<label value="Buscar:" />
+
+										<textbox instant="true"
+											value="@bind(vm.buscarSede)"
+											onChange="@command('filtrarSedeBuscar')" />
+
+									</hbox>
+
+									<listbox height="250px"
+										width="450px" mold="paging" autopaging="true"
+										onSelect="bd.close()"
+										model="@load(vm.lSedesBuscar)">
+
+										<listhead>
+											<listheader label="ID"
+												width="30px" />
+											<listheader label="Sede" />
+											<listheader
+												label="Direccion" />
+										</listhead>
+
+										<template name="model">
+
+											<listitem value="@load(each[1])" onClick="@command('onSelectSede', id = each[0])">
+
+												<listcell
+													label="@load(each[0])" />
+
+												<listcell 
+													label="@load(each[1])" />
+ 
+												<listcell
+													label="@load(each[2])" />
+
+											</listitem>
+
+										</template>
+										<listitem />
+									</listbox>
+
+								</vbox>
+							</bandpopup>
+						</bandbox>
+						
+						<button iconSclass=" z-icon-plus"
+							onClick="@command('agregarSede')" disabled="@load(!vm.opAgregarSede)" />
+						
+					</hbox>
+
+					<listbox emptyMessage="lista vacía..." mold="paging"
+						vflex="1" hflex="1" model="@load(vm.lSedesUsuarios)"
+						checkmark="true">
+
+						<listhead>
+
+							<listheader width="30px" align="center" />
+							<listheader label="ID" align="right"
+								width="30px" />
+							<listheader label="Sede" align="left" />
+							<listheader label="Descripción" />
+							<listheader label="Sede Habilitada" align="center" />
+							<listheader align="center" width="100px" />
+
+
+						</listhead>
+
+						<template name="model">
+
+							<listitem>
+
+								<listcell />
+								<listcell
+									label="@load(each.usuariosedepk.sede.sedeid)" />
+								<listcell
+									label="@load(each.usuariosedepk.sede.sede)" />
+								<listcell
+									label="@load(each.usuariosedepk.sede.direccion)" />
+								<listcell>
+
+									<if test="@load(each.activo)">
+										<label value="Si" />
+									</if>
+
+
+									<if test="@load(!each.activo)">
+										<label value="No" />
+									</if>
+
+								</listcell>
+								<listcell>
+									<hlayout>
+									
+									<button
+											iconSclass="z-icon-check" style="background-color:green"
+											onClick="@command('habilitarSede', usuariosede=each)"
+											tooltiptext="Habilitar" visible="@load(!each.activo)" disabled="@load(each.activo)"/>
+
+										<button
+											iconSclass="z-icon-trash-o" style="background-color:red"
+											onClick="@command('borrarSedeConfirmacion', usuariosede=each)"
+											tooltiptext="Borrar" visible="@load(!each.activo)" disabled="@load(!vm.opQuitarSede)" />
+											
+									</hlayout>
+
+
+								</listcell>
+
+
+							</listitem>
+
+
+						</template>
+
+						<listfoot>
+							<listfooter span="4" align="left">
+								<hlayout>
+									<label
+										value="@load(vm.lSedesUsuarios.size())" />
+									<label value="items" />
+								</hlayout>
+							</listfooter>
+						</listfoot>
+
+					</listbox>
+
+				</vlayout>
+
+			</groupbox>
+
+		</hlayout>
+
+	</window>
+</zk>
