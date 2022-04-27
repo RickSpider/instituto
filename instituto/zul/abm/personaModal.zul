@@ -1,0 +1,361 @@
+<?page title="personaModal" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Persona Crear/Ver/Editar" border="normal"
+		position="center,center" closable="true" mode="modal"
+		action="show: slideDown;hide: slideUp">
+
+		<vlayout>
+
+			<hlayout>
+				<hbox width="130px">
+					<label value="Nombres: " style="font-weight:bold" />
+				</hbox>
+				<textbox value="@load(vm.personaSelected.nombre) @save(vm.personaSelected.nombre, before='guardar')"
+					width="150px" 
+					constraint="no empty: Es campo obligatorio."/>
+			</hlayout>
+
+			<hlayout>
+
+				<hbox width="130px">
+					<label value="Apellidos: "
+						style="font-weight:bold" />
+				</hbox>
+				<textbox value="@load(vm.personaSelected.apellido) @save(vm.personaSelected.apellido, before='guardar')"
+					constraint="no empty: Es campo obligatorio."
+					width="150px" />
+
+			</hlayout>
+			
+			<hlayout>
+
+				<hbox width="130px">
+					<label value="Tipo Documento: " style="font-weight:bold" />
+				</hbox>
+
+				<bandbox id="bdDocumento" value="@load(vm.buscarDocumento) @save(vm.buscarDocumento, before='guardar')"
+					constraint="no empty: Es campo obligatorio."
+					mold="rounded" autodrop="true" width="150px"
+					onClick="@command('generarListaBuscarDocumento')" readonly="true">
+					<bandpopup>
+
+						<vbox>
+
+							<hbox>
+
+								<label value="Buscar:" />
+
+								<textbox instant="true"
+									value="@bind(vm.buscarDocumento)"
+									onChange="@command('filtrarDocumentoBuscar')" />
+
+							</hbox>
+
+							<listbox height="250px" width="450px"
+								mold="paging" autopaging="true" onSelect="bdDocumento.close()"
+								model="@load(vm.lDocumentosBuscar)">
+
+								<listhead>
+									<listheader label="ID" width="30px" />
+									<listheader label="Documento" />
+									<listheader label="Descripcion" />
+								</listhead>
+
+								<template name="model">
+
+									<listitem 
+										onClick="@command('onSelectDocumento', id = each[0])">
+
+										<listcell
+											label="@load(each[0])" />
+
+										<listcell
+											label="@load(each[1])" />
+
+										<listcell
+											label="@load(each[2])" />
+										
+										<listcell
+											label="@load(each[3])" />
+										
+										
+
+									</listitem>
+
+								</template>
+								<listitem />
+							</listbox>
+
+						</vbox>
+					</bandpopup>
+				</bandbox>
+				
+			</hlayout>
+			
+			<hlayout>
+				<hbox width="130px">
+					<label value="Documento #: " style="font-weight:bold" />
+				</hbox>
+				<textbox value="@load(vm.personaSelected.documentoNum) @save(vm.personaSelected.documentoNum, before='guardar')"
+					width="150px" 
+					constraint="no empty: Es campo obligatorio."/>
+			</hlayout>
+			
+			<hlayout>
+				<hbox width="130px">
+					<label value="RUC: " style="font-weight:bold" />
+				</hbox>
+				<textbox value="@load(vm.personaSelected.ruc) @save(vm.personaSelected.ruc, before='guardar')"
+					width="150px" 
+					constraint="no empty: Es campo obligatorio."/>
+			</hlayout>
+			
+			
+			<hlayout>
+
+				<hbox width="130px">
+					<label value="Estado Civil: " style="font-weight:bold" />
+				</hbox>
+
+				<bandbox id="bdECivil" value="@load(vm.buscarEstadoCivil) @save(vm.buscarEstadoCivil, before='guardar')"
+					constraint="no empty: Es campo obligatorio."
+					mold="rounded" autodrop="true" width="150px"
+					onClick="@command('generarListaBuscarEstadoCivil')" readonly="true">
+					<bandpopup>
+
+						<vbox>
+
+							<hbox>
+
+								<label value="Buscar:" />
+
+								<textbox instant="true"
+									value="@bind(vm.buscarEstadoCivil)"
+									onChange="@command('filtrarEstadoCivilBuscar')" />
+
+							</hbox>
+
+							<listbox height="250px" width="450px"
+								mold="paging" autopaging="true" onSelect="bdECivil.close()"
+								model="@load(vm.lEstadosCivilesBuscar)">
+
+								<listhead>
+									<listheader label="ID" width="30px" />
+									<listheader label="EstadoCivil" />
+									<listheader label="Descripcion" />
+								</listhead>
+
+								<template name="model">
+
+									<listitem 
+										onClick="@command('onSelectEstadoCivil', id = each[0])">
+
+										<listcell
+											label="@load(each[0])" />
+
+										<listcell
+											label="@load(each[1])" />
+
+										<listcell
+											label="@load(each[2])" />
+										
+										<listcell
+											label="@load(each[3])" />
+										
+										
+
+									</listitem>
+
+								</template>
+								<listitem />
+							</listbox>
+
+						</vbox>
+					</bandpopup>
+				</bandbox>
+				
+			</hlayout>
+			
+			<hlayout>
+
+				<hbox width="130px">
+					<label value="Nacionalidad: " style="font-weight:bold" />
+				</hbox>
+
+				<bandbox id="bdpais" value="@load(vm.buscarPais) @save(vm.buscarPais, before='guardar')"
+					constraint="no empty: Es campo obligatorio."
+					mold="rounded" autodrop="true" width="150px"
+					onClick="@command('generarListaBuscarPais')" readonly="true">
+					<bandpopup>
+
+						<vbox>
+
+							<hbox>
+
+								<label value="Buscar:" />
+
+								<textbox instant="true"
+									value="@bind(vm.buscarPais)"
+									onChange="@command('filtrarPaisBuscar')" />
+
+							</hbox>
+
+							<listbox height="250px" width="450px"
+								mold="paging" autopaging="true" onSelect="bdpais.close()"
+								model="@load(vm.lPaisesBuscar)">
+
+								<listhead>
+									<listheader label="ID" width="30px" />
+									<listheader label="Pais" />
+									<listheader label="Gentilicio" />
+								</listhead>
+
+								<template name="model">
+
+									<listitem 
+										onClick="@command('onSelectPais', id = each[0])">
+
+										<listcell
+											label="@load(each[0])" />
+
+										<listcell
+											label="@load(each[1])" />
+
+										<listcell
+											label="@load(each[2])" />
+										
+										<listcell
+											label="@load(each[3])" />
+										
+										
+
+									</listitem>
+
+								</template>
+								<listitem />
+							</listbox>
+
+						</vbox>
+					</bandpopup>
+				</bandbox>
+
+
+			</hlayout>
+
+
+			<hlayout>
+
+				<hbox width="130px">
+					<label value="Ciudad: " style="font-weight:bold" />
+				</hbox>
+
+				<bandbox id="bd" value="@load(vm.buscarCiudad) @save(vm.buscarCiudad, before='guardar')"
+					constraint="no empty: Es campo obligatorio."
+					mold="rounded" autodrop="true" width="150px"
+					onClick="@command('generarListaBuscarCiudad')" readonly="true">
+					<bandpopup>
+
+						<vbox>
+
+							<hbox>
+
+								<label value="Buscar:" />
+
+								<textbox instant="true"
+									value="@bind(vm.buscarCiudad)"
+									onChange="@command('filtrarCiudadBuscar')" />
+
+							</hbox>
+
+							<listbox height="250px" width="450px"
+								mold="paging" autopaging="true" onSelect="bd.close()"
+								model="@load(vm.lCiudadesBuscar)">
+
+								<listhead>
+									<listheader label="ID" width="30px" />
+									<listheader label="Ciudad" />
+									<listheader label="Departamento" />
+									<listheader label="Pais" />
+								</listhead>
+
+								<template name="model">
+
+									<listitem 
+										onClick="@command('onSelectCiudad', id = each[0])">
+
+										<listcell
+											label="@load(each[0])" />
+
+										<listcell
+											label="@load(each[1])" />
+
+										<listcell
+											label="@load(each[2])" />
+										
+										<listcell
+											label="@load(each[3])" />
+										
+										
+
+									</listitem>
+
+								</template>
+								<listitem />
+							</listbox>
+
+						</vbox>
+					</bandpopup>
+				</bandbox>
+
+
+			</hlayout>
+
+
+
+			<hlayout>
+
+				<hbox width="130px">
+					<label value="Dirección: " style="font-weight:bold" />
+				</hbox>
+				<textbox value="@load(vm.personaSelected.direccion) @save(vm.personaSelected.direccion, before='guardar')"
+					constraint="no empty: Es campo obligatorio."
+					width="150px" />
+
+			</hlayout>
+
+			<hlayout>
+
+				<hbox width="130px">
+					<label value="Telefono: " style="font-weight:bold" />
+				</hbox> 
+				<textbox value="@load(vm.personaSelected.telefono) @save(vm.personaSelected.telefono, before='guardar')"
+					constraint="no empty: Es campo obligatorio."
+					width="150px" />
+
+			</hlayout>
+
+			<hlayout>
+
+				<hbox width="130px">
+					<label value="Email: " style="font-weight:bold" />
+				</hbox>
+				<textbox type="email" value="@load(vm.personaSelected.email) @save(vm.personaSelected.email, before='guardar')"
+					constraint="/.+@.+\.[a-z]+/"
+					placeholder="example@domain"
+					width="150px" />
+
+			</hlayout>
+
+			<space height="10px" />
+
+			<hlayout>
+
+				<button label="Aceptar" onClick="@command('guardar')"/>
+
+			</hlayout>
+
+		</vlayout>
+
+
+	</window>
+</zk>

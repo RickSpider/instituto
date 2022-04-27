@@ -1,3 +1,4 @@
 <mapping class="com.instituto.modelo.Sede" />
+<mapping class="com.instituto.modelo.Persona" />
 <mapping class="com.instituto.modelo.Alumno" />
 <mapping class="com.instituto.modelo.UsuarioSede" />

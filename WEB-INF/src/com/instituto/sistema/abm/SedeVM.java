@@ -186,11 +186,11 @@ public class SedeVM extends TemplateViewModel {
 		
 		if (editar) {
 			
-			Notification.show("El Sede fue Actualizado.");
+			Notification.show("La Sede fue Actualizada.");
 			this.editar = false;
 		}else {
 			
-			Notification.show("El Sede fue agregado.");
+			Notification.show("La Sede fue agregada.");
 		}
 		
 		
@@ -221,7 +221,7 @@ public class SedeVM extends TemplateViewModel {
 
 		};
 		
-		this.mensajeEliminar("El rol sera eliminado. \n Continuar?", event);
+		this.mensajeEliminar("La Sede sera eliminada. \n Continuar?", event);
 	}
 	
 	private void borrarSede (Sede sede) {
@@ -238,7 +238,7 @@ public class SedeVM extends TemplateViewModel {
 	
 	
 
-		private List<Object[]> lCiudadesbuscarOri = null;
+		private List<Object[]> lCiudadesBuscarOri = null;
 		private List<Object[]> lCiudadesBuscar = null;
 		private Ciudad buscarSelectedCiudad = null;
 		private String buscarCiudad = "";
@@ -247,7 +247,7 @@ public class SedeVM extends TemplateViewModel {
 		@NotifyChange("lCiudadesBuscar")
 		public void filtrarCiudadBuscar() {
 
-			this.lCiudadesBuscar = this.filtrarListaObject(buscarCiudad, this.lCiudadesbuscarOri);
+			this.lCiudadesBuscar = this.filtrarListaObject(buscarCiudad, this.lCiudadesBuscarOri);
 
 		}
 		
@@ -267,7 +267,7 @@ public class SedeVM extends TemplateViewModel {
 					"left join paises p on p.paisid = d.paisid\n" + 
 					"order by c.ciudadid asc;");
 			
-			this.lCiudadesbuscarOri = this.lCiudadesBuscar;
+			this.lCiudadesBuscarOri = this.lCiudadesBuscar;
 		}
 		
 		@Command
