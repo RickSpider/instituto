@@ -235,8 +235,6 @@ public class SedeVM extends TemplateViewModel {
 	}
 	
 	// buscador de Ciudad
-	
-	
 
 		private List<Object[]> lCiudadesBuscarOri = null;
 		private List<Object[]> lCiudadesBuscar = null;
@@ -279,10 +277,7 @@ public class SedeVM extends TemplateViewModel {
 			this.sedeSelected.setCiudad(buscarSelectedCiudad);
 
 		}
-		
 
-
-		
 		//fin buscador de ciudad 
 	
 
