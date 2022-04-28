@@ -15,7 +15,7 @@
 				<bandbox id="bd" value="@load(vm.buscarPersona) @save(vm.buscarPersona, before='guardar')"
 					constraint="no empty: Es campo obligatorio."
 					mold="rounded" autodrop="true" width="150px"
-					onClick="@command('generarListaBuscarPersona')" readonly="true">
+					onClick="@command('generarListaBuscarPersona')" readonly="true" disabled="@load(vm.editar)">
 					<bandpopup>
 
 						<vbox>
@@ -140,7 +140,7 @@
 				</hbox>
 				<textbox
 					value="@load(vm.alumnoSelected.matricula) @save(vm.alumnoSelected.matricula, before='guardar')"
-					readonly="@load(vm.editar)" width="150px"
+					width="150px"
 					constraint="no empty: Es campo obligatorio." />
 			</hlayout>
 
