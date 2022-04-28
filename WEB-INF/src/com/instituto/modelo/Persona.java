@@ -58,9 +58,9 @@ public class Persona extends Modelo implements Serializable {
 	@JoinColumn(name = "estadocivilid")
 	private Tipo estadoCivil;
 
-	@OneToOne(mappedBy = "persona", cascade = CascadeType.ALL)
+	/*@OneToOne(mappedBy = "persona", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
-    private Alumno alumno;
+    private Alumno alumno;*/
 	
 	@Override
 	public Object[] getArrayObjectDatos() {
@@ -160,14 +160,6 @@ public class Persona extends Modelo implements Serializable {
 
 	public void setCiudad(Ciudad ciudad) {
 		this.ciudad = ciudad;
-	}
-
-	public Alumno getAlumno() {
-		return alumno;
-	}
-
-	public void setAlumno(Alumno alumno) {
-		this.alumno = alumno;
 	}
 
 	public Tipo getEstadoCivil() {
