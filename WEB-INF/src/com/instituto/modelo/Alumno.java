@@ -25,12 +25,11 @@ public class Alumno extends Modelo implements Serializable{
 	private static final long serialVersionUID = -3897754450329909812L;
 
 	@Id
-	@Column(name ="alumnoid")
 	private Long alumnoid;
 	
 	@OneToOne
 	@MapsId
-	@JoinColumn(name="personaid")
+	@JoinColumn(name="alumnoid")
 	private Persona persona;
 	
 	private String matricula;
@@ -42,7 +41,21 @@ public class Alumno extends Modelo implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "comprobantetipoid")
 	private Tipo comprobanteTipo;
+	
+	private boolean activo;
 
+	@Override
+	public Object[] getArrayObjectDatos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getStringDatos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	public Persona getPersona() {
 		return persona;
 	}
@@ -67,16 +80,28 @@ public class Alumno extends Modelo implements Serializable{
 		this.sede = sede;
 	}
 
-	@Override
-	public Object[] getArrayObjectDatos() {
-		// TODO Auto-generated method stub
-		return null;
+	public Long getAlumnoid() {
+		return alumnoid;
 	}
 
-	@Override
-	public String getStringDatos() {
-		// TODO Auto-generated method stub
-		return null;
+	public void setAlumnoid(Long alumnoid) {
+		this.alumnoid = alumnoid;
+	}
+
+	public Tipo getComprobanteTipo() {
+		return comprobanteTipo;
+	}
+
+	public void setComprobanteTipo(Tipo comprobanteTipo) {
+		this.comprobanteTipo = comprobanteTipo;
+	}
+
+	public boolean isActivo() {
+		return activo;
+	}
+
+	public void setActivo(boolean activo) {
+		this.activo = activo;
 	}
 	
 	
