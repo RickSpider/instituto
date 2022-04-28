@@ -1,0 +1,117 @@
+<?page title="Alumnos" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="Alumno" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.abm.AlumnoVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<hlayout vflex="1">
+			
+				<vlayout hflex="1" vflex="1">
+
+					<hbox pack="end" hflex="1" >
+
+						<button label="Agregar"
+							iconSclass=" z-icon-plus" onClick="@command('modalAlumnoAgregar')" disabled="@load(!vm.opCrearAlumno)" />
+
+					</hbox>
+
+					<listbox emptyMessage="lista vacía..." mold="paging"
+						vflex="1" model="@load(vm.lAlumnos)" checkmark="true">
+
+						<listhead>
+
+							<listheader width="30px" align="center" />
+							<listheader label="ID" align="right"
+								width="30px" />
+							<listheader label="Nombre" align="left"
+								width="100px" />
+							<listheader label="Apellido" align="left"
+								width="250px" />
+							<listheader label="Matricula" align="left"
+								width="250px" />
+							<listheader align="center" />
+
+
+						</listhead>
+
+
+						<auxhead>
+
+							<auxheader />
+							<auxheader />
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[0])" instant="true"
+									onChange="@command('filtrarAlumno')" hflex="1" />
+							</auxheader>
+
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[1])" instant="true"
+									onChange="@command('filtrarAlumno')" hflex="1" />
+							</auxheader>
+							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[2])" instant="true"
+									onChange="@command('filtrarAlumno')" hflex="1" />
+							</auxheader>
+
+							<auxheader />
+						</auxhead>
+
+						<template name="model">
+
+							<listitem>
+								<listcell />
+								<listcell label="@load(each.alumnoid)" />
+								<listcell
+									label="@load(each.persona.nombre)" />
+								<listcell
+									label="@load(each.persona.apellido)" />
+								<listcell
+									label="@load(each.matricula)" />
+
+								<listcell>
+									<hlayout>
+
+										<button iconSclass="z-icon-edit"
+											onClick="@command('modalAlumno', alumnoid=each.alumnoid)"
+											tooltiptext="Editar" disabled="@load(!vm.opEditarAlumno)"/>
+										<button
+											iconSclass="z-icon-trash-o" style="background-color:red"
+											onClick="@command('borrarAlumnoConfirmacion', alumno=each)"
+											tooltiptext="Borrar" disabled="@load(!vm.opBorrarAlumno)"/>
+
+									</hlayout>
+
+
+								</listcell>
+
+
+							</listitem>
+
+
+						</template>
+
+						<listfoot>
+							<listfooter span="4" align="left">
+								<hlayout>
+									<label
+										value="@load(vm.lAlumnos.size())" />
+									<label value="items" />
+								</hlayout>
+							</listfooter>
+						</listfoot>
+
+
+					</listbox>
+
+				</vlayout>
+
+		
+			
+		</hlayout>
+
+	</window>
+</zk>
