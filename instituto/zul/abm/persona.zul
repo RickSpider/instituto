@@ -26,14 +26,15 @@
 							<listheader label="Nombre" align="left"
 								width="100px" />
 							<listheader label="Apellido" align="left"
-								width="250px" />
+								 />
 							<listheader label="Email" align="left"
-								width="250px" />
+								/>
 							<listheader label="Telefono" align="left"
-								width="250px" />
+								/>
 							<listheader label="Direccion" align="left"
-								width="250px" />
-							<listheader align="center" />
+								/>
+							<listheader align="center" 
+								width ="100px"/>
 
 
 						</listhead>
