@@ -2,6 +2,7 @@ package com.instituto.modelo;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -27,8 +28,7 @@ public class Alumno extends Modelo implements Serializable{
 	@Id
 	private Long alumnoid;
 	
-	@OneToOne
-	@MapsId
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="alumnoid")
 	private Persona persona;
 	
