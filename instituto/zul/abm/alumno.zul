@@ -24,14 +24,15 @@
 							<listheader label="ID" align="right"
 								width="30px" />
 							<listheader label="Nombre" align="left"
-								width="100px" />
+								 />
 							<listheader label="Apellido" align="left"
-								width="250px" />
+								 />
 							<listheader label="Matricula" align="left"
-								width="250px" />
+								 />
 							<listheader label="Activo" align="center"
-								width="80px" />
-							<listheader align="center" />
+								width="80px"/>
+							<listheader align="center" 
+								width="100px"/>
 
 
 						</listhead>

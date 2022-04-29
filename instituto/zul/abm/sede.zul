@@ -24,16 +24,17 @@
 							<listheader label="ID" align="right"
 								width="30px" />
 							<listheader label="Sede" align="left"
-								width="100px" />
+								 />
 							<listheader label="Descripción" align="left"
-								width="250px" />
+								/>
 							<listheader label="Direccion" align="left"
-								width="250px" />
+								 />
 							<listheader label="Telefono" align="left"
-								width="250px" />
+								 />
 							<listheader label="Email" align="left"
-								width="250px" />
-							<listheader align="center" />
+								 />
+							<listheader align="center" 
+								width="100px"/>
 
 
 						</listhead>
