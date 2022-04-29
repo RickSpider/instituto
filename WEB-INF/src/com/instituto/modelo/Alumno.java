@@ -46,14 +46,16 @@ public class Alumno extends Modelo implements Serializable{
 
 	@Override
 	public Object[] getArrayObjectDatos() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Object[] o = {this.persona.getNombre(), this.persona.getApellido(), this.matricula};
+		
+		return o;
 	}
 
 	@Override
 	public String getStringDatos() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.alumnoid + " " + this.persona.getNombre() + " " + this.persona.getApellido() +" " + this.matricula;
+		
 	}
 	
 	public Persona getPersona() {

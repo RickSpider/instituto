@@ -64,14 +64,15 @@ public class Persona extends Modelo implements Serializable {
 	
 	@Override
 	public Object[] getArrayObjectDatos() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Object[] o = {this.nombre, this.apellido, this.email, this.telefono, this.direccion};
+		
+		return o;
 	}
 
 	@Override
 	public String getStringDatos() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.personaid + " " + this.nombre + " " + this.apellido +" " + this.email+" " + this.telefono +" "+this.direccion;
 	}
 
 	public Long getPersonaid() {
