@@ -37,6 +37,10 @@ public class ParamsLocal extends Params {
 	public static final String OP_CREAR_ALUMNO = "CrearAlumno";
 	public static final String OP_EDITAR_ALUMNO = "EditarAlumno";
 	public static final String OP_BORRAR_ALUMNO = "BorrarAlumno";
-		
+	
+	//GradoAcademico
+	public static final String OP_CREAR_GRADOACADEMICO = "CrearGradoAcademico";
+	public static final String OP_EDITAR_GRADOACADEMICO = "EditarGradoAcademico";
+	public static final String OP_BORRAR_GRADOACADEMICO = "BorrarGradoAcademico";
 
 }

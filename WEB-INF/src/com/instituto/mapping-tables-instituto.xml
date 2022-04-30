@@ -2,3 +2,4 @@
 <mapping class="com.instituto.modelo.Persona" />
 <mapping class="com.instituto.modelo.Alumno" />
 <mapping class="com.instituto.modelo.UsuarioSede" />
+<mapping class="com.instituto.modelo.GradoAcademico" />
