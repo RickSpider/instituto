@@ -22,6 +22,7 @@ import com.doxacore.modelo.Pais;
 import com.doxacore.modelo.Tipo;
 import com.doxacore.modelo.Tipotipo;
 import com.instituto.ParamsLocal;
+import com.instituto.modelo.GradoAcademico;
 import com.instituto.modelo.Persona;
 import com.instituto.modelo.Persona;
 import com.instituto.modelo.Persona;
@@ -120,6 +121,7 @@ public class PersonaVM extends TemplateViewModel {
 				this.buscarEstadoCivil = this.personaSelected.getEstadoCivil().getTipo();
 				this.buscarPais = this.personaSelected.getNacionalidad().getGentilicio();
 				this.buscarCiudad = this.personaSelected.getCiudad().getCiudad();
+				this.buscarGradoAcademico = this.personaSelected.getGradoAcademico().getGradoacademico();
 				this.editar = true;
 
 			} else {
@@ -129,6 +131,7 @@ public class PersonaVM extends TemplateViewModel {
 				this.buscarEstadoCivil = "";
 				this.buscarPais = "";
 				this.buscarCiudad = "";
+				this.buscarGradoAcademico = "";
 
 			}
 
@@ -199,6 +202,18 @@ public class PersonaVM extends TemplateViewModel {
 			
 
 			if (personaSelected.getCiudad() == null) {
+				
+				return false;
+				
+			}
+			
+			if (personaSelected.getGradoAcademico() == null) {
+				
+				return false;
+				
+			}
+			
+			if (personaSelected.getEgresoAno() <= 0 ) {
 				
 				return false;
 				
@@ -441,6 +456,47 @@ public class PersonaVM extends TemplateViewModel {
 			
 			//fin buscar pais
 			
+			//buscarGradoAcademico
+			
+			private List<Object[]> lGradosAcademicosBuscarOri = null;
+			private List<Object[]> lGradosAcademicosBuscar = null;
+			private GradoAcademico buscarSelectedGradoAcademico = null;
+			private String buscarGradoAcademico = "";
+						
+			@Command
+			@NotifyChange("lGradosAcademicosBuscar")
+			public void filtrarGradoAcademicoBuscar() {
+
+				this.lGradosAcademicosBuscar = this.filtrarListaObject(buscarGradoAcademico, this.lGradosAcademicosBuscarOri);
+
+			}
+			
+			@Command
+			@NotifyChange("lGradosAcademicosBuscar")
+			public void generarListaBuscarGradoAcademico() {
+				
+				
+				String buscarGradoAcademicoSQL = this.um.getSql("buscarGradoAcademico.sql");
+				
+				System.out.println(buscarGradoAcademicoSQL);
+				
+				this.lGradosAcademicosBuscar = this.reg.sqlNativo(buscarGradoAcademicoSQL);
+				
+				this.lGradosAcademicosBuscarOri = this.lGradosAcademicosBuscar;
+			}
+			
+			@Command
+			@NotifyChange("buscarGradoAcademico")
+			public void onSelectGradoAcademico(@BindingParam("id") long id) {
+				
+				this.buscarSelectedGradoAcademico = this.reg.getObjectById(GradoAcademico.class.getName(), id);	
+				this.buscarGradoAcademico = this.buscarSelectedGradoAcademico.getGradoacademico();
+				this.personaSelected.setGradoAcademico(buscarSelectedGradoAcademico);
+
+			}
+			
+			//fin buscarGradoAcademico
+			
 			public List<Persona> getlPersonas() {
 				return lPersonas;
 			}
@@ -559,6 +615,22 @@ public class PersonaVM extends TemplateViewModel {
 
 			public void setBuscarDocumento(String buscarDocumento) {
 				this.buscarDocumento = buscarDocumento;
+			}
+
+			public String getBuscarGradoAcademico() {
+				return buscarGradoAcademico;
+			}
+
+			public void setBuscarGradoAcademico(String buscarGradoAcademico) {
+				this.buscarGradoAcademico = buscarGradoAcademico;
+			}
+
+			public List<Object[]> getlGradosAcademicosBuscar() {
+				return lGradosAcademicosBuscar;
+			}
+
+			public void setlGradosAcademicosBuscar(List<Object[]> lGradosAcademicosBuscar) {
+				this.lGradosAcademicosBuscar = lGradosAcademicosBuscar;
 			}
 			
 			//fin buscador de ciudad 

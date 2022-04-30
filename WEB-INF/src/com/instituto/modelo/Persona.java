@@ -1,8 +1,8 @@
 package com.instituto.modelo;
 
 import java.io.Serializable;
+import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,9 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.doxacore.modelo.Ciudad;
 import com.doxacore.modelo.Modelo;
@@ -39,7 +39,16 @@ public class Persona extends Modelo implements Serializable {
 	private String telefono;
 	private String direccion;
 	
-	@ManyToOne()
+	@ManyToOne
+	@JoinColumn(name = "gradoacademicoid")
+	private GradoAcademico gradoAcademico;
+	
+	private int egresoAno;	
+	
+	@Temporal(TemporalType.DATE)
+	private Date fechaNacimiento;
+	
+	@ManyToOne
 	@JoinColumn(name = "documentotipoid")
 	private Tipo documentoTipo;
 	private String documentoNum;
@@ -57,10 +66,6 @@ public class Persona extends Modelo implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "estadocivilid")
 	private Tipo estadoCivil;
-
-	/*@OneToOne(mappedBy = "persona", cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
-    private Alumno alumno;*/
 	
 	@Override
 	public Object[] getArrayObjectDatos() {
@@ -171,8 +176,31 @@ public class Persona extends Modelo implements Serializable {
 		this.estadoCivil = estadoCivil;
 	}
 
-	
-	
-	
+	public Date getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+
+	public GradoAcademico getGradoAcademico() {
+		return gradoAcademico;
+	}
+
+	public void setGradoAcademico(GradoAcademico gradoAcademico) {
+		this.gradoAcademico = gradoAcademico;
+	}
+
+	public int getEgresoAno() {
+		return egresoAno;
+	}
+
+	public void setEgresoAno(int egresoAno) {
+		this.egresoAno = egresoAno;
+	}
+
+
+
 
 }

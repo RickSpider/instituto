@@ -24,7 +24,7 @@
 							<listheader label="ID" align="right"
 								width="30px" />
 							<listheader label="Nombre" align="left"
-								width="100px" />
+								/>
 							<listheader label="Apellido" align="left"
 								 />
 							<listheader label="Email" align="left"
