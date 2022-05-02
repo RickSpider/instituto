@@ -43,6 +43,7 @@ public class Persona extends Modelo implements Serializable {
 	@JoinColumn(name = "gradoacademicoid")
 	private GradoAcademico gradoAcademico;
 	
+	@Column(nullable=false, columnDefinition = "int default 0")
 	private int egresoAno;	
 	
 	@Temporal(TemporalType.DATE)
