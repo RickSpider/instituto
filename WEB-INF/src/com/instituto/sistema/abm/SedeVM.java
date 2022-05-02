@@ -18,8 +18,8 @@ import org.zkoss.zul.Window;
 
 import com.doxacore.TemplateViewModel;
 import com.doxacore.modelo.Ciudad;
-import com.instituto.ParamsLocal;
 import com.instituto.modelo.Sede;
+import com.instituto.util.ParamsLocal;
 
 public class SedeVM extends TemplateViewModel {
 

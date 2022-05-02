@@ -21,9 +21,9 @@ import com.doxacore.modelo.Ciudad;
 import com.doxacore.modelo.Pais;
 import com.doxacore.modelo.Tipo;
 import com.doxacore.modelo.Tipotipo;
-import com.instituto.ParamsLocal;
 import com.instituto.modelo.GradoAcademico;
 import com.instituto.modelo.Persona;
+import com.instituto.util.ParamsLocal;
 import com.instituto.modelo.Persona;
 import com.instituto.modelo.Persona;
 

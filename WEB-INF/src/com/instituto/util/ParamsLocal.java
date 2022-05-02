@@ -1,4 +1,4 @@
-package com.instituto;
+package com.instituto.util;
 
 import com.doxacore.util.Params;
 
@@ -42,5 +42,10 @@ public class ParamsLocal extends Params {
 	public static final String OP_CREAR_GRADOACADEMICO = "CrearGradoAcademico";
 	public static final String OP_EDITAR_GRADOACADEMICO = "EditarGradoAcademico";
 	public static final String OP_BORRAR_GRADOACADEMICO = "BorrarGradoAcademico";
+	
+	//Materia
+	public static final String OP_CREAR_MATERIA = "CrearMateria";
+	public static final String OP_EDITAR_MATERIA = "EditarMateria";
+	public static final String OP_BORRAR_MATERIA = "BorrarMateria";
 
 }

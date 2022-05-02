@@ -17,8 +17,8 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
 import com.doxacore.TemplateViewModel;
-import com.instituto.ParamsLocal;
 import com.instituto.modelo.GradoAcademico;
+import com.instituto.util.ParamsLocal;
 import com.instituto.modelo.GradoAcademico;
 
 public class GradoAcademicoVM extends TemplateViewModel {

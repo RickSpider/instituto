@@ -16,7 +16,7 @@ import com.doxacore.TemplateViewModel;
 import com.doxacore.modelo.Usuario;
 import com.instituto.modelo.Sede;
 import com.instituto.modelo.UsuarioSede;
-import com.instituto.ParamsLocal;
+import com.instituto.util.ParamsLocal;
 
 public class UsuarioSedeVM extends TemplateViewModel{
 	
