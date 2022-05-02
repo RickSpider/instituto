@@ -1,0 +1,108 @@
+<?page title="Materias" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="Materia" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.academico.MateriaVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<hlayout vflex="1">
+			
+				<vlayout hflex="1" vflex="1">
+
+					<hbox pack="end" hflex="1" >
+
+						<button label="Agregar"
+							iconSclass=" z-icon-plus" onClick="@command('modalMateriaAgregar')" disabled="@load(!vm.opCrearMateria)" />
+
+					</hbox>
+
+					<listbox emptyMessage="lista vacía..." mold="paging"
+						vflex="1" model="@load(vm.lMaterias)" checkmark="true">
+
+						<listhead>
+
+							<listheader width="30px" align="center" />
+							<listheader label="ID" align="right"
+								width="30px" />
+							<listheader label="Materia" align="left"
+								 />
+							<listheader label="Descripción" align="left"
+								/>
+							<listheader align="center" 
+								width="100px"/>
+
+
+						</listhead>
+
+
+						<auxhead>
+
+							<auxheader />
+							<auxheader />
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[0])" instant="true"
+									onChange="@command('filtrarMateria')" hflex="1" />
+							</auxheader>
+
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[1])" instant="true"
+									onChange="@command('filtrarMateria')" hflex="1" />
+							</auxheader>
+
+							<auxheader />
+						</auxhead>
+
+						<template name="model">
+
+							<listitem>
+								<listcell />
+								<listcell label="@load(each.materiaid)" />
+								<listcell label="@load(each.materia)" />
+								<listcell
+									label="@load(each.descripcion)" />
+
+								<listcell>
+									<hlayout>
+
+										<button iconSclass="z-icon-edit"
+											onClick="@command('modalMateria', materiaid=each.materiaid)"
+											tooltiptext="Editar" disabled="@load(!vm.opEditarMateria)"/>
+										<button
+											iconSclass="z-icon-trash-o" style="background-color:red"
+											onClick="@command('borrarMateriaConfirmacion', materia=each)"
+											tooltiptext="Borrar" disabled="@load(!vm.opBorrarMateria)"/>
+
+
+									</hlayout>
+
+
+								</listcell>
+
+
+							</listitem>
+
+
+						</template>
+
+						<listfoot>
+							<listfooter span="4" align="left">
+								<hlayout>
+									<label
+										value="@load(vm.lMaterias.size())" />
+									<label value="items" />
+								</hlayout>
+							</listfooter>
+						</listfoot>
+
+
+					</listbox>
+
+				</vlayout>
+
+		
+			
+		</hlayout>
+
+	</window>
+</zk>

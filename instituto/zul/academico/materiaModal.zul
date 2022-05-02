@@ -1,0 +1,42 @@
+<?page title="materiaModal" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Materia Crear/Ver/Editar" border="normal"
+		position="center,center" closable="true" mode="modal"
+		action="show: slideDown;hide: slideUp">
+
+		<vlayout>
+
+			<hlayout>
+				<hbox width="130px">
+					<label value="Materia: " style="font-weight:bold" />
+				</hbox>
+				<textbox value="@load(vm.materiaSelected.materia) @save(vm.materiaSelected.materia, before='guardar')"
+					readonly="@load(vm.editar)" width="150px" 
+					constraint="no empty: Es campo obligatorio."/>
+			</hlayout>
+
+			<hlayout>
+
+				<hbox width="130px">
+					<label value="Descripción: "
+						style="font-weight:bold" />
+				</hbox>
+				<textbox value="@load(vm.materiaSelected.descripcion) @save(vm.materiaSelected.descripcion, before='guardar')"
+					constraint="no empty: Es campo obligatorio."
+					width="150px" />
+
+			</hlayout>
+
+			<space height="10px" />
+
+			<hlayout>
+
+				<button label="Aceptar" onClick="@command('guardar')"/>
+
+			</hlayout>
+
+		</vlayout>
+
+
+	</window>
+</zk>

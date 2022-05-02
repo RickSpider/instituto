@@ -11,5 +11,10 @@
 		badgeText="@load(vm.pageMap[self.label].values().size() )"
 		children="@load(vm.pageMap[self.label].values()) @template('navitem')"
 		visible="@load(vm.menuVisible( vm.pageMap[self.label].values().size() ))" />
+		
+	<nav label="Academico" iconSclass="z-icon-star"
+		badgeText="@load(vm.pageMap[self.label].values().size() )"
+		children="@load(vm.pageMap[self.label].values()) @template('navitem')"
+		visible="@load(vm.menuVisible( vm.pageMap[self.label].values().size() ))" />
 
 </zk>
