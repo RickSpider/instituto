@@ -1,4 +1,4 @@
-package com.instituto.sistema.abm;
+package com.instituto.sistema.gestionSede;
 
 import java.util.List;
 
@@ -120,7 +120,7 @@ public class SedeVM extends TemplateViewModel {
 
 		}
 
-		modal = (Window) Executions.createComponents("/instituto/zul/abm/sedeModal.zul", this.mainComponent,
+		modal = (Window) Executions.createComponents("/instituto/zul/gestionSede/sedeModal.zul", this.mainComponent,
 				null);
 		Selectors.wireComponents(modal, this, false);
 		modal.doModal();

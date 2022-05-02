@@ -1,4 +1,4 @@
-package com.instituto.sistema.academico;
+package com.instituto.sistema.gestionSede;
 
 import java.util.List;
 
@@ -118,7 +118,7 @@ public class MateriaVM extends TemplateViewModel {
 
 		}
 
-		modal = (Window) Executions.createComponents("/instituto/zul/academico/materiaModal.zul", this.mainComponent,
+		modal = (Window) Executions.createComponents("/instituto/zul/gestionSede/materiaModal.zul", this.mainComponent,
 				null);
 		Selectors.wireComponents(modal, this, false);
 		modal.doModal();
