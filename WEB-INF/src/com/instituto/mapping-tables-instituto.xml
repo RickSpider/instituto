@@ -3,3 +3,5 @@
 <mapping class="com.instituto.modelo.Alumno" />
 <mapping class="com.instituto.modelo.UsuarioSede" />
 <mapping class="com.instituto.modelo.GradoAcademico" />
+<mapping class="com.instituto.modelo.Curso" />
+<mapping class="com.instituto.modelo.Materia" />

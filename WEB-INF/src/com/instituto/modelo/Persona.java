@@ -51,6 +51,8 @@ public class Persona extends Modelo implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "documentotipoid")
 	private Tipo documentoTipo;
+	
+	@Column(name = "documentoNum", unique = true)
 	private String documentoNum;
 	
 	private String ruc;
