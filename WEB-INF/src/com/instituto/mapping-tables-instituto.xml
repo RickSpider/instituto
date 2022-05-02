@@ -5,3 +5,4 @@
 <mapping class="com.instituto.modelo.GradoAcademico" />
 <mapping class="com.instituto.modelo.Curso" />
 <mapping class="com.instituto.modelo.Materia" />
+<mapping class="com.instituto.modelo.CursoMateria" />
