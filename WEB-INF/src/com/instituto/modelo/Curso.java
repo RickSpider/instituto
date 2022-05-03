@@ -66,6 +66,14 @@ public class Curso extends Modelo implements Serializable {
 	public void setDescripcion(String descripcion) {
 		Descripcion = descripcion;
 	}
+
+	public int getDuracion() {
+		return duracion;
+	}
+
+	public void setDuracion(int duracion) {
+		this.duracion = duracion;
+	}
 	
 	
 

@@ -27,7 +27,7 @@ import com.instituto.modelo.CursoMateria;
 import com.instituto.modelo.Materia;
 
 
-public class CursoMateriaVM extends TemplateViewModel {
+public class CursoVM extends TemplateViewModel {
 
 	private List<Curso> lCursos;
 	private List<Curso> lCursosOri;
@@ -126,16 +126,46 @@ public class CursoMateriaVM extends TemplateViewModel {
 
 		}
 
-		modal = (Window) Executions.createComponents("/doxacore/zul/configuracion/cursoModal.zul", this.mainComponent,
+		modal = (Window) Executions.createComponents("/instituto/zul/gestionSede/cursoModal.zul", this.mainComponent,
 				null);
 		Selectors.wireComponents(modal, this, false);
 		modal.doModal();
 
 	}
+	
+	private boolean verificarCampos() {
+	
+		if (this.cursoSelected.getCurso() == null || this.cursoSelected.getCurso().length() <= 0) {
+			
+			return false;
+			
+		}
+		
+		if (this.cursoSelected.getDescripcion() == null || this.cursoSelected.getDescripcion().length() <= 0) {
+			
+			return false;
+			
+		}
+		
+		if (this.cursoSelected.getDuracion() <= 0) {
+			
+			return false;
+			
+		}
+		
+		return true;
+	}	
+
 
 	@Command
 	@NotifyChange("lCursos")
 	public void guardar() {
+		
+		if (!verificarCampos()) {
+			
+			return;
+			
+		}
 		
 		this.save(cursoSelected);
 
@@ -275,7 +305,7 @@ public class CursoMateriaVM extends TemplateViewModel {
 			return;
 		}
 
-		this.lMateriasBuscar = this.reg.sqlNativo("select r.materiaid, r.materia, r.descripcion from materias r order by materiaid;");
+		this.lMateriasBuscar = this.reg.sqlNativo("select m.materiaid, m.materia, m.descripcion from materias m order by m.materiaid;");
 		this.lMateriasbuscarOri = this.lMateriasBuscar;
 	}
 	
