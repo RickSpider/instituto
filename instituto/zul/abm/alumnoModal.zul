@@ -69,69 +69,16 @@
 
 			</hlayout>
 			
+			
 			<hlayout>
-
 				<hbox width="130px">
 					<label value="Sede: " style="font-weight:bold" />
 				</hbox>
-
-				<bandbox id="bdSede" value="@load(vm.buscarSede) @save(vm.buscarSede, before='guardar')"
-					constraint="no empty: Es campo obligatorio."
-					mold="rounded" autodrop="true" width="150px"
-					onClick="@command('generarListaBuscarSede')" readonly="true">
-					<bandpopup>
-
-						<vbox>
-
-							<hbox>
-
-								<label value="Buscar:" />
-
-								<textbox instant="true"
-									value="@bind(vm.buscarSede)"
-									onChange="@command('filtrarSedeBuscar')" />
-
-							</hbox>
-
-							<listbox height="250px" width="450px"
-								mold="paging" autopaging="true" onSelect="bdSede.close()"
-								model="@load(vm.lSedesBuscar)">
-
-								<listhead>
-									<listheader label="ID" width="30px" />
-									<listheader label="Sede" />
-									<listheader label="Direccion" />
-								</listhead>
-
-								<template name="model">
-
-									<listitem 
-										onClick="@command('onSelectSede', id = each[0])">
-
-										<listcell
-											label="@load(each[0])" />
-
-										<listcell
-											label="@load(each[1])" />
-
-										<listcell
-											label="@load(each[2])" />
-									
-										
-
-									</listitem>
-
-								</template>
-								<listitem />
-							</listbox>
-
-						</vbox>
-					</bandpopup>
-				</bandbox>
-
-
+				<textbox
+					value="@bind(vm.alumnoSelected.sede.sede)"
+					width="150px"
+					readonly="true"/>
 			</hlayout>
-			
 			
 
 			<hlayout>

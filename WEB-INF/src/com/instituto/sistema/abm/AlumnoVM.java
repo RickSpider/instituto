@@ -22,8 +22,9 @@ import com.instituto.modelo.Alumno;
 import com.instituto.modelo.Persona;
 import com.instituto.modelo.Sede;
 import com.instituto.util.ParamsLocal;
+import com.instituto.util.TemplateViewModelLocal;
 
-public class AlumnoVM extends TemplateViewModel {
+public class AlumnoVM extends TemplateViewModelLocal {
 
 	private List<Alumno> lAlumnos;
 	private List<Alumno> lAlumnosOri;
@@ -57,7 +58,7 @@ public class AlumnoVM extends TemplateViewModel {
 
 	private void cargarAlumnos() {
 
-		this.lAlumnos = this.reg.getAllObjectsByCondicionOrder(Alumno.class.getName(), null, "Alumnoid asc");
+		this.lAlumnos = this.reg.getAllObjectsByCondicionOrder(Alumno.class.getName(), "sedeid = "+this.getCurrentSede().getSedeid(), "Alumnoid asc");
 		this.lAlumnosOri = this.lAlumnos;
 	}
 
@@ -113,14 +114,13 @@ public class AlumnoVM extends TemplateViewModel {
 				return;
 
 			this.alumnoSelected = this.reg.getObjectById(Alumno.class.getName(), alumnoid);
-			this.buscarSede = this.alumnoSelected.getSede().getSede();
 			this.buscarPersona = this.alumnoSelected.getPersona().getNombre();
 			this.editar = true;
 
 		} else {
 
 			alumnoSelected = new Alumno();
-			this.buscarSede = "";
+			alumnoSelected.setSede(getCurrentSede());
 			this.buscarPersona = "";
 
 		}
@@ -161,6 +161,8 @@ public class AlumnoVM extends TemplateViewModel {
 		if (!verificarCampos()) {
 			return;
 		}
+		
+		this.alumnoSelected.setSede(this.getCurrentSede());
 
 		this.save(alumnoSelected);
 
@@ -256,44 +258,6 @@ public class AlumnoVM extends TemplateViewModel {
 
 	// fin buscador de Persona
 
-	// seccion buscarSede
-
-	private List<Object[]> lSedesBuscarOri = null;
-	private List<Object[]> lSedesBuscar = null;
-	private Sede buscarSelectedSede = null;
-	private String buscarSede = "";
-
-	@Command
-	@NotifyChange("lSedesBuscar")
-	public void filtrarSedeBuscar() {
-
-		this.lSedesBuscar = this.filtrarListaObject(buscarSede, this.lSedesBuscarOri);
-
-	}
-
-	@Command
-	@NotifyChange("lSedesBuscar")
-	public void generarListaBuscarSede() {
-
-		String sqlSede = this.um.getSql("buscarSede.sql");
-
-		this.lSedesBuscar = this.reg.sqlNativo(sqlSede);
-
-		this.lSedesBuscarOri = this.lSedesBuscar;
-	}
-
-	@Command
-	@NotifyChange("buscarSede")
-	public void onSelectSede(@BindingParam("id") long id) {
-
-		this.buscarSelectedSede = this.reg.getObjectById(Sede.class.getName(), id);
-		this.buscarSede = this.buscarSelectedSede.getSede();
-		this.alumnoSelected.setSede(buscarSelectedSede);
-
-	}
-
-	// fin buscador de Sede
-
 	public List<Alumno> getlAlumnos() {
 		return lAlumnos;
 	}
@@ -366,20 +330,5 @@ public class AlumnoVM extends TemplateViewModel {
 		this.buscarPersona = buscarPersona;
 	}
 
-	public List<Object[]> getlSedesBuscar() {
-		return lSedesBuscar;
-	}
-
-	public void setlSedesBuscar(List<Object[]> lSedesBuscar) {
-		this.lSedesBuscar = lSedesBuscar;
-	}
-
-	public String getBuscarSede() {
-		return buscarSede;
-	}
-
-	public void setBuscarSede(String buscarSede) {
-		this.buscarSede = buscarSede;
-	}
 
 }
