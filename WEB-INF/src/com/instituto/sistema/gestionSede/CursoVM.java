@@ -304,8 +304,10 @@ public class CursoVM extends TemplateViewModel {
 
 			return;
 		}
+		
+		String sqlBuscarMateria = this.um.getSql("buscarMateriaNotCurso.sql").replace("?1", cursoSelectedMateria.getCursoid()+"");
 
-		this.lMateriasBuscar = this.reg.sqlNativo("select m.materiaid, m.materia, m.descripcion from materias m order by m.materiaid;");
+		this.lMateriasBuscar = this.reg.sqlNativo(sqlBuscarMateria);
 		this.lMateriasbuscarOri = this.lMateriasBuscar;
 	}
 	

@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import com.doxacore.modelo.Modelo;
 
 @Entity
-@Table(name="CusosMaterias")
+@Table(name="CursosMaterias")
 public class CursoMateria extends Modelo implements Serializable{
 
 	/**

@@ -188,8 +188,7 @@
 							<listheader width="30px" align="center" />
 							<listheader label="ID" align="right"
 								width="30px" />
-							<listheader label="Materia" align="left"
-								width="150px" />
+							<listheader label="Materia" align="left" />
 							<listheader label="Descripción"
 								align="left" />
 							<listheader align="center" width="50px" />
