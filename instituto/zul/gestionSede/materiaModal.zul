@@ -11,7 +11,7 @@
 					<label value="Materia: " style="font-weight:bold" />
 				</hbox>
 				<textbox value="@load(vm.materiaSelected.materia) @save(vm.materiaSelected.materia, before='guardar')"
-					readonly="@load(vm.editar)" width="150px" 
+					readonly="@load(!vm.editarMateria)" width="150px" 
 					constraint="no empty: Es campo obligatorio."/>
 			</hlayout>
 
@@ -22,6 +22,18 @@
 						style="font-weight:bold" />
 				</hbox>
 				<textbox value="@load(vm.materiaSelected.descripcion) @save(vm.materiaSelected.descripcion, before='guardar')"
+					constraint="no empty: Es campo obligatorio."
+					width="150px" />
+
+			</hlayout>
+			
+			<hlayout>
+
+				<hbox width="130px">
+					<label value="Carga Horaria: "
+						style="font-weight:bold" />
+				</hbox>
+				<textbox value="@load(vm.materiaSelected.cargaHoraria) @save(vm.materiaSelected.cargaHoraria, before='guardar')"
 					constraint="no empty: Es campo obligatorio."
 					width="150px" />
 

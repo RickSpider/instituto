@@ -18,6 +18,7 @@ import org.zkoss.zul.Window;
 
 import com.doxacore.TemplateViewModel;
 import com.doxacore.modelo.Ciudad;
+import com.instituto.modelo.CursoMateria;
 import com.instituto.modelo.Materia;
 import com.instituto.util.ParamsLocal;
 
@@ -89,6 +90,7 @@ public class MateriaVM extends TemplateViewModel {
 	
 	private Window modal;
 	private boolean editar = false;
+	private boolean editarMateria = false;
 
 	@Command
 	public void modalMateriaAgregar() {
@@ -97,6 +99,7 @@ public class MateriaVM extends TemplateViewModel {
 			return;
 
 		this.editar = false;
+		this.editarMateria = true;
 		modalMateria(-1);
 
 	}
@@ -109,9 +112,18 @@ public class MateriaVM extends TemplateViewModel {
 			if(!this.opEditarMateria)
 				return;
 			
-			this.materiaSelected = this.reg.getObjectById(Materia.class.getName(), materiaid);
+			this.materiaSelected = this.reg.getObjectById(Materia.class.getName(), materiaid);			
 			this.editar = true;
-
+			
+			this.editarMateria = false;
+			List<CursoMateria> lCursoMateria = this.reg.getAllObjectsByCondicionOrder(CursoMateria.class.getName(), "materiaid = "+this.materiaSelected.getMateriaid(), null);
+			
+			if (lCursoMateria.size() <= 0) {
+				
+				this.editarMateria = true;
+				
+			}
+			
 		} else {
 			
 			materiaSelected = new Materia();
@@ -264,6 +276,14 @@ public class MateriaVM extends TemplateViewModel {
 
 	public void setEditar(boolean editar) {
 		this.editar = editar;
+	}
+
+	public boolean isEditarMateria() {
+		return editarMateria;
+	}
+
+	public void setEditarMateria(boolean editarMateria) {
+		this.editarMateria = editarMateria;
 	}
 
 }

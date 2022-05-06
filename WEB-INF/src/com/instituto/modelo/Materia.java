@@ -26,16 +26,19 @@ public class Materia extends Modelo implements Serializable{
 	private Long materiaid;
 	private String materia;
 	private String descripcion;
+	
+	@Column(columnDefinition = "int default 0")
+	private int cargaHoraria;
 
 	@Override
 	public Object[] getArrayObjectDatos() {
-		Object[] o = {this.materia, this.descripcion};
+		Object[] o = {this.materia, this.descripcion, this.cargaHoraria};
 		return o;
 	}
 
 	@Override
 	public String getStringDatos() {
-		return this.materiaid+" "+this.materia+" "+this.descripcion;
+		return this.materiaid+" "+this.materia+" "+this.descripcion+" "+this.cargaHoraria;
 	}
 
 	public Long getMateriaid() {
@@ -61,6 +64,16 @@ public class Materia extends Modelo implements Serializable{
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
+
+	public int getCargaHoraria() {
+		return cargaHoraria;
+	}
+
+	public void setCargaHoraria(int cargaHoraria) {
+		this.cargaHoraria = cargaHoraria;
+	}
+	
+	
 	
 	
 
