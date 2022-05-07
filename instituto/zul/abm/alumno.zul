@@ -27,8 +27,6 @@
 								 />
 							<listheader label="Apellido" align="left"
 								 />
-							<listheader label="Matricula" align="left"
-								 />
 							<listheader label="Activo" align="center"
 								width="80px"/>
 							<listheader align="center" 
@@ -53,13 +51,6 @@
 									value="@bind(vm.filtroColumns[1])" instant="true"
 									onChange="@command('filtrarAlumno')" hflex="1" />
 							</auxheader>
-							
-							<auxheader>
-								<textbox
-									value="@bind(vm.filtroColumns[2])" instant="true"
-									onChange="@command('filtrarAlumno')" hflex="1" />
-							</auxheader>
-							
 						
 							<auxheader />
 						</auxhead>
@@ -69,12 +60,12 @@
 							<listitem>
 								<listcell />
 								<listcell label="@load(each.alumnoid)" />
+								
 								<listcell
 									label="@load(each.persona.nombre)" />
+									
 								<listcell
 									label="@load(each.persona.apellido)" />
-								<listcell
-									label="@load(each.matricula)" />
 								
 								<listcell>
 								

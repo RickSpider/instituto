@@ -80,17 +80,6 @@
 					readonly="true"/>
 			</hlayout>
 			
-
-			<hlayout>
-				<hbox width="130px">
-					<label value="Matricula: " style="font-weight:bold" />
-				</hbox>
-				<textbox
-					value="@load(vm.alumnoSelected.matricula) @save(vm.alumnoSelected.matricula, before='guardar')"
-					width="150px"
-					constraint="no empty: Es campo obligatorio." />
-			</hlayout>
-
 			<hlayout>
 				<hbox width="130px">
 					<label value="Activo: " style="font-weight:bold" />

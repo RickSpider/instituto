@@ -32,29 +32,23 @@ public class Alumno extends Modelo implements Serializable{
 	@JoinColumn(name="alumnoid")
 	private Persona persona;
 	
-	private String matricula;
-	
 	@ManyToOne
 	@JoinColumn(name = "sedeid")
 	private Sede sede;
-	
-	@ManyToOne
-	@JoinColumn(name = "comprobantetipoid")
-	private Tipo comprobanteTipo;
 	
 	private boolean activo;
 
 	@Override
 	public Object[] getArrayObjectDatos() {
 		
-		Object[] o = {this.persona.getNombre(), this.persona.getApellido(), this.matricula};
+		Object[] o = {this.persona.getNombre(), this.persona.getApellido()};
 		
 		return o;
 	}
 
 	@Override
 	public String getStringDatos() {
-		return this.alumnoid + " " + this.persona.getNombre() + " " + this.persona.getApellido() +" " + this.matricula;
+		return this.alumnoid + " " + this.persona.getNombre() + " " + this.persona.getApellido();
 		
 	}
 	
@@ -64,14 +58,6 @@ public class Alumno extends Modelo implements Serializable{
 
 	public void setPersona(Persona persona) {
 		this.persona = persona;
-	}
-
-	public String getMatricula() {
-		return matricula;
-	}
-
-	public void setMatricula(String matricula) {
-		this.matricula = matricula;
 	}
 
 	public Sede getSede() {
@@ -88,14 +74,6 @@ public class Alumno extends Modelo implements Serializable{
 
 	public void setAlumnoid(Long alumnoid) {
 		this.alumnoid = alumnoid;
-	}
-
-	public Tipo getComprobanteTipo() {
-		return comprobanteTipo;
-	}
-
-	public void setComprobanteTipo(Tipo comprobanteTipo) {
-		this.comprobanteTipo = comprobanteTipo;
 	}
 
 	public boolean isActivo() {

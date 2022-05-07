@@ -144,12 +144,6 @@ public class AlumnoVM extends TemplateViewModelLocal {
 			return false;
 			
 		}
-		
-		if (this.alumnoSelected.getMatricula() == null || this.alumnoSelected.getMatricula( ).length() <=0) {
-			
-			return false;
-			
-		}
 
 		return true;
 	}
