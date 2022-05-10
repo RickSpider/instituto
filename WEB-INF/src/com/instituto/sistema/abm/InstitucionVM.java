@@ -111,10 +111,12 @@ public class InstitucionVM extends TemplateViewModel {
 				return;
 
 			this.institucionSelected = this.reg.getObjectById(Institucion.class.getName(), institucionid);
+			buscarCiudad = this.institucionSelected.getCiudad().getCiudad();
 			this.editar = true;
 
 		} else {
-
+			
+			buscarCiudad = "";
 			institucionSelected = new Institucion();
 
 		}
@@ -133,6 +135,30 @@ public class InstitucionVM extends TemplateViewModel {
 
 			return false;
 
+		}
+		
+		if (this.institucionSelected.getCiudad() == null) {
+			
+			return false;
+			
+		}
+		
+		if (this.institucionSelected.getDireccion() == null || this.institucionSelected.getDireccion().length() <= 0) {
+			
+			return false;
+			
+		}
+		
+		if (this.institucionSelected.getTelefono() == null || this.institucionSelected.getTelefono().length() <= 0) {
+			
+			return false;
+			
+		}
+		
+		if (this.institucionSelected.getEmail() == null || this.institucionSelected.getEmail().length() <= 0) {
+			
+			return false;
+			
 		}
 
 		return true;

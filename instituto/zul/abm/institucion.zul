@@ -27,6 +27,8 @@
 						<listheader label="Departamento" align="left" />
 						<listheader label="Ciudad" align="left" />
 						<listheader label="Direccion" align="left" />
+						<listheader label="Telefono" align="left" />
+						<listheader label="Email" align="left" />
 						<listheader align="center" width="100px" />
 
 					</listhead>
@@ -53,6 +55,16 @@
 						
 						<auxheader>
 							<textbox value="@bind(vm.filtroColumns[3])"
+								instant="true" onChange="@command('filtrarInstitucion')" hflex="1" />
+						</auxheader>
+						
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[4])"
+								instant="true" onChange="@command('filtrarInstitucion')" hflex="1" />
+						</auxheader>
+						
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[5])"
 								instant="true" onChange="@command('filtrarInstitucion')" hflex="1" />
 						</auxheader>
 
