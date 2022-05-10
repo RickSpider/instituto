@@ -6,3 +6,8 @@
 <mapping class="com.instituto.modelo.Curso" />
 <mapping class="com.instituto.modelo.Materia" />
 <mapping class="com.instituto.modelo.CursoMateria" />
+<mapping class="com.instituto.modelo.Institucion" />
+<mapping class="com.instituto.modelo.Concepto" />
+<mapping class="com.instituto.modelo.Convenio" />
+<mapping class="com.instituto.modelo.ConvenioConcepto" />
+<mapping class="com.instituto.modelo.ConvenioAlumno" />
