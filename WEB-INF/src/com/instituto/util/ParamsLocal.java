@@ -8,9 +8,9 @@ public class ParamsLocal extends Params {
 	 EJEMPLO DE COMO CREAR PARAMETROS 
 	 
 	 
-	public static final String OP_CREAR_INSTITUCION = "CrearInstitucion";
-	public static final String OP_EDITAR_INSTITUCION = "EditarInstitucion";
-	public static final String OP_BORRAR_INSTITUCION = "BorrarInstitucion";
+	public static final String OP_CREAR_? = "Crear?";
+	public static final String OP_EDITAR_? = "Editar?";
+	public static final String OP_BORRAR_? = "Borrar?";
 	
 	 */
 	
@@ -61,5 +61,10 @@ public class ParamsLocal extends Params {
 	public static final String OP_CREAR_INSTITUCION = "CrearInstitucion";
 	public static final String OP_EDITAR_INSTITUCION = "EditarInstitucion";
 	public static final String OP_BORRAR_INSTITUCION = "BorrarInstitucion";
+	
+	//Concepto
+	public static final String OP_CREAR_CONCEPTO = "CrearConcepto";
+	public static final String OP_EDITAR_CONCEPTO = "EditarConcepto";
+	public static final String OP_BORRAR_CONCEPTO = "BorrarConcepto";
 	
 }
