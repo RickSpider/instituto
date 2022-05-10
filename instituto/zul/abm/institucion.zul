@@ -1,0 +1,119 @@
+<?page title="Instituciones" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Institucion" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.abm.InstitucionVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<hlayout vflex="1">
+
+			<vlayout hflex="1" vflex="1">
+
+				<hbox pack="end" hflex="1">
+
+					<button label="Agregar" iconSclass=" z-icon-plus"
+						onClick="@command('modalInstitucionAgregar')"
+						disabled="@load(!vm.opCrearInstitucion)" />
+
+				</hbox>
+
+				<listbox emptyMessage="lista vacía..." mold="paging"
+					vflex="1" model="@load(vm.lInstituciones)" checkmark="true">
+
+					<listhead>
+						<listheader width="30px" align="center"/>
+						<listheader label="ID" align="right"
+							width="30px" />
+						<listheader label="Institucion" align="left" />
+						<listheader label="Departamento" align="left" />
+						<listheader label="Ciudad" align="left" />
+						<listheader label="Direccion" align="left" />
+						<listheader align="center" width="100px" />
+
+					</listhead>
+
+
+					<auxhead>
+
+						<auxheader />
+						<auxheader />
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[0])"
+								instant="true" onChange="@command('filtrarInstitucion')" hflex="1" />
+						</auxheader>
+
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[1])"
+								instant="true" onChange="@command('filtrarInstitucion')" hflex="1" />
+						</auxheader>
+						
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[2])"
+								instant="true" onChange="@command('filtrarInstitucion')" hflex="1" />
+						</auxheader>
+						
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[3])"
+								instant="true" onChange="@command('filtrarInstitucion')" hflex="1" />
+						</auxheader>
+
+						<auxheader />
+					</auxhead>
+
+					<template name="model">
+
+						<listitem>
+							<listcell />
+							<listcell label="@load(each.institucionid)" />
+							<listcell label="@load(each.institucion)" />
+							<listcell label="@load(each.ciudad.departamento.departamento)" />
+							<listcell label="@load(each.ciudad.ciudad)" />
+							<listcell label="@load(each.direccion)" />
+							<listcell label="@load(each.telefono)" />
+							<listcell label="@load(each.email)" />
+							
+								
+
+
+							<listcell>
+								<hlayout>
+
+									<button iconSclass="z-icon-edit"
+										onClick="@command('modalInstitucion', institucionid=each.institucionid)"
+										tooltiptext="Editar" disabled="@load(!vm.opEditarInstitucion)" />
+									<button iconSclass="z-icon-trash-o"
+										style="background-color:red"
+										onClick="@command('borrarInstitucionConfirmacion', institucion=each)"
+										tooltiptext="Borrar" disabled="@load(!vm.opBorrarInstitucion)" />
+
+
+								</hlayout>
+
+
+							</listcell>
+
+
+						</listitem>
+
+
+					</template>
+
+					<listfoot>
+						<listfooter span="4" align="left">
+							<hlayout>
+								<label value="@load(vm.lInstituciones.size())" />
+								<label value="items" />
+							</hlayout>
+						</listfooter>
+					</listfoot>
+
+
+				</listbox>
+
+			</vlayout>
+
+
+
+		</hlayout>
+
+	</window>
+</zk>
