@@ -52,6 +52,12 @@ public class Alumno extends Modelo implements Serializable{
 		
 	}
 	
+	public String getFullNombre() {
+		
+		return this.persona.getApellido()+", "+this.persona.getNombre();
+		
+	}
+	
 	public Persona getPersona() {
 		return persona;
 	}
