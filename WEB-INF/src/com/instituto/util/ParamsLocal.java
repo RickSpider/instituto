@@ -67,4 +67,20 @@ public class ParamsLocal extends Params {
 	public static final String OP_EDITAR_CONCEPTO = "EditarConcepto";
 	public static final String OP_BORRAR_CONCEPTO = "BorrarConcepto";
 	
+	//Convenio
+	public static final String OP_CREAR_CONVENIO = "CrearConvenio";
+	public static final String OP_EDITAR_CONVENIO = "EditarConvenio";
+	public static final String OP_BORRAR_CONVENIO = "BorrarConvenio";
+	
+	//Convenio Alumno
+	public static final String OP_AGREGAR_ALUMNO = "AgregarAlumno";
+	public static final String OP_QUITAR_ALUMNO = "QuitarAlumno";
+	
+	//Convenio Alumno
+	public static final String OP_AGREGAR_CONCEPTO = "AgregarConcepto";
+	public static final String OP_QUITAR_CONCEPTO = "QuitarConcepto";
+	
+	
+	
+	
 }

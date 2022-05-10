@@ -1,0 +1,263 @@
+<?page title="Convenios" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Convenio" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.admnistracion.ConvenioVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<hlayout vflex="1" hflex="1">
+			<groupbox width="800px" vflex="1">
+				<caption label="Convenios" />
+
+				<vlayout hflex="1" vflex="1">
+
+					<hbox pack="end" hflex="1">
+
+						<button label="Agregar"
+							iconSclass=" z-icon-plus"
+							onClick="@command('modalConvenioAgregar')" 
+							disabled = "@load(!vm.opCrearConvenio)"/>
+
+					</hbox>
+
+					<listbox emptyMessage="lista vacía..." mold="paging"
+						vflex="1" model="@load(vm.lConvenios)" checkmark="true">
+
+						<listhead>
+
+							<listheader width="30px" align="center" />
+							<listheader label="ID" align="right"
+								width="30px" />
+							<listheader label="Descripcion"
+								align="left" />
+							<listheader label="Institucion"
+								align="left"  />
+							<listheader label="Activo"
+								align="Center" />
+							<listheader align="center" width="80px"/>
+
+
+						</listhead>
+
+						<auxhead>
+
+							<auxheader />
+							<auxheader />
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumnsConvenio[0])" instant="true"
+									onChange="@command('filtrarConvenio')" hflex="1"  />
+							</auxheader>
+
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumnsConvenio[1])" instant="true"
+									onChange="@command('filtrarConvenio')" hflex="1" />
+							</auxheader>
+							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumnsConvenio[2])" instant="true"
+									onChange="@command('filtrarConvenio')" hflex="1" />
+							</auxheader>
+
+							<auxheader />
+							<auxheader />
+
+						</auxhead>
+
+						<template name="model">
+
+							<listitem
+								onClick="@command('refrescarAlumnos', convenio = each )">
+
+								<listcell />
+								<listcell label="@load(each.convenioid)" />
+								<listcell label="@load(each.descripcion)" />
+								<listcell label="@load(each.institucion.institucion)" />
+								
+								<listcell>
+								
+									<if test="@load(each.activo)">
+										<label value="Si" />
+									</if>
+
+
+									<if test="@load(!each.activo)">
+										<label value="No" />
+									</if>
+								
+								</listcell>
+								
+								
+								<listcell>
+									<hlayout>
+
+										<button iconSclass="z-icon-edit"
+											onClick="@command('modalConvenio', convenioid=each.convenioid)"
+											tooltiptext="Editar" disabled = "@load(!vm.opEditarConvenio)"/>
+										<button
+											iconSclass="z-icon-trash-o" style="background-color:red"
+											onClick="@command('borrarConvenioConfirmacion', convenio=each)"
+											tooltiptext="Borrar" disabled = "@load(!vm.opBorrarConvenio)"/>
+
+
+									</hlayout>
+
+
+								</listcell>
+
+
+							</listitem>
+
+
+						</template>
+						<listfoot>
+							<listfooter span="7" align="left">
+								<hlayout>
+									<label
+										value="@load(vm.lConvenios.size())" />
+									<label value="items" />
+								</hlayout>
+							</listfooter>
+						</listfoot>
+
+					</listbox>
+				</vlayout>
+			</groupbox>
+
+			<groupbox vflex="1" hflex="1">
+				<caption label="Alumnos por Convenio" />
+
+				<vlayout hflex="1" vflex="1">
+
+					<hbox pack="end" hflex="1">
+
+						<!-- 	<button label="Agregar" iconSclass=" z-icon-plus"
+							onClick="@command('modalBuscarAlumno')" />  -->
+
+						<bandbox id="bd" value = "@load(vm.buscarAlumno)" mold="rounded" autodrop="true"
+							width="250px" onClick="@command('generarListaBuscarAlumno')"
+							readonly="true">
+							<bandpopup>
+
+								<vbox>
+
+									<hbox>
+
+										<label value="Buscar:" />
+
+										<textbox instant="true"
+											value="@bind(vm.buscarAlumno)"
+											onChange="@command('filtrarAlumnoBuscar')" />
+
+									</hbox>
+
+									<listbox height="250px"
+										width="450px" mold="paging" autopaging="true"
+										onSelect="bd.close()"
+										model="@load(vm.lAlumnosBuscar)">
+
+										<listhead>
+											<listheader label="ID"
+												width="30px" />
+											<listheader label="Nombre" />
+											<listheader
+												label="Apellido" />
+										</listhead>
+
+										<template name="model">
+
+											<listitem value="@load(each[1])" onClick="@command('onSelectAlumno', id = each[0])">
+
+												<listcell
+													label="@load(each[0])" />
+
+												<listcell 
+													label="@load(each[1])" />
+ 
+												<listcell
+													label="@load(each[2])" />
+
+											</listitem>
+
+										</template>
+										<listitem />
+									</listbox>
+
+								</vbox>
+							</bandpopup>
+						</bandbox>
+						
+						<button iconSclass=" z-icon-plus"
+							onClick="@command('agregarAlumno')" disabled="@load(!vm.opAgregarAlumno)" />
+						
+					</hbox>
+
+					<listbox emptyMessage="lista vacía..." mold="paging"
+						vflex="1" hflex="1" model="@load(vm.lAlumnosConvenios)"
+						checkmark="true">
+
+						<listhead>
+
+							<listheader width="30px" align="center" />
+							<listheader label="ID" align="right"
+								width="30px" />
+							<listheader label="Alumno" align="left" />
+							<listheader label="Descripción"
+								align="left" />
+							<listheader align="center" width="50px" />
+
+
+						</listhead>
+
+						<template name="model">
+
+							<listitem>
+
+								<listcell />
+								<listcell
+									label="@load(each.convenioalumnopk.alumno.alumnoid)" />
+								<listcell
+									label="@load(each.convenioalumnopk.alumno.alumno)" />
+								<listcell
+									label="@load(each.convenioalumnopk.alumno.descripcion)" />
+
+								<listcell>
+									<hlayout>
+
+										<button
+											iconSclass="z-icon-trash-o" style="background-color:red"
+											onClick="@command('borrarAlumnoConfirmacion', convenioalumno=each)"
+											tooltiptext="Borrar" disabled="@load(!vm.opQuitarAlumno)"/>
+											
+									</hlayout>
+
+
+								</listcell>
+
+
+							</listitem>
+
+
+						</template>
+
+						<listfoot>
+							<listfooter span="4" align="left">
+								<hlayout>
+									<label
+										value="@load(vm.lAlumnosConvenios.size())" />
+									<label value="items" />
+								</hlayout>
+							</listfooter>
+						</listfoot>
+
+					</listbox>
+
+				</vlayout>
+
+			</groupbox>
+
+		</hlayout>
+
+	</window>
+</zk>
