@@ -107,9 +107,10 @@
 						<label value="Documento #: "
 							style="font-weight:bold" />
 					</hbox>
-					<textbox
+					<textbox 
 						value="@load(vm.personaSelected.documentoNum) @save(vm.personaSelected.documentoNum, before='guardar')"
-						width="150px" constraint="no empty: Es campo obligatorio." />
+						width="150px" readonly="@load(vm.editar)" onBlur="@command('onBlurDocumentoNum', comp = self)"
+						constraint="no empty: Es campo obligatorio." />
 				</hlayout>
 
 			</hlayout>

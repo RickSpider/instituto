@@ -2,12 +2,16 @@ package com.instituto.sistema.abm;
 
 import java.util.List;
 
+import org.zkoss.zul.Textbox;
 import org.zkoss.bind.BindUtils;
+import org.zkoss.bind.ValidationContext;
+import org.zkoss.bind.Validator;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.bind.validator.AbstractValidator;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -24,8 +28,7 @@ import com.doxacore.modelo.Tipotipo;
 import com.instituto.modelo.GradoAcademico;
 import com.instituto.modelo.Persona;
 import com.instituto.util.ParamsLocal;
-import com.instituto.modelo.Persona;
-import com.instituto.modelo.Persona;
+
 
 public class PersonaVM extends TemplateViewModel {
 
@@ -175,12 +178,11 @@ public class PersonaVM extends TemplateViewModel {
 			}
 			
 			if (personaSelected.getDocumentoNum() == null || this.personaSelected.getDocumentoNum().length() <= 0) {
-				
+					
 				return false;
 				
 			}
 			
-
 			if (personaSelected.getDocumentoTipo() == null) {
 				
 				return false;
@@ -220,7 +222,25 @@ public class PersonaVM extends TemplateViewModel {
 			}
 			
 			return true;
-		}	
+		}
+		
+	
+		@Command
+		public void onBlurDocumentoNum(@BindingParam("comp") Textbox comp) {
+			
+			Persona persona = reg.getObjectByColumnString(Persona.class.getName(), "documentoNum", comp.getValue() );
+			
+			if (persona != null && editar == false) {
+
+				
+				Notification.show("Ya existe Documento "+comp.getValue()+".", "error", comp, "after_start",2000,false);
+				
+				comp.focus();
+				
+			}
+			
+			
+		}
 
 		@Command
 		@NotifyChange("lPersonas")
