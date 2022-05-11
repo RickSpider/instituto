@@ -30,13 +30,13 @@ public class Concepto extends Modelo implements Serializable{
 
 	@Override
 	public Object[] getArrayObjectDatos() {
-		Object[] o = {this.concepto, this.descripcion};
+		Object[] o = {this.concepto, this.descripcion, this.importe};
 		return o;
 	}
 
 	@Override
 	public String getStringDatos() {
-		return this.conceptoid +" "+this.concepto+" "+this.descripcion;
+		return this.conceptoid +" "+this.concepto+" "+this.descripcion+" "+this.importe;
 	}
 
 	public Long getConceptoid() {

@@ -25,6 +25,7 @@
 								width="30px" />
 							<listheader label="Concepto" align="left" />
 							<listheader label="Descripción" align="left" />
+							<listheader label="Importe" align="left" />
 							<listheader align="center" 
 								width="100px"/>
 
@@ -48,6 +49,12 @@
 									onChange="@command('filtrarConcepto')" hflex="1" />
 							</auxheader>
 							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[2])" instant="true"
+									onChange="@command('filtrarConcepto')" hflex="1" />
+							</auxheader>
+							
 							<auxheader />
 						</auxhead>
 
@@ -57,8 +64,8 @@
 								<listcell />
 								<listcell label="@load(each.conceptoid)" />
 								<listcell label="@load(each.concepto)" />
-								<listcell
-									label="@load(each.descripcion)" />
+								<listcell label="@load(each.descripcion)" />
+								<listcell label="@load(each.importe)" />
 								
 								<listcell>
 									<hlayout>

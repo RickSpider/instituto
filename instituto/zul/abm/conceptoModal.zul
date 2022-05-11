@@ -26,6 +26,18 @@
 					width="150px" />
 
 			</hlayout>
+			
+			<hlayout>
+
+				<hbox width="130px">
+					<label value="Importe: "
+						style="font-weight:bold" />
+				</hbox>
+				<intbox value="@load(vm.conceptoSelected.importe) @save(vm.conceptoSelected.importe, before='guardar')"
+					constraint="no empty: Es campo obligatorio."
+					width="150px" />
+
+			</hlayout>
 
 			<space height="10px" />
 

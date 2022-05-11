@@ -63,7 +63,7 @@ public class ConceptoVM extends TemplateViewModel {
 
 	private void inicializarFiltros() {
 
-		this.filtroColumns = new String[2]; // se debe de iniciar el filtro deacuerdo a la cantidad declarada en el
+		this.filtroColumns = new String[3]; // se debe de iniciar el filtro deacuerdo a la cantidad declarada en el
 											// modelo sin id
 
 		for (int i = 0; i < this.filtroColumns.length; i++) {
@@ -133,6 +133,12 @@ public class ConceptoVM extends TemplateViewModel {
 		}
 		
 		if (this.conceptoSelected.getDescripcion() == null || this.conceptoSelected.getDescripcion().length() <= 0) {
+			
+			return false;
+			
+		}
+		
+		if (this.conceptoSelected.getImporte() == null ) {
 			
 			return false;
 			
