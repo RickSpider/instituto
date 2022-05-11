@@ -39,6 +39,9 @@ public class Convenio extends Modelo implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date fecha;
 	
+	@Temporal(TemporalType.DATE)
+	private Date fechaFin;
+	
 	private boolean activo;
 
 	@Override
@@ -91,6 +94,14 @@ public class Convenio extends Modelo implements Serializable {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public Date getFechaFin() {
+		return fechaFin;
+	}
+
+	public void setFechaFin(Date fechaFin) {
+		this.fechaFin = fechaFin;
 	}
 	
 	

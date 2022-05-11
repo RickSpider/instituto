@@ -26,6 +26,7 @@ public class Concepto extends Modelo implements Serializable{
 	private Long conceptoid;
 	private String concepto;
 	private String descripcion;
+	private Integer importe;
 
 	@Override
 	public Object[] getArrayObjectDatos() {
@@ -60,6 +61,14 @@ public class Concepto extends Modelo implements Serializable{
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public Integer getImporte() {
+		return importe;
+	}
+
+	public void setImporte(Integer importe) {
+		this.importe = importe;
 	}
 	
 	
