@@ -18,7 +18,7 @@ public class ConvenioConcepto extends Modelo implements Serializable {
 	private static final long serialVersionUID = -7032586821729381562L;
 	
 	@EmbeddedId
-	private ConvenioConceptoPK convenioconeptopk = new ConvenioConceptoPK();
+	private ConvenioConceptoPK convenioconceptopk = new ConvenioConceptoPK();
 	
 	@Override
 	public Object[] getArrayObjectDatos() {
@@ -32,36 +32,36 @@ public class ConvenioConcepto extends Modelo implements Serializable {
 		return null;
 	}
 
-	public ConvenioConceptoPK getConvenioconeptopk() {
-		return convenioconeptopk;
-	}
-
-	public void setConvenioconeptopk(ConvenioConceptoPK convenioconeptopk) {
-		this.convenioconeptopk = convenioconeptopk;
-	}
-
 	public Concepto getConcepto() {
 		
-		return this.convenioconeptopk.getConcepto();
+		return this.convenioconceptopk.getConcepto();
 		
 	}
 	
 	public void setConcepto(Concepto concepto) {
 		
-		this.convenioconeptopk.setConcepto(concepto);
+		this.convenioconceptopk.setConcepto(concepto);
 		
 	}
 	
 	public Convenio getConvenio() {
 		
-		return this.convenioconeptopk.getConvenio();
+		return this.convenioconceptopk.getConvenio();
 		
 	}
 	
 	public void setConvenio(Convenio convenio) {
 		
-		this.convenioconeptopk.setConvenio(convenio);
+		this.convenioconceptopk.setConvenio(convenio);
 		
 	}
-	
+
+	public ConvenioConceptoPK getConvenioconceptopk() {
+		return convenioconceptopk;
+	}
+
+	public void setConvenioconceptopk(ConvenioConceptoPK convenioconceptopk) {
+		this.convenioconceptopk = convenioconceptopk;
+	}
+
 }
