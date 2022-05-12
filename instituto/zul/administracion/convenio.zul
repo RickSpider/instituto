@@ -5,7 +5,7 @@
 		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
 
 		<hlayout vflex="1" hflex="1">
-			<groupbox width="800px" vflex="1">
+			<groupbox width="750px" vflex="1">
 				<caption label="Convenios" />
 
 				<vlayout hflex="1" vflex="1">
@@ -25,15 +25,11 @@
 						<listhead>
 
 							<listheader width="30px" align="center" />
-							<listheader label="ID" align="right"
-								width="30px" />
-							<listheader label="Descripcion"
-								align="left" />
-							<listheader label="Institucion"
-								align="left"  />
-							<listheader label="Activo"
-								align="Center" />
-							<listheader align="center" width="80px"/>
+							<listheader label="ID" align="right" width="30px" />
+							<listheader label="Descripcion" align="left" />
+							<listheader label="Institucion"	align="left"  />
+							<listheader label="Activo" align="Center" width="80px" />
+							<listheader align="center" width="100px"/>
 
 
 						</listhead>
@@ -51,12 +47,6 @@
 							<auxheader>
 								<textbox
 									value="@bind(vm.filtroColumnsConvenio[1])" instant="true"
-									onChange="@command('filtrarConvenio')" hflex="1" />
-							</auxheader>
-							
-							<auxheader>
-								<textbox
-									value="@bind(vm.filtroColumnsConvenio[2])" instant="true"
 									onChange="@command('filtrarConvenio')" hflex="1" />
 							</auxheader>
 
@@ -203,8 +193,6 @@
 							<listheader label="ID" align="right"
 								width="30px" />
 							<listheader label="Alumno" align="left" />
-							<listheader label="Descripción"
-								align="left" />
 							<listheader align="center" width="50px" />
 
 
@@ -218,9 +206,7 @@
 								<listcell
 									label="@load(each.convenioalumnopk.alumno.alumnoid)" />
 								<listcell
-									label="@load(each.convenioalumnopk.alumno.alumno)" />
-								<listcell
-									label="@load(each.convenioalumnopk.alumno.descripcion)" />
+									label="@load(each.convenioalumnopk.alumno.fullNombre)" />
 
 								<listcell>
 									<hlayout>

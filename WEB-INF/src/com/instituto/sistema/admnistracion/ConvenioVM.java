@@ -17,15 +17,14 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
 import com.doxacore.TemplateViewModel;
-
 import com.doxacore.report.CustomDataSource;
 import com.doxacore.report.ReportConfig;
 import com.instituto.util.ParamsLocal;
 import com.doxacore.util.UtilStaticMetodos;
 import com.instituto.modelo.Convenio;
 import com.instituto.modelo.ConvenioAlumno;
+import com.instituto.modelo.Institucion;
 import com.instituto.modelo.Alumno;
-
 
 public class ConvenioVM extends TemplateViewModel {
 
@@ -35,17 +34,17 @@ public class ConvenioVM extends TemplateViewModel {
 	private Convenio convenioSelected;
 	private Convenio convenioSelectedAlumno;
 	private String filtroColumnsConvenio[];
-	
+
 	private boolean opCrearConvenio;
 	private boolean opEditarConvenio;
 	private boolean opBorrarConvenio;
-	
+
 	private boolean opAgregarAlumno;
 	private boolean opQuitarAlumno;
 
 	@Init(superclass = true)
 	public void initConvenioVM() {
-		
+
 		cargarConvenios();
 		inicializarFiltros();
 
@@ -53,38 +52,39 @@ public class ConvenioVM extends TemplateViewModel {
 
 	@AfterCompose(superclass = true)
 	public void afterComposeConvenioVM() {
-		
+
 	}
-	
+
 	@Override
 	protected void inicializarOperaciones() {
-		
+
 		this.opCrearConvenio = this.operacionHabilitada(ParamsLocal.OP_CREAR_CONVENIO);
 		this.opEditarConvenio = this.operacionHabilitada(ParamsLocal.OP_EDITAR_CONVENIO);
 		this.opBorrarConvenio = this.operacionHabilitada(ParamsLocal.OP_BORRAR_CONVENIO);
-		
+
 		this.opAgregarAlumno = this.operacionHabilitada(ParamsLocal.OP_AGREGAR_ALUMNO);
 		this.opQuitarAlumno = this.operacionHabilitada(ParamsLocal.OP_QUITAR_ALUMNO);
-		
+
 	}
 
 	private void cargarConvenios() {
- 
+
 		this.lConvenios = this.reg.getAllObjectsByCondicionOrder(Convenio.class.getName(), null, "convenioid asc");
 		this.lConveniosOri = this.lConvenios;
 
 	}
-	
-	private void inicializarFiltros(){
-		
-		this.filtroColumnsConvenio = new String[3]; // se debe de iniciar el filtro deacuerdo a la cantidad declarada en el modelo
-		
-		for (int i = 0 ; i<this.filtroColumnsConvenio.length; i++) {
-			
+
+	private void inicializarFiltros() {
+
+		this.filtroColumnsConvenio = new String[3]; // se debe de iniciar el filtro deacuerdo a la cantidad declarada en
+													// el modelo
+
+		for (int i = 0; i < this.filtroColumnsConvenio.length; i++) {
+
 			this.filtroColumnsConvenio[i] = "";
-			
+
 		}
-		
+
 	}
 
 	@Command
@@ -102,61 +102,62 @@ public class ConvenioVM extends TemplateViewModel {
 
 	@Command
 	public void modalConvenioAgregar() {
-		
-		if(!this.opCrearConvenio)
+
+		if (!this.opCrearConvenio)
 			return;
 
 		this.editar = false;
 		modalConvenio(-1);
 
 	}
-	
+
 	@Command
 	public void modalConvenio(@BindingParam("convenioid") long convenioid) {
 
 		if (convenioid != -1) {
-			
-			if(!this.opEditarConvenio)
+
+			if (!this.opEditarConvenio)
 				return;
 
 			this.convenioSelected = this.reg.getObjectById(Convenio.class.getName(), convenioid);
+			this.buscarInstitucion = this.convenioSelected.getInstitucion().getInstitucion();
 			this.editar = true;
 
 		} else {
 
 			this.convenioSelected = new Convenio();
+			this.buscarInstitucion = "";
 
 		}
 
-		modal = (Window) Executions.createComponents("/instituto/zul/administracion/convenioModal.zul", this.mainComponent,
-				null);
+		modal = (Window) Executions.createComponents("/instituto/zul/administracion/convenioModal.zul",
+				this.mainComponent, null);
 		Selectors.wireComponents(modal, this, false);
 		modal.doModal();
 
 	}
-	
-	private boolean verificarCampos() {
-	
-		if (this.convenioSelected.getInstitucion() == null) {
-			
-			return false;
-			
-		}
-		
-		return true;
-	}	
 
+	private boolean verificarCampos() {
+
+		if (this.convenioSelected.getInstitucion() == null) {
+
+			return false;
+
+		}
+
+		return true;
+	}
 
 	@Command
 	@NotifyChange("lConvenios")
 	public void guardar() {
-		
+
 		if (!verificarCampos()) {
-			
+
 			return;
-			
+
 		}
-		
+
 		this.save(convenioSelected);
 
 		this.convenioSelected = null;
@@ -181,8 +182,8 @@ public class ConvenioVM extends TemplateViewModel {
 
 	@Command
 	public void borrarConvenioConfirmacion(@BindingParam("convenio") final Convenio convenio) {
-		
-		if(!this.opBorrarConvenio)
+
+		if (!this.opBorrarConvenio)
 			return;
 
 		EventListener event = new EventListener() {
@@ -216,55 +217,55 @@ public class ConvenioVM extends TemplateViewModel {
 	// Seccion alumnos convenio
 
 	@Command
-	@NotifyChange({"lAlumnosConvenios","buscarAlumno"})
+	@NotifyChange({ "lAlumnosConvenios", "buscarAlumno" })
 	public void refrescarAlumnos(@BindingParam("convenio") Convenio convenio) {
 
 		this.convenioSelectedAlumno = convenio;
 		this.lAlumnosConvenios = this.reg.getAllObjectsByCondicionOrder(ConvenioAlumno.class.getName(),
 				"convenioid = " + convenio.getConvenioid(), "alumnoid asc");
-		
+
 		this.buscarSelectedAlumno = null;
-		this.buscarAlumno="";
+		this.buscarAlumno = "";
 
 	}
 
 	@Command
 	public void borrarAlumnoConfirmacion(@BindingParam("convenioalumno") final ConvenioAlumno ca) {
-		
+
 		if (!this.opQuitarAlumno) {
-			
+
 			this.mensajeError("No tienes permisos para Borrar Alumnos a un Convenio.");
-			
+
 			return;
-			
+
 		}
-		
-		this.mensajeEliminar("El Alumno "+ca.getAlumno().getFullNombre()+" sera removido del Convenio "+ca.getConvenio().getInstitucion().getInstitucion()+" \n Continuar?",  
-				new EventListener() {
 
-			@Override
-			public void onEvent(Event evt) throws Exception {
+		this.mensajeEliminar("El Alumno " + ca.getAlumno().getFullNombre() + " sera removido del Convenio "
+				+ ca.getConvenio().getInstitucion().getInstitucion() + " \n Continuar?", new EventListener() {
 
-				if (evt.getName().equals(Messagebox.ON_YES)) {
+					@Override
+					public void onEvent(Event evt) throws Exception {
 
-					borrarConvenioAlumno(ca);
+						if (evt.getName().equals(Messagebox.ON_YES)) {
 
-				}
+							borrarConvenioAlumno(ca);
 
-			}
+						}
 
-		});
+					}
+
+				});
 
 	}
-	
+
 	private void borrarConvenioAlumno(ConvenioAlumno ca) {
-		
+
 		this.reg.deleteObject(ca);
 
 		this.refrescarAlumnos(this.convenioSelectedAlumno);
 
 		BindUtils.postNotifyChange(null, null, this, "lAlumnosConvenios");
-		
+
 	}
 
 	// fin alumnos convenio
@@ -294,52 +295,52 @@ public class ConvenioVM extends TemplateViewModel {
 
 			return;
 		}
-		
+
 		String sqlBuscarAlumno = this.um.getSql("buscarAlumno.sql");
 
 		this.lAlumnosBuscar = this.reg.sqlNativo(sqlBuscarAlumno);
 		this.lAlumnosbuscarOri = this.lAlumnosBuscar;
 	}
-	
+
 	@Command
 	@NotifyChange("buscarAlumno")
 	public void onSelectAlumno(@BindingParam("id") long id) {
-		
+
 		this.buscarSelectedAlumno = this.reg.getObjectById(Alumno.class.getName(), id);
-		this.buscarAlumno = this.buscarSelectedAlumno.getPersona().getNombre()+" "+this.buscarSelectedAlumno.getPersona().getApellido();
-		
+		this.buscarAlumno = buscarSelectedAlumno.getFullNombre();
+
 	}
 
 	@Command
-	@NotifyChange({"lAlumnosConvenios","buscarAlumno"})
+	@NotifyChange({ "lAlumnosConvenios", "buscarAlumno" })
 	public void agregarAlumno() {
-		
+
 		if (!this.opAgregarAlumno) {
-			
+
 			this.mensajeError("No tienes permiso para agregar un Alumno al Convenio. ");
 			return;
 		}
-		
+
 		if (this.buscarSelectedAlumno == null) {
-			
+
 			this.mensajeInfo("Selecciona un Alumno para agregar.");
-			
+
 			return;
-			
+
 		}
-		
-		for(ConvenioAlumno x : this.lAlumnosConvenios) {
-			
+
+		for (ConvenioAlumno x : this.lAlumnosConvenios) {
+
 			if (this.buscarSelectedAlumno.getAlumnoid() == x.getAlumno().getAlumnoid()) {
-				
-				this.mensajeError("El Convenio ya tiene el alumno "+x.getAlumno().getFullNombre());
-				
+
+				this.mensajeError("El Convenio ya tiene el alumno " + x.getAlumno().getFullNombre());
+
 				return;
-				
+
 			}
-			
+
 		}
-		
+
 		ConvenioAlumno cu = new ConvenioAlumno();
 		cu.setAlumno(this.buscarSelectedAlumno);
 		cu.setConvenio(this.convenioSelectedAlumno);
@@ -348,9 +349,46 @@ public class ConvenioVM extends TemplateViewModel {
 		this.refrescarAlumnos(this.convenioSelectedAlumno);
 
 	}
-	
 
 	// fins buscador
+
+	// buscador de Institucion
+
+	private List<Object[]> lInstitucionesBuscarOri = null;
+	private List<Object[]> lInstitucionesBuscar = null;
+	private Institucion buscarSelectedInstitucion = null;
+	private String buscarInstitucion = "";
+
+	@Command
+	@NotifyChange("lInstitucionesBuscar")
+	public void filtrarInstitucionBuscar() {
+
+		this.lInstitucionesBuscar = this.filtrarListaObject(buscarInstitucion, this.lInstitucionesBuscarOri);
+
+	}
+
+	@Command
+	@NotifyChange("lInstitucionesBuscar")
+	public void generarListaBuscarInstitucion() {
+
+		String sqlInstitucion = this.um.getSql("buscarInstitucion.sql") ;
+		
+		this.lInstitucionesBuscar = this.reg.sqlNativo(sqlInstitucion);
+
+		this.lInstitucionesBuscarOri = this.lInstitucionesBuscar;
+	}
+
+	@Command
+	@NotifyChange("buscarInstitucion")
+	public void onSelectInstitucion(@BindingParam("id") long id) {
+
+		this.buscarSelectedInstitucion = this.reg.getObjectById(Institucion.class.getName(), id);
+		this.buscarInstitucion = this.buscarSelectedInstitucion.getInstitucion();
+		this.convenioSelected.setInstitucion(buscarSelectedInstitucion);
+
+	}
+
+	// fin buscar ciudad
 
 	public List<Convenio> getlConvenios() {
 		return lConvenios;
@@ -446,6 +484,22 @@ public class ConvenioVM extends TemplateViewModel {
 
 	public void setOpQuitarAlumno(boolean opQuitarAlumno) {
 		this.opQuitarAlumno = opQuitarAlumno;
+	}
+
+	public List<Object[]> getlInstitucionesBuscar() {
+		return lInstitucionesBuscar;
+	}
+
+	public void setlInstitucionesBuscar(List<Object[]> lInstitucionesBuscar) {
+		this.lInstitucionesBuscar = lInstitucionesBuscar;
+	}
+
+	public String getBuscarInstitucion() {
+		return buscarInstitucion;
+	}
+
+	public void setBuscarInstitucion(String buscarInstitucion) {
+		this.buscarInstitucion = buscarInstitucion;
 	}
 
 }

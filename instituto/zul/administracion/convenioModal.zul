@@ -13,19 +13,115 @@
 					<label value="Descripción: "
 						style="font-weight:bold" />
 				</hbox>
-				<textbox value="@load(vm.cursoSelected.descripcion) @save(vm.cursoSelected.descripcion, before='guardar')"
-					constraint="no empty: Es campo obligatorio."
-					width="150px" />
+				<textbox
+					value="@load(vm.convenioSelected.descripcion) @save(vm.convenioSelected.descripcion, before='guardar')"
+					constraint="no empty: Es campo obligatorio." width="150px" />
 
 			</hlayout>
-			
-			
+
+			<hlayout>
+
+				<hbox width="130px">
+					<label value="Institucion: "
+						style="font-weight:bold" />
+				</hbox>
+
+				<bandbox id="bdInstitucion"
+					value="@load(vm.buscarInstitucion) @save(vm.buscarInstitucion, before='guardar')"
+					constraint="no empty: Es campo obligatorio." mold="rounded"
+					autodrop="true" width="150px"
+					onClick="@command('generarListaBuscarInstitucion')"
+					readonly="true">
+					<bandpopup>
+
+						<vbox>
+
+							<hbox>
+
+								<label value="Buscar:" />
+
+								<textbox instant="true"
+									value="@bind(vm.buscarInstitucion)"
+									onChange="@command('filtrarInstitucionBuscar')" />
+
+							</hbox>
+
+							<listbox height="250px" width="450px"
+								mold="paging" autopaging="true" onSelect="bdInstitucion.close()"
+								model="@load(vm.lInstitucionesBuscar)">
+
+								<listhead>
+									<listheader label="ID" width="30px" />
+									<listheader label="Institucion" />
+									<listheader label="Ciudad" />
+									<listheader label="Departamento" />
+
+								</listhead>
+
+								<template name="model">
+
+									<listitem
+										onClick="@command('onSelectInstitucion', id = each[0])">
+
+										<listcell
+											label="@load(each[0])" />
+
+										<listcell
+											label="@load(each[1])" />
+
+										<listcell
+											label="@load(each[2])" />
+
+										<listcell
+											label="@load(each[3])" />
+
+									</listitem>
+
+								</template>
+								<listitem />
+							</listbox>
+
+						</vbox>
+					</bandpopup>
+				</bandbox>
+
+
+			</hlayout>
+
+			<hlayout>
+				<hbox width="130px">
+					<label value="Fecha Inicio: "
+						style="font-weight:bold" />
+				</hbox>
+				<datebox
+					value="@load(vm.convenioSelected.fechaInicio) @save(vm.convenioSelected.fechaInicio, before='guardar')"
+					format="short " width="150px"
+					constraint="no empty: Es campo obligatorio." />
+			</hlayout>
+
+			<hlayout>
+				<hbox width="130px">
+					<label value="Fecha Fin: " style="font-weight:bold" />
+				</hbox>
+				<datebox
+					value="@load(vm.convenioSelected.fechaFin) @save(vm.convenioSelected.fechaFin, before='guardar')"
+					format="short " width="150px"
+					constraint="no empty: Es campo obligatorio." />
+			</hlayout>
+
+			<hlayout>
+				<hbox width="130px">
+					<label value="Activo: " style="font-weight:bold" />
+				</hbox>
+				<checkbox checked="@bind(vm.convenioSelected.activo)" />
+			</hlayout>
+
 
 			<space height="10px" />
 
 			<hlayout>
 
-				<button label="Aceptar" onClick="@command('guardar')"/>
+				<button label="Aceptar" onClick="@command('guardar')" />
 
 			</hlayout>
 

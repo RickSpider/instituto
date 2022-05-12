@@ -23,7 +23,7 @@ public class Convenio extends Modelo implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 3997002060420537319L;
+	private static long serialVersionUID = 3997002060420537319L;
 	
 	@Id
 	@Column(name ="convenioid")
@@ -37,7 +37,7 @@ public class Convenio extends Modelo implements Serializable {
 	private Institucion institucion;
 	
 	@Temporal(TemporalType.DATE)
-	private Date fecha;
+	private Date fechaInicio;
 	
 	@Temporal(TemporalType.DATE)
 	private Date fechaFin;
@@ -56,36 +56,20 @@ public class Convenio extends Modelo implements Serializable {
 		return this.convenioid+" "+this.institucion.getInstitucion()+" "+this.activo;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public static void setSerialversionuid(long serialversionuid) {
+		serialVersionUID = serialversionuid;
+	}
+
 	public Long getConvenioid() {
 		return convenioid;
 	}
 
 	public void setConvenioid(Long convenioid) {
 		this.convenioid = convenioid;
-	}
-
-	public Institucion getInstitucion() {
-		return institucion;
-	}
-
-	public void setInstitucion(Institucion institucion) {
-		this.institucion = institucion;
-	}
-
-	public Date getFecha() {
-		return fecha;
-	}
-
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
-	}
-
-	public boolean isActivo() {
-		return activo;
-	}
-
-	public void setActivo(boolean activo) {
-		this.activo = activo;
 	}
 
 	public String getDescripcion() {
@@ -96,6 +80,22 @@ public class Convenio extends Modelo implements Serializable {
 		this.descripcion = descripcion;
 	}
 
+	public Institucion getInstitucion() {
+		return institucion;
+	}
+
+	public void setInstitucion(Institucion institucion) {
+		this.institucion = institucion;
+	}
+
+	public Date getFechaInicio() {
+		return fechaInicio;
+	}
+
+	public void setFechaInicio(Date fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
 	public Date getFechaFin() {
 		return fechaFin;
 	}
@@ -103,7 +103,15 @@ public class Convenio extends Modelo implements Serializable {
 	public void setFechaFin(Date fechaFin) {
 		this.fechaFin = fechaFin;
 	}
-	
+
+	public boolean isActivo() {
+		return activo;
+	}
+
+	public void setActivo(boolean activo) {
+		this.activo = activo;
+	}
+
 	
 	
 }

@@ -18,7 +18,7 @@ public class ConvenioAlumno extends Modelo implements Serializable {
 	private static final long serialVersionUID = 725844431680718742L;
 
 	@EmbeddedId
-	private ConvenioAlumnoPK convenioalumnopk;
+	private ConvenioAlumnoPK convenioalumnopk = new ConvenioAlumnoPK();
 	
 	@Override
 	public Object[] getArrayObjectDatos() {
