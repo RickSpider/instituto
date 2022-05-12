@@ -27,13 +27,12 @@
 							<listheader width="30px" align="center" />
 							<listheader label="ID" align="right"
 								width="30px" />
-							<listheader label="Curso" align="left"
-								width="100px" />
+							<listheader label="Curso" align="left" />
 							<listheader label="Descripcion"
-								align="left" width="200px" />
+								align="left" />
 							<listheader label="Duracion"
-								align="left" width="200px" />
-							<listheader align="center" />
+								align="right" width="80px" />
+							<listheader align="center" width="100px" />
 
 
 						</listhead>
