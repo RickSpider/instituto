@@ -26,6 +26,7 @@ import com.doxacore.modelo.Pais;
 import com.doxacore.modelo.Tipo;
 import com.doxacore.modelo.Tipotipo;
 import com.instituto.modelo.GradoAcademico;
+import com.instituto.modelo.Institucion;
 import com.instituto.modelo.Persona;
 import com.instituto.util.ParamsLocal;
 
@@ -125,6 +126,17 @@ public class PersonaVM extends TemplateViewModel {
 				this.buscarPais = this.personaSelected.getNacionalidad().getGentilicio();
 				this.buscarCiudad = this.personaSelected.getCiudad().getCiudad();
 				this.buscarGradoAcademico = this.personaSelected.getGradoAcademico().getGradoacademico();
+				
+				if ( this.personaSelected.getInstitucion() != null) {
+					
+					this.buscarInstitucion = this.personaSelected.getInstitucion().getInstitucion();
+					
+				}else {
+					
+					this.buscarInstitucion = "";
+					
+				}
+				
 				this.editar = true;
 
 			} else {
@@ -135,6 +147,7 @@ public class PersonaVM extends TemplateViewModel {
 				this.buscarPais = "";
 				this.buscarCiudad = "";
 				this.buscarGradoAcademico = "";
+				this.buscarInstitucion = "";
 
 			}
 
@@ -517,6 +530,45 @@ public class PersonaVM extends TemplateViewModel {
 			
 			//fin buscarGradoAcademico
 			
+			// buscador de Institucion
+
+			private List<Object[]> lInstitucionesBuscarOri = null;
+			private List<Object[]> lInstitucionesBuscar = null;
+			private Institucion buscarSelectedInstitucion = null;
+			private String buscarInstitucion = "";
+
+			@Command
+			@NotifyChange("lInstitucionesBuscar")
+			public void filtrarInstitucionBuscar() {
+
+				this.lInstitucionesBuscar = this.filtrarListaObject(buscarInstitucion, this.lInstitucionesBuscarOri);
+
+			}
+
+			@Command
+			@NotifyChange("lInstitucionesBuscar")
+			public void generarListaBuscarInstitucion() {
+
+				String sqlInstitucion = this.um.getSql("buscarInstitucion.sql") ;
+				
+				this.lInstitucionesBuscar = this.reg.sqlNativo(sqlInstitucion);
+
+				this.lInstitucionesBuscarOri = this.lInstitucionesBuscar;
+			}
+
+			@Command
+			@NotifyChange("buscarInstitucion")
+			public void onSelectInstitucion(@BindingParam("id") long id) {
+
+				this.buscarSelectedInstitucion = this.reg.getObjectById(Institucion.class.getName(), id);
+				this.buscarInstitucion = this.buscarSelectedInstitucion.getInstitucion();
+				this.personaSelected.setInstitucion(buscarSelectedInstitucion);
+
+			}
+
+			// fin buscar ciudad
+
+			
 			public List<Persona> getlPersonas() {
 				return lPersonas;
 			}
@@ -651,6 +703,22 @@ public class PersonaVM extends TemplateViewModel {
 
 			public void setlGradosAcademicosBuscar(List<Object[]> lGradosAcademicosBuscar) {
 				this.lGradosAcademicosBuscar = lGradosAcademicosBuscar;
+			}
+
+			public String getBuscarInstitucion() {
+				return buscarInstitucion;
+			}
+
+			public void setBuscarInstitucion(String buscarInstitucion) {
+				this.buscarInstitucion = buscarInstitucion;
+			}
+
+			public List<Object[]> getlInstitucionesBuscar() {
+				return lInstitucionesBuscar;
+			}
+
+			public void setlInstitucionesBuscar(List<Object[]> lInstitucionesBuscar) {
+				this.lInstitucionesBuscar = lInstitucionesBuscar;
 			}
 			
 			//fin buscador de ciudad 
