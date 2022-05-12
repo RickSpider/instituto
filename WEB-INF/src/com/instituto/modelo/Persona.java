@@ -26,7 +26,7 @@ public class Persona extends Modelo implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 2360755743582101792L;
+	private static long serialVersionUID = 2360755743582101792L;
 	
 	@Id
 	@Column(name ="personaid")
@@ -69,6 +69,10 @@ public class Persona extends Modelo implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "estadocivilid")
 	private Tipo estadoCivil;
+	
+	@ManyToOne
+	@JoinColumn(name = "institucionid")
+	private Institucion institucion;
 	
 	@Override
 	public Object[] getArrayObjectDatos() {
@@ -203,7 +207,20 @@ public class Persona extends Modelo implements Serializable {
 		this.egresoAno = egresoAno;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
+	public static void setSerialversionuid(long serialversionuid) {
+		serialVersionUID = serialversionuid;
+	}
 
+	public Institucion getInstitucion() {
+		return institucion;
+	}
+
+	public void setInstitucion(Institucion institucion) {
+		this.institucion = institucion;
+	}
 
 }
