@@ -102,14 +102,14 @@ public class GradoAcademicoVM extends TemplateViewModel {
 		}
 
 		@Command
-		public void modalGradoAcademico(@BindingParam("gradoAcademicoid") long gradoAcademicoid) {
+		public void modalGradoAcademico(@BindingParam("gradoacademicoid") long gradoacademicoid) {
 
-			if (gradoAcademicoid != -1) {
+			if (gradoacademicoid != -1) {
 
 				if(!this.opEditarGradoAcademico)
 					return;
 				
-				this.gradoAcademicoSelected = this.reg.getObjectById(GradoAcademico.class.getName(), gradoAcademicoid);
+				this.gradoAcademicoSelected = this.reg.getObjectById(GradoAcademico.class.getName(), gradoacademicoid);
 				this.editar = true;
 
 			} else {

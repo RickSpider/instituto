@@ -8,7 +8,7 @@
 
 			<hlayout>
 				<hbox width="130px">
-					<label value="GradoAcademico: " style="font-weight:bold" />
+					<label value="Grado Academico: " style="font-weight:bold" />
 				</hbox>
 				<textbox value="@load(vm.gradoAcademicoSelected.gradoacademico) @save(vm.gradoAcademicoSelected.gradoacademico, before='guardar')"
 					width="150px" 
