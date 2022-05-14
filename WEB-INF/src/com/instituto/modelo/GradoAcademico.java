@@ -29,14 +29,14 @@ public class GradoAcademico extends Modelo implements Serializable{
 	
 	@Override
 	public Object[] getArrayObjectDatos() {
-		// TODO Auto-generated method stub
-		return null;
+		Object [] o = {this.gradoacademico, this.descripcion};
+		return o;
 	}
 
 	@Override
 	public String getStringDatos() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return this.gradoacademicoid +" "+ this.gradoacademico +" "+ this.descripcion;
 	}
 
 	public Long getGradoacademicoid() {
