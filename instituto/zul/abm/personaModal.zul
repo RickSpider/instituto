@@ -44,7 +44,7 @@
 						value="@load(vm.buscarDocumento) @save(vm.buscarDocumento, before='guardar')"
 						constraint="no empty: Es campo obligatorio." mold="rounded"
 						autodrop="true" width="150px"
-						onClick="@command('generarListaBuscarDocumento')"
+						onOpen="@command('generarListaBuscarDocumento')"
 						readonly="true">
 						<bandpopup>
 
@@ -153,7 +153,7 @@
 						value="@load(vm.buscarEstadoCivil) @save(vm.buscarEstadoCivil, before='guardar')"
 						constraint="no empty: Es campo obligatorio." mold="rounded"
 						autodrop="true" width="150px"
-						onClick="@command('generarListaBuscarEstadoCivil')"
+						onOpen="@command('generarListaBuscarEstadoCivil')"
 						readonly="true">
 						<bandpopup>
 
@@ -223,7 +223,7 @@
 						value="@load(vm.buscarPais) @save(vm.buscarPais, before='guardar')"
 						constraint="no empty: Es campo obligatorio." mold="rounded"
 						autodrop="true" width="150px"
-						onClick="@command('generarListaBuscarPais')" readonly="true">
+						onOpen="@command('generarListaBuscarPais')" readonly="true">
 						<bandpopup>
 
 							<vbox>
@@ -294,7 +294,7 @@
 						value="@load(vm.buscarCiudad) @save(vm.buscarCiudad, before='guardar')"
 						constraint="no empty: Es campo obligatorio." mold="rounded"
 						autodrop="true" width="150px"
-						onClick="@command('generarListaBuscarCiudad')" readonly="true">
+						onOpen="@command('generarListaBuscarCiudad')" readonly="true">
 						<bandpopup>
 
 							<vbox>
@@ -410,7 +410,7 @@
 						value="@load(vm.buscarGradoAcademico) @save(vm.buscarGradoAcademico, before='guardar')"
 						constraint="no empty: Es campo obligatorio." mold="rounded"
 						autodrop="true" width="150px"
-						onClick="@command('generarListaBuscarGradoAcademico')"
+						onOpen="@command('generarListaBuscarGradoAcademico')"
 						readonly="true">
 						<bandpopup>
 
@@ -494,8 +494,9 @@
 					<bandbox id="bdInstitucion"
 						value="@load(vm.buscarInstitucion) @save(vm.buscarInstitucion, before='guardar')"
 						mold="rounded" autodrop="true" width="150px"
-						onClick="@command('generarListaBuscarInstitucion')"
-						readonly="true">
+						onOpen="@command('generarListaBuscarInstitucion')"
+						readonly="true"
+						tooltiptext="@load(vm.buscarInstitucion)">
 						<bandpopup>
 
 							<vbox>
@@ -511,17 +512,17 @@
 								</hbox>
 
 								<listbox height="250px" width="450px"
+									emptyMessage="lista vacía..."
 									mold="paging" autopaging="true"
 									onSelect="bdInstitucion.close()"
 									model="@load(vm.lInstitucionesBuscar)">
 
 									<listhead>
 										<listheader label="ID"
-											width="30px" />
+											width="50px" />
 										<listheader label="Institucion" />
 										<listheader label="Ciudad" />
-										<listheader
-											label="Departamento" />
+										<listheader label="Departamento" />
 
 									</listhead>
 
@@ -531,16 +532,16 @@
 											onClick="@command('onSelectInstitucion', id = each[0])">
 
 											<listcell
-												label="@load(each[0])" />
+												label="@load(each[0])" tooltiptext="@load(each[0])"/>
 
 											<listcell
-												label="@load(each[1])" />
+												label="@load(each[1])" tooltiptext="@load(each[1])"/>
 
 											<listcell
-												label="@load(each[2])" />
+												label="@load(each[2])" tooltiptext="@load(each[2])"/>
 
 											<listcell
-												label="@load(each[3])" />
+												label="@load(each[3])" tooltiptext="@load(each[3])"/>
 
 										</listitem>
 

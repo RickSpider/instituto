@@ -18,6 +18,7 @@ import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.util.Notification;
 import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.South;
 import org.zkoss.zul.Window;
 
 import com.doxacore.TemplateViewModel;
@@ -540,6 +541,8 @@ public class PersonaVM extends TemplateViewModel {
 			@Command
 			@NotifyChange("lInstitucionesBuscar")
 			public void filtrarInstitucionBuscar() {
+				
+				System.out.println("ejecuto filtro");
 
 				this.lInstitucionesBuscar = this.filtrarListaObject(buscarInstitucion, this.lInstitucionesBuscarOri);
 
