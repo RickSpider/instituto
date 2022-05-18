@@ -64,4 +64,8 @@ public class ConvenioConcepto extends Modelo implements Serializable {
 		this.convenioconceptopk = convenioconceptopk;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 }

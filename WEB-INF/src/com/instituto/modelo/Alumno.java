@@ -86,6 +86,10 @@ public class Alumno extends Modelo implements Serializable{
 	public void setActivo(boolean activo) {
 		this.activo = activo;
 	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	
 	
 	

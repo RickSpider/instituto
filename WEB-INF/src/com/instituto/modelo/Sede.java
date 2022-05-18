@@ -106,6 +106,10 @@ public class Sede extends Modelo implements Serializable{
 		this.ciudad = ciudad;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	
 	
 }

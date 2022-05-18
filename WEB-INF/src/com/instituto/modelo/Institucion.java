@@ -100,4 +100,8 @@ public class Institucion extends Modelo implements Serializable{
 		this.email = email;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 }

@@ -37,5 +37,9 @@ public class CursoMateriaPK implements Serializable{
 	public void setMateria(Materia materia) {
 		this.materia = materia;
 	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	
 }

@@ -34,5 +34,8 @@ public class ConvenioConceptoPK implements Serializable{
 	public void setConcepto(Concepto concepto) {
 		this.concepto = concepto;
 	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	
 }

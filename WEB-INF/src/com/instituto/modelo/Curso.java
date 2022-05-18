@@ -74,6 +74,10 @@ public class Curso extends Modelo implements Serializable {
 	public void setDuracion(int duracion) {
 		this.duracion = duracion;
 	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	
 	
 

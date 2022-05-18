@@ -64,5 +64,9 @@ public class ConvenioAlumno extends Modelo implements Serializable {
 		
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 
 }

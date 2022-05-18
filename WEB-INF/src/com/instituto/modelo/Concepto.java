@@ -70,6 +70,10 @@ public class Concepto extends Modelo implements Serializable{
 	public void setImporte(Integer importe) {
 		this.importe = importe;
 	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	
 	
 	

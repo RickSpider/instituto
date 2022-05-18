@@ -39,6 +39,10 @@ public class UsuarioSedePK implements Serializable{
 	public void setSede(Sede sede) {
 		this.sede = sede;
 	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	
 	
 

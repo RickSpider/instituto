@@ -72,4 +72,8 @@ public class UsuarioSede extends Modelo implements Serializable{
 		this.usuariosedepk = usuariosedepk;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 }
