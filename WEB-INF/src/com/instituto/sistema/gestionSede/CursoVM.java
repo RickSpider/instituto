@@ -18,11 +18,10 @@ import org.zkoss.zul.Window;
 
 import com.doxacore.TemplateViewModel;
 
-import com.doxacore.report.CustomDataSource;
-import com.doxacore.report.ReportConfig;
 import com.instituto.util.ParamsLocal;
-import com.doxacore.util.UtilStaticMetodos;
+import com.instituto.modelo.Concepto;
 import com.instituto.modelo.Curso;
+import com.instituto.modelo.CursoConcepto;
 import com.instituto.modelo.CursoMateria;
 import com.instituto.modelo.Materia;
 
@@ -32,8 +31,9 @@ public class CursoVM extends TemplateViewModel {
 	private List<Curso> lCursos;
 	private List<Curso> lCursosOri;
 	private List<CursoMateria> lMateriasCursos;
+	private List<CursoConcepto> lConceptosCurso;
 	private Curso cursoSelected;
-	private Curso cursoSelectedMateria;
+	private Curso cursoSelectedMateriaConcepto;
 	private String filtroColumnsCurso[];
 	
 	private boolean opCrearCurso;
@@ -41,6 +41,8 @@ public class CursoVM extends TemplateViewModel {
 	private boolean opBorrarCurso;
 	private boolean opAgregarMateria;
 	private boolean opQuitarMateria;
+	private boolean opAgregarCursoConcepto;
+	private boolean opQuitarCursoConcepto;
 
 	@Init(superclass = true)
 	public void initCursoVM() {
@@ -63,6 +65,8 @@ public class CursoVM extends TemplateViewModel {
 		this.opBorrarCurso = this.operacionHabilitada(ParamsLocal.OP_BORRAR_CURSO);
 		this.opAgregarMateria = this.operacionHabilitada(ParamsLocal.OP_AGREGAR_MATERIA);
 		this.opQuitarMateria = this.operacionHabilitada(ParamsLocal.OP_QUITAR_MATERIA);
+		this.opAgregarCursoConcepto = this.operacionHabilitada(ParamsLocal.OP_AGREGAR_CURSO_CONCEPTO);
+		this.opQuitarCursoConcepto = this.operacionHabilitada(ParamsLocal.OP_QUITAR_CURSO_CONCEPTO);
 		
 	}
 
@@ -222,6 +226,15 @@ public class CursoVM extends TemplateViewModel {
 		BindUtils.postNotifyChange(null, null, this, "lCursos");
 
 	}
+	
+	@Command
+	@NotifyChange({ "lMateriasCursos", "buscarMateria", "lConceptosCurso", "buscarConcepto" })
+	public void refrescarAll(@BindingParam("curso") Curso curso) {
+		
+		this.refrescarMaterias(curso);
+		this.refrescarConceptos(curso);
+		
+	}
 
 	// Seccion materias curso
 
@@ -229,7 +242,7 @@ public class CursoVM extends TemplateViewModel {
 	@NotifyChange({"lMateriasCursos","buscarMateria"})
 	public void refrescarMaterias(@BindingParam("curso") Curso curso) {
 
-		this.cursoSelectedMateria = curso;
+		this.cursoSelectedMateriaConcepto = curso;
 		this.lMateriasCursos = this.reg.getAllObjectsByCondicionOrder(CursoMateria.class.getName(),
 				"cursoid = " + curso.getCursoid(), "materiaid asc");
 		
@@ -271,7 +284,7 @@ public class CursoVM extends TemplateViewModel {
 		
 		this.reg.deleteObject(ru);
 
-		this.refrescarMaterias(this.cursoSelectedMateria);
+		this.refrescarMaterias(this.cursoSelectedMateriaConcepto);
 
 		BindUtils.postNotifyChange(null, null, this, "lMateriasCursos");
 		
@@ -298,14 +311,14 @@ public class CursoVM extends TemplateViewModel {
 	@NotifyChange("lMateriasBuscar")
 	public void generarListaBuscarMateria() {
 
-		if (this.cursoSelectedMateria == null) {
+		if (this.cursoSelectedMateriaConcepto == null) {
 
 			this.mensajeInfo("Selecciona un Curso.");
 
 			return;
 		}
 		
-		String sqlBuscarMateria = this.um.getSql("buscarMateriaNotCurso.sql").replace("?1", cursoSelectedMateria.getCursoid()+"");
+		String sqlBuscarMateria = this.um.getSql("buscarMateriaNotCurso.sql").replace("?1", cursoSelectedMateriaConcepto.getCursoid()+"");
 
 		this.lMateriasBuscar = this.reg.sqlNativo(sqlBuscarMateria);
 		this.lMateriasbuscarOri = this.lMateriasBuscar;
@@ -352,15 +365,155 @@ public class CursoVM extends TemplateViewModel {
 		
 		CursoMateria ur = new CursoMateria();
 		ur.setMateria(this.buscarSelectedMateria);
-		ur.setCurso(this.cursoSelectedMateria);
+		ur.setCurso(this.cursoSelectedMateriaConcepto);
 		this.save(ur);
 
-		this.refrescarMaterias(this.cursoSelectedMateria);
+		this.refrescarMaterias(this.cursoSelectedMateriaConcepto);
 
 	}
 	
 
 	// fins buscador
+	
+	
+	// Seccion conceptos curso
+
+			@Command
+			@NotifyChange({ "lConceptosCursos", "buscarConcepto" })
+			public void refrescarConceptos(@BindingParam("curso") Curso curso) {
+
+				this.cursoSelectedMateriaConcepto = curso;
+				this.lConceptosCurso = this.reg.getAllObjectsByCondicionOrder(CursoConcepto.class.getName(),
+						"cursoid = " + curso.getCursoid(), "conceptoid asc");
+
+				this.buscarSelectedConcepto = null;
+				this.buscarConcepto = "";
+
+			}
+
+			@Command
+			public void borrarConceptoConfirmacion(@BindingParam("cursoconcepto") final CursoConcepto cc) {
+
+				if (!this.opQuitarCursoConcepto) {
+
+					this.mensajeError("No tienes permisos para Borrar Conceptos a un Curso.");
+
+					return;
+
+				}
+
+				this.mensajeEliminar("El Concepto " + cc.getConcepto().getConcepto() + " sera removido del Curso "
+						+ cc.getCurso().getCurso() + " \n Continuar?", new EventListener() {
+
+							@Override
+							public void onEvent(Event evt) throws Exception {
+
+								if (evt.getName().equals(Messagebox.ON_YES)) {
+
+									borrarCursoConcepto(cc);
+
+								}
+
+							}
+
+						});
+
+			}
+
+			private void borrarCursoConcepto(CursoConcepto cc) {
+
+				this.reg.deleteObject(cc);
+
+				this.refrescarConceptos(this.cursoSelectedMateriaConcepto);
+
+				BindUtils.postNotifyChange(null, null, this, "lConceptosCursos");
+
+			}
+
+			// fin conceptos curso
+			
+			// seccion buscador Concepto
+
+			private List<Object[]> lConceptosbuscarOri;
+			private List<Object[]> lConceptosBuscar;
+			private Concepto buscarSelectedConcepto;
+			private String buscarConcepto = "";
+
+			@Command
+			@NotifyChange("lConceptosBuscar")
+			public void filtrarConceptoBuscar() {
+
+				this.lConceptosBuscar = this.filtrarListaObject(buscarConcepto, this.lConceptosbuscarOri);
+
+			}
+
+			@Command
+			@NotifyChange("lConceptosBuscar")
+			public void generarListaBuscarConcepto() {
+
+				if (this.cursoSelectedMateriaConcepto == null) {
+
+					this.mensajeInfo("Selecciona un Curso.");
+
+					return;
+				}
+
+				String sqlBuscarConcepto = this.um.getSql("buscarConcepto.sql");
+
+				this.lConceptosBuscar = this.reg.sqlNativo(sqlBuscarConcepto);
+				this.lConceptosbuscarOri = this.lConceptosBuscar;
+			}
+
+			@Command
+			@NotifyChange("buscarConcepto")
+			public void onSelectConcepto(@BindingParam("id") long id) {
+
+				this.buscarSelectedConcepto = this.reg.getObjectById(Concepto.class.getName(), id);
+				this.buscarConcepto = buscarSelectedConcepto.getConcepto();
+
+			}
+
+			@Command
+			@NotifyChange({ "lConceptosCursos", "buscarConcepto" })
+			public void agregarConcepto() {
+
+				if (!this.opAgregarCursoConcepto) {
+
+					this.mensajeError("No tienes permiso para agregar un Concepto al Curso. ");
+					return;
+				}
+
+				if (this.buscarSelectedConcepto == null) {
+
+					this.mensajeInfo("Selecciona un Concepto para agregar.");
+
+					return;
+
+				}
+
+				for (CursoConcepto x : this.lConceptosCurso) {
+
+					if (this.buscarSelectedConcepto.getConceptoid() == x.getConcepto().getConceptoid()) {
+
+						this.mensajeError("El Curso ya tiene el concepto " + x.getConcepto().getConcepto());
+
+						return;
+
+					}
+
+				}
+
+				CursoConcepto cu = new CursoConcepto();
+				cu.setConcepto(this.buscarSelectedConcepto);
+				cu.setCurso(this.cursoSelectedMateriaConcepto);
+				this.save(cu);
+
+				this.refrescarConceptos(this.cursoSelectedMateriaConcepto);
+
+			}
+
+			// fins buscador concepto
+	
 
 	public List<Curso> getlCursos() {
 		return lCursos;
@@ -456,6 +609,46 @@ public class CursoVM extends TemplateViewModel {
 
 	public void setOpQuitarMateria(boolean opQuitarMateria) {
 		this.opQuitarMateria = opQuitarMateria;
+	}
+	
+	public boolean isOpAgregarCursoConcepto() {
+		return opAgregarCursoConcepto;
+	}
+
+	public void setOpAgregarCursoConcepto(boolean opAgregarCursoConcepto) {
+		this.opAgregarCursoConcepto = opAgregarCursoConcepto;
+	}
+
+	public boolean isOpQuitarCursoConcepto() {
+		return opQuitarCursoConcepto;
+	}
+
+	public void setOpQuitarCursoConcepto(boolean opQuitarCursoConcepto) {
+		this.opQuitarCursoConcepto = opQuitarCursoConcepto;
+	}
+
+	public List<Object[]> getlConceptosBuscar() {
+		return lConceptosBuscar;
+	}
+
+	public void setlConceptosBuscar(List<Object[]> lConceptosBuscar) {
+		this.lConceptosBuscar = lConceptosBuscar;
+	}
+
+	public String getBuscarConcepto() {
+		return buscarConcepto;
+	}
+
+	public void setBuscarConcepto(String buscarConcepto) {
+		this.buscarConcepto = buscarConcepto;
+	}
+
+	public List<CursoConcepto> getlConceptosCurso() {
+		return lConceptosCurso;
+	}
+
+	public void setlConceptosCurso(List<CursoConcepto> lConceptosCurso) {
+		this.lConceptosCurso = lConceptosCurso;
 	}
 
 }

@@ -80,7 +80,8 @@ public class ParamsLocal extends Params {
 	public static final String OP_AGREGAR_CONCEPTO = "AgregarConcepto";
 	public static final String OP_QUITAR_CONCEPTO = "QuitarConcepto";
 	
-	
-	
+	//CursoConcepto
+	public static final String OP_AGREGAR_CURSO_CONCEPTO = "AgregarCursoConcepto";
+	public static final String OP_QUITAR_CURSO_CONCEPTO = "QuitarCursoConcepto";
 	
 }
