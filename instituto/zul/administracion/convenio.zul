@@ -5,7 +5,7 @@
 		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
 
 		<hlayout vflex="1" hflex="1">
-			<groupbox width="750px" vflex="1">
+			<groupbox width="650px" vflex="1">
 				<caption label="Convenios" />
 
 				<vlayout hflex="1" vflex="1">
