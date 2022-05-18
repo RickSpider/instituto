@@ -26,7 +26,7 @@ public class Persona extends Modelo implements Serializable {
 	/**
 	 * 
 	 */
-	private static long serialVersionUID = 2360755743582101792L;
+	private static final long serialVersionUID = 2360755743582101792L;
 	
 	@Id
 	@Column(name ="personaid")
@@ -209,10 +209,6 @@ public class Persona extends Modelo implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
-	}
-
-	public static void setSerialversionuid(long serialversionuid) {
-		serialVersionUID = serialversionuid;
 	}
 
 	public Institucion getInstitucion() {

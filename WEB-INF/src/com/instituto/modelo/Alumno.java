@@ -3,17 +3,14 @@ package com.instituto.modelo;
 import java.io.Serializable;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.doxacore.modelo.Modelo;
-import com.doxacore.modelo.Tipo;
 
 
 @Entity

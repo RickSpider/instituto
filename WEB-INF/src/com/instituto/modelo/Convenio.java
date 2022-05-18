@@ -23,7 +23,7 @@ public class Convenio extends Modelo implements Serializable {
 	/**
 	 * 
 	 */
-	private static long serialVersionUID = 3997002060420537319L;
+	private static final long serialVersionUID = 3997002060420537319L;
 	
 	@Id
 	@Column(name ="convenioid")
@@ -58,10 +58,6 @@ public class Convenio extends Modelo implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
-	}
-
-	public static void setSerialversionuid(long serialversionuid) {
-		serialVersionUID = serialversionuid;
 	}
 
 	public Long getConvenioid() {
