@@ -124,7 +124,7 @@
 
 							<bandbox id="bd"
 								value="@load(vm.buscarMateria)" mold="rounded" autodrop="true"
-								width="250px" onClick="@command('generarListaBuscarMateria')"
+								width="250px" onOpen="@command('generarListaBuscarMateria')"
 								readonly="true">
 								<bandpopup>
 
@@ -259,7 +259,7 @@
 
 							<bandbox id="bdConcepto"
 								value="@load(vm.buscarConcepto)" mold="rounded" autodrop="true"
-								width="250px" onClick="@command('generarListaBuscarConcepto')"
+								width="250px" onOpen="@command('generarListaBuscarConcepto')"
 								readonly="true">
 								<bandpopup>
 

@@ -134,7 +134,7 @@
 
 							<bandbox id="bd"
 								value="@load(vm.buscarAlumno)" mold="rounded" autodrop="true"
-								width="250px" onClick="@command('generarListaBuscarAlumno')"
+								width="250px" onOpen="@command('generarListaBuscarAlumno')"
 								readonly="true">
 								<bandpopup>
 
@@ -264,7 +264,7 @@
 
 							<bandbox id="bdConcepto"
 								value="@load(vm.buscarConcepto)" mold="rounded" autodrop="true"
-								width="250px" onClick="@command('generarListaBuscarConcepto')"
+								width="250px" onOpen="@command('generarListaBuscarConcepto')"
 								readonly="true">
 								<bandpopup>
 

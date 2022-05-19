@@ -30,7 +30,7 @@
 					value="@load(vm.buscarInstitucion) @save(vm.buscarInstitucion, before='guardar')"
 					constraint="no empty: Es campo obligatorio." mold="rounded"
 					autodrop="true" width="150px"
-					onClick="@command('generarListaBuscarInstitucion')"
+					onOpen="@command('generarListaBuscarInstitucion')"
 					readonly="true">
 					<bandpopup>
 

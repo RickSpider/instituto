@@ -114,7 +114,7 @@
 							onClick="@command('modalBuscarSede')" />  -->
 
 						<bandbox id="bd" value = "@load(vm.buscarSede)" mold="rounded" autodrop="true"
-							width="250px" onClick="@command('generarListaBuscarSede')"
+							width="250px" onOpen="@command('generarListaBuscarSede')"
 							readonly="true">
 							<bandpopup>
 

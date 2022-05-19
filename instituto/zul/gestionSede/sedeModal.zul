@@ -37,7 +37,7 @@
 				<bandbox id="bd" value="@load(vm.buscarCiudad) @save(vm.buscarCiudad, before='guardar')"
 					constraint="no empty: Es campo obligatorio."
 					mold="rounded" autodrop="true" width="150px"
-					onClick="@command('generarListaBuscarCiudad')" readonly="true">
+					onOpen="@command('generarListaBuscarCiudad')" readonly="true">
 					<bandpopup>
 
 						<vbox>
