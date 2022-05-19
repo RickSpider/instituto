@@ -27,6 +27,8 @@
 								/>
 							<listheader label="Apellido" align="left"
 								 />
+							<listheader label="Documento #" align="left"
+								/>
 							<listheader label="Email" align="left"
 								/>
 							<listheader label="Telefono" align="left"
@@ -73,6 +75,12 @@
 									value="@bind(vm.filtroColumns[4])" instant="true"
 									onChange="@command('filtrarPersona')" hflex="1" />
 							</auxheader>
+							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[4])" instant="true"
+									onChange="@command('filtrarPersona')" hflex="1" />
+							</auxheader>
 
 							<auxheader />
 						</auxhead>
@@ -86,6 +94,8 @@
 									label="@load(each.nombre)" />
 								<listcell
 									label="@load(each.apellido)" />
+								<listcell
+									label="@load(each.documentoNum)" />
 								<listcell
 									label="@load(each.email)" />
 								<listcell
