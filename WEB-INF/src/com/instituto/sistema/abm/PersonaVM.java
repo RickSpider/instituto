@@ -541,8 +541,6 @@ public class PersonaVM extends TemplateViewModel {
 			@Command
 			@NotifyChange("lInstitucionesBuscar")
 			public void filtrarInstitucionBuscar() {
-				
-				System.out.println("ejecuto filtro");
 
 				this.lInstitucionesBuscar = this.filtrarListaObject(buscarInstitucion, this.lInstitucionesBuscarOri);
 
