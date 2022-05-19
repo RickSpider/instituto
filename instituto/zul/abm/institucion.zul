@@ -22,7 +22,7 @@
 					<listhead>
 						<listheader width="30px" align="center"/>
 						<listheader label="ID" align="right"
-							width="30px" />
+							width="50px" />
 						<listheader label="Institucion" align="left" />
 						<listheader label="Departamento" align="left" />
 						<listheader label="Ciudad" align="left" />
