@@ -20,9 +20,9 @@
 
 						<listhead>
 
-							<listheader width="30px" align="center" />
+							<listheader hflex="min" align="center" />
 							<listheader label="ID" align="right"
-								width="30px" />
+								hflex="min" />
 							<listheader label="Sede" align="left"
 								 />
 							<listheader label="Descripción" align="left"

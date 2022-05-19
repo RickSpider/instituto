@@ -57,7 +57,7 @@
 								model="@load(vm.lCiudadesBuscar)">
 
 								<listhead>
-									<listheader label="ID" width="30px" />
+									<listheader label="ID" hflex="min" />
 									<listheader label="Ciudad" />
 									<listheader label="Departamento" />
 									<listheader label="Pais" />

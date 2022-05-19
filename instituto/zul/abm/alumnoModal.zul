@@ -35,7 +35,7 @@
 								model="@load(vm.lPersonasBuscar)">
 
 								<listhead>
-									<listheader label="ID" width="30px" />
+									<listheader label="ID" hflex="min" />
 									<listheader label="Nombre Completo" />
 									<listheader label="Nº Documento" />
 								</listhead>

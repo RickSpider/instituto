@@ -26,7 +26,7 @@
 
 							<listheader width="30px" align="center" />
 							<listheader label="ID" align="right"
-								width="30px" />
+								hflex="min" />
 							<listheader label="Descripcion"
 								align="left" />
 							<listheader label="Institucion"
@@ -156,7 +156,7 @@
 
 											<listhead>
 												<listheader label="ID"
-													width="30px" />
+													hflex="min" />
 												<listheader
 													label="Nombre" />
 												<listheader
@@ -286,7 +286,7 @@
 
 											<listhead>
 												<listheader label="ID"
-													width="30px" />
+													hflex="min" />
 												<listheader
 													label="Concepto" />
 												
@@ -330,7 +330,7 @@
 
 								<listheader width="30px" align="center" />
 								<listheader label="ID" align="right"
-									width="30px" />
+									hflex="min" />
 								<listheader label="Concepto"
 									align="left" />
 								<listheader align="center" width="50px" />

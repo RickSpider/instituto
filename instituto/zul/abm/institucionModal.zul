@@ -47,7 +47,7 @@
 
 									<listhead>
 										<listheader label="ID"
-											width="30px" />
+											hflex="min" />
 										<listheader label="Ciudad" />
 										<listheader
 											label="Departamento" />
