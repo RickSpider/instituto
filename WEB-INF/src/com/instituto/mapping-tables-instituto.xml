@@ -12,4 +12,5 @@
 <mapping class="com.instituto.modelo.ConvenioConcepto" />
 <mapping class="com.instituto.modelo.ConvenioAlumno" />
 <mapping class="com.instituto.modelo.CursoConcepto" />
+<mapping class="com.instituto.modelo.CursoVigente" />
 

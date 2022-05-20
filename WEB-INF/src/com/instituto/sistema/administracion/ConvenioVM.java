@@ -1,4 +1,4 @@
-package com.instituto.sistema.admnistracion;
+package com.instituto.sistema.administracion;
 
 import java.util.List;
 

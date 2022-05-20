@@ -1,7 +1,7 @@
 <?page title="Convenios" contentType="text/html;charset=UTF-8"?>
 <zk>
 	<window title="Convenio" border="normal"
-		viewModel="@id('vm') @init('com.instituto.sistema.admnistracion.ConvenioVM')"
+		viewModel="@id('vm') @init('com.instituto.sistema.administracion.ConvenioVM')"
 		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
 
 		<hlayout vflex="1" hflex="1">

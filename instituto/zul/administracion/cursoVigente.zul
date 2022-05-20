@@ -1,0 +1,130 @@
+<?page title="CursosVigentes" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="CursoVigente" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.administracion.CursoVigenteVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<hlayout vflex="1">
+			
+				<vlayout hflex="1" vflex="1">
+
+					<hbox pack="end" hflex="1" >
+
+						<button label="Agregar"
+							iconSclass=" z-icon-plus" onClick="@command('modalCursoVigenteAgregar')" disabled="@load(!vm.opCrearCursoVigente)" />
+
+					</hbox>
+
+					<listbox emptyMessage="lista vacía..." mold="paging"
+						vflex="1" model="@load(vm.lCursosVigentes)" checkmark="true">
+
+						<listhead>
+
+							<listheader hflex="min" align="center" />
+							<listheader label="ID" align="right"
+								hflex="min" />
+							<listheader label="Curso" align="left"
+								 />
+							<listheader label="Fecha Inicio" align="left"
+								/>
+							<listheader label="Fecha Fin" align="left"
+								 />
+							<listheader label="Dias" align="left"
+								 />
+							<listheader align="center" 
+								width="100px"/>
+
+
+						</listhead>
+
+
+						<auxhead>
+
+							<auxheader />
+							<auxheader />
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[0])" instant="true"
+									onChange="@command('filtrarCursoVigente')" hflex="1" />
+							</auxheader>
+
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[1])" instant="true"
+									onChange="@command('filtrarCursoVigente')" hflex="1" />
+							</auxheader>
+							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[2])" instant="true"
+									onChange="@command('filtrarCursoVigente')" hflex="1" />
+							</auxheader>
+							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[3])" instant="true"
+									onChange="@command('filtrarCursoVigente')" hflex="1" />
+							</auxheader>
+
+							<auxheader />
+						</auxhead>
+
+						<template name="model">
+
+							<listitem>
+								<listcell />
+								<listcell label="@load(each.cursovigenteid)" />
+								<listcell label="@load(each.cursovigente)" />
+								<listcell
+									label="@load(each.curso.curso)" />
+								<listcell
+									label="@load(each.fechaInicio)" />
+								<listcell
+									label="@load(each.fechaFin)" />
+								<listcell
+									label="@load(each.email)" />
+
+								<listcell>
+									<hlayout>
+
+										<button iconSclass="z-icon-edit"
+											onClick="@command('modalCursoVigente', cursoVigenteid=each.cursoVigenteid)"
+											tooltiptext="Editar" disabled="@load(!vm.opEditarCursoVigente)"/>
+										<button
+											iconSclass="z-icon-trash-o" style="background-color:red"
+											onClick="@command('borrarCursoVigenteConfirmacion', cursoVigente=each)"
+											tooltiptext="Borrar" disabled="@load(!vm.opBorrarCursoVigente)"/>
+
+
+									</hlayout>
+
+
+								</listcell>
+
+
+							</listitem>
+
+
+						</template>
+
+						<listfoot>
+							<listfooter span="4" align="left">
+								<hlayout>
+									<label
+										value="@load(vm.lCursosVigentes.size())" />
+									<label value="items" />
+								</hlayout>
+							</listfooter>
+						</listfoot>
+
+
+					</listbox>
+
+				</vlayout>
+
+		
+			
+		</hlayout>
+
+	</window>
+</zk>
