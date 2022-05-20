@@ -5,7 +5,7 @@
 		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
 
 		<hlayout vflex="1" hflex="1">
-			<groupbox width="650px" vflex="1">
+			<groupbox hflex="1" vflex="1">
 				<caption label="Convenios" />
 
 				<vlayout hflex="1" vflex="1">
@@ -195,7 +195,7 @@
 						</hbox>
 
 						<listbox emptyMessage="lista vacía..."
-							mold="paging" vflex="1" hflex="1"
+							mold="paging" vflex="1" hflex="1"  autopaging="true"
 							model="@load(vm.lAlumnosConvenios)" checkmark="true">
 
 							<listhead>
@@ -323,7 +323,7 @@
 						</hbox>
 
 						<listbox emptyMessage="lista vacía..."
-							mold="paging" vflex="1" hflex="1"
+							mold="paging" vflex="1" hflex="1"  autopaging="true"
 							model="@load(vm.lConceptosConvenios)" checkmark="true">
 
 							<listhead>

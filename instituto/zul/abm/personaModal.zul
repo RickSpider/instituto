@@ -519,7 +519,7 @@
 
 									<listhead>
 										<listheader label="ID"
-											width="50px" />
+											hflex="min" />
 										<listheader label="Institucion" />
 										<listheader label="Ciudad" />
 										<listheader label="Departamento" />
