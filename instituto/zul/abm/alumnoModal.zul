@@ -53,8 +53,6 @@
 
 										<listcell
 											label="@load(each[2])" />
-									
-										
 
 									</listitem>
 
