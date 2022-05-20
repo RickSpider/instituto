@@ -29,8 +29,6 @@
 								/>
 							<listheader label="Fecha Fin" align="left"
 								 />
-							<listheader label="Dias" align="left"
-								 />
 							<listheader align="center" 
 								width="100px"/>
 
@@ -59,12 +57,6 @@
 									value="@bind(vm.filtroColumns[2])" instant="true"
 									onChange="@command('filtrarCursoVigente')" hflex="1" />
 							</auxheader>
-							
-							<auxheader>
-								<textbox
-									value="@bind(vm.filtroColumns[3])" instant="true"
-									onChange="@command('filtrarCursoVigente')" hflex="1" />
-							</auxheader>
 
 							<auxheader />
 						</auxhead>
@@ -74,15 +66,13 @@
 							<listitem>
 								<listcell />
 								<listcell label="@load(each.cursovigenteid)" />
-								<listcell label="@load(each.cursovigente)" />
 								<listcell
 									label="@load(each.curso.curso)" />
 								<listcell
 									label="@load(each.fechaInicio)" />
 								<listcell
 									label="@load(each.fechaFin)" />
-								<listcell
-									label="@load(each.email)" />
+							
 
 								<listcell>
 									<hlayout>

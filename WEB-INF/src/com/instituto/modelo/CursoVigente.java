@@ -3,7 +3,10 @@ package com.instituto.modelo;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -21,6 +24,8 @@ public class CursoVigente extends Modelo implements Serializable{
 	private static final long serialVersionUID = -3684064883292406048L;
 
 	@Id
+	@Column(name ="cursovigenteid")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long cursovigenteid;
 	
 	@ManyToOne
@@ -95,6 +100,15 @@ public class CursoVigente extends Modelo implements Serializable{
 	public void setDias(String dias) {
 		this.dias = dias;
 	}
+
+	public Sede getSede() {
+		return sede;
+	}
+
+	public void setSede(Sede sede) {
+		this.sede = sede;
+	}
+
 	
 	
 	

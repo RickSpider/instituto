@@ -1,0 +1,118 @@
+<?page title="sedeModal" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="CursoVigente Crear/Ver/Editar" border="normal"
+		position="center,center" closable="true" mode="modal"
+		action="show: slideDown;hide: slideUp">
+
+		<vlayout>
+
+			<hlayout>
+
+				<hbox width="130px">
+					<label value="Curso: " style="font-weight:bold" />
+				</hbox>
+
+				<bandbox id="bdCurso"
+					value="@load(vm.buscarCurso) @save(vm.buscarCurso, before='guardar')"
+					constraint="no empty: Es campo obligatorio." mold="rounded"
+					autodrop="true" width="150px"
+					onOpen="@command('generarListaBuscarCurso')" readonly="true"
+					disabled="@load(vm.editar)">
+					<bandpopup>
+
+						<vbox>
+
+							<hbox>
+
+								<label value="Buscar:" />
+
+								<textbox instant="true"
+									value="@bind(vm.buscarCurso)"
+									onChange="@command('filtrarCursoBuscar')" />
+
+							</hbox>
+
+							<listbox height="250px" width="450px"
+								mold="paging" autopaging="true" onSelect="bdCurso.close()"
+								model="@load(vm.lCursosBuscar)">
+
+								<listhead>
+									<listheader label="ID" hflex="min" />
+									<listheader label="Curso" />
+									<listheader label="Descripcion" />
+								</listhead>
+
+								<template name="model">
+
+									<listitem
+										onClick="@command('onSelectCurso', id = each[0])">
+
+										<listcell
+											label="@load(each[0])" />
+
+										<listcell
+											label="@load(each[1])" />
+
+										<listcell
+											label="@load(each[2])" />
+
+
+
+									</listitem>
+
+								</template>
+								<listitem />
+							</listbox>
+
+						</vbox>
+					</bandpopup>
+				</bandbox>
+
+
+			</hlayout>
+			
+			<hlayout>
+				<hbox width="130px">
+					<label value="Sede: " style="font-weight:bold" />
+				</hbox>
+				<textbox
+					value="@bind(vm.cursoVigenteSelected.sede.sede)"
+					width="150px"
+					readonly="true"/>
+			</hlayout>
+
+			<hlayout>
+				<hbox width="130px">
+					<label value="Fecha Inicio: "
+						style="font-weight:bold" />
+				</hbox>
+				<datebox
+					value="@load(vm.cursoVigenteSelected.fechaInicio) @save(vm.cursoVigenteSelected.fechaInicio, before='guardar')"
+					format="short " width="150px"
+					constraint="no empty: Es campo obligatorio." />
+			</hlayout>
+
+			<hlayout>
+				<hbox width="130px">
+					<label value="Fecha Fin: "
+						style="font-weight:bold" />
+				</hbox>
+				<datebox
+					value="@load(vm.cursoVigenteSelected.fechaFin) @save(vm.cursoVigenteSelected.fechaFin, before='guardar')"
+					format="short " width="150px"
+					constraint="no empty: Es campo obligatorio." />
+			</hlayout>
+
+			<space height="10px" />
+
+			<hlayout>
+
+				<button label="Aceptar" onClick="@command('guardar')" />
+
+			</hlayout>
+
+		</vlayout>
+
+
+	</window>
+</zk>

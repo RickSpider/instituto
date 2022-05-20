@@ -17,10 +17,13 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
 import com.doxacore.TemplateViewModel;
+import com.instituto.modelo.Alumno;
+import com.instituto.modelo.Curso;
 import com.instituto.modelo.CursoVigente;
 import com.instituto.util.ParamsLocal;
+import com.instituto.util.TemplateViewModelLocal;
 
-public class CursoVigenteVM extends TemplateViewModel {
+public class CursoVigenteVM extends TemplateViewModelLocal {
 
 	private List<CursoVigente> lCursosVigentes;
 	private List<CursoVigente> lCursosVigentesOri;
@@ -53,7 +56,7 @@ public class CursoVigenteVM extends TemplateViewModel {
 
 	private void cargarCursosVigentes() {
 
-		this.lCursosVigentes = this.reg.getAllObjectsByCondicionOrder(CursoVigente.class.getName(), null, "CursoVigenteid asc");
+		this.lCursosVigentes = this.reg.getAllObjectsByCondicionOrder(CursoVigente.class.getName(), "sedeid = "+this.getCurrentSede().getSedeid(), "CursoVigenteid asc");
 		this.lCursosVigentesOri = this.lCursosVigentes;
 	}
 
@@ -109,15 +112,18 @@ public class CursoVigenteVM extends TemplateViewModel {
 				return;
 			
 			this.cursoVigenteSelected = this.reg.getObjectById(CursoVigente.class.getName(), cursoVigenteid);
+			this.buscarCurso = this.cursoVigenteSelected.getCurso().getCurso();
 			this.editar = true;
 
 		} else {
 			
 			cursoVigenteSelected = new CursoVigente();
+			cursoVigenteSelected.setSede(this.getCurrentSede());
+			this.buscarCurso = "";
 
 		}
 
-		modal = (Window) Executions.createComponents("/instituto/zul/gestionCursoVigente/cursoVigenteModal.zul", this.mainComponent,
+		modal = (Window) Executions.createComponents("/instituto/zul/administracion/cursoVigenteModal.zul", this.mainComponent,
 				null);
 		Selectors.wireComponents(modal, this, false);
 		modal.doModal();
@@ -125,7 +131,6 @@ public class CursoVigenteVM extends TemplateViewModel {
 	}
 	
 	private boolean verificarCampos() {
-		
 		
 		return true;
 	}	
@@ -148,11 +153,11 @@ public class CursoVigenteVM extends TemplateViewModel {
 		
 		if (editar) {
 			
-			Notification.show("La CursoVigente fue Actualizada.");
+			Notification.show("El Curso Vigente fue Actualizado.");
 			this.editar = false;
 		}else {
 			
-			Notification.show("La CursoVigente fue agregada.");
+			Notification.show("El Curso Vigente fue agregado.");
 		}
 		
 		
@@ -183,7 +188,7 @@ public class CursoVigenteVM extends TemplateViewModel {
 
 		};
 		
-		this.mensajeEliminar("La CursoVigente sera eliminada. \n Continuar?", event);
+		this.mensajeEliminar("El Curso Vigente sera eliminado. \n Continuar?", event);
 	}
 	
 	private void borrarCursoVigente (CursoVigente cursoVigente) {
@@ -195,6 +200,45 @@ public class CursoVigenteVM extends TemplateViewModel {
 		BindUtils.postNotifyChange(null,null,this,"lCursosVigentes");
 		
 	}
+	
+	// buscador de Curso
+
+				private List<Object[]> lCursosBuscarOri = null;
+				private List<Object[]> lCursosBuscar = null;
+				private Curso buscarSelectedCurso = null;
+				private String buscarCurso = "";
+
+				@Command
+				@NotifyChange("lCursosBuscar")
+				public void filtrarCursoBuscar() {
+
+					this.lCursosBuscar = this.filtrarListaObject(buscarCurso, this.lCursosBuscarOri);
+
+				}
+				
+				@Command
+				@NotifyChange("lCursosBuscar")
+				public void generarListaBuscarCurso() {
+
+					String sql = this.um.getSql("buscarCurso.sql");
+					
+					this.lCursosBuscar = this.reg.sqlNativo(sql);
+					
+					this.lCursosBuscarOri = this.lCursosBuscar;
+				}
+				
+				@Command
+				@NotifyChange("buscarCurso")
+				public void onSelectCurso(@BindingParam("id") long id) {
+					
+					this.buscarSelectedCurso = this.reg.getObjectById(Curso.class.getName(), id);	
+					this.buscarCurso = this.buscarSelectedCurso.getCurso();
+					this.cursoVigenteSelected.setCurso(buscarSelectedCurso);
+
+				}
+				
+				// fin buscar ciudad
+				
 	
 
 	public List<CursoVigente> getlCursosVigentes() {
@@ -251,6 +295,22 @@ public class CursoVigenteVM extends TemplateViewModel {
 
 	public void setEditar(boolean editar) {
 		this.editar = editar;
+	}
+
+	public List<Object[]> getlCursosBuscar() {
+		return lCursosBuscar;
+	}
+
+	public void setlCursosBuscar(List<Object[]> lCursosBuscar) {
+		this.lCursosBuscar = lCursosBuscar;
+	}
+
+	public String getBuscarCurso() {
+		return buscarCurso;
+	}
+
+	public void setBuscarCurso(String buscarCurso) {
+		this.buscarCurso = buscarCurso;
 	}
 
 
