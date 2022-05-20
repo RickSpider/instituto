@@ -150,7 +150,7 @@
 
 										</hbox>
 
-										<listbox height="250px"
+										<listbox height="250px" emptyMessage="lista vacía..."
 											width="450px" mold="paging" autopaging="true"
 											onSelect="bd.close()" model="@load(vm.lAlumnosBuscar)">
 
@@ -204,6 +204,7 @@
 								<listheader label="ID" align="right"
 									width="30px" />
 								<listheader label="Alumno" align="left" />
+								<listheader label="Documento" align="left" />
 								<listheader align="center" width="50px" />
 
 
@@ -217,7 +218,9 @@
 									<listcell
 										label="@load(each.convenioalumnopk.alumno.alumnoid)" />
 									<listcell
-										label="@load(each.convenioalumnopk.alumno.fullNombre)" />
+										label="@load(each.convenioalumnopk.alumno.fullNombre)" tooltiptext="@load(each.convenioalumnopk.alumno.fullNombre)" />
+									<listcell
+										label="@load(each.convenioalumnopk.alumno.persona.documentoNum)" tooltiptext="@load(each.convenioalumnopk.alumno.persona.documentoNum)" />
 
 									<listcell>
 										<hlayout>
@@ -280,7 +283,7 @@
 
 										</hbox>
 
-										<listbox height="250px"
+										<listbox height="250px" emptyMessage="lista vacía..."
 											width="450px" mold="paging" autopaging="true"
 											onSelect="bdConcepto.close()" model="@load(vm.lConceptosBuscar)">
 
@@ -346,7 +349,7 @@
 									<listcell
 										label="@load(each.convenioconceptopk.concepto.conceptoid)" />
 									<listcell
-										label="@load(each.convenioconceptopk.concepto.concepto)" />
+										label="@load(each.convenioconceptopk.concepto.concepto)" tooltiptext="@load(each.convenioconceptopk.concepto.concepto)"/>
 
 									<listcell>
 										<hlayout>

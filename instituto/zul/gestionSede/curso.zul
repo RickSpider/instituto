@@ -140,7 +140,7 @@
 
 										</hbox>
 
-										<listbox height="250px"
+										<listbox height="250px" emptyMessage="lista vacía..."
 											width="450px" mold="paging" autopaging="true"
 											onSelect="bd.close()" model="@load(vm.lMateriasBuscar)">
 
@@ -210,9 +210,9 @@
 									<listcell
 										label="@load(each.cursomateriapk.materia.materiaid)" />
 									<listcell
-										label="@load(each.cursomateriapk.materia.materia)" />
+										label="@load(each.cursomateriapk.materia.materia)" tooltiptext="@load(each.cursomateriapk.materia.materia)" />
 									<listcell
-										label="@load(each.cursomateriapk.materia.descripcion)" />
+										label="@load(each.cursomateriapk.materia.descripcion)" tooltiptext="@load(each.cursomateriapk.materia.descripcion)"/>
 
 									<listcell>
 										<hlayout>
@@ -275,7 +275,7 @@
 
 										</hbox>
 
-										<listbox height="250px"
+										<listbox height="250px" emptyMessage="lista vacía..."
 											width="450px" mold="paging" autopaging="true"
 											onSelect="bdConcepto.close()" model="@load(vm.lConceptosBuscar)">
 
@@ -341,7 +341,7 @@
 									<listcell
 										label="@load(each.cursoconceptopk.concepto.conceptoid)" />
 									<listcell
-										label="@load(each.cursoconceptopk.concepto.concepto)" />
+										label="@load(each.cursoconceptopk.concepto.concepto)" tooltiptext="@load(each.cursoconceptopk.concepto.concepto)"/>
 
 									<listcell>
 										<hlayout>
