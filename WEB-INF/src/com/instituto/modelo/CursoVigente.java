@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.doxacore.modelo.Modelo;
 
@@ -36,7 +38,10 @@ public class CursoVigente extends Modelo implements Serializable{
 	@JoinColumn(name = "sedeid")
 	private Sede sede;
 	
+	@Temporal(TemporalType.DATE)
 	private Date fechaInicio;
+	
+	@Temporal(TemporalType.DATE)
 	private Date fechaFin;
 	
 	// lu;ma;mi;ju;vi;sa;do
