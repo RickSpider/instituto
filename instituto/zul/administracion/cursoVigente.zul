@@ -63,7 +63,7 @@
 
 						<template name="model">
 
-							<listitem>
+							<listitem onClick="@command('refrescarAlumnos', cursoVigente = each )">
 								<listcell />
 								<listcell label="@load(each.cursovigenteid)" />
 								<listcell
@@ -78,7 +78,7 @@
 									<hlayout>
 
 										<button iconSclass="z-icon-edit"
-											onClick="@command('modalCursoVigente', cursoVigenteid=each.cursoVigenteid)"
+											onClick="@command('modalCursoVigente', cursovigenteid=each.cursovigenteid)"
 											tooltiptext="Editar" disabled="@load(!vm.opEditarCursoVigente)"/>
 										<button
 											iconSclass="z-icon-trash-o" style="background-color:red"
@@ -110,6 +110,142 @@
 
 					</listbox>
 
+				</vlayout>
+				
+				<vlayout vflex="1" hflex="1">
+				
+				<groupbox vflex="1" hflex="1">
+					<caption label="Alumnos por CursoVigente" />
+
+					<vlayout hflex="1" vflex="1">
+
+						<hbox pack="end" hflex="1">
+
+							<bandbox id="bd"
+								value="@load(vm.buscarAlumno)" mold="rounded" autodrop="true"
+								width="250px" onOpen="@command('generarListaBuscarAlumno')"
+								readonly="true">
+								<bandpopup>
+
+									<vbox>
+
+										<hbox>
+
+											<label value="Buscar:" />
+
+											<textbox instant="true"
+												value="@bind(vm.buscarAlumno)"
+												onChange="@command('filtrarAlumnoBuscar')" />
+
+										</hbox>
+
+										<listbox height="250px" emptyMessage="lista vacía..."
+											width="450px" mold="paging" autopaging="true"
+											onSelect="bd.close()" model="@load(vm.lAlumnosBuscar)">
+
+											<listhead>
+												<listheader label="ID"
+													hflex="min" />
+												<listheader
+													label="Nombre" />
+												<listheader
+													label="Apellido" />
+											</listhead>
+
+											<template name="model">
+
+												<listitem
+													value="@load(each[1])"
+													onClick="@command('onSelectAlumno', id = each[0])">
+
+													<listcell
+														label="@load(each[0])" />
+
+													<listcell
+														label="@load(each[1])" />
+
+													<listcell
+														label="@load(each[2])" />
+
+												</listitem>
+
+											</template>
+											<listitem />
+										</listbox>
+
+									</vbox>
+								</bandpopup>
+							</bandbox>
+
+							<button iconSclass=" z-icon-plus"
+								onClick="@command('agregarAlumno')"
+								disabled="@load(!vm.opAgregarCursoVigenteAlumno)" />
+
+						</hbox>
+
+						<listbox emptyMessage="lista vacía..."
+							mold="paging" vflex="1" hflex="1"  autopaging="true"
+							model="@load(vm.lAlumnosCursosVigentes)" checkmark="true">
+
+							<listhead>
+
+								<listheader width="30px" align="center" />
+								<listheader label="ID" align="right"
+									width="30px" />
+								<listheader label="Alumno" align="left" />
+								<listheader label="Documento" align="left" />
+								<listheader align="center" width="50px" />
+
+
+							</listhead>
+
+							<template name="model">
+
+								<listitem>
+
+									<listcell />
+									<listcell
+										label="@load(each.cursovigentealumnopk.alumno.alumnoid)" />
+									<listcell
+										label="@load(each.cursovigentealumnopk.alumno.fullNombre)" tooltiptext="@load(each.cursovigentealumnopk.alumno.fullNombre)" />
+									<listcell
+										label="@load(each.cursovigentealumnopk.alumno.persona.documentoNum)" tooltiptext="@load(each.cursovigentealumnopk.alumno.persona.documentoNum)" />
+
+									<listcell>
+										<hlayout>
+
+											<button
+												iconSclass="z-icon-trash-o" style="background-color:red"
+												onClick="@command('borrarAlumnoConfirmacion', cursoVigentealumno=each)"
+												tooltiptext="Borrar" disabled="@load(!vm.opQuitarCursoVigenteAlumno)" />
+
+										</hlayout>
+
+
+									</listcell>
+
+
+								</listitem>
+
+
+							</template>
+
+							<listfoot>
+								<listfooter span="4" align="left">
+									<hlayout>
+										<label
+											value="@load(vm.lAlumnosCursosVigentes.size())" />
+										<label value="items" />
+									</hlayout>
+								</listfooter>
+							</listfoot>
+
+						</listbox>
+
+					</vlayout>
+
+				</groupbox>
+				
 				</vlayout>
 
 		

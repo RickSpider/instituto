@@ -44,10 +44,8 @@ public class CursoVigente extends Modelo implements Serializable{
 	@Temporal(TemporalType.DATE)
 	private Date fechaFin;
 	
-	// lu;ma;mi;ju;vi;sa;do
-	private String dias = ";;;;;;";
-	
-	
+	// do;lu;ma;mi;ju;vi;sa
+	private String dias = "false;false;false;false;false;false;false";
 
 	@Override
 	public Object[] getArrayObjectDatos() {

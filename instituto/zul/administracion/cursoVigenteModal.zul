@@ -70,15 +70,14 @@
 
 
 			</hlayout>
-			
+
 			<hlayout>
 				<hbox width="130px">
 					<label value="Sede: " style="font-weight:bold" />
 				</hbox>
 				<textbox
-					value="@bind(vm.cursoVigenteSelected.sede.sede)"
-					width="150px"
-					readonly="true"/>
+					value="@bind(vm.cursoVigenteSelected.sede.sede)" width="150px"
+					readonly="true" />
 			</hlayout>
 
 			<hlayout>
@@ -94,13 +93,37 @@
 
 			<hlayout>
 				<hbox width="130px">
-					<label value="Fecha Fin: "
-						style="font-weight:bold" />
+					<label value="Fecha Fin: " style="font-weight:bold" />
 				</hbox>
 				<datebox
 					value="@load(vm.cursoVigenteSelected.fechaFin) @save(vm.cursoVigenteSelected.fechaFin, before='guardar')"
 					format="short " width="150px"
 					constraint="no empty: Es campo obligatorio." />
+			</hlayout>
+
+			<hlayout>
+
+				<hbox width="130px">
+					<label value="Dias: " style="font-weight:bold" />
+				</hbox>
+
+				<vbox>
+
+					<hbox>
+						<checkbox label="Domingo" checked="@bind(vm.bDias[0])" />
+						<checkbox label="Lunes" checked="@bind(vm.bDias[1])" />
+						<checkbox label="Martes" checked="@bind(vm.bDias[2])" />
+						<checkbox label="Miercoles" checked="@bind(vm.bDias[3])" />
+					</hbox>
+
+					<hbox>
+						<checkbox label="Jueves" checked="@bind(vm.bDias[4])" />
+						<checkbox label="Viernes" checked="@bind(vm.bDias[5])" />
+						<checkbox label="Sabado" checked="@bind(vm.bDias[6])" />
+					</hbox>
+
+				</vbox>
+
 			</hlayout>
 
 			<space height="10px" />
