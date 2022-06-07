@@ -5,390 +5,414 @@
 		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
 
 		<hlayout vflex="1" hflex="1">
-			<groupbox hflex="1" vflex="1">
-				<caption label="Convenios" />
 
-				<vlayout hflex="1" vflex="1">
+			<vlayout hflex="1" vflex="1">
 
-					<hbox pack="end" hflex="1">
+				<hbox pack="end" hflex="1">
 
-						<button label="Agregar"
-							iconSclass=" z-icon-plus"
-							onClick="@command('modalConvenioAgregar')"
-							disabled="@load(!vm.opCrearConvenio)" />
+					<button label="Agregar" iconSclass=" z-icon-plus"
+						onClick="@command('modalConvenioAgregar')"
+						disabled="@load(!vm.opCrearConvenio)" />
 
-					</hbox>
+				</hbox>
 
-					<listbox emptyMessage="lista vacía..." mold="paging"
-						vflex="1" model="@load(vm.lConvenios)" checkmark="true">
+				<listbox emptyMessage="lista vacía..." mold="paging"
+					vflex="1" model="@load(vm.lConvenios)" checkmark="true">
 
-						<listhead>
+					<listhead>
 
-							<listheader width="30px" align="center" />
-							<listheader label="ID" align="right"
-								hflex="min" />
-							<listheader label="Descripcion"
-								align="left" />
-							<listheader label="Institucion"
-								align="left" />
-							<listheader label="Activo" align="Center"
-								width="80px" />
-							<listheader align="center" width="100px" />
+						<listheader width="30px" align="center" />
+						<listheader label="ID" align="right"
+							hflex="min" />
+						<listheader label="Descripcion" align="left" />
+						<listheader label="Institucion" align="left" />
+						<listheader label="Activo" align="Center"
+							width="80px" />
+						<listheader align="center" width="100px" />
 
 
-						</listhead>
+					</listhead>
 
-						<auxhead>
+					<auxhead>
 
-							<auxheader />
-							<auxheader />
-							<auxheader>
-								<textbox
-									value="@bind(vm.filtroColumnsConvenio[0])" instant="true"
-									onChange="@command('filtrarConvenio')" hflex="1" />
-							</auxheader>
+						<auxheader />
+						<auxheader />
+						<auxheader>
+							<textbox
+								value="@bind(vm.filtroColumnsConvenio[0])" instant="true"
+								onChange="@command('filtrarConvenio')" hflex="1" />
+						</auxheader>
 
-							<auxheader>
-								<textbox
-									value="@bind(vm.filtroColumnsConvenio[1])" instant="true"
-									onChange="@command('filtrarConvenio')" hflex="1" />
-							</auxheader>
+						<auxheader>
+							<textbox
+								value="@bind(vm.filtroColumnsConvenio[1])" instant="true"
+								onChange="@command('filtrarConvenio')" hflex="1" />
+						</auxheader>
 
-							<auxheader />
-							<auxheader />
+						<auxheader />
+						<auxheader />
 
-						</auxhead>
+					</auxhead>
 
-						<template name="model">
+					<template name="model">
 
-							<listitem
-								onClick="@command('refrescarAll', convenio = each )">
+						<listitem
+							onClick="@command('refrescarAll', convenio = each )">
 
-								<listcell />
-								<listcell
-									label="@load(each.convenioid)" />
-								<listcell
-									label="@load(each.descripcion)" />
-								<listcell
-									label="@load(each.institucion.institucion)" />
+							<listcell />
+							<listcell label="@load(each.convenioid)" />
+							<listcell label="@load(each.descripcion)" />
+							<listcell
+								label="@load(each.institucion.institucion)" />
 
-								<listcell>
+							<listcell>
 
-									<if test="@load(each.activo)">
-										<label value="Si" />
-									</if>
+								<if test="@load(each.activo)">
+									<label value="Si" />
+								</if>
 
 
-									<if test="@load(!each.activo)">
-										<label value="No" />
-									</if>
+								<if test="@load(!each.activo)">
+									<label value="No" />
+								</if>
 
-								</listcell>
-
-
-								<listcell>
-									<hlayout>
-
-										<button iconSclass="z-icon-edit"
-											onClick="@command('modalConvenio', convenioid=each.convenioid)"
-											tooltiptext="Editar" disabled="@load(!vm.opEditarConvenio)" />
-										<button
-											iconSclass="z-icon-trash-o" style="background-color:red"
-											onClick="@command('borrarConvenioConfirmacion', convenio=each)"
-											tooltiptext="Borrar" disabled="@load(!vm.opBorrarConvenio)" />
+							</listcell>
 
 
-									</hlayout>
-
-
-								</listcell>
-
-
-							</listitem>
-
-
-						</template>
-						<listfoot>
-							<listfooter span="7" align="left">
+							<listcell>
 								<hlayout>
-									<label
-										value="@load(vm.lConvenios.size())" />
-									<label value="items" />
-								</hlayout>
-							</listfooter>
-						</listfoot>
 
-					</listbox>
-				</vlayout>
-			</groupbox>
+									<button iconSclass="z-icon-edit"
+										onClick="@command('modalConvenio', convenioid=each.convenioid)"
+										tooltiptext="Editar" disabled="@load(!vm.opEditarConvenio)" />
+									<button iconSclass="z-icon-trash-o"
+										style="background-color:red"
+										onClick="@command('borrarConvenioConfirmacion', convenio=each)"
+										tooltiptext="Borrar" disabled="@load(!vm.opBorrarConvenio)" />
+
+
+								</hlayout>
+
+
+							</listcell>
+
+
+						</listitem>
+
+
+					</template>
+					<listfoot>
+						<listfooter span="7" align="left">
+							<hlayout>
+								<label
+									value="@load(vm.lConvenios.size())" />
+								<label value="items" />
+							</hlayout>
+						</listfooter>
+					</listfoot>
+
+				</listbox>
+			</vlayout>
+
 
 			<vlayout vflex="1" hflex="1">
 
+				<tabbox hflex="1" vflex="1" >
+					<tabs>
 
-				<groupbox vflex="1" hflex="1">
-					<caption label="Alumnos por Convenio" />
+						<tab label="Alumnos" />
+						<tab label="Conceptos" />
 
-					<vlayout hflex="1" vflex="1">
+					</tabs>
+					<tabpanels>
 
-						<hbox pack="end" hflex="1">
+						<tabpanel>
 
-							<bandbox id="bd"
-								value="@load(vm.buscarAlumno)" mold="rounded" autodrop="true"
-								width="250px" onOpen="@command('generarListaBuscarAlumno')"
-								readonly="true">
-								<bandpopup>
+							<vlayout hflex="1" vflex="1">
 
-									<vbox>
+								<hbox pack="end" hflex="1">
 
-										<hbox>
+									<bandbox id="bd"
+										value="@load(vm.buscarAlumno)" mold="rounded" autodrop="true"
+										width="250px" onOpen="@command('generarListaBuscarAlumno')"
+										readonly="true">
+										<bandpopup>
 
-											<label value="Buscar:" />
+											<vbox>
 
-											<textbox instant="true"
-												value="@bind(vm.buscarAlumno)"
-												onChange="@command('filtrarAlumnoBuscar')" />
+												<hbox>
 
-										</hbox>
+													<label
+														value="Buscar:" />
 
-										<listbox height="250px" emptyMessage="lista vacía..."
-											width="450px" mold="paging" autopaging="true"
-											onSelect="bd.close()" model="@load(vm.lAlumnosBuscar)">
+													<textbox
+														instant="true" value="@bind(vm.buscarAlumno)"
+														onChange="@command('filtrarAlumnoBuscar')" />
 
-											<listhead>
-												<listheader label="ID"
-													hflex="min" />
-												<listheader
-													label="Nombre" />
-												<listheader
-													label="Apellido" />
-											</listhead>
+												</hbox>
 
-											<template name="model">
+												<listbox height="250px"
+													emptyMessage="lista vacía..." width="450px" mold="paging"
+													autopaging="true" onSelect="bd.close()"
+													model="@load(vm.lAlumnosBuscar)">
 
-												<listitem
-													value="@load(each[1])"
-													onClick="@command('onSelectAlumno', id = each[0])">
+													<listhead>
+														<listheader
+															label="ID" hflex="min" />
+														<listheader
+															label="Nombre" />
+														<listheader
+															label="Apellido" />
+													</listhead>
 
-													<listcell
-														label="@load(each[0])" />
+													<template
+														name="model">
 
-													<listcell
-														label="@load(each[1])" />
+														<listitem
+															value="@load(each[1])"
+															onClick="@command('onSelectAlumno', id = each[0])">
 
-													<listcell
-														label="@load(each[2])" />
+															<listcell
+																label="@load(each[0])" />
 
-												</listitem>
+															<listcell
+																label="@load(each[1])" />
 
-											</template>
-											<listitem />
-										</listbox>
+															<listcell
+																label="@load(each[2])" />
 
-									</vbox>
-								</bandpopup>
-							</bandbox>
+														</listitem>
 
-							<button iconSclass=" z-icon-plus"
-								onClick="@command('agregarAlumno')"
-								disabled="@load(!vm.opAgregarAlumno)" />
+													</template>
+													<listitem />
+												</listbox>
 
-						</hbox>
+											</vbox>
+										</bandpopup>
+									</bandbox>
 
-						<listbox emptyMessage="lista vacía..."
-							mold="paging" vflex="1" hflex="1"  autopaging="true"
-							model="@load(vm.lAlumnosConvenios)" checkmark="true">
+									<button iconSclass=" z-icon-plus"
+										onClick="@command('agregarAlumno')"
+										disabled="@load(!vm.opAgregarAlumno)" />
 
-							<listhead>
+								</hbox>
 
-								<listheader width="30px" align="center" />
-								<listheader label="ID" align="right"
-									width="30px" />
-								<listheader label="Alumno" align="left" />
-								<listheader label="Documento" align="left" />
-								<listheader align="center" width="50px" />
+								<listbox emptyMessage="lista vacía..."
+									mold="paging" vflex="1" hflex="1" autopaging="true"
+									model="@load(vm.lAlumnosConvenios)" checkmark="true">
 
+									<listhead>
 
-							</listhead>
+										<listheader width="30px"
+											align="center" />
+										<listheader label="ID"
+											align="right" width="30px" />
+										<listheader label="Alumno"
+											align="left" />
+										<listheader label="Documento"
+											align="left" />
+										<listheader align="center"
+											width="50px" />
 
-							<template name="model">
 
-								<listitem>
+									</listhead>
 
-									<listcell />
-									<listcell
-										label="@load(each.convenioalumnopk.alumno.alumnoid)" />
-									<listcell
-										label="@load(each.convenioalumnopk.alumno.fullNombre)" tooltiptext="@load(each.convenioalumnopk.alumno.fullNombre)" />
-									<listcell
-										label="@load(each.convenioalumnopk.alumno.persona.documentoNum)" tooltiptext="@load(each.convenioalumnopk.alumno.persona.documentoNum)" />
+									<template name="model">
 
-									<listcell>
-										<hlayout>
+										<listitem>
 
-											<button
-												iconSclass="z-icon-trash-o" style="background-color:red"
-												onClick="@command('borrarAlumnoConfirmacion', convenioalumno=each)"
-												tooltiptext="Borrar" disabled="@load(!vm.opQuitarAlumno)" />
+											<listcell />
+											<listcell
+												label="@load(each.convenioalumnopk.alumno.alumnoid)" />
+											<listcell
+												label="@load(each.convenioalumnopk.alumno.fullNombre)"
+												tooltiptext="@load(each.convenioalumnopk.alumno.fullNombre)" />
+											<listcell
+												label="@load(each.convenioalumnopk.alumno.persona.documentoNum)"
+												tooltiptext="@load(each.convenioalumnopk.alumno.persona.documentoNum)" />
 
-										</hlayout>
+											<listcell>
+												<hlayout>
 
+													<button
+														iconSclass="z-icon-trash-o" style="background-color:red"
+														onClick="@command('borrarAlumnoConfirmacion', convenioalumno=each)"
+														tooltiptext="Borrar" disabled="@load(!vm.opQuitarAlumno)" />
 
-									</listcell>
+												</hlayout>
 
 
-								</listitem>
+											</listcell>
 
 
-							</template>
+										</listitem>
 
-							<listfoot>
-								<listfooter span="4" align="left">
-									<hlayout>
-										<label
-											value="@load(vm.lAlumnosConvenios.size())" />
-										<label value="items" />
-									</hlayout>
-								</listfooter>
-							</listfoot>
 
-						</listbox>
+									</template>
 
-					</vlayout>
+									<listfoot>
+										<listfooter span="4"
+											align="left">
+											<hlayout>
+												<label
+													value="@load(vm.lAlumnosConvenios.size())" />
+												<label value="items" />
+											</hlayout>
+										</listfooter>
+									</listfoot>
 
-				</groupbox>
+								</listbox>
 
-				<!-- Concepto Convenio -->
-				<groupbox vflex="1" hflex="1">
-					<caption label="Conceptos por Convenio" />
+							</vlayout>
 
-					<vlayout hflex="1" vflex="1">
 
-						<hbox pack="end" hflex="1">
+						</tabpanel>
 
-							<bandbox id="bdConcepto"
-								value="@load(vm.buscarConcepto)" mold="rounded" autodrop="true"
-								width="250px" onOpen="@command('generarListaBuscarConcepto')"
-								readonly="true">
-								<bandpopup>
+						<tabpanel>
 
-									<vbox>
 
-										<hbox>
 
-											<label value="Buscar:" />
+							<!-- Concepto Convenio -->
 
-											<textbox instant="true"
-												value="@bind(vm.buscarConcepto)"
-												onChange="@command('filtrarConceptoBuscar')" />
 
-										</hbox>
+							<vlayout hflex="1" vflex="1">
 
-										<listbox height="250px" emptyMessage="lista vacía..."
-											width="450px" mold="paging" autopaging="true"
-											onSelect="bdConcepto.close()" model="@load(vm.lConceptosBuscar)">
+								<hbox pack="end" hflex="1">
 
-											<listhead>
-												<listheader label="ID"
-													hflex="min" />
-												<listheader
-													label="Concepto" />
-												
-											</listhead>
+									<bandbox id="bdConcepto"
+										value="@load(vm.buscarConcepto)" mold="rounded"
+										autodrop="true" width="250px"
+										onOpen="@command('generarListaBuscarConcepto')"
+										readonly="true">
+										<bandpopup>
 
-											<template name="model">
+											<vbox>
 
-												<listitem
-													value="@load(each[1])"
-													onClick="@command('onSelectConcepto', id = each[0])">
+												<hbox>
 
-													<listcell
-														label="@load(each[0])" />
+													<label
+														value="Buscar:" />
 
-													<listcell
-														label="@load(each[1])" />
+													<textbox
+														instant="true" value="@bind(vm.buscarConcepto)"
+														onChange="@command('filtrarConceptoBuscar')" />
 
-													
+												</hbox>
 
-												</listitem>
+												<listbox height="250px"
+													emptyMessage="lista vacía..." width="450px" mold="paging"
+													autopaging="true" onSelect="bdConcepto.close()"
+													model="@load(vm.lConceptosBuscar)">
 
-											</template>
-											<listitem />
-										</listbox>
+													<listhead>
+														<listheader
+															label="ID" hflex="min" />
+														<listheader
+															label="Concepto" />
 
-									</vbox>
-								</bandpopup>
-							</bandbox>
+													</listhead>
 
-							<button iconSclass=" z-icon-plus"
-								onClick="@command('agregarConcepto')"
-								disabled="@load(!vm.opAgregarConcepto)" />
+													<template
+														name="model">
 
-						</hbox>
+														<listitem
+															value="@load(each[1])"
+															onClick="@command('onSelectConcepto', id = each[0])">
 
-						<listbox emptyMessage="lista vacía..."
-							mold="paging" vflex="1" hflex="1"  autopaging="true"
-							model="@load(vm.lConceptosConvenios)" checkmark="true">
+															<listcell
+																label="@load(each[0])" />
 
-							<listhead>
+															<listcell
+																label="@load(each[1])" />
 
-								<listheader width="30px" align="center" />
-								<listheader label="ID" align="right"
-									hflex="min" />
-								<listheader label="Concepto"
-									align="left" />
-								<listheader align="center" width="50px" />
 
 
-							</listhead>
+														</listitem>
 
-							<template name="model">
+													</template>
+													<listitem />
+												</listbox>
 
-								<listitem>
+											</vbox>
+										</bandpopup>
+									</bandbox>
 
-									<listcell />
-									<listcell
-										label="@load(each.convenioconceptopk.concepto.conceptoid)" />
-									<listcell
-										label="@load(each.convenioconceptopk.concepto.concepto)" tooltiptext="@load(each.convenioconceptopk.concepto.concepto)"/>
+									<button iconSclass=" z-icon-plus"
+										onClick="@command('agregarConcepto')"
+										disabled="@load(!vm.opAgregarConcepto)" />
 
-									<listcell>
-										<hlayout>
+								</hbox>
 
-											<button
-												iconSclass="z-icon-trash-o" style="background-color:red"
-												onClick="@command('borrarConceptoConfirmacion', convenioconcepto=each)"
-												tooltiptext="Borrar" disabled="@load(!vm.opQuitarConcepto)" />
+								<listbox emptyMessage="lista vacía..."
+									mold="paging" vflex="1" hflex="1" autopaging="true"
+									model="@load(vm.lConceptosConvenios)" checkmark="true">
 
-										</hlayout>
+									<listhead>
 
+										<listheader width="30px"
+											align="center" />
+										<listheader label="ID"
+											align="right" hflex="min" />
+										<listheader label="Concepto"
+											align="left" />
+										<listheader align="center"
+											width="50px" />
 
-									</listcell>
 
+									</listhead>
 
-								</listitem>
+									<template name="model">
 
+										<listitem>
 
-							</template>
+											<listcell />
+											<listcell
+												label="@load(each.convenioconceptopk.concepto.conceptoid)" />
+											<listcell
+												label="@load(each.convenioconceptopk.concepto.concepto)"
+												tooltiptext="@load(each.convenioconceptopk.concepto.concepto)" />
 
-							<listfoot>
-								<listfooter span="4" align="left">
-									<hlayout>
-										<label
-											value="@load(vm.lConceptosConvenios.size())" />
-										<label value="items" />
-									</hlayout>
-								</listfooter>
-							</listfoot>
+											<listcell>
+												<hlayout>
 
-						</listbox>
+													<button
+														iconSclass="z-icon-trash-o" style="background-color:red"
+														onClick="@command('borrarConceptoConfirmacion', convenioconcepto=each)"
+														tooltiptext="Borrar"
+														disabled="@load(!vm.opQuitarConcepto)" />
 
-					</vlayout>
+												</hlayout>
 
 
-				</groupbox>
+											</listcell>
+
+
+										</listitem>
+
+
+									</template>
+
+									<listfoot>
+										<listfooter span="4"
+											align="left">
+											<hlayout>
+												<label
+													value="@load(vm.lConceptosConvenios.size())" />
+												<label value="items" />
+											</hlayout>
+										</listfooter>
+									</listfoot>
+
+								</listbox>
+
+							</vlayout>
+
+						</tabpanel>
+					</tabpanels>
+				</tabbox>
+
 
 			</vlayout>
-
 
 
 		</hlayout>
