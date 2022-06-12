@@ -344,7 +344,7 @@ public class PersonaVM extends TemplateViewModel {
 			Tipotipo tipotipo = this.reg.getObjectByColumnString(Tipotipo.class.getName(), "sigla", ParamsLocal.SIGLA_DOCUMENTO);
 			String buscarDocumentoSQL = this.um.getSql("buscarTipos.sql").replace("?1", ""+tipotipo.getTipotipoid());
 			
-			System.out.println(buscarDocumentoSQL);
+			//System.out.println(buscarDocumentoSQL);
 			
 			this.lDocumentosBuscar = this.reg.sqlNativo(buscarDocumentoSQL);
 			
@@ -512,7 +512,7 @@ public class PersonaVM extends TemplateViewModel {
 				
 				String buscarGradoAcademicoSQL = this.um.getSql("buscarGradoAcademico.sql");
 				
-				System.out.println(buscarGradoAcademicoSQL);
+				//System.out.println(buscarGradoAcademicoSQL);
 				
 				this.lGradosAcademicosBuscar = this.reg.sqlNativo(buscarGradoAcademicoSQL);
 				

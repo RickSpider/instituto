@@ -65,7 +65,7 @@
 								<listcell label="@load(each.conceptoid)" />
 								<listcell label="@load(each.concepto)" />
 								<listcell label="@load(each.descripcion)" />
-								<listcell label="@load(each.importe)" />
+								<listcell label="@load(each.impuestoTipo.descripcion)" />
 								
 								<listcell>
 									<hlayout>

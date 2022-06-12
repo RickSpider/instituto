@@ -17,6 +17,7 @@ public class ParamsLocal extends Params {
 	//SIGLA TIPOTIPOS
 	public static final String SIGLA_ESTADO_CIVIL = "ESTADO_CIVIL";
 	public static final String SIGLA_DOCUMENTO = "DOCUMENTO";
+	public static final String SIGLA_IMPUESTO = "IMPUESTO";
 	
 	//Sede
 	public static final String OP_CREAR_SEDE = "CrearSede";
@@ -91,6 +92,9 @@ public class ParamsLocal extends Params {
 	
 	public static final String OP_AGREGAR_CURSOVIGENTE_ALUMNO = "AgregarCursoVigenteAlumno";
 	public static final String OP_QUITAR_CURSOVIGENTE_ALUMNO = "QuitarCursoVigenteAlumno";
+	
+	public static final String OP_AGREGAR_CURSOVIGENTE_CONCEPTO = "AgregarCursoVigenteConcepto";
+	public static final String OP_QUITAR_CURSOVIGENTE_CONCEPTO = "QuitarCursoVigenteConcepto";
 	
 	
 }

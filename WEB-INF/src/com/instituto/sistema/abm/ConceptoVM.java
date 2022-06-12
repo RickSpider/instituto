@@ -17,6 +17,8 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
 import com.doxacore.TemplateViewModel;
+import com.doxacore.modelo.Tipo;
+import com.doxacore.modelo.Tipotipo;
 import com.instituto.modelo.Concepto;
 import com.instituto.util.ParamsLocal;
 
@@ -83,16 +85,16 @@ public class ConceptoVM extends TemplateViewModel {
 	}
 
 	// fin seccion
-	
-	//seccion modal
-	
+
+	// seccion modal
+
 	private Window modal;
 	private boolean editar = false;
 
 	@Command
 	public void modalConceptoAgregar() {
 
-		if(!this.opCrearConcepto)
+		if (!this.opCrearConcepto)
 			return;
 
 		this.editar = false;
@@ -105,54 +107,47 @@ public class ConceptoVM extends TemplateViewModel {
 
 		if (conceptoid != -1) {
 
-			if(!this.opEditarConcepto)
+			if (!this.opEditarConcepto)
 				return;
-			
+
 			this.conceptoSelected = this.reg.getObjectById(Concepto.class.getName(), conceptoid);
+			this.buscarImpuesto = this.conceptoSelected.getImpuestoTipo().getTipo();
 			this.editar = true;
 
 		} else {
-			
+
 			conceptoSelected = new Concepto();
+			this.buscarImpuesto = "";
 
 		}
 
-		modal = (Window) Executions.createComponents("/instituto/zul/abm/conceptoModal.zul", this.mainComponent,
-				null);
+		modal = (Window) Executions.createComponents("/instituto/zul/abm/conceptoModal.zul", this.mainComponent, null);
 		Selectors.wireComponents(modal, this, false);
 		modal.doModal();
 
 	}
-	
+
 	private boolean verificarCampos() {
-		
+
 		if (this.conceptoSelected.getConcepto() == null || this.conceptoSelected.getConcepto().length() <= 0) {
-			
+
 			return false;
-			
+
 		}
-		
+
 		if (this.conceptoSelected.getDescripcion() == null || this.conceptoSelected.getDescripcion().length() <= 0) {
-			
+
 			return false;
-			
+
 		}
-		
-		if (this.conceptoSelected.getImporte() == null ) {
-			
-			return false;
-			
-		}
-		
-		
-		
+
 		return true;
-	}	
+	}
 
 	@Command
 	@NotifyChange("lConceptos")
 	public void guardar() {
-		
+
 		if (!verificarCampos()) {
 			return;
 		}
@@ -164,57 +159,96 @@ public class ConceptoVM extends TemplateViewModel {
 		this.cargarConceptos();
 
 		this.modal.detach();
-		
+
 		if (editar) {
-			
+
 			Notification.show("El Concepto fue Actualizado.");
 			this.editar = false;
-		}else {
-			
+		} else {
+
 			Notification.show("El Concepto fue agregado.");
 		}
-		
-		
 
 	}
 
-	
-	//fin modal
-	
+	// fin modal
+
 	@Command
 	public void borrarConceptoConfirmacion(@BindingParam("concepto") final Concepto concepto) {
-		
+
 		if (!this.opBorrarConcepto)
 			return;
-		
-		EventListener event = new EventListener () {
+
+		EventListener event = new EventListener() {
 
 			@Override
 			public void onEvent(Event evt) throws Exception {
-				
+
 				if (evt.getName().equals(Messagebox.ON_YES)) {
-					
+
 					borrarConcepto(concepto);
-					
+
 				}
-				
+
 			}
 
 		};
-		
+
 		this.mensajeEliminar("El Concepto sera eliminado. \n Continuar?", event);
 	}
-	
-	private void borrarConcepto (Concepto concepto) {
-		
+
+	private void borrarConcepto(Concepto concepto) {
+
 		this.reg.deleteObject(concepto);
-		
+
 		this.cargarConceptos();
-		
-		BindUtils.postNotifyChange(null,null,this,"lConceptos");
-		
+
+		BindUtils.postNotifyChange(null, null, this, "lConceptos");
+
 	}
-	
+
+	// buscarImpuesto
+
+	private List<Object[]> lImpuestosBuscarOri = null;
+	private List<Object[]> lImpuestosBuscar = null;
+	private Tipo buscarSelectedImpuesto = null;
+	private String buscarImpuesto = "";
+
+	@Command
+	@NotifyChange("lImpuestosBuscar")
+	public void filtrarImpuestoBuscar() {
+
+		this.lImpuestosBuscar = this.filtrarListaObject(buscarImpuesto, this.lImpuestosBuscarOri);
+
+	}
+
+	@Command
+	@NotifyChange("lImpuestosBuscar")
+	public void generarListaBuscarImpuesto() {
+
+		Tipotipo tipotipo = this.reg.getObjectByColumnString(Tipotipo.class.getName(), "sigla",
+				ParamsLocal.SIGLA_IMPUESTO);
+		String buscarImpuestoSQL = this.um.getSql("buscarTipos.sql").replace("?1", "" + tipotipo.getTipotipoid());
+
+		//System.out.println(buscarImpuestoSQL);
+
+		this.lImpuestosBuscar = this.reg.sqlNativo(buscarImpuestoSQL);
+
+		this.lImpuestosBuscarOri = this.lImpuestosBuscar;
+	}
+
+	@Command
+	@NotifyChange("buscarImpuesto")
+	public void onSelectImpuesto(@BindingParam("id") long id) {
+
+		this.buscarSelectedImpuesto = this.reg.getObjectById(Tipo.class.getName(), id);
+		this.buscarImpuesto = this.buscarSelectedImpuesto.getTipo();
+		this.conceptoSelected.setImpuestoTipo(buscarSelectedImpuesto);
+
+	}
+
+	// fin buscarImpuesto
+
 	public List<Concepto> getlConceptos() {
 		return lConceptos;
 	}
@@ -270,5 +304,21 @@ public class ConceptoVM extends TemplateViewModel {
 	public void setEditar(boolean editar) {
 		this.editar = editar;
 	}
-	
+
+	public List<Object[]> getlImpuestosBuscar() {
+		return lImpuestosBuscar;
+	}
+
+	public void setlImpuestosBuscar(List<Object[]> lImpuestosBuscar) {
+		this.lImpuestosBuscar = lImpuestosBuscar;
+	}
+
+	public String getBuscarImpuesto() {
+		return buscarImpuesto;
+	}
+
+	public void setBuscarImpuesto(String buscarImpuesto) {
+		this.buscarImpuesto = buscarImpuesto;
+	}
+
 }

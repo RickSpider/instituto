@@ -1,255 +1,339 @@
 <?page title="CursosVigentes" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window title="CursoVigente" border="normal"
+	<window title="CursoVigente" border="normal"
 		viewModel="@id('vm') @init('com.instituto.sistema.administracion.CursoVigenteVM')"
 		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
 
 		<hlayout vflex="1">
-			
-				<vlayout hflex="1" vflex="1">
 
-					<hbox pack="end" hflex="1" >
+			<vlayout hflex="1" vflex="1">
 
-						<button label="Agregar"
-							iconSclass=" z-icon-plus" onClick="@command('modalCursoVigenteAgregar')" disabled="@load(!vm.opCrearCursoVigente)" />
+				<hbox pack="end" hflex="1">
 
-					</hbox>
+					<button label="Agregar" iconSclass=" z-icon-plus"
+						onClick="@command('modalCursoVigenteAgregar')"
+						disabled="@load(!vm.opCrearCursoVigente)" />
 
-					<listbox emptyMessage="lista vacía..." mold="paging"
-						vflex="1" model="@load(vm.lCursosVigentes)" checkmark="true">
+				</hbox>
 
-						<listhead>
+				<listbox emptyMessage="lista vacía..." mold="paging"
+					vflex="1" model="@load(vm.lCursosVigentes)" checkmark="true">
 
-							<listheader hflex="min" align="center" />
-							<listheader label="ID" align="right"
-								hflex="min" />
-							<listheader label="Curso" align="left"
-								 />
-							<listheader label="Fecha Inicio" align="left"
-								/>
-							<listheader label="Fecha Fin" align="left"
-								 />
-							<listheader align="center" 
-								width="100px"/>
+					<listhead>
+
+						<listheader hflex="min" align="center" />
+						<listheader label="ID" align="right"
+							hflex="min" />
+						<listheader label="Curso" align="left" />
+						<listheader label="Fecha Inicio" align="left" />
+						<listheader label="Fecha Fin" align="left" />
+						<listheader align="center" width="100px" />
 
 
-						</listhead>
+					</listhead>
 
 
-						<auxhead>
+					<auxhead>
 
-							<auxheader />
-							<auxheader />
-							<auxheader>
-								<textbox
-									value="@bind(vm.filtroColumns[0])" instant="true"
-									onChange="@command('filtrarCursoVigente')" hflex="1" />
-							</auxheader>
+						<auxheader />
+						<auxheader />
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[0])"
+								instant="true" onChange="@command('filtrarCursoVigente')"
+								hflex="1" />
+						</auxheader>
 
-							<auxheader>
-								<textbox
-									value="@bind(vm.filtroColumns[1])" instant="true"
-									onChange="@command('filtrarCursoVigente')" hflex="1" />
-							</auxheader>
-							
-							<auxheader>
-								<textbox
-									value="@bind(vm.filtroColumns[2])" instant="true"
-									onChange="@command('filtrarCursoVigente')" hflex="1" />
-							</auxheader>
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[1])"
+								instant="true" onChange="@command('filtrarCursoVigente')"
+								hflex="1" />
+						</auxheader>
 
-							<auxheader />
-						</auxhead>
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[2])"
+								instant="true" onChange="@command('filtrarCursoVigente')"
+								hflex="1" />
+						</auxheader>
 
-						<template name="model">
+						<auxheader />
+					</auxhead>
 
-							<listitem onClick="@command('refrescarAlumnos', cursoVigente = each )">
-								<listcell />
-								<listcell label="@load(each.cursovigenteid)" />
-								<listcell
-									label="@load(each.curso.curso)" />
-								<listcell
-									label="@load(each.fechaInicio)" />
-								<listcell
-									label="@load(each.fechaFin)" />
-							
+					<template name="model">
 
-								<listcell>
-									<hlayout>
-
-										<button iconSclass="z-icon-edit"
-											onClick="@command('modalCursoVigente', cursovigenteid=each.cursovigenteid)"
-											tooltiptext="Editar" disabled="@load(!vm.opEditarCursoVigente)"/>
-										<button
-											iconSclass="z-icon-trash-o" style="background-color:red"
-											onClick="@command('borrarCursoVigenteConfirmacion', cursoVigente=each)"
-											tooltiptext="Borrar" disabled="@load(!vm.opBorrarCursoVigente)"/>
+						<listitem
+							onClick="@command('refrescarAlumnos', cursoVigente = each )">
+							<listcell />
+							<listcell
+								label="@load(each.cursovigenteid)" />
+							<listcell label="@load(each.curso.curso)" />
+							<listcell label="@load(each.fechaInicio)" />
+							<listcell label="@load(each.fechaFin)" />
 
 
-									</hlayout>
-
-
-								</listcell>
-
-
-							</listitem>
-
-
-						</template>
-
-						<listfoot>
-							<listfooter span="4" align="left">
+							<listcell>
 								<hlayout>
-									<label
-										value="@load(vm.lCursosVigentes.size())" />
-									<label value="items" />
+
+									<button iconSclass="z-icon-edit"
+										onClick="@command('modalCursoVigente', cursovigenteid=each.cursovigenteid)"
+										tooltiptext="Editar"
+										disabled="@load(!vm.opEditarCursoVigente)" />
+									<button iconSclass="z-icon-trash-o"
+										style="background-color:red"
+										onClick="@command('borrarCursoVigenteConfirmacion', cursoVigente=each)"
+										tooltiptext="Borrar"
+										disabled="@load(!vm.opBorrarCursoVigente)" />
+
+
 								</hlayout>
-							</listfooter>
-						</listfoot>
 
 
-					</listbox>
-
-				</vlayout>
-				
-				<vlayout vflex="1" hflex="1">
-				
-				<groupbox vflex="1" hflex="1">
-					<caption label="Alumnos por CursoVigente" />
-
-					<vlayout hflex="1" vflex="1">
-
-						<hbox pack="end" hflex="1">
-
-							<bandbox id="bd"
-								value="@load(vm.buscarAlumno)" mold="rounded" autodrop="true"
-								width="250px" onOpen="@command('generarListaBuscarAlumno')"
-								readonly="true">
-								<bandpopup>
-
-									<vbox>
-
-										<hbox>
-
-											<label value="Buscar:" />
-
-											<textbox instant="true"
-												value="@bind(vm.buscarAlumno)"
-												onChange="@command('filtrarAlumnoBuscar')" />
-
-										</hbox>
-
-										<listbox height="250px" emptyMessage="lista vacía..."
-											width="450px" mold="paging" autopaging="true"
-											onSelect="bd.close()" model="@load(vm.lAlumnosBuscar)">
-
-											<listhead>
-												<listheader label="ID"
-													hflex="min" />
-												<listheader
-													label="Nombre" />
-												<listheader
-													label="Apellido" />
-											</listhead>
-
-											<template name="model">
-
-												<listitem
-													value="@load(each[1])"
-													onClick="@command('onSelectAlumno', id = each[0])">
-
-													<listcell
-														label="@load(each[0])" />
-
-													<listcell
-														label="@load(each[1])" />
-
-													<listcell
-														label="@load(each[2])" />
-
-												</listitem>
-
-											</template>
-											<listitem />
-										</listbox>
-
-									</vbox>
-								</bandpopup>
-							</bandbox>
-
-							<button iconSclass=" z-icon-plus"
-								onClick="@command('agregarAlumno')"
-								disabled="@load(!vm.opAgregarCursoVigenteAlumno)" />
-
-						</hbox>
-
-						<listbox emptyMessage="lista vacía..."
-							mold="paging" vflex="1" hflex="1"  autopaging="true"
-							model="@load(vm.lAlumnosCursosVigentes)" checkmark="true">
-
-							<listhead>
-
-								<listheader width="30px" align="center" />
-								<listheader label="ID" align="right"
-									width="30px" />
-								<listheader label="Alumno" align="left" />
-								<listheader label="Documento" align="left" />
-								<listheader align="center" width="50px" />
+							</listcell>
 
 
-							</listhead>
-
-							<template name="model">
-
-								<listitem>
-
-									<listcell />
-									<listcell
-										label="@load(each.cursovigentealumnopk.alumno.alumnoid)" />
-									<listcell
-										label="@load(each.cursovigentealumnopk.alumno.fullNombre)" tooltiptext="@load(each.cursovigentealumnopk.alumno.fullNombre)" />
-									<listcell
-										label="@load(each.cursovigentealumnopk.alumno.persona.documentoNum)" tooltiptext="@load(each.cursovigentealumnopk.alumno.persona.documentoNum)" />
-
-									<listcell>
-										<hlayout>
-
-											<button
-												iconSclass="z-icon-trash-o" style="background-color:red"
-												onClick="@command('borrarAlumnoConfirmacion', cursoVigentealumno=each)"
-												tooltiptext="Borrar" disabled="@load(!vm.opQuitarCursoVigenteAlumno)" />
-
-										</hlayout>
+						</listitem>
 
 
-									</listcell>
+					</template>
+
+					<listfoot>
+						<listfooter span="4" align="left">
+							<hlayout>
+								<label
+									value="@load(vm.lCursosVigentes.size())" />
+								<label value="items" />
+							</hlayout>
+						</listfooter>
+					</listfoot>
 
 
-								</listitem>
+				</listbox>
+
+			</vlayout>
+
+			<vlayout vflex="1" hflex="1">
+
+				<tabbox hflex="1" vflex="1">
+					<tabs>
+
+						<tab label="Alumnos" />
+						<tab label="Conceptos" />
+
+					</tabs>
+					<tabpanels>
+
+						<tabpanel>
+
+							<vlayout hflex="1" vflex="1">
+
+								<hbox pack="end" hflex="1">
+
+									<bandbox id="bd"
+										value="@load(vm.buscarAlumno)" mold="rounded" autodrop="true"
+										width="250px" onOpen="@command('generarListaBuscarAlumno')"
+										readonly="true">
+										<bandpopup>
+
+											<vbox>
+
+												<hbox>
+
+													<label
+														value="Buscar:" />
+
+													<textbox
+														instant="true" value="@bind(vm.buscarAlumno)"
+														onChange="@command('filtrarAlumnoBuscar')" />
+
+												</hbox>
+
+												<listbox height="250px"
+													emptyMessage="lista vacía..." width="450px" mold="paging"
+													autopaging="true" onSelect="bd.close()"
+													model="@load(vm.lAlumnosBuscar)">
+
+													<listhead>
+														<listheader
+															label="ID" hflex="min" />
+														<listheader
+															label="Nombre" />
+														<listheader
+															label="Apellido" />
+													</listhead>
+
+													<template
+														name="model">
+
+														<listitem
+															value="@load(each[1])"
+															onClick="@command('onSelectAlumno', id = each[0])">
+
+															<listcell
+																label="@load(each[0])" />
+
+															<listcell
+																label="@load(each[1])" />
+
+															<listcell
+																label="@load(each[2])" />
+
+														</listitem>
+
+													</template>
+													<listitem />
+												</listbox>
+
+											</vbox>
+										</bandpopup>
+									</bandbox>
+
+									<button iconSclass=" z-icon-plus"
+										onClick="@command('agregarAlumno')"
+										disabled="@load(!vm.opAgregarCursoVigenteAlumno)" />
+
+								</hbox>
+
+								<listbox emptyMessage="lista vacía..."
+									mold="paging" vflex="1" hflex="1" autopaging="true"
+									model="@load(vm.lAlumnosCursosVigentes)" checkmark="true">
+
+									<listhead>
+
+										<listheader width="30px"
+											align="center" />
+										<listheader label="ID"
+											align="right" hflex="min" />
+										<listheader label="Concepto"
+											align="left" />
+										<listheader label="Documento"
+											align="left" />
+										<listheader align="center"
+											width="50px" />
 
 
-							</template>
+									</listhead>
 
-							<listfoot>
-								<listfooter span="4" align="left">
-									<hlayout>
-										<label
-											value="@load(vm.lAlumnosCursosVigentes.size())" />
-										<label value="items" />
-									</hlayout>
-								</listfooter>
-							</listfoot>
+									<template name="model">
 
-						</listbox>
+										<listitem>
 
-					</vlayout>
+											<listcell />
+											<listcell
+												label="@load(each.cursovigentealumnopk.alumno.alumnoid)" />
+											<listcell
+												label="@load(each.cursovigentealumnopk.alumno.fullNombre)"
+												tooltiptext="@load(each.cursovigentealumnopk.alumno.fullNombre)" />
+											<listcell
+												label="@load(each.cursovigentealumnopk.alumno.persona.documentoNum)"
+												tooltiptext="@load(each.cursovigentealumnopk.alumno.persona.documentoNum)" />
 
-				</groupbox>
-				
-				</vlayout>
+											<listcell>
+												<hlayout>
 
-		
-			
+													<button
+														iconSclass="z-icon-trash-o" style="background-color:red"
+														onClick="@command('borrarAlumnoConfirmacion', cursoVigenteAlumno=each)"
+														tooltiptext="Borrar"
+														disabled="@load(!vm.opQuitarCursoVigenteAlumno)" />
+
+												</hlayout>
+
+											</listcell>
+
+										</listitem>
+
+									</template>
+
+									<listfoot>
+										<listfooter span="4"
+											align="left">
+											<hlayout>
+												<label
+													value="@load(vm.lAlumnosCursosVigentes.size())" />
+												<label value="items" />
+											</hlayout>
+										</listfooter>
+									</listfoot>
+
+								</listbox>
+
+							</vlayout>
+
+						</tabpanel>
+						
+						<tabpanel>
+						
+							<listbox emptyMessage="lista vacía..."
+									mold="paging" vflex="1" hflex="1" autopaging="true"
+									model="@load(vm.lConceptosCursosVigentes)" checkmark="true">
+
+									<listhead>
+
+										<listheader width="30px"
+											align="center" />
+										<listheader label="ID"
+											align="right" hflex="min" />
+										<listheader label="Concepto"
+											align="left" />
+										<listheader label="Documento"
+											align="left" />
+										<listheader align="center"
+											width="50px" />
+
+
+									</listhead>
+
+									<template name="model">
+
+										<listitem>
+
+											<listcell />
+											<listcell
+												label="@load(each.cursovigenteconceptopk.concepto.conceptoid)" />
+											<listcell
+												label="@load(each.cursovigenteconceptopk.concepto.concepto)"
+												tooltiptext="@load(each.cursovigenteconceptopk.concepto.concepto)" />
+
+											<listcell>
+												<hlayout>
+
+													<button
+														iconSclass="z-icon-trash-o" style="background-color:red"
+														onClick="@command('borrarConceptoConfirmacion', cursoVigenteConcepto=each)"
+														tooltiptext="Borrar"
+														disabled="@load(!vm.opQuitarCursoVigenteConcepto)" />
+
+												</hlayout>
+
+											</listcell>
+
+										</listitem>
+
+									</template>
+
+									<listfoot>
+										<listfooter span="4"
+											align="left">
+											<hlayout>
+												<label
+													value="@load(vm.lConceptosCursosVigentes.size())" />
+												<label value="items" />
+											</hlayout>
+										</listfooter>
+									</listfoot>
+
+								</listbox>
+							
+						
+						</tabpanel>
+						
+					</tabpanels>
+					
+				</tabbox>
+
+			</vlayout>
+
+
+
 		</hlayout>
 
 	</window>

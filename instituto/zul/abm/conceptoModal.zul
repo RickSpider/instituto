@@ -29,14 +29,74 @@
 			
 			<hlayout>
 
-				<hbox width="130px">
-					<label value="Importe: "
-						style="font-weight:bold" />
-				</hbox>
-				<intbox value="@load(vm.conceptoSelected.importe) @save(vm.conceptoSelected.importe, before='guardar')"
-					constraint="no empty: Es campo obligatorio."
-					width="150px" />
+				<hlayout>
 
+					<hbox width="130px">
+						<label value="Impuesto: "
+							style="font-weight:bold" />
+					</hbox>
+
+					<bandbox id="bdImpuesto"
+						value="@load(vm.buscarImpuesto) @save(vm.buscarImpuesto, before='guardar')"
+						constraint="no empty: Es campo obligatorio." mold="rounded"
+						autodrop="true" width="150px"
+						onOpen="@command('generarListaBuscarImpuesto')"
+						readonly="true">
+						<bandpopup>
+
+							<vbox>
+
+								<hbox>
+
+									<label value="Buscar:" />
+
+									<textbox instant="true"
+										value="@bind(vm.buscarImpuesto)"
+										onChange="@command('filtrarImpuestoBuscar')" />
+
+								</hbox>
+
+								<listbox height="250px" width="450px"
+									mold="paging" autopaging="true" onSelect="bdImpuesto.close()"
+									model="@load(vm.lImpuestosBuscar)">
+
+									<listhead>
+										<listheader label="ID"
+											hflex="min" />
+										<listheader label="Impuesto" />
+										<listheader label="Descripcion" />
+									</listhead>
+
+									<template name="model">
+
+										<listitem
+											onClick="@command('onSelectImpuesto', id = each[0])">
+
+											<listcell
+												label="@load(each[0])" />
+
+											<listcell
+												label="@load(each[1])" />
+
+											<listcell
+												label="@load(each[2])" />
+
+											<listcell
+												label="@load(each[3])" />
+
+
+
+										</listitem>
+
+									</template>
+									<listitem />
+								</listbox>
+
+							</vbox>
+						</bandpopup>
+					</bandbox>
+
+				</hlayout>
 			</hlayout>
 
 			<space height="10px" />

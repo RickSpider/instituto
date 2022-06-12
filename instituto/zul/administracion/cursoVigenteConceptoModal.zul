@@ -1,0 +1,116 @@
+<?page title="conceptoModal" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Concepto Crear/Ver/Editar" border="normal"
+		position="center,center" closable="true" mode="modal"
+		action="show: slideDown;hide: slideUp">
+
+		<vlayout>
+
+			<hlayout>
+				<hbox width="130px">
+					<label value="Concepto: " style="font-weight:bold" />
+				</hbox>
+				<textbox value="@load(vm.conceptoSelected.concepto) @save(vm.conceptoSelected.concepto, before='guardar')"
+					readonly="@load(vm.editar)" width="150px" 
+					constraint="no empty: Es campo obligatorio."/>
+			</hlayout>
+
+
+
+			<hlayout>
+
+				<hbox width="130px">
+					<label value="Concepto: " style="font-weight:bold" />
+				</hbox>
+
+				<bandbox id="bd" value="@load(vm.buscarConcepto) @save(vm.buscarConcepto, before='guardar')"
+					constraint="no empty: Es campo obligatorio."
+					mold="rounded" autodrop="true" width="150px"
+					onOpen="@command('generarListaBuscarConcepto')" readonly="true">
+					<bandpopup>
+
+						<vbox>
+
+							<hbox>
+
+								<label value="Buscar:" />
+
+								<textbox instant="true"
+									value="@bind(vm.buscarConcepto)"
+									onChange="@command('filtrarConceptoBuscar')" />
+
+							</hbox>
+
+							<listbox height="250px" width="450px"
+								mold="paging" autopaging="true" onSelect="bd.close()"
+								model="@load(vm.lConceptosBuscar)">
+
+								<listhead>
+									<listheader label="ID" hflex="min" />
+									<listheader label="Concepto" />
+									<listheader label="Departamento" />
+									<listheader label="Pais" />
+								</listhead>
+
+								<template name="model">
+
+									<listitem 
+										onClick="@command('onSelectConcepto', id = each[0])">
+
+										<listcell
+											label="@load(each[0])" />
+
+										<listcell
+											label="@load(each[1])" />
+
+										<listcell
+											label="@load(each[2])" />
+										
+										<listcell
+											label="@load(each[3])" />
+										
+										
+
+									</listitem>
+
+								</template>
+								<listitem />
+							</listbox>
+
+						</vbox>
+					</bandpopup>
+				</bandbox>
+
+
+			</hlayout>
+			
+			<hlayout>
+				<hbox width="130px">
+					<label value="Es porcentaje: " style="font-weight:bold" />
+				</hbox>
+				<checkbox checked="@bind(vm.cursoVigenteConceptoSelected.porcentaje)" />
+			</hlayout>
+
+			<hlayout>
+				<hbox width="130px">
+					<label value="Importe: " style="font-weight:bold" />
+				</hbox>
+				<doublebox value="@load(vm.cursoVigenteConceptoSelected.importe) @save(vm.cursoVigenteConceptoSelected.importe, before='guardar')" 
+				constraint="no empty: Es campo obligatorio."/>
+			</hlayout>
+
+
+
+			<space height="10px" />
+
+			<hlayout>
+
+				<button label="Aceptar" onClick="@command('guardar')"/>
+
+			</hlayout>
+
+		</vlayout>
+
+
+	</window>
+</zk>

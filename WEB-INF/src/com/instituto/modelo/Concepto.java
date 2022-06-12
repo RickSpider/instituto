@@ -7,9 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.doxacore.modelo.Modelo;
+import com.doxacore.modelo.Tipo;
 
 @Entity 
 @Table(name="conceptos")
@@ -26,17 +29,20 @@ public class Concepto extends Modelo implements Serializable{
 	private Long conceptoid;
 	private String concepto;
 	private String descripcion;
-	private Integer importe;
+	
+	@ManyToOne
+	@JoinColumn(name = "impuestotipoid")
+	private Tipo impuestoTipo;
 
 	@Override
 	public Object[] getArrayObjectDatos() {
-		Object[] o = {this.concepto, this.descripcion, this.importe};
+		Object[] o = {this.concepto, this.descripcion, this.impuestoTipo.getDescripcion()};
 		return o;
 	}
 
 	@Override
 	public String getStringDatos() {
-		return this.conceptoid +" "+this.concepto+" "+this.descripcion+" "+this.importe;
+		return this.conceptoid +" "+this.concepto+" "+this.descripcion+" "+this.impuestoTipo.getDescripcion();
 	}
 
 	public Long getConceptoid() {
@@ -63,19 +69,18 @@ public class Concepto extends Modelo implements Serializable{
 		this.descripcion = descripcion;
 	}
 
-	public Integer getImporte() {
-		return importe;
-	}
-
-	public void setImporte(Integer importe) {
-		this.importe = importe;
-	}
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
-	
+
+	public Tipo getImpuestoTipo() {
+		return impuestoTipo;
+	}
+
+	public void setImpuestoTipo(Tipo impuestoTipo) {
+		this.impuestoTipo = impuestoTipo;
+	}
+
 	
 
 }
