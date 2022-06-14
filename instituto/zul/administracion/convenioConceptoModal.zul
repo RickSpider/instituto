@@ -1,4 +1,4 @@
-<?page title="cursoVigenteConceptoModal" contentType="text/html;charset=UTF-8"?>
+<?page title="convenioConceptoModal" contentType="text/html;charset=UTF-8"?>
 <zk>
 	<window title="Concepto Crear/Ver/Editar" border="normal"
 		position="center,center" closable="true" mode="modal"
@@ -57,6 +57,8 @@
 										
 										<listcell
 											label="@load(each[3])" />
+										
+										
 
 									</listitem>
 
@@ -75,8 +77,15 @@
 				<hbox width="130px">
 					<label value="Importe: " style="font-weight:bold" />
 				</hbox>
-				<doublebox value="@load(vm.cursoVigenteConceptoSelected.importe) @save(vm.cursoVigenteConceptoSelected.importe, before='guardarConcepto')" 
+				<doublebox value="@load(vm.convenioConceptoSelected.importe) @save(vm.convenioConceptoSelected.importe, before='guardarConcepto')" 
 				constraint="no empty: Es campo obligatorio."/>
+			</hlayout>
+
+			<hlayout>
+				<hbox width="130px">
+					<label value="Es porcentaje: " style="font-weight:bold" />
+				</hbox>
+				<checkbox checked="@bind(vm.convenioConceptoSelected.porcentaje)" />
 			</hlayout>
 
 			<space height="10px" />

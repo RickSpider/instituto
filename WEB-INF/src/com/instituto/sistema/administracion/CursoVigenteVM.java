@@ -18,6 +18,8 @@ import org.zkoss.zul.Window;
 
 import com.doxacore.TemplateViewModel;
 import com.instituto.modelo.Alumno;
+import com.instituto.modelo.Concepto;
+import com.instituto.modelo.Convenio;
 import com.instituto.modelo.CursoVigente;
 import com.instituto.modelo.CursoVigenteAlumno;
 import com.instituto.modelo.CursoVigenteConcepto;
@@ -34,6 +36,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	private CursoVigente cursoVigenteSelectedAlumnoConcepto; 
 	private List<CursoVigenteAlumno> lAlumnosCursosVigentes;
 	private List<CursoVigenteConcepto> lConceptosCursosVigentes;
+	private CursoVigenteConcepto cursoVigenteConceptoSelected;
 
 	private boolean[] bDias = new boolean[7];
 
@@ -42,8 +45,10 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	private boolean opBorrarCursoVigente;
 	private boolean opAgregarCursoVigenteAlumno;
 	private boolean opQuitarCursoVigenteAlumno;
+	
 	private boolean opAgregarCursoVigenteConcepto;
 	private boolean opQuitarCursoVigenteConcepto;
+	private boolean opEditarCursoVigenteConcepto;
 
 	@Init(superclass = true)
 	public void initCursoVigenteVM() {
@@ -69,6 +74,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		
 		this.opAgregarCursoVigenteConcepto = this.operacionHabilitada(ParamsLocal.OP_AGREGAR_CURSOVIGENTE_CONCEPTO);
 		this.opQuitarCursoVigenteConcepto = this.operacionHabilitada(ParamsLocal.OP_QUITAR_CURSOVIGENTE_CONCEPTO);
+		this.opEditarCursoVigenteConcepto = this.operacionHabilitada(ParamsLocal.OP_EDITAR_CURSOVIGENTE_CONCEPTO);
 
 	}
 
@@ -278,6 +284,17 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	}
 
 	// fin buscar ciudad
+	
+	
+	@Command
+	@NotifyChange({ "lAlumnosCursosVigentes", "buscarAlumno", "lConceptosCursosVigentes", "buscarConcepto" })
+	public void refrescarAll(@BindingParam("cursoVigente") CursoVigente cursoVigente) {
+		
+		this.refrescarAlumnos(cursoVigente);
+		this.refrescarConceptos(cursoVigente);
+		
+	}
+	
 
 	// Seccion alumnos cursoVigente
 
@@ -417,7 +434,81 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 	// fins buscador
 	
-	// Seccion alumnos cursoVigente
+	// Seccion Conceptos cursoVigente
+	
+	@Command
+	public void modalCursoVigenteConceptoAgregar() {
+
+		if (!this.opAgregarCursoVigenteConcepto)
+			return;
+		
+		if (this.cursoVigenteSelectedAlumnoConcepto == null) {
+			
+			this.mensajeInfo("Seleccione un Curso Vigente.");
+			return;
+		}
+
+		this.editar = false;
+		modalCursoVigenteConcepto(null);
+
+	}
+
+	@Command
+	public void modalCursoVigenteConcepto(@BindingParam("cursovigenteconcepto") CursoVigenteConcepto cursoVigenteConcepto) {
+
+		if (cursoVigenteConcepto != null) {
+
+			if (!this.opEditarCursoVigenteConcepto)
+				return;
+
+			this.cursoVigenteConceptoSelected = cursoVigenteConcepto;
+			this.buscarConcepto = this.cursoVigenteConceptoSelected.getConcepto().getConcepto();
+			this.editar = true;
+
+		} else {
+
+			this.cursoVigenteConceptoSelected = new CursoVigenteConcepto();
+			this.cursoVigenteConceptoSelected.setCursoVigente(this.cursoVigenteSelectedAlumnoConcepto);
+			this.buscarConcepto = "";
+
+		}
+
+		modal = (Window) Executions.createComponents("/instituto/zul/administracion/cursoVigenteConceptoModal.zul",
+				this.mainComponent, null);
+		Selectors.wireComponents(modal, this, false);
+		modal.doModal();
+
+	}
+	
+	@Command
+	@NotifyChange({ "lConceptosCursosVigentes"})
+	public void guardarConcepto() {
+
+		if (!verificarCampos()) {
+			return;
+		}
+
+		this.save(cursoVigenteConceptoSelected);
+
+		this.cursoVigenteConceptoSelected = null;
+
+		this.modal.detach();
+
+		if (editar) {
+
+			Notification.show("El Concepto fue Actualizado.");
+			this.editar = false;
+		} else {
+
+			Notification.show("El Concepto fue agregado.");
+		}
+		
+		this.refrescarConceptos(this.cursoVigenteSelectedAlumnoConcepto);
+
+	}
+
+
+	
 
 	@Command
 	@NotifyChange({ "lConceptosCursosVigentes", "buscarConcepto" })
@@ -443,7 +534,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 		}
 
-		this.mensajeEliminar("El Concepto " + ca.getConcepto().getConcepto() + " sera removido del Curso "
+		this.mensajeEliminar("El Concepto " + ca.getConcepto().getConcepto() + " sera removido del Curso Vigente"
 				+ ca.getCursoVigente().getCurso().getCurso() + " \n Continuar?", new EventListener() {
 
 					@Override
@@ -470,6 +561,48 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		BindUtils.postNotifyChange(null, null, this, "lConceptosCursosVigentes");
 
 	}
+	
+	private List<Object[]> lConceptosbuscarOri;
+	private List<Object[]> lConceptosBuscar;
+	private Concepto buscarSelectedConcepto;
+	private String buscarConcepto = "";
+
+	@Command
+	@NotifyChange("lConceptosBuscar")
+	public void filtrarConceptoBuscar() {
+
+		this.lConceptosBuscar = this.filtrarListaObject(buscarConcepto, this.lConceptosbuscarOri);
+
+	}
+
+	@Command
+	@NotifyChange("lConceptosBuscar")
+	public void generarListaBuscarConcepto() {
+
+		if (this.cursoVigenteSelectedAlumnoConcepto == null) {
+
+			this.mensajeInfo("Selecciona un CursoVigente.");
+
+			return;
+		}
+
+		String sqlBuscarConcepto = this.um.getSql("buscarCursoVigenteConcepto.sql").replace("?1", this.cursoVigenteSelectedAlumnoConcepto.getCursovigenteid()+"");
+
+		this.lConceptosBuscar = this.reg.sqlNativo(sqlBuscarConcepto);
+		this.lConceptosbuscarOri = this.lConceptosBuscar;
+	}
+
+	@Command
+	@NotifyChange("buscarConcepto")
+	public void onSelectConcepto(@BindingParam("id") long id) {
+
+		this.buscarSelectedConcepto = this.reg.getObjectById(Concepto.class.getName(), id);
+		this.buscarConcepto = buscarSelectedConcepto.getConcepto();
+		this.cursoVigenteConceptoSelected.setConcepto(buscarSelectedConcepto);
+
+	}
+
+	// fins buscador
 
 	// fin Conceptos cursoVigente
 
@@ -615,6 +748,38 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 	public void setOpQuitarCursoVigenteConcepto(boolean opQuitarCursoVigenteConcepto) {
 		this.opQuitarCursoVigenteConcepto = opQuitarCursoVigenteConcepto;
+	}
+
+	public String getBuscarConcepto() {
+		return buscarConcepto;
+	}
+
+	public void setBuscarConcepto(String buscarConcepto) {
+		this.buscarConcepto = buscarConcepto;
+	}
+
+	public CursoVigenteConcepto getCursoVigenteConceptoSelected() {
+		return cursoVigenteConceptoSelected;
+	}
+
+	public void setCursoVigenteConceptoSelected(CursoVigenteConcepto cursoVigenteConceptoSelected) {
+		this.cursoVigenteConceptoSelected = cursoVigenteConceptoSelected;
+	}
+
+	public boolean isOpEditarCursoVigenteConcepto() {
+		return opEditarCursoVigenteConcepto;
+	}
+
+	public void setOpEditarCursoVigenteConcepto(boolean opEditarCursoVigenteConcepto) {
+		this.opEditarCursoVigenteConcepto = opEditarCursoVigenteConcepto;
+	}
+
+	public List<Object[]> getlConceptosBuscar() {
+		return lConceptosBuscar;
+	}
+
+	public void setlConceptosBuscar(List<Object[]> lConceptosBuscar) {
+		this.lConceptosBuscar = lConceptosBuscar;
 	}
 
 }

@@ -61,7 +61,7 @@
 					<template name="model">
 
 						<listitem
-							onClick="@command('refrescarAlumnos', cursoVigente = each )">
+							onClick="@command('refrescarAll', cursoVigente = each )">
 							<listcell />
 							<listcell
 								label="@load(each.cursovigenteid)" />
@@ -259,10 +259,22 @@
 							</vlayout>
 
 						</tabpanel>
-						
+
 						<tabpanel>
-						
-							<listbox emptyMessage="lista vacía..."
+
+							<vlayout vflex="1" hflex="1">
+
+								<hbox pack="end" hflex="1">
+
+									<button label="Agregar"
+										iconSclass=" z-icon-plus"
+										onClick="@command('modalCursoVigenteConceptoAgregar')"
+										disabled="@load(!vm.opAgregarCursoVigenteConcepto)" />
+
+
+								</hbox>
+
+								<listbox emptyMessage="lista vacía..."
 									mold="paging" vflex="1" hflex="1" autopaging="true"
 									model="@load(vm.lConceptosCursosVigentes)" checkmark="true">
 
@@ -274,10 +286,10 @@
 											align="right" hflex="min" />
 										<listheader label="Concepto"
 											align="left" />
-										<listheader label="Documento"
+										<listheader label="Importe"
 											align="left" />
 										<listheader align="center"
-											width="50px" />
+											hflex="min" />
 
 
 									</listhead>
@@ -292,9 +304,18 @@
 											<listcell
 												label="@load(each.cursovigenteconceptopk.concepto.concepto)"
 												tooltiptext="@load(each.cursovigenteconceptopk.concepto.concepto)" />
+											<listcell
+												label="@load(each.importe)"
+												tooltiptext="@load(each.importe)" />
 
 											<listcell>
 												<hlayout>
+
+													<button
+														iconSclass="z-icon-edit"
+														onClick="@command('modalCursoVigenteConcepto', cursovigenteconcepto=each)"
+														tooltiptext="Editar"
+														disabled="@load(!vm.opEditarCursoVigenteConcepto)" />
 
 													<button
 														iconSclass="z-icon-trash-o" style="background-color:red"
@@ -322,12 +343,13 @@
 									</listfoot>
 
 								</listbox>
-							
-						
+
+							</vlayout>
+
 						</tabpanel>
-						
+
 					</tabpanels>
-					
+
 				</tabbox>
 
 			</vlayout>

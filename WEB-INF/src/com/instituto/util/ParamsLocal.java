@@ -73,13 +73,14 @@ public class ParamsLocal extends Params {
 	public static final String OP_EDITAR_CONVENIO = "EditarConvenio";
 	public static final String OP_BORRAR_CONVENIO = "BorrarConvenio";
 	
-	//Convenio Alumno
+	
 	public static final String OP_AGREGAR_ALUMNO = "AgregarAlumno";
 	public static final String OP_QUITAR_ALUMNO = "QuitarAlumno";
 	
-	//Convenio Alumno
-	public static final String OP_AGREGAR_CONCEPTO = "AgregarConcepto";
-	public static final String OP_QUITAR_CONCEPTO = "QuitarConcepto";
+
+	public static final String OP_AGREGAR_CONVENIO_CONCEPTO = "AgregarConvenioConcepto";
+	public static final String OP_QUITAR_CONVENIO_CONCEPTO = "QuitarConvenioConcepto";
+	public static final String OP_EDITAR_CONVENIO_CONCEPTO = "EditarConvenioConcepto";
 	
 	//CursoConcepto
 	public static final String OP_AGREGAR_CURSO_CONCEPTO = "AgregarCursoConcepto";
@@ -95,6 +96,7 @@ public class ParamsLocal extends Params {
 	
 	public static final String OP_AGREGAR_CURSOVIGENTE_CONCEPTO = "AgregarCursoVigenteConcepto";
 	public static final String OP_QUITAR_CURSOVIGENTE_CONCEPTO = "QuitarCursoVigenteConcepto";
+	public static final String OP_EDITAR_CURSOVIGENTE_CONCEPTO = "EditarCursoVigenteConcepto";
 	
 	
 }

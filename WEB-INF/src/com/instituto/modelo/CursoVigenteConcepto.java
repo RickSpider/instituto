@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import com.doxacore.modelo.Modelo;
 
 @Entity
-@Table(name="cursosconceptos")
+@Table(name="cursosvigentesconceptos")
 public class CursoVigenteConcepto extends Modelo implements Serializable {
 
 	/**
@@ -20,8 +20,6 @@ public class CursoVigenteConcepto extends Modelo implements Serializable {
 	
 	@EmbeddedId
 	private CursoVigenteConceptoPK cursovigenteconceptopk = new CursoVigenteConceptoPK();
-
-	private boolean porcentaje = false;
 	
 	private double importe;
 	
@@ -79,14 +77,6 @@ public class CursoVigenteConcepto extends Modelo implements Serializable {
 
 	public void setCursovigenteconceptopk(CursoVigenteConceptoPK cursovigenteconceptopk) {
 		this.cursovigenteconceptopk = cursovigenteconceptopk;
-	}
-
-	public boolean isPorcentaje() {
-		return porcentaje;
-	}
-
-	public void setPorcentaje(boolean porcentaje) {
-		this.porcentaje = porcentaje;
 	}
 
 	public double getImporte() {

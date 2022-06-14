@@ -117,7 +117,7 @@
 
 			<vlayout vflex="1" hflex="1">
 
-				<tabbox hflex="1" vflex="1" >
+				<tabbox hflex="1" vflex="1">
 					<tabs>
 
 						<tab label="Alumnos" />
@@ -279,67 +279,14 @@
 
 								<hbox pack="end" hflex="1">
 
-									<bandbox id="bdConcepto"
-										value="@load(vm.buscarConcepto)" mold="rounded"
-										autodrop="true" width="250px"
-										onOpen="@command('generarListaBuscarConcepto')"
-										readonly="true">
-										<bandpopup>
+									<hbox pack="end" hflex="1">
 
-											<vbox>
+										<button label="Agregar"
+											iconSclass=" z-icon-plus"
+											onClick="@command('modalConvenioConceptoAgregar')"
+											disabled="@load(!vm.opAgregarConvenioConcepto)" />
 
-												<hbox>
-
-													<label
-														value="Buscar:" />
-
-													<textbox
-														instant="true" value="@bind(vm.buscarConcepto)"
-														onChange="@command('filtrarConceptoBuscar')" />
-
-												</hbox>
-
-												<listbox height="250px"
-													emptyMessage="lista vacía..." width="450px" mold="paging"
-													autopaging="true" onSelect="bdConcepto.close()"
-													model="@load(vm.lConceptosBuscar)">
-
-													<listhead>
-														<listheader
-															label="ID" hflex="min" />
-														<listheader
-															label="Concepto" />
-
-													</listhead>
-
-													<template
-														name="model">
-
-														<listitem
-															value="@load(each[1])"
-															onClick="@command('onSelectConcepto', id = each[0])">
-
-															<listcell
-																label="@load(each[0])" />
-
-															<listcell
-																label="@load(each[1])" />
-
-
-
-														</listitem>
-
-													</template>
-													<listitem />
-												</listbox>
-
-											</vbox>
-										</bandpopup>
-									</bandbox>
-
-									<button iconSclass=" z-icon-plus"
-										onClick="@command('agregarConcepto')"
-										disabled="@load(!vm.opAgregarConcepto)" />
+									</hbox>
 
 								</hbox>
 
@@ -355,10 +302,12 @@
 											align="right" hflex="min" />
 										<listheader label="Concepto"
 											align="left" />
+										<listheader label="Importe"
+											align="left" />
+										<listheader label="Porcentaje"
+											align="left" />
 										<listheader align="center"
-											width="50px" />
-
-
+											hflex="min" />
 									</listhead>
 
 									<template name="model">
@@ -371,15 +320,39 @@
 											<listcell
 												label="@load(each.convenioconceptopk.concepto.concepto)"
 												tooltiptext="@load(each.convenioconceptopk.concepto.concepto)" />
+											<listcell
+												label="@load(each.importe)"
+												tooltiptext="@load(each.importe)" />
+
+											<listcell>
+
+												<if
+													test="@load(each.porcentaje)">
+													<label value="Si" />
+												</if>
+
+
+												<if
+													test="@load(!each.porcentaje)">
+													<label value="No" />
+												</if>
+
+											</listcell>
 
 											<listcell>
 												<hlayout>
 
 													<button
+														iconSclass="z-icon-edit"
+														onClick="@command('modalConvenioConcepto', convenioconcepto=each)"
+														tooltiptext="Editar"
+														disabled="@load(!vm.opEditarConvenioConcepto)" />
+
+													<button
 														iconSclass="z-icon-trash-o" style="background-color:red"
 														onClick="@command('borrarConceptoConfirmacion', convenioconcepto=each)"
 														tooltiptext="Borrar"
-														disabled="@load(!vm.opQuitarConcepto)" />
+														disabled="@load(!vm.opQuitarConvenioConcepto)" />
 
 												</hlayout>
 

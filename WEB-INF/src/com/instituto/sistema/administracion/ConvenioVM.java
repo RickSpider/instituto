@@ -25,6 +25,8 @@ import com.instituto.modelo.Convenio;
 import com.instituto.modelo.ConvenioAlumno;
 import com.instituto.modelo.ConvenioConcepto;
 import com.instituto.modelo.ConvenioConceptoPK;
+import com.instituto.modelo.Convenio;
+import com.instituto.modelo.ConvenioConcepto;
 import com.instituto.modelo.Institucion;
 import com.instituto.modelo.Alumno;
 import com.instituto.modelo.Concepto;
@@ -37,7 +39,7 @@ public class ConvenioVM extends TemplateViewModel {
 	private List<ConvenioConcepto> lConceptosConvenios;
 	private Convenio convenioSelected;
 	private Convenio convenioSelectedAlumnoConcepto;
-	//private Convenio convenioSelectedAlumnoConcepto;
+	private ConvenioConcepto convenioConceptoSelected;
 	private String filtroColumnsConvenio[];
 
 	private boolean opCrearConvenio;
@@ -47,8 +49,9 @@ public class ConvenioVM extends TemplateViewModel {
 	private boolean opAgregarAlumno;
 	private boolean opQuitarAlumno;
 	
-	private boolean opAgregarConcepto;
-	private boolean opQuitarConcepto;
+	private boolean opAgregarConvenioConcepto;
+	private boolean opQuitarConvenioConcepto;
+	private boolean opEditarConvenioConcepto;
 
 	@Init(superclass = true)
 	public void initConvenioVM() {
@@ -73,8 +76,9 @@ public class ConvenioVM extends TemplateViewModel {
 		this.opAgregarAlumno = this.operacionHabilitada(ParamsLocal.OP_AGREGAR_ALUMNO);
 		this.opQuitarAlumno = this.operacionHabilitada(ParamsLocal.OP_QUITAR_ALUMNO);
 		
-		this.opAgregarConcepto = this.operacionHabilitada(ParamsLocal.OP_AGREGAR_CONCEPTO);
-		this.opQuitarConcepto = this.operacionHabilitada(ParamsLocal.OP_QUITAR_CONCEPTO);
+		this.opAgregarConvenioConcepto = this.operacionHabilitada(ParamsLocal.OP_AGREGAR_CONVENIO_CONCEPTO);
+		this.opQuitarConvenioConcepto = this.operacionHabilitada(ParamsLocal.OP_QUITAR_CONVENIO_CONCEPTO);
+		this.opEditarConvenioConcepto = this.operacionHabilitada(ParamsLocal.OP_EDITAR_CONVENIO_CONCEPTO);
 
 	}
 
@@ -373,143 +377,174 @@ public class ConvenioVM extends TemplateViewModel {
 
 	// fins buscador
 	
-	// Seccion conceptos convenio
+	// Seccion Conceptos convenio
+	
+	@Command
+	public void modalConvenioConceptoAgregar() {
 
-		@Command
-		@NotifyChange({ "lConceptosConvenios", "buscarConcepto" })
-		public void refrescarConceptos(@BindingParam("convenio") Convenio convenio) {
+		if (!this.opAgregarConvenioConcepto)
+			return;
+		
+		if (this.convenioSelectedAlumnoConcepto == null) {
+			
+			this.mensajeInfo("Seleccione un Curso Vigente.");
+			return;
+		}
 
-			this.convenioSelectedAlumnoConcepto = convenio;
-			this.lConceptosConvenios = this.reg.getAllObjectsByCondicionOrder(ConvenioConcepto.class.getName(),
-					"convenioid = " + convenio.getConvenioid(), "conceptoid asc");
+		this.editar = false;
+		modalConvenioConcepto(null);
 
-			this.buscarSelectedConcepto = null;
+	}
+
+	@Command
+	public void modalConvenioConcepto(@BindingParam("convenioconcepto") ConvenioConcepto convenioConcepto) {
+
+		if (convenioConcepto != null) {
+
+			if (!this.opEditarConvenioConcepto)
+				return;
+
+			this.convenioConceptoSelected = convenioConcepto;
+			this.buscarConcepto = this.convenioConceptoSelected.getConcepto().getConcepto();
+			this.editar = true;
+
+		} else {
+
+			this.convenioConceptoSelected = new ConvenioConcepto();
+			this.convenioConceptoSelected.setConvenio(this.convenioSelectedAlumnoConcepto);
 			this.buscarConcepto = "";
 
 		}
 
-		@Command
-		public void borrarConceptoConfirmacion(@BindingParam("convenioconcepto") final ConvenioConcepto ca) {
+		modal = (Window) Executions.createComponents("/instituto/zul/administracion/convenioConceptoModal.zul",
+				this.mainComponent, null);
+		Selectors.wireComponents(modal, this, false);
+		modal.doModal();
 
-			if (!this.opQuitarConcepto) {
+	}
+	
+	@Command
+	@NotifyChange({ "lConceptosConvenios"})
+	public void guardarConcepto() {
 
-				this.mensajeError("No tienes permisos para Borrar Conceptos a un Convenio.");
 
-				return;
+		this.save(convenioConceptoSelected);
 
-			}
+		this.convenioConceptoSelected = null;
 
-			this.mensajeEliminar("El Concepto " + ca.getConcepto().getConcepto() + " sera removido del Convenio "
-					+ ca.getConvenio().getInstitucion().getInstitucion() + " \n Continuar?", new EventListener() {
+		this.modal.detach();
 
-						@Override
-						public void onEvent(Event evt) throws Exception {
+		if (editar) {
 
-							if (evt.getName().equals(Messagebox.ON_YES)) {
+			Notification.show("El Concepto fue Actualizado.");
+			this.editar = false;
+		} else {
 
-								borrarConvenioConcepto(ca);
+			Notification.show("El Concepto fue agregado.");
+		}
+		
+		this.refrescarConceptos(this.convenioSelectedAlumnoConcepto);
 
-							}
+	}
+
+
+	
+
+	@Command
+	@NotifyChange({ "lConceptosConvenios", "buscarConcepto" })
+	public void refrescarConceptos(@BindingParam("convenio") Convenio convenio) {
+
+		this.convenioSelectedAlumnoConcepto = convenio;
+		this.lConceptosConvenios = this.reg.getAllObjectsByCondicionOrder(ConvenioConcepto.class.getName(),
+				"convenioid = " + convenio.getConvenioid(), "conceptoid asc");
+
+		/*.buscarSelectedConcepto = null;
+		this.buscarConcepto = "";*/
+
+	}
+
+	@Command
+	public void borrarConceptoConfirmacion(@BindingParam("convenioconcepto") final ConvenioConcepto ca) {
+
+		if (!this.opQuitarConvenioConcepto) {
+
+			this.mensajeError("No tienes permisos para Borrar Conceptos a un Convenio.");
+
+			return;
+
+		}
+
+		this.mensajeEliminar("El Concepto " + ca.getConcepto().getConcepto() + " sera removido del Convenio "
+				+ ca.getConvenio().getDescripcion() + " \n Continuar?", new EventListener() {
+
+					@Override
+					public void onEvent(Event evt) throws Exception {
+
+						if (evt.getName().equals(Messagebox.ON_YES)) {
+
+							borrarConvenioConcepto(ca);
 
 						}
 
-					});
+					}
 
+				});
+
+	}
+
+	private void borrarConvenioConcepto(ConvenioConcepto ca) {
+
+		this.reg.deleteObject(ca);
+
+		this.refrescarConceptos(this.convenioSelectedAlumnoConcepto);
+
+		BindUtils.postNotifyChange(null, null, this, "lConceptosConvenios");
+
+	}
+	
+	private List<Object[]> lConceptosbuscarOri;
+	private List<Object[]> lConceptosBuscar;
+	private Concepto buscarSelectedConcepto;
+	private String buscarConcepto = "";
+
+	@Command
+	@NotifyChange("lConceptosBuscar")
+	public void filtrarConceptoBuscar() {
+
+		this.lConceptosBuscar = this.filtrarListaObject(buscarConcepto, this.lConceptosbuscarOri);
+
+	}
+
+	@Command
+	@NotifyChange("lConceptosBuscar")
+	public void generarListaBuscarConcepto() {
+
+		if (this.convenioSelectedAlumnoConcepto == null) {
+
+			this.mensajeInfo("Selecciona un Convenio.");
+
+			return;
 		}
 
-		private void borrarConvenioConcepto(ConvenioConcepto ca) {
+		String sqlBuscarConcepto = this.um.getSql("buscarConvenioConcepto.sql").replace("?1", this.convenioSelectedAlumnoConcepto.getConvenioid()+"");
 
-			this.reg.deleteObject(ca);
+		this.lConceptosBuscar = this.reg.sqlNativo(sqlBuscarConcepto);
+		this.lConceptosbuscarOri = this.lConceptosBuscar;
+	}
 
-			this.refrescarConceptos(this.convenioSelectedAlumnoConcepto);
+	@Command
+	@NotifyChange("buscarConcepto")
+	public void onSelectConcepto(@BindingParam("id") long id) {
 
-			BindUtils.postNotifyChange(null, null, this, "lConceptosConvenios");
+		this.buscarSelectedConcepto = this.reg.getObjectById(Concepto.class.getName(), id);
+		this.buscarConcepto = buscarSelectedConcepto.getConcepto();
+		this.convenioConceptoSelected.setConcepto(buscarSelectedConcepto);
 
-		}
+	}
 
-		// fin conceptos convenio
-		
-		// seccion buscador Concepto
+	// fins buscador
 
-		private List<Object[]> lConceptosbuscarOri;
-		private List<Object[]> lConceptosBuscar;
-		private Concepto buscarSelectedConcepto;
-		private String buscarConcepto = "";
-
-		@Command
-		@NotifyChange("lConceptosBuscar")
-		public void filtrarConceptoBuscar() {
-
-			this.lConceptosBuscar = this.filtrarListaObject(buscarConcepto, this.lConceptosbuscarOri);
-
-		}
-
-		@Command
-		@NotifyChange("lConceptosBuscar")
-		public void generarListaBuscarConcepto() {
-
-			if (this.convenioSelectedAlumnoConcepto == null) {
-
-				this.mensajeInfo("Selecciona un Convenio.");
-
-				return;
-			}
-
-			String sqlBuscarConcepto = this.um.getSql("buscarConcepto.sql");
-
-			this.lConceptosBuscar = this.reg.sqlNativo(sqlBuscarConcepto);
-			this.lConceptosbuscarOri = this.lConceptosBuscar;
-		}
-
-		@Command
-		@NotifyChange("buscarConcepto")
-		public void onSelectConcepto(@BindingParam("id") long id) {
-
-			this.buscarSelectedConcepto = this.reg.getObjectById(Concepto.class.getName(), id);
-			this.buscarConcepto = buscarSelectedConcepto.getConcepto();
-
-		}
-
-		@Command
-		@NotifyChange({ "lConceptosConvenios", "buscarConcepto" })
-		public void agregarConcepto() {
-
-			if (!this.opAgregarConcepto) {
-
-				this.mensajeError("No tienes permiso para agregar un Concepto al Convenio. ");
-				return;
-			}
-
-			if (this.buscarSelectedConcepto == null) {
-
-				this.mensajeInfo("Selecciona un Concepto para agregar.");
-
-				return;
-
-			}
-
-			for (ConvenioConcepto x : this.lConceptosConvenios) {
-
-				if (this.buscarSelectedConcepto.getConceptoid() == x.getConcepto().getConceptoid()) {
-
-					this.mensajeError("El Convenio ya tiene el concepto " + x.getConcepto().getConcepto());
-
-					return;
-
-				}
-
-			}
-
-			ConvenioConcepto cu = new ConvenioConcepto();
-			cu.setConcepto(this.buscarSelectedConcepto);
-			cu.setConvenio(this.convenioSelectedAlumnoConcepto);
-			this.save(cu);
-
-			this.refrescarConceptos(this.convenioSelectedAlumnoConcepto);
-
-		}
-
-		// fins buscador concepto
+	// fin Conceptos convenio
 	
 
 	// buscador de Institucion
@@ -662,22 +697,6 @@ public class ConvenioVM extends TemplateViewModel {
 		this.buscarInstitucion = buscarInstitucion;
 	}
 
-	public boolean isOpAgregarConcepto() {
-		return opAgregarConcepto;
-	}
-
-	public void setOpAgregarConcepto(boolean opAgregarConcepto) {
-		this.opAgregarConcepto = opAgregarConcepto;
-	}
-
-	public boolean isOpQuitarConcepto() {
-		return opQuitarConcepto;
-	}
-
-	public void setOpQuitarConcepto(boolean opQuitarConcepto) {
-		this.opQuitarConcepto = opQuitarConcepto;
-	}
-
 	public List<Object[]> getlConceptosBuscar() {
 		return lConceptosBuscar;
 	}
@@ -700,6 +719,38 @@ public class ConvenioVM extends TemplateViewModel {
 
 	public void setlConceptosConvenios(List<ConvenioConcepto> lConceptosConvenios) {
 		this.lConceptosConvenios = lConceptosConvenios;
+	}
+
+	public boolean isOpAgregarConvenioConcepto() {
+		return opAgregarConvenioConcepto;
+	}
+
+	public void setOpAgregarConvenioConcepto(boolean opAgregarConvenioConcepto) {
+		this.opAgregarConvenioConcepto = opAgregarConvenioConcepto;
+	}
+
+	public boolean isOpQuitarConvenioConcepto() {
+		return opQuitarConvenioConcepto;
+	}
+
+	public void setOpQuitarConvenioConcepto(boolean opQuitarConvenioConcepto) {
+		this.opQuitarConvenioConcepto = opQuitarConvenioConcepto;
+	}
+
+	public boolean isOpEditarConvenioConcepto() {
+		return opEditarConvenioConcepto;
+	}
+
+	public void setOpEditarConvenioConcepto(boolean opEditarConvenioConcepto) {
+		this.opEditarConvenioConcepto = opEditarConvenioConcepto;
+	}
+
+	public ConvenioConcepto getConvenioConceptoSelected() {
+		return convenioConceptoSelected;
+	}
+
+	public void setConvenioConceptoSelected(ConvenioConcepto convenioConceptoSelected) {
+		this.convenioConceptoSelected = convenioConceptoSelected;
 	}
 
 }

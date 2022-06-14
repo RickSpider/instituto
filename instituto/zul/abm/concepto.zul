@@ -25,7 +25,7 @@
 								hflex="min" />
 							<listheader label="Concepto" align="left" />
 							<listheader label="Descripción" align="left" />
-							<listheader label="Importe" align="left" />
+							<listheader label="Impuesto" align="left" />
 							<listheader align="center" 
 								width="100px"/>
 
