@@ -1,5 +1,6 @@
 package com.instituto.sistema.administracion;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.zkoss.bind.BindUtils;
@@ -33,7 +34,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	private List<CursoVigente> lCursosVigentes;
 	private List<CursoVigente> lCursosVigentesOri;
 	private CursoVigente cursoVigenteSelected;
-	private CursoVigente cursoVigenteSelectedAlumnoConcepto; 
+	private CursoVigente cursoVigenteSelectedAlumnoConcepto;
 	private List<CursoVigenteAlumno> lAlumnosCursosVigentes;
 	private List<CursoVigenteConcepto> lConceptosCursosVigentes;
 	private CursoVigenteConcepto cursoVigenteConceptoSelected;
@@ -45,10 +46,12 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	private boolean opBorrarCursoVigente;
 	private boolean opAgregarCursoVigenteAlumno;
 	private boolean opQuitarCursoVigenteAlumno;
-	
+
 	private boolean opAgregarCursoVigenteConcepto;
 	private boolean opQuitarCursoVigenteConcepto;
 	private boolean opEditarCursoVigenteConcepto;
+	
+	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 	@Init(superclass = true)
 	public void initCursoVigenteVM() {
@@ -71,7 +74,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 		this.opAgregarCursoVigenteAlumno = this.operacionHabilitada(ParamsLocal.OP_AGREGAR_CURSOVIGENTE_ALUMNO);
 		this.opQuitarCursoVigenteAlumno = this.operacionHabilitada(ParamsLocal.OP_QUITAR_CURSOVIGENTE_ALUMNO);
-		
+
 		this.opAgregarCursoVigenteConcepto = this.operacionHabilitada(ParamsLocal.OP_AGREGAR_CURSOVIGENTE_CONCEPTO);
 		this.opQuitarCursoVigenteConcepto = this.operacionHabilitada(ParamsLocal.OP_QUITAR_CURSOVIGENTE_CONCEPTO);
 		this.opEditarCursoVigenteConcepto = this.operacionHabilitada(ParamsLocal.OP_EDITAR_CURSOVIGENTE_CONCEPTO);
@@ -91,7 +94,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 	private void inicializarFiltros() {
 
-		this.filtroColumns = new String[5]; // se debe de iniciar el filtro deacuerdo a la cantidad declarada en el
+		this.filtroColumns = new String[3]; // se debe de iniciar el filtro deacuerdo a la cantidad declarada en el
 											// modelo sin id
 
 		for (int i = 0; i < this.filtroColumns.length; i++) {
@@ -165,16 +168,53 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 	private boolean verificarCampos() {
 
+		if (this.cursoVigenteSelected.getCurso() == null) {
+
+			this.mensajeError("No hay curso agregado.");
+
+			return false;
+
+		}
+
+		if (this.cursoVigenteSelected.getFechaInicio() == null) {
+
+			this.mensajeError("No se definio fecha de inicio.");
+
+			return false;
+
+		}
+
+		if (this.cursoVigenteSelected.getFechaFin() == null) {
+
+			this.mensajeError("No se definio fecha de Fin.");
+
+			return false;
+
+		}
+		
+		if (this.cursoVigenteSelected.getFechaFin().equals(this.cursoVigenteSelected.getFechaInicio())){
+			
+			this.mensajeError("Las fechas de inicio y fin no pueden ser iguales.");
+
+			return false;
+			
+			
+		}
+
+		if (this.cursoVigenteSelected.getDias().compareTo("false;false;false;false;false;false;false") == 0) {
+
+			this.mensajeError("Debes Seleccionar al menos un dia.");
+
+			return false;
+
+		}
+
 		return true;
 	}
 
 	@Command
 	@NotifyChange("lCursosVigentes")
 	public void guardar() {
-
-		if (!verificarCampos()) {
-			return;
-		}
 
 		String dias = "";
 
@@ -191,6 +231,10 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		}
 
 		this.cursoVigenteSelected.setDias(dias);
+		
+		if (!verificarCampos()) {
+			return;
+		}
 
 		this.save(cursoVigenteSelected);
 
@@ -284,17 +328,15 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	}
 
 	// fin buscar ciudad
-	
-	
+
 	@Command
 	@NotifyChange({ "lAlumnosCursosVigentes", "buscarAlumno", "lConceptosCursosVigentes", "buscarConcepto" })
 	public void refrescarAll(@BindingParam("cursoVigente") CursoVigente cursoVigente) {
-		
+
 		this.refrescarAlumnos(cursoVigente);
 		this.refrescarConceptos(cursoVigente);
-		
+
 	}
-	
 
 	// Seccion alumnos cursoVigente
 
@@ -433,17 +475,17 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	}
 
 	// fins buscador
-	
+
 	// Seccion Conceptos cursoVigente
-	
+
 	@Command
 	public void modalCursoVigenteConceptoAgregar() {
 
 		if (!this.opAgregarCursoVigenteConcepto)
 			return;
-		
+
 		if (this.cursoVigenteSelectedAlumnoConcepto == null) {
-			
+
 			this.mensajeInfo("Seleccione un Curso Vigente.");
 			return;
 		}
@@ -454,7 +496,8 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	}
 
 	@Command
-	public void modalCursoVigenteConcepto(@BindingParam("cursovigenteconcepto") CursoVigenteConcepto cursoVigenteConcepto) {
+	public void modalCursoVigenteConcepto(
+			@BindingParam("cursovigenteconcepto") CursoVigenteConcepto cursoVigenteConcepto) {
 
 		if (cursoVigenteConcepto != null) {
 
@@ -480,11 +523,17 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 	}
 	
+	public boolean verificarCamposConcepto() {
+		
+		
+		return true;
+	}
+
 	@Command
-	@NotifyChange({ "lConceptosCursosVigentes"})
+	@NotifyChange({ "lConceptosCursosVigentes" })
 	public void guardarConcepto() {
 
-		if (!verificarCampos()) {
+		if (!verificarCamposConcepto()) {
 			return;
 		}
 
@@ -502,13 +551,10 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 			Notification.show("El Concepto fue agregado.");
 		}
-		
+
 		this.refrescarConceptos(this.cursoVigenteSelectedAlumnoConcepto);
 
 	}
-
-
-	
 
 	@Command
 	@NotifyChange({ "lConceptosCursosVigentes", "buscarConcepto" })
@@ -518,8 +564,9 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		this.lConceptosCursosVigentes = this.reg.getAllObjectsByCondicionOrder(CursoVigenteConcepto.class.getName(),
 				"cursoVigenteid = " + cursoVigente.getCursovigenteid(), "conceptoid asc");
 
-		/*.buscarSelectedConcepto = null;
-		this.buscarConcepto = "";*/
+		/*
+		 * .buscarSelectedConcepto = null; this.buscarConcepto = "";
+		 */
 
 	}
 
@@ -561,7 +608,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		BindUtils.postNotifyChange(null, null, this, "lConceptosCursosVigentes");
 
 	}
-	
+
 	private List<Object[]> lConceptosbuscarOri;
 	private List<Object[]> lConceptosBuscar;
 	private Concepto buscarSelectedConcepto;
@@ -586,7 +633,8 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			return;
 		}
 
-		String sqlBuscarConcepto = this.um.getSql("buscarCursoVigenteConcepto.sql").replace("?1", this.cursoVigenteSelectedAlumnoConcepto.getCursovigenteid()+"");
+		String sqlBuscarConcepto = this.um.getSql("buscarCursoVigenteConcepto.sql").replace("?1",
+				this.cursoVigenteSelectedAlumnoConcepto.getCursovigenteid() + "");
 
 		this.lConceptosBuscar = this.reg.sqlNativo(sqlBuscarConcepto);
 		this.lConceptosbuscarOri = this.lConceptosBuscar;
@@ -780,6 +828,14 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 	public void setlConceptosBuscar(List<Object[]> lConceptosBuscar) {
 		this.lConceptosBuscar = lConceptosBuscar;
+	}
+
+	public SimpleDateFormat getSdf() {
+		return sdf;
+	}
+
+	public void setSdf(SimpleDateFormat sdf) {
+		this.sdf = sdf;
 	}
 
 }
