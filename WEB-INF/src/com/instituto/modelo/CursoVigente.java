@@ -1,6 +1,7 @@
 package com.instituto.modelo;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -47,18 +48,8 @@ public class CursoVigente extends Modelo implements Serializable{
 	// do;lu;ma;mi;ju;vi;sa
 	private String dias = "false;false;false;false;false;false;false";
 
-	@Override
-	public Object[] getArrayObjectDatos() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getStringDatos() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	private final String datePattern = "dd/MM/yyyy";
+	
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -111,8 +102,25 @@ public class CursoVigente extends Modelo implements Serializable{
 	public void setSede(Sede sede) {
 		this.sede = sede;
 	}
+	
+	@Override
+	public Object[] getArrayObjectDatos() {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat(this.datePattern);
+		
+		Object[] o = {this.curso.getCurso(), sdf.format(this.fechaInicio), sdf.format(this.fechaFin) };
+		
+		return o;
+	}
 
-	
-	
+	@Override
+	public String getStringDatos() {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat(this.datePattern);
+		
+		return this.cursovigenteid + " " +this.curso.getCurso() + " " +sdf.format(this.fechaInicio)+" "+ sdf.format(this.fechaFin);
+		
+	}
+
 	
 }

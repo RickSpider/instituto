@@ -25,9 +25,9 @@
 						<listheader label="ID" align="right"
 							hflex="min" />
 						<listheader label="Curso" align="left" />
-						<listheader label="Fecha Inicio" align="left" />
-						<listheader label="Fecha Fin" align="left" />
-						<listheader align="center" width="100px" />
+						<listheader label="Fecha Inicio" align="center" hflex="min" />
+						<listheader label="Fecha Fin" align="center" hflex="min" />
+						<listheader align="center" hflex="min" />
 
 
 					</listhead>
@@ -63,11 +63,10 @@
 						<listitem
 							onClick="@command('refrescarAll', cursoVigente = each )">
 							<listcell />
-							<listcell
-								label="@load(each.cursovigenteid)" />
+							<listcell label="@load(each.cursovigenteid)" />
 							<listcell label="@load(each.curso.curso)" />
-							<listcell label="@load(each.fechaInicio)" />
-							<listcell label="@load(each.fechaFin)" />
+							<listcell label="@load(vm.sdf.format(each.fechaInicio))" />
+							<listcell label="@load(vm.sdf.format(each.fechaFin))" />
 
 
 							<listcell>

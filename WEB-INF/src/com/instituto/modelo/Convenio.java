@@ -46,14 +46,14 @@ public class Convenio extends Modelo implements Serializable {
 
 	@Override
 	public Object[] getArrayObjectDatos() {
-		Object[] o = {this.institucion, this.institucion.getInstitucion() ,this.activo};
+		Object[] o = {this.descripcion, this.institucion.getInstitucion() ,this.activo};
 		return o;
 	}
 
 	@Override
 	public String getStringDatos() {
 		
-		return this.convenioid+" "+this.institucion.getInstitucion()+" "+this.activo;
+		return this.convenioid+" "+this.descripcion+" "+this.institucion.getInstitucion()+" "+this.activo;
 	}
 
 	public static long getSerialversionuid() {
