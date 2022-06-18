@@ -37,6 +37,17 @@
 					constraint="no empty: Es campo obligatorio." width="150px" />
 
 			</hlayout>
+			
+			<hlayout>
+				<hbox width="130px">
+					<label value="Periodo Educativo: "
+						style="font-weight:bold" />
+				</hbox>
+				<intbox
+					value="@load(vm.cursoSelected.periodoEducativo) @save(vm.cursoSelected.periodoEducativo, before='guardar')"
+					constraint="no empty: Es campo obligatorio." width="150px" />
+
+			</hlayout>
 
 			<space height="10px" />
 

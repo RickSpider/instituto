@@ -28,6 +28,8 @@
 						<listheader label="Descripcion" align="left" />
 						<listheader label="Duracion" align="center"
 							width="80px" />
+						<listheader label="Periodo Educativo" align="center"
+							hflex="min" />
 						<listheader align="center" width="100px" />
 
 
@@ -55,6 +57,11 @@
 								onChange="@command('filtrarCurso')" hflex="1" />
 						</auxheader>
 
+						<auxheader>
+							<textbox
+								value="@bind(vm.filtroColumnsCurso[3])" instant="true"
+								onChange="@command('filtrarCurso')" hflex="1" />
+						</auxheader>
 						<auxheader />
 
 					</auxhead>
@@ -69,6 +76,7 @@
 							<listcell label="@load(each.curso)" />
 							<listcell label="@load(each.descripcion)" />
 							<listcell label="@load(each.duracion)" />
+							<listcell label="@load(each.periodoEducativo)" />
 
 							<listcell>
 								<hlayout>

@@ -75,7 +75,7 @@ public class CursoVM extends TemplateViewModel {
 	
 	private void inicializarFiltros(){
 		
-		this.filtroColumnsCurso = new String[3]; // se debe de iniciar el filtro deacuerdo a la cantidad declarada en el modelo
+		this.filtroColumnsCurso = new String[4]; // se debe de iniciar el filtro deacuerdo a la cantidad declarada en el modelo
 		
 		for (int i = 0 ; i<this.filtroColumnsCurso.length; i++) {
 			

@@ -27,19 +27,23 @@ public class Curso extends Modelo implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long cursoid;
 	private String curso;
-	private String Descripcion;
+	private String descripcion;
 	private int duracion;
+	
+	@Column(name = "periodoeducativo", nullable = false, columnDefinition = "int default 1")
+	private int periodoEducativo;
+	
 	
 	@Override
 	public Object[] getArrayObjectDatos() {
-		Object[] o = {this.curso, this.Descripcion, this.duracion};
+		Object[] o = {this.curso, this.descripcion, this.duracion, this.periodoEducativo};
 		return o;
 	}
 
 	@Override
 	public String getStringDatos() {
 		
-		return this.cursoid +" "+this.curso+" "+this.Descripcion+" "+this.duracion;
+		return this.cursoid +" "+this.curso+" "+this.descripcion+" "+this.duracion+" "+this.periodoEducativo;
 		
 	}
 
@@ -60,11 +64,11 @@ public class Curso extends Modelo implements Serializable {
 	}
 
 	public String getDescripcion() {
-		return Descripcion;
+		return descripcion;
 	}
 
 	public void setDescripcion(String descripcion) {
-		Descripcion = descripcion;
+		this.descripcion = descripcion;
 	}
 
 	public int getDuracion() {
@@ -78,6 +82,17 @@ public class Curso extends Modelo implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+	public int getPeriodoEducativo() {
+		return periodoEducativo;
+	}
+
+	public void setPeriodoEducativo(int periodoEducativo) {
+		this.periodoEducativo = periodoEducativo;
+	}
+
+	
+	
 	
 	
 
