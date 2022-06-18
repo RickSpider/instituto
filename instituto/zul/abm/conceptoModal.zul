@@ -81,11 +81,6 @@
 											<listcell
 												label="@load(each[2])" />
 
-											<listcell
-												label="@load(each[3])" />
-
-
-
 										</listitem>
 
 									</template>
