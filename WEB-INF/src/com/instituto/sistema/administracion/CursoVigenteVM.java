@@ -470,6 +470,8 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		cu.setCursoVigente(this.cursoVigenteSelectedAlumnoConcepto);
 		this.save(cu);
 		
+		this.lastPageListBox((Listbox) this.mainComponent.query("#lbAlumnos"));
+		
 		this.refrescarAlumnos(this.cursoVigenteSelectedAlumnoConcepto);
 
 	}
