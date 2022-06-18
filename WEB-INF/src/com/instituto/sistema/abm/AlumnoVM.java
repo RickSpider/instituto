@@ -114,7 +114,7 @@ public class AlumnoVM extends TemplateViewModelLocal {
 				return;
 
 			this.alumnoSelected = this.reg.getObjectById(Alumno.class.getName(), alumnoid);
-			this.buscarPersona = this.alumnoSelected.getPersona().getNombre();
+			this.buscarPersona = this.alumnoSelected.getPersona().getNombreCompleto();
 			this.editar = true;
 
 		} else {
@@ -244,7 +244,7 @@ public class AlumnoVM extends TemplateViewModelLocal {
 	public void onSelectPersona(@BindingParam("id") long id) {
 
 		this.buscarSelectedPersona = this.reg.getObjectById(Persona.class.getName(), id);
-		this.buscarPersona = this.buscarSelectedPersona.getNombre();
+		this.buscarPersona = this.buscarSelectedPersona.getNombreCompleto();
 		this.alumnoSelected.setAlumnoid(buscarSelectedPersona.getPersonaid());
 		this.alumnoSelected.setPersona(buscarSelectedPersona);
 

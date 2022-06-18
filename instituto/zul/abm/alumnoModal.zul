@@ -14,7 +14,7 @@
 
 				<bandbox id="bd" value="@load(vm.buscarPersona) @save(vm.buscarPersona, before='guardar')"
 					constraint="no empty: Es campo obligatorio."
-					mold="rounded" autodrop="true" width="150px"
+					mold="rounded" autodrop="true" width="200px"
 					onOpen="@command('generarListaBuscarPersona')" readonly="true" disabled="@load(vm.editar)">
 					<bandpopup>
 
@@ -74,7 +74,7 @@
 				</hbox>
 				<textbox
 					value="@bind(vm.alumnoSelected.sede.sede)"
-					width="150px"
+					width="200px"
 					readonly="true"/>
 			</hlayout>
 			

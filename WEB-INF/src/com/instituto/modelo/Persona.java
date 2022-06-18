@@ -110,6 +110,11 @@ public class Persona extends Modelo implements Serializable {
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
 	}
+	
+	public String getNombreCompleto() {
+			
+		return this.apellido.trim()+", "+this.nombre.trim();
+	}
 
 	public String getEmail() {
 		return email;

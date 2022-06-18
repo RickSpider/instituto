@@ -1,6 +1,6 @@
 SELECT 
 p.personaid, 
-concat(p.nombre,', ',p.apellido) as fullname, 
+concat(p.apellido,', ',p.nombre) as fullname, 
 p.documentonum, a.alumnoid
 from personas p
 left join alumnos a on a.alumnoid = p.personaid 
