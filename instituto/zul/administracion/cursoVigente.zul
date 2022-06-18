@@ -193,7 +193,8 @@
 
 								<listbox emptyMessage="lista vacía..."
 									mold="paging" vflex="1" hflex="1" autopaging="true"
-									model="@load(vm.lAlumnosCursosVigentes)" checkmark="true">
+									model="@load(vm.lAlumnosCursosVigentes)" checkmark="true"
+									onChange="@command('lastPageListBox', listbox=self)">
 
 									<listhead>
 
@@ -201,7 +202,7 @@
 											align="center" />
 										<listheader label="ID"
 											align="right" hflex="min" />
-										<listheader label="Concepto"
+										<listheader label="Alumno"
 											align="left" />
 										<listheader label="Documento"
 											align="left" />

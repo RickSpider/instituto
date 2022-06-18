@@ -14,6 +14,7 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.util.Notification;
+import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
@@ -50,7 +51,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	private boolean opAgregarCursoVigenteConcepto;
 	private boolean opQuitarCursoVigenteConcepto;
 	private boolean opEditarCursoVigenteConcepto;
-	
+
 	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 	@Init(superclass = true)
@@ -191,14 +192,13 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			return false;
 
 		}
-		
-		if (this.cursoVigenteSelected.getFechaFin().equals(this.cursoVigenteSelected.getFechaInicio())){
-			
+
+		if (this.cursoVigenteSelected.getFechaFin().equals(this.cursoVigenteSelected.getFechaInicio())) {
+
 			this.mensajeError("Las fechas de inicio y fin no pueden ser iguales.");
 
 			return false;
-			
-			
+
 		}
 
 		if (this.cursoVigenteSelected.getDias().compareTo("false;false;false;false;false;false;false") == 0) {
@@ -231,7 +231,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		}
 
 		this.cursoVigenteSelected.setDias(dias);
-		
+
 		if (!verificarCampos()) {
 			return;
 		}
@@ -346,7 +346,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 		this.cursoVigenteSelectedAlumnoConcepto = cursoVigente;
 		this.lAlumnosCursosVigentes = this.reg.getAllObjectsByCondicionOrder(CursoVigenteAlumno.class.getName(),
-				"cursoVigenteid = " + cursoVigente.getCursovigenteid(), "alumnoid asc");
+				"cursoVigenteid = " + cursoVigente.getCursovigenteid(), "creado asc");
 
 		this.buscarSelectedAlumno = null;
 		this.buscarAlumno = "";
@@ -469,10 +469,12 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		cu.setAlumno(this.buscarSelectedAlumno);
 		cu.setCursoVigente(this.cursoVigenteSelectedAlumnoConcepto);
 		this.save(cu);
-
+		
 		this.refrescarAlumnos(this.cursoVigenteSelectedAlumnoConcepto);
 
 	}
+
+	
 
 	// fins buscador
 
@@ -522,10 +524,9 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		modal.doModal();
 
 	}
-	
+
 	public boolean verificarCamposConcepto() {
-		
-		
+
 		return true;
 	}
 
