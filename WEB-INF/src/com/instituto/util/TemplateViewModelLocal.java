@@ -33,11 +33,5 @@ public abstract class TemplateViewModelLocal extends TemplateViewModel{
 		return result.get(0).getSede();
 	}
 	
-	@Command
-	public void lastPageListBox(@BindingParam("listbox") Listbox listbox) {
 
-		listbox.setActivePage(listbox.getPageCount() - 1);
-
-	}
-	
 }
