@@ -3,7 +3,10 @@ package com.instituto.util;
 import java.util.List;
 
 import org.zkoss.bind.annotation.AfterCompose;
+import org.zkoss.bind.annotation.BindingParam;
+import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
+import org.zkoss.zul.Listbox;
 
 import com.doxacore.TemplateViewModel;
 import com.instituto.modelo.Sede;
@@ -29,5 +32,12 @@ public abstract class TemplateViewModelLocal extends TemplateViewModel{
 		
 		return result.get(0).getSede();
 	}
+	
+	@Command
+	public void lastPageListBox(@BindingParam("listbox") Listbox listbox) {
 
+		listbox.setActivePage(listbox.getPageCount() - 1);
+
+	}
+	
 }
