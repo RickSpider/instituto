@@ -7,9 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.doxacore.modelo.Modelo;
+import com.doxacore.modelo.Tipo;
 
 @Entity
 @Table(name = "Materias")
@@ -29,6 +32,10 @@ public class Materia extends Modelo implements Serializable{
 	
 	@Column(columnDefinition = "int default 0")
 	private int cargaHoraria;
+	
+	@ManyToOne
+	@JoinColumn(name = "materiatipoid")
+	private Tipo materiaTipo;
 
 	@Override
 	public Object[] getArrayObjectDatos() {
@@ -76,9 +83,13 @@ public class Materia extends Modelo implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
-	
-	
-	
 
+	public Tipo getMateriaTipo() {
+		return materiaTipo;
+	}
+
+	public void setMateriaTipo(Tipo materiaTipo) {
+		this.materiaTipo = materiaTipo;
+	}
+	
 }

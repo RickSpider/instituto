@@ -27,8 +27,10 @@
 								 />
 							<listheader label="Descripción" align="left"
 								/>
+							<listheader label="Tipo" align="left" hflex="min"
+								/>
 							<listheader align="center" 
-								width="100px"/>
+								hflex="min"/>
 
 
 						</listhead>
@@ -49,6 +51,8 @@
 									value="@bind(vm.filtroColumns[1])" instant="true"
 									onChange="@command('filtrarMateria')" hflex="1" />
 							</auxheader>
+							
+							<auxheader />
 
 							<auxheader />
 						</auxhead>
@@ -59,8 +63,9 @@
 								<listcell />
 								<listcell label="@load(each.materiaid)" />
 								<listcell label="@load(each.materia)" />
-								<listcell
-									label="@load(each.descripcion)" />
+								<listcell label="@load(each.descripcion)" />
+								<listcell label="@load(each.materiaTipo.descripcion)" />
+								
 
 								<listcell>
 									<hlayout>

@@ -18,6 +18,8 @@ import org.zkoss.zul.Window;
 
 import com.doxacore.TemplateViewModel;
 import com.doxacore.modelo.Ciudad;
+import com.doxacore.modelo.Tipo;
+import com.doxacore.modelo.Tipotipo;
 import com.instituto.modelo.CursoMateria;
 import com.instituto.modelo.Materia;
 import com.instituto.util.ParamsLocal;
@@ -112,7 +114,18 @@ public class MateriaVM extends TemplateViewModel {
 			if(!this.opEditarMateria)
 				return;
 			
-			this.materiaSelected = this.reg.getObjectById(Materia.class.getName(), materiaid);			
+			this.materiaSelected = this.reg.getObjectById(Materia.class.getName(), materiaid);	
+			
+			if (this.materiaSelected.getMateriaTipo() != null) {
+				
+				this.buscarMateriaTipo = this.materiaSelected.getMateriaTipo().getTipo();
+				
+			}else {
+				
+				this.buscarMateriaTipo = "";
+				
+			}
+			
 			this.editar = true;
 			
 			this.editarMateria = false;
@@ -127,7 +140,7 @@ public class MateriaVM extends TemplateViewModel {
 		} else {
 			
 			materiaSelected = new Materia();
-
+			this.buscarMateriaTipo = "";
 		}
 
 		modal = (Window) Executions.createComponents("/instituto/zul/gestionSede/materiaModal.zul", this.mainComponent,
@@ -220,6 +233,46 @@ public class MateriaVM extends TemplateViewModel {
 		
 	}
 	
+	// buscarMateriaTipo
+
+	private List<Object[]> lMateriasTiposBuscarOri = null;
+	private List<Object[]> lMateriasTiposBuscar = null;
+	private Tipo buscarSelectedMateriaTipo = null;
+	private String buscarMateriaTipo = "";
+
+	@Command
+	@NotifyChange("lMateriasTiposBuscar")
+	public void filtrarMateriaTipoBuscar() {
+
+		this.lMateriasTiposBuscar = this.filtrarListaObject(buscarMateriaTipo, this.lMateriasTiposBuscarOri);
+
+	}
+
+	@Command
+	@NotifyChange("lMateriasTiposBuscar")
+	public void generarListaBuscarMateriaTipo() {
+
+		Tipotipo tipotipo = this.reg.getObjectByColumnString(Tipotipo.class.getName(), "sigla",
+				ParamsLocal.SIGLA_MATERIA);
+		String buscarMateriaTipoSQL = this.um.getSql("buscarTipos.sql").replace("?1", "" + tipotipo.getTipotipoid());
+
+		//System.out.println(buscarMateriaTipoSQL);
+
+		this.lMateriasTiposBuscar = this.reg.sqlNativo(buscarMateriaTipoSQL);
+
+		this.lMateriasTiposBuscarOri = this.lMateriasTiposBuscar;
+	}
+
+	@Command
+	@NotifyChange("buscarMateriaTipo")
+	public void onSelectMateriaTipo(@BindingParam("id") long id) {
+
+		this.buscarSelectedMateriaTipo = this.reg.getObjectById(Tipo.class.getName(), id);
+		this.buscarMateriaTipo = this.buscarSelectedMateriaTipo.getTipo();
+		this.materiaSelected.setMateriaTipo(buscarSelectedMateriaTipo);
+
+	}
+	
 	
 
 	public List<Materia> getlMaterias() {
@@ -284,6 +337,22 @@ public class MateriaVM extends TemplateViewModel {
 
 	public void setEditarMateria(boolean editarMateria) {
 		this.editarMateria = editarMateria;
+	}
+
+	public List<Object[]> getlMateriasTiposBuscar() {
+		return lMateriasTiposBuscar;
+	}
+
+	public void setlMateriasTiposBuscar(List<Object[]> lMateriasTiposBuscar) {
+		this.lMateriasTiposBuscar = lMateriasTiposBuscar;
+	}
+
+	public String getBuscarMateriaTipo() {
+		return buscarMateriaTipo;
+	}
+
+	public void setBuscarMateriaTipo(String buscarMateriaTipo) {
+		this.buscarMateriaTipo = buscarMateriaTipo;
 	}
 
 }

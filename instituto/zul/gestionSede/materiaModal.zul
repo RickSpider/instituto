@@ -38,6 +38,73 @@
 					width="150px" />
 
 			</hlayout>
+			
+			<hlayout>
+
+				<hlayout>
+
+					<hbox width="130px">
+						<label value="Tipo: "
+							style="font-weight:bold" />
+					</hbox>
+
+					<bandbox id="bdMateriaTipo"
+						value="@load(vm.buscarMateriaTipo) @save(vm.buscarMateriaTipo, before='guardar')"
+						constraint="no empty: Es campo obligatorio." mold="rounded"
+						autodrop="true" width="150px"
+						onOpen="@command('generarListaBuscarMateriaTipo')"
+						readonly="true">
+						<bandpopup>
+
+							<vbox>
+
+								<hbox>
+
+									<label value="Buscar:" />
+
+									<textbox instant="true"
+										value="@bind(vm.buscarMateriaTipo)"
+										onChange="@command('filtrarMateriaTipoBuscar')" />
+
+								</hbox>
+
+								<listbox height="250px" width="450px"
+									mold="paging" autopaging="true" onSelect="bdMateriaTipo.close()"
+									model="@load(vm.lMateriasTiposBuscar)">
+
+									<listhead>
+										<listheader label="ID"
+											hflex="min" />
+										<listheader label="MateriaTipo" />
+										<listheader label="Descripcion" />
+									</listhead>
+
+									<template name="model">
+
+										<listitem
+											onClick="@command('onSelectMateriaTipo', id = each[0])">
+
+											<listcell
+												label="@load(each[0])" />
+
+											<listcell
+												label="@load(each[1])" />
+
+											<listcell
+												label="@load(each[2])" />
+
+										</listitem>
+
+									</template>
+									<listitem />
+								</listbox>
+
+							</vbox>
+						</bandpopup>
+					</bandbox>
+
+				</hlayout>
+			</hlayout>
 
 			<space height="10px" />
 
