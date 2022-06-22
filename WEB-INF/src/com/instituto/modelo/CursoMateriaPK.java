@@ -12,7 +12,7 @@ public class CursoMateriaPK implements Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -514560671890935169L;
+	private static final long serialVersionUID = 6458196963288392536L;
 
 	@ManyToOne
 	@JoinColumn(name="cursoid")

@@ -15,8 +15,7 @@ public class CursoVigenteConcepto extends Modelo implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4240125768886330055L;
-
+	private static final long serialVersionUID = 3496137868436220906L;
 	
 	@EmbeddedId
 	private CursoVigenteConceptoPK cursovigenteconceptopk = new CursoVigenteConceptoPK();
