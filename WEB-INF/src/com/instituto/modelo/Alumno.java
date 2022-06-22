@@ -42,7 +42,7 @@ public class Alumno extends Modelo implements Serializable{
 		if (this.persona.getInstitucion()!=null)
 			institucion = this.persona.getInstitucion().getInstitucion();
 		
-		Object[] o = {this.persona.getNombre(), this.persona.getApellido(), this.persona.getCiudad().getCiudad() ,this.persona.getGradoAcademico().getDescripcion(), institucion};
+		Object[] o = {this.persona.getNombre(), this.persona.getApellido(), this.persona.getCiudad().getCiudad() ,this.persona.getGradoAcademico().getGradoacademico(), institucion};
 		
 		return o;
 	}
