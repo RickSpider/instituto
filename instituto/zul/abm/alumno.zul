@@ -27,6 +27,13 @@
 								 />
 							<listheader label="Apellido" align="left"
 								 />
+							<listheader label="Ciudad" align="left"
+								 />
+							<listheader label="Grado Academico" align="left"
+								 />
+							<listheader label="Institucion" align="left"
+								 />
+							
 							<listheader label="Activo" align="center"
 								width="80px"/>
 							<listheader align="center" 
@@ -51,6 +58,24 @@
 									value="@bind(vm.filtroColumns[1])" instant="true"
 									onChange="@command('filtrarAlumno')" hflex="1" />
 							</auxheader>
+							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[2])" instant="true"
+									onChange="@command('filtrarAlumno')" hflex="1" />
+							</auxheader>
+							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[3])" instant="true"
+									onChange="@command('filtrarAlumno')" hflex="1" />
+							</auxheader>
+							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[4])" instant="true"
+									onChange="@command('filtrarAlumno')" hflex="1" />
+							</auxheader>
 						
 							<auxheader />
 						</auxhead>
@@ -66,6 +91,17 @@
 									
 								<listcell
 									label="@load(each.persona.apellido)" />
+									
+								<listcell
+									label="@load(each.persona.ciudad.ciudad)" />
+									
+								<listcell
+									label="@load(each.persona.gradoAcademico.gradoacademico)" />
+									
+								<listcell
+									label="@load(each.persona.institucion.institucion)" />
+									
+								
 								
 								<listcell>
 								

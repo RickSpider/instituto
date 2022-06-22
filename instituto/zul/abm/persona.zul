@@ -35,6 +35,8 @@
 								/>
 							<listheader label="Direccion" align="left"
 								/>
+							<listheader label="Ciudad" align="left"
+								/>
 							<listheader align="center" 
 								width ="100px"/>
 
@@ -78,7 +80,14 @@
 							
 							<auxheader>
 								<textbox
-									value="@bind(vm.filtroColumns[4])" instant="true"
+									value="@bind(vm.filtroColumns[5])" instant="true"
+									onChange="@command('filtrarPersona')" hflex="1" />
+							</auxheader>
+							
+							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[6])" instant="true"
 									onChange="@command('filtrarPersona')" hflex="1" />
 							</auxheader>
 
@@ -102,6 +111,8 @@
 									label="@load(each.telefono)" />
 								<listcell
 									label="@load(each.direccion)" />
+								<listcell
+									label="@load(each.ciudad.ciudad)" />
 
 								<listcell>
 									<hlayout>

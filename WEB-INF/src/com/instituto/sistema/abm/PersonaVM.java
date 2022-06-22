@@ -76,7 +76,7 @@ public class PersonaVM extends TemplateViewModel {
 
 		private void inicializarFiltros() {
 
-			this.filtroColumns = new String[6]; // se debe de iniciar el filtro deacuerdo a la cantidad declarada en el
+			this.filtroColumns = new String[7]; // se debe de iniciar el filtro deacuerdo a la cantidad declarada en el
 												// modelo sin id
 
 			for (int i = 0; i < this.filtroColumns.length; i++) {
