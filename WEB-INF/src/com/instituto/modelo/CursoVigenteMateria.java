@@ -60,7 +60,7 @@ public class CursoVigenteMateria extends Modelo implements Serializable {
 		
 	}
 	
-	public void setCursoVigetne(CursoVigente cursoVigente) {
+	public void setCursoVigente(CursoVigente cursoVigente) {
 		
 		this.cursovigentemateriapk.setCursoVigente(cursoVigente);
 		

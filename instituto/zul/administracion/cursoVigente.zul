@@ -116,6 +116,7 @@
 
 						<tab label="Alumnos" />
 						<tab label="Conceptos" />
+						<tab label="Materia" />
 
 					</tabs>
 					<tabpanels>
@@ -336,6 +337,94 @@
 											<hlayout>
 												<label
 													value="@load(vm.lConceptosCursosVigentes.size())" />
+												<label value="items" />
+											</hlayout>
+										</listfooter>
+									</listfoot>
+
+								</listbox>
+
+							</vlayout>
+
+						</tabpanel>
+						
+											<tabpanel>
+
+							<vlayout vflex="1" hflex="1">
+
+								<hbox pack="end" hflex="1">
+
+									<button label="Agregar"
+										iconSclass=" z-icon-plus"
+										onClick="@command('modalCursoVigenteMateriaAgregar')"
+										disabled="@load(!vm.opAgregarCursoVigenteMateria)" />
+
+
+								</hbox>
+
+								<listbox emptyMessage="lista vacía..."
+									mold="paging" vflex="1" hflex="1" autopaging="true"
+									model="@load(vm.lMateriasCursosVigentes)" checkmark="true">
+
+									<listhead>
+
+										<listheader width="30px"
+											align="center" />
+
+										<listheader label="Orden"
+											align="center"  hflex="min" />
+										<listheader label="Materia"
+											align="left"/>
+										<listheader align="center"
+											hflex="min" />
+
+
+									</listhead>
+
+									<template name="model">
+
+										<listitem>
+
+											<listcell />
+											
+											<listcell
+												label="@load(each.orden)"
+												tooltiptext="@load(each.orden)" />
+											
+											<listcell
+												label="@load(each.cursovigentemateriapk.materia.materia)"
+												tooltiptext="@load(each.cursovigentemateriapk.materia.materia)" />
+											
+
+											<listcell>
+												<hlayout>
+
+													<button
+														iconSclass="z-icon-edit"
+														onClick="@command('modalCursoVigenteMateria', cursovigentemateria=each)"
+														tooltiptext="Editar"
+														disabled="@load(!vm.opEditarCursoVigenteMateria)" />
+
+													<button
+														iconSclass="z-icon-trash-o" style="background-color:red"
+														onClick="@command('borrarMateriaConfirmacion', cursoVigenteMateria=each)"
+														tooltiptext="Borrar"
+														disabled="@load(!vm.opQuitarCursoVigenteMateria)" />
+
+												</hlayout>
+
+											</listcell>
+
+										</listitem>
+
+									</template>
+
+									<listfoot>
+										<listfooter span="4"
+											align="left">
+											<hlayout>
+												<label
+													value="@load(vm.lMateriasCursosVigentes.size())" />
 												<label value="items" />
 											</hlayout>
 										</listfooter>
