@@ -120,9 +120,8 @@
 					<vlayout hflex="1" vflex="1">
 
 						<hbox pack="end" hflex="1">
-
-							<!-- 	<button label="Agregar" iconSclass=" z-icon-plus"
-								onClick="@command('modalBuscarMateria')" />  -->
+						
+							<label value="Agragar Nueva Materia:" style="font-weight:bold"/>
 
 							<bandbox id="bd"
 								value="@load(vm.buscarMateria)" mold="rounded" autodrop="true"

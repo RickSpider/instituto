@@ -131,6 +131,8 @@
 							<vlayout hflex="1" vflex="1">
 
 								<hbox pack="end" hflex="1">
+								
+									<label value="Agragar Nuevo Alumno:" style="font-weight:bold"/>
 
 									<bandbox id="bd"
 										value="@load(vm.buscarAlumno)" mold="rounded" autodrop="true"
