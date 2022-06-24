@@ -23,11 +23,11 @@ public class ConvenioConcepto extends Modelo implements Serializable {
 	private boolean porcentaje = false;
 
 	private double importe;
-
+	
 	@Override
 	public Object[] getArrayObjectDatos() {
-		// TODO Auto-generated method stub
-		return null;
+		Object [] o = {this.getConcepto().getConcepto(), this.importe};
+		return o;
 	}
 
 	@Override

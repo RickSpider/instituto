@@ -218,6 +218,27 @@
 
 
 									</listhead>
+									
+									<auxhead>
+
+										<auxheader />
+										<auxheader />
+
+										<auxheader>
+											<textbox
+												value="@bind(vm.filtroColumnsAlumnos[0])" instant="true"
+												onChange="@command('filtrarConvenioAlumno')" hflex="1" />
+										</auxheader>
+
+										<auxheader>
+											<textbox
+												value="@bind(vm.filtroColumnsAlumnos[1])" instant="true"
+												onChange="@command('filtrarConvenioAlumno')" hflex="1" />
+										</auxheader>
+
+										<auxheader />
+
+									</auxhead>
 
 									<template name="model">
 
@@ -311,6 +332,24 @@
 										<listheader align="center"
 											hflex="min" />
 									</listhead>
+									
+									<auxhead>
+										<auxheader />
+										<auxheader />
+
+										<auxheader>
+											<textbox
+												value="@bind(vm.filtroColumnsConceptos[0])" instant="true"
+												onChange="@command('filtrarConvenioConcepto')" hflex="1" />
+										</auxheader>
+
+										<auxheader>
+											<textbox
+												value="@bind(vm.filtroColumnsConceptos[1])" instant="true"
+												onChange="@command('filtrarConvenioConcepto')" hflex="1" />
+										</auxheader>
+										<auxheader/>
+									</auxhead>
 
 									<template name="model">
 

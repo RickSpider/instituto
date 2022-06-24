@@ -36,7 +36,9 @@ public class ConvenioVM extends TemplateViewModel {
 	private List<Convenio> lConvenios;
 	private List<Convenio> lConveniosOri;
 	private List<ConvenioAlumno> lAlumnosConvenios;
+	private List<ConvenioAlumno> lAlumnosConveniosOri;
 	private List<ConvenioConcepto> lConceptosConvenios;
+	private List<ConvenioConcepto> lConceptosConveniosOri;
 	private Convenio convenioSelected;
 	private Convenio convenioSelectedAlumnoConcepto;
 	private ConvenioConcepto convenioConceptoSelected;
@@ -88,6 +90,9 @@ public class ConvenioVM extends TemplateViewModel {
 		this.lConveniosOri = this.lConvenios;
 
 	}
+	
+	private String filtroColumnsAlumnos[];
+	private String filtroColumnsConceptos[];
 
 	private void inicializarFiltros() {
 
@@ -99,7 +104,23 @@ public class ConvenioVM extends TemplateViewModel {
 			this.filtroColumnsConvenio[i] = "";
 
 		}
+		
+		this.filtroColumnsAlumnos = new String[2];
+		this.filtroColumnsConceptos = new String[2];
+		
 
+		for (int i = 0; i < this.filtroColumnsAlumnos.length; i++) {
+
+			this.filtroColumnsAlumnos[i] = "";
+
+		}
+		
+		for (int i = 0; i < this.filtroColumnsConceptos.length; i++) {
+
+			this.filtroColumnsConceptos[i] = "";
+
+		}
+		
 	}
 
 	@Command
@@ -109,7 +130,25 @@ public class ConvenioVM extends TemplateViewModel {
 		lConvenios = this.filtrarLT(this.filtroColumnsConvenio, this.lConveniosOri);
 
 	}
+	
 
+	@Command
+	@NotifyChange("lAlumnosConvenios")
+	public void filtrarConvenioAlumno() {
+
+		this.lAlumnosConvenios = this.filtrarLT(this.filtroColumnsAlumnos, this.lAlumnosConveniosOri);
+
+	}
+	
+	@Command
+	@NotifyChange("lConceptosConvenios")
+	public void filtrarConvenioConcepto() {
+
+		this.lConceptosConvenios = this.filtrarLT(this.filtroColumnsConceptos, this.lConceptosConveniosOri);
+
+	}
+	
+	
 	// Seccion modal
 
 	private Window modal;
@@ -248,6 +287,8 @@ public class ConvenioVM extends TemplateViewModel {
 		this.convenioSelectedAlumnoConcepto = convenio;
 		this.lAlumnosConvenios = this.reg.getAllObjectsByCondicionOrder(ConvenioAlumno.class.getName(),
 				"convenioid = " + convenio.getConvenioid(), "alumnoid asc");
+		
+		this.lAlumnosConveniosOri = this.lAlumnosConvenios;
 
 		this.buscarSelectedAlumno = null;
 		this.buscarAlumno = "";
@@ -457,6 +498,8 @@ public class ConvenioVM extends TemplateViewModel {
 		this.convenioSelectedAlumnoConcepto = convenio;
 		this.lConceptosConvenios = this.reg.getAllObjectsByCondicionOrder(ConvenioConcepto.class.getName(),
 				"convenioid = " + convenio.getConvenioid(), "conceptoid asc");
+		
+		this.lConceptosConveniosOri = this.lConceptosConvenios;
 
 		/*.buscarSelectedConcepto = null;
 		this.buscarConcepto = "";*/
@@ -751,6 +794,22 @@ public class ConvenioVM extends TemplateViewModel {
 
 	public void setConvenioConceptoSelected(ConvenioConcepto convenioConceptoSelected) {
 		this.convenioConceptoSelected = convenioConceptoSelected;
+	}
+
+	public String[] getFiltroColumnsAlumnos() {
+		return filtroColumnsAlumnos;
+	}
+
+	public void setFiltroColumnsAlumnos(String[] filtroColumnsAlumnos) {
+		this.filtroColumnsAlumnos = filtroColumnsAlumnos;
+	}
+
+	public String[] getFiltroColumnsConceptos() {
+		return filtroColumnsConceptos;
+	}
+
+	public void setFiltroColumnsConceptos(String[] filtroColumnsConceptos) {
+		this.filtroColumnsConceptos = filtroColumnsConceptos;
 	}
 
 }
