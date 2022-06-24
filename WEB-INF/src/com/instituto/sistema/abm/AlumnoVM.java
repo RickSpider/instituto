@@ -1,5 +1,6 @@
 package com.instituto.sistema.abm;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.zkoss.bind.BindUtils;
@@ -19,6 +20,8 @@ import org.zkoss.zul.Window;
 import com.doxacore.TemplateViewModel;
 import com.doxacore.modelo.Ciudad;
 import com.instituto.modelo.Alumno;
+import com.instituto.modelo.CursoVigente;
+import com.instituto.modelo.CursoVigenteAlumno;
 import com.instituto.modelo.Persona;
 import com.instituto.modelo.Sede;
 import com.instituto.util.ParamsLocal;
@@ -139,6 +142,24 @@ public class AlumnoVM extends TemplateViewModelLocal {
 		this.buscarPersona = this.alumnoSelected.getPersona().getNombreCompleto();
 
 		modal = (Window) Executions.createComponents("/instituto/zul/abm/alumnoPersonaModal.zul", this.mainComponent, null);
+		Selectors.wireComponents(modal, this, false);
+		modal.doModal();
+
+	}
+	
+	private List<CursoVigenteAlumno> lCursosVigentesAlumnos;
+	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+	@Command
+	public void modalAlumnoCurso(@BindingParam("alumnoid") long alumnoid) {
+
+		
+		this.alumnoSelected = this.reg.getObjectById(Alumno.class.getName(), alumnoid);
+		this.buscarPersona = this.alumnoSelected.getPersona().getNombreCompleto();
+		
+		lCursosVigentesAlumnos = this.reg.getAllObjectsByCondicionOrder(CursoVigenteAlumno.class.getName(), "alumnoid = "+alumnoid, "cursovigenteid asc");
+
+		modal = (Window) Executions.createComponents("/instituto/zul/abm/alumnoCursoModal.zul", this.mainComponent, null);
 		Selectors.wireComponents(modal, this, false);
 		modal.doModal();
 
@@ -335,6 +356,22 @@ public class AlumnoVM extends TemplateViewModelLocal {
 
 	public void setBuscarPersona(String buscarPersona) {
 		this.buscarPersona = buscarPersona;
+	}
+
+	public List<CursoVigenteAlumno> getlCursosVigentesAlumnos() {
+		return lCursosVigentesAlumnos;
+	}
+
+	public void setlCursosVigentesAlumnos(List<CursoVigenteAlumno> lCursosVigentesAlumnos) {
+		this.lCursosVigentesAlumnos = lCursosVigentesAlumnos;
+	}
+
+	public SimpleDateFormat getSdf() {
+		return sdf;
+	}
+
+	public void setSdf(SimpleDateFormat sdf) {
+		this.sdf = sdf;
 	}
 
 

@@ -1,0 +1,39 @@
+<?page title="alumnoModal" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Cursos Ver" border="normal" position="center,center"
+		closable="true" mode="modal" action="show: slideDown;hide: slideUp">
+
+		<vlayout>
+
+			<listbox height="300px" width="500px" mold="paging"
+				autopaging="true" model="@load(vm.lCursosVigentesAlumnos)">
+
+				<listhead>
+					<listheader label="Curso" />
+					<listheader label="Sede" hflex="min"/>
+					<listheader label="Fecha Inicio" hflex="min" />
+					<listheader label="Fecha Fin" hflex="min" />
+				</listhead>
+
+				<template name="model">
+
+					<listitem>
+
+						<listcell label="@load(each.cursoVigente.curso.curso)" tooltiptext="@load(each.cursoVigente.curso.curso)" />
+						
+						<listcell label="@load(each.cursoVigente.sede.sede)" />
+						
+						<listcell label="@load(vm.sdf.format(each.cursoVigente.fechaInicio))" />
+						
+						<listcell label="@load(vm.sdf.format(each.cursoVigente.fechaFin))" />
+						
+					</listitem>
+
+				</template>
+				<listitem />
+			</listbox>
+
+		</vlayout>
+
+	</window>
+</zk>

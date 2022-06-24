@@ -131,12 +131,18 @@
 								<listcell>
 									<hlayout>
 									
-									<button iconSclass="z-icon-file-o" style="background-color:green"
+										<button iconSclass="z-icon-file-o" style="background-color:green"
 											onClick="@command('modalAlumnoPersona', alumnoid=each.alumnoid)"
 											tooltiptext="Ficha" disabled="@load(!vm.opEditarAlumno)"/>
+											
+										<button iconSclass="z-icon-list-alt" style="background-color:orange"
+											onClick="@command('modalAlumnoCurso', alumnoid=each.alumnoid)"
+											tooltiptext="Cursos" disabled="@load(!vm.opEditarAlumno)"/>
+											
 										<button iconSclass="z-icon-edit"
 											onClick="@command('modalAlumno', alumnoid=each.alumnoid)"
 											tooltiptext="Editar" disabled="@load(!vm.opEditarAlumno)"/>
+											
 										<button
 											iconSclass="z-icon-trash-o" style="background-color:red"
 											onClick="@command('borrarAlumnoConfirmacion', alumno=each)"
