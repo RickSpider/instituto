@@ -39,8 +39,11 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	private CursoVigente cursoVigenteSelected;
 	private CursoVigente cursoVigenteSelectedAlumnoConceptoMateria;
 	private List<CursoVigenteAlumno> lAlumnosCursosVigentes;
+	private List<CursoVigenteAlumno> lAlumnosCursosVigentesOri;
 	private List<CursoVigenteConcepto> lConceptosCursosVigentes;
+	private List<CursoVigenteConcepto> lConceptosCursosVigentesOri;
 	private List<CursoVigenteMateria> lMateriasCursosVigentes;
+	private List<CursoVigenteMateria> lMateriasCursosVigentesOri;
 	private CursoVigenteConcepto cursoVigenteConceptoSelected;
 	private CursoVigenteMateria cursoVigenteMateriaSelected;
 
@@ -104,25 +107,76 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	// seccion filtro
 
 	private String filtroColumns[];
-
+	private String filtroColumnsAlumnos[];
+	private String filtroColumnsConceptos[];
+	private String filtroColumnsMaterias[];
+	
 	private void inicializarFiltros() {
 
 		this.filtroColumns = new String[3]; // se debe de iniciar el filtro deacuerdo a la cantidad declarada en el
 											// modelo sin id
-
+		
+		this.filtroColumnsAlumnos = new String[2];
+		this.filtroColumnsConceptos = new String[2];
+		this.filtroColumnsMaterias = new String[2];
+		
 		for (int i = 0; i < this.filtroColumns.length; i++) {
 
 			this.filtroColumns[i] = "";
 
 		}
 
+		for (int i = 0; i < this.filtroColumnsAlumnos.length; i++) {
+
+			this.filtroColumnsAlumnos[i] = "";
+
+		}
+		
+		for (int i = 0; i < this.filtroColumnsConceptos.length; i++) {
+
+			this.filtroColumnsConceptos[i] = "";
+
+		}
+		
+		for (int i = 0; i < this.filtroColumnsMaterias.length; i++) {
+
+			this.filtroColumnsMaterias[i] = "";
+
+		}
+
 	}
+	
+	
 
 	@Command
 	@NotifyChange("lCursosVigentes")
 	public void filtrarCursoVigente() {
 
 		this.lCursosVigentes = this.filtrarLT(this.filtroColumns, this.lCursosVigentesOri);
+
+	}
+	
+	@Command
+	@NotifyChange("lAlumnosCursosVigentes")
+	public void filtrarCursoVigenteAlumno() {
+
+		this.lAlumnosCursosVigentes = this.filtrarLT(this.filtroColumnsAlumnos, this.lAlumnosCursosVigentesOri);
+
+	}
+	
+	@Command
+	@NotifyChange("lConceptosCursosVigentes")
+	public void filtrarCursoVigenteConcepto() {
+
+		this.lConceptosCursosVigentes = this.filtrarLT(this.filtroColumnsConceptos, this.lConceptosCursosVigentesOri);
+
+	}
+	
+	@Command
+	@NotifyChange("lMateriasCursosVigentes")
+	public void filtrarCursoVigenteMateria() {
+
+		this.lMateriasCursosVigentes = this.filtrarLT(this.filtroColumnsMaterias, this.lMateriasCursosVigentesOri);
 
 	}
 
@@ -360,7 +414,9 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		this.cursoVigenteSelectedAlumnoConceptoMateria = cursoVigente;
 		this.lAlumnosCursosVigentes = this.reg.getAllObjectsByCondicionOrder(CursoVigenteAlumno.class.getName(),
 				"cursoVigenteid = " + cursoVigente.getCursovigenteid(), "creado asc");
-
+		
+		this.lAlumnosCursosVigentesOri = this.lAlumnosCursosVigentes;
+		
 		this.buscarSelectedAlumno = null;
 		this.buscarAlumno = "";
 
@@ -579,6 +635,8 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		this.cursoVigenteSelectedAlumnoConceptoMateria = cursoVigente;
 		this.lConceptosCursosVigentes = this.reg.getAllObjectsByCondicionOrder(CursoVigenteConcepto.class.getName(),
 				"cursoVigenteid = " + cursoVigente.getCursovigenteid(), "conceptoid asc");
+		
+		this.lConceptosCursosVigentesOri = this.lConceptosCursosVigentes;
 
 		/*
 		 * .buscarSelectedConcepto = null; this.buscarConcepto = "";
@@ -754,6 +812,8 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			this.cursoVigenteSelectedAlumnoConceptoMateria = cursoVigente;
 			this.lMateriasCursosVigentes = this.reg.getAllObjectsByCondicionOrder(CursoVigenteMateria.class.getName(),
 					"cursoVigenteid = " + cursoVigente.getCursovigenteid(), "orden asc");
+			
+			this.lMateriasCursosVigentesOri = this.lMateriasCursosVigentes;
 
 			/*
 			 * .buscarSelectedMateria = null; this.buscarMateria = "";
@@ -1084,6 +1144,30 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 	public void setCursoVigenteMateriaSelected(CursoVigenteMateria cursoVigenteMateriaSelected) {
 		this.cursoVigenteMateriaSelected = cursoVigenteMateriaSelected;
+	}
+
+	public String[] getFiltroColumnsAlumnos() {
+		return filtroColumnsAlumnos;
+	}
+
+	public void setFiltroColumnsAlumnos(String[] filtroColumnsAlumnos) {
+		this.filtroColumnsAlumnos = filtroColumnsAlumnos;
+	}
+
+	public String[] getFiltroColumnsConceptos() {
+		return filtroColumnsConceptos;
+	}
+
+	public void setFiltroColumnsConceptos(String[] filtroColumnsConceptos) {
+		this.filtroColumnsConceptos = filtroColumnsConceptos;
+	}
+
+	public String[] getFiltroColumnsMaterias() {
+		return filtroColumnsMaterias;
+	}
+
+	public void setFiltroColumnsMaterias(String[] filtroColumnsMaterias) {
+		this.filtroColumnsMaterias = filtroColumnsMaterias;
 	}
 
 }

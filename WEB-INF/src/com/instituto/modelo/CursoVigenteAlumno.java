@@ -58,8 +58,10 @@ public class CursoVigenteAlumno extends Modelo implements Serializable {
 
 	@Override
 	public Object[] getArrayObjectDatos() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Object[] o = {this.getAlumno().getPersona().getApellido()+", "+this.getAlumno().getPersona().getNombre(), this.getAlumno().getPersona().getDocumentoNum()};
+		
+		return o;
 	}
 
 	@Override

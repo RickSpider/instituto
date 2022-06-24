@@ -24,8 +24,8 @@ public class CursoVigenteConcepto extends Modelo implements Serializable {
 	
 	@Override
 	public Object[] getArrayObjectDatos() {
-		// TODO Auto-generated method stub
-		return null;
+		Object [] o = {this.getConcepto().getConcepto(), this.importe};
+		return o;
 	}
 
 	@Override

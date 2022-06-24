@@ -16,8 +16,9 @@
 
 				</hbox>
 
-				<listbox emptyMessage="lista vacía..." mold="paging" autopaging="true"
-					vflex="1" model="@load(vm.lCursosVigentes)" checkmark="true">
+				<listbox emptyMessage="lista vacía..." mold="paging"
+					autopaging="true" vflex="1" model="@load(vm.lCursosVigentes)"
+					checkmark="true">
 
 					<listhead>
 
@@ -25,8 +26,10 @@
 						<listheader label="ID" align="right"
 							hflex="min" />
 						<listheader label="Curso" align="left" />
-						<listheader label="Fecha Inicio" align="center" hflex="min" />
-						<listheader label="Fecha Fin" align="center" hflex="min" />
+						<listheader label="Fecha Inicio" align="center"
+							hflex="min" />
+						<listheader label="Fecha Fin" align="center"
+							hflex="min" />
 						<listheader align="center" hflex="min" />
 
 
@@ -63,10 +66,13 @@
 						<listitem
 							onClick="@command('refrescarAll', cursoVigente = each )">
 							<listcell />
-							<listcell label="@load(each.cursovigenteid)" />
+							<listcell
+								label="@load(each.cursovigenteid)" />
 							<listcell label="@load(each.curso.curso)" />
-							<listcell label="@load(vm.sdf.format(each.fechaInicio))" />
-							<listcell label="@load(vm.sdf.format(each.fechaFin))" />
+							<listcell
+								label="@load(vm.sdf.format(each.fechaInicio))" />
+							<listcell
+								label="@load(vm.sdf.format(each.fechaFin))" />
 
 
 							<listcell>
@@ -126,6 +132,9 @@
 							<vlayout hflex="1" vflex="1">
 
 								<hbox pack="end" hflex="1">
+
+									<label value="Agragar Nuevo Alumno:"
+										style="font-weight:bold" />
 
 									<bandbox id="bd"
 										value="@load(vm.buscarAlumno)" mold="rounded" autodrop="true"
@@ -192,9 +201,10 @@
 
 								</hbox>
 
-								<listbox id="lbAlumnos" emptyMessage="lista vacía..."
-									mold="paging" vflex="1" hflex="1" autopaging="true"
-									model="@load(vm.lAlumnosCursosVigentes)" checkmark="true">
+								<listbox id="lbAlumnos"
+									emptyMessage="lista vacía..." mold="paging" vflex="1" hflex="1"
+									autopaging="true" model="@load(vm.lAlumnosCursosVigentes)"
+									checkmark="true">
 
 									<listhead>
 
@@ -202,7 +212,7 @@
 											align="center" />
 										<listheader label="ID"
 											align="right" hflex="min" />
-										<listheader label="Concepto"
+										<listheader label="Alumno"
 											align="left" />
 										<listheader label="Documento"
 											align="left" />
@@ -211,6 +221,27 @@
 
 
 									</listhead>
+
+									<auxhead>
+
+										<auxheader />
+										<auxheader />
+
+										<auxheader>
+											<textbox
+												value="@bind(vm.filtroColumnsAlumnos[0])" instant="true"
+												onChange="@command('filtrarCursoVigenteAlumno')" hflex="1" />
+										</auxheader>
+
+										<auxheader>
+											<textbox
+												value="@bind(vm.filtroColumnsAlumnos[1])" instant="true"
+												onChange="@command('filtrarCursoVigenteAlumno')" hflex="1" />
+										</auxheader>
+
+										<auxheader />
+
+									</auxhead>
 
 									<template name="model">
 
@@ -264,6 +295,7 @@
 
 							<vlayout vflex="1" hflex="1">
 
+
 								<hbox pack="end" hflex="1">
 
 									<button label="Agregar"
@@ -293,6 +325,23 @@
 
 
 									</listhead>
+
+									<auxhead>
+										<auxheader />
+										<auxheader />
+
+										<auxheader>
+											<textbox
+												value="@bind(vm.filtroColumnsConceptos[0])" instant="true"
+												onChange="@command('filtrarCursoVigenteConcepto')" hflex="1" />
+										</auxheader>
+
+										<auxheader>
+											<textbox
+												value="@bind(vm.filtroColumnsConceptos[1])" instant="true"
+												onChange="@command('filtrarCursoVigenteConcepto')" hflex="1" />
+										</auxheader>
+									</auxhead>
 
 									<template name="model">
 
@@ -347,8 +396,8 @@
 							</vlayout>
 
 						</tabpanel>
-						
-											<tabpanel>
+
+						<tabpanel>
 
 							<vlayout vflex="1" hflex="1">
 
@@ -372,29 +421,44 @@
 											align="center" />
 
 										<listheader label="Orden"
-											align="center"  hflex="min" />
+											align="center" hflex="min" />
 										<listheader label="Materia"
-											align="left"/>
+											align="left" />
 										<listheader align="center"
 											hflex="min" />
 
 
 									</listhead>
+									
+									<auxhead>
+										<auxheader />
+										
+										<auxheader>
+											<textbox
+												value="@bind(vm.filtroColumnsMaterias[0])" instant="true"
+												onChange="@command('filtrarCursoVigenteMateria')" hflex="1" />
+										</auxheader>
+
+										<auxheader>
+											<textbox
+												value="@bind(vm.filtroColumnsMaterias[1])" instant="true"
+												onChange="@command('filtrarCursoVigenteMateria')" hflex="1" />
+										</auxheader>
+									</auxhead>
 
 									<template name="model">
 
 										<listitem>
 
 											<listcell />
-											
+
 											<listcell
-												label="@load(each.orden)"
-												tooltiptext="@load(each.orden)" />
-											
+												label="@load(each.orden)" tooltiptext="@load(each.orden)" />
+
 											<listcell
 												label="@load(each.cursovigentemateriapk.materia.materia)"
 												tooltiptext="@load(each.cursovigentemateriapk.materia.materia)" />
-											
+
 
 											<listcell>
 												<hlayout>
