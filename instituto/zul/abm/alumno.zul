@@ -27,6 +27,8 @@
 								 />
 							<listheader label="Apellido" align="left"
 								 />
+							<listheader label="Documento #" align="left"
+								 />
 							<listheader label="Ciudad" align="left"
 								 />
 							<listheader label="Grado Academico" align="left"
@@ -37,7 +39,7 @@
 							<listheader label="Activo" align="center"
 								width="80px"/>
 							<listheader align="center" 
-								width="100px"/>
+								hflex="min"/>
 
 
 						</listhead>
@@ -76,6 +78,13 @@
 									value="@bind(vm.filtroColumns[4])" instant="true"
 									onChange="@command('filtrarAlumno')" hflex="1" />
 							</auxheader>
+							
+							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[5])" instant="true"
+									onChange="@command('filtrarAlumno')" hflex="1" />
+							</auxheader>
 						
 							<auxheader />
 						</auxhead>
@@ -91,6 +100,9 @@
 									
 								<listcell
 									label="@load(each.persona.apellido)" />
+									
+								<listcell
+									label="@load(each.persona.documentoNum)" />
 									
 								<listcell
 									label="@load(each.persona.ciudad.ciudad)" />
@@ -118,7 +130,10 @@
 								
 								<listcell>
 									<hlayout>
-
+									
+									<button iconSclass="z-icon-file-o" style="background-color:green"
+											onClick="@command('modalAlumnoPersona', alumnoid=each.alumnoid)"
+											tooltiptext="Ficha" disabled="@load(!vm.opEditarAlumno)"/>
 										<button iconSclass="z-icon-edit"
 											onClick="@command('modalAlumno', alumnoid=each.alumnoid)"
 											tooltiptext="Editar" disabled="@load(!vm.opEditarAlumno)"/>

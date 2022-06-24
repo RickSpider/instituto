@@ -68,7 +68,7 @@ public class AlumnoVM extends TemplateViewModelLocal {
 
 	private void inicializarFiltros() {
 
-		this.filtroColumns = new String[5]; // se debe de iniciar el filtro deacuerdo a la cantidad declarada en el
+		this.filtroColumns = new String[6]; // se debe de iniciar el filtro deacuerdo a la cantidad declarada en el
 											// modelo sin id
 
 		for (int i = 0; i < this.filtroColumns.length; i++) {
@@ -126,6 +126,19 @@ public class AlumnoVM extends TemplateViewModelLocal {
 		}
 
 		modal = (Window) Executions.createComponents("/instituto/zul/abm/alumnoModal.zul", this.mainComponent, null);
+		Selectors.wireComponents(modal, this, false);
+		modal.doModal();
+
+	}
+	
+	@Command
+	public void modalAlumnoPersona(@BindingParam("alumnoid") long alumnoid) {
+
+		
+		this.alumnoSelected = this.reg.getObjectById(Alumno.class.getName(), alumnoid);
+		this.buscarPersona = this.alumnoSelected.getPersona().getNombreCompleto();
+
+		modal = (Window) Executions.createComponents("/instituto/zul/abm/alumnoPersonaModal.zul", this.mainComponent, null);
 		Selectors.wireComponents(modal, this, false);
 		modal.doModal();
 

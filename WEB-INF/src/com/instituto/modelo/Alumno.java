@@ -42,14 +42,14 @@ public class Alumno extends Modelo implements Serializable{
 		if (this.persona.getInstitucion()!=null)
 			institucion = this.persona.getInstitucion().getInstitucion();
 		
-		Object[] o = {this.persona.getNombre(), this.persona.getApellido(), this.persona.getCiudad().getCiudad() ,this.persona.getGradoAcademico().getGradoacademico(), institucion};
+		Object[] o = {this.persona.getNombre(), this.persona.getApellido(), this.persona.getDocumentoNum(),this.persona.getCiudad().getCiudad() ,this.persona.getGradoAcademico().getGradoacademico(), institucion};
 		
 		return o;
 	}
 
 	@Override
 	public String getStringDatos() {
-		return this.alumnoid + " " + this.persona.getNombre() + " " + this.persona.getApellido() + " " +this.persona.getCiudad().getCiudad()+ " " + this.persona.getGradoAcademico().getDescripcion()+ " " + this.persona.getInstitucion().getInstitucion();
+		return this.alumnoid + " " + this.persona.getNombre() + " " + this.persona.getApellido() + " " +this.persona.getDocumentoNum() +" "+ this.persona.getCiudad().getCiudad()+ " " + this.persona.getGradoAcademico().getDescripcion()+ " " + this.persona.getInstitucion().getInstitucion();
 		
 	}
 	

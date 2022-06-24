@@ -77,13 +77,18 @@ public class Persona extends Modelo implements Serializable {
 	@Override
 	public Object[] getArrayObjectDatos() {
 		
-		Object[] o = {this.nombre, this.apellido, this.documentoNum,this.email, this.telefono, this.direccion, this.ciudad.getCiudad()};
+		String institucion = "";
+		if (this.institucion!=null)
+			institucion = this.institucion.getInstitucion();
+		
+		Object[] o = {this.nombre, this.apellido, this.documentoNum, this.direccion, this.ciudad.getCiudad(), this.gradoAcademico.getGradoacademico(), institucion};
 		
 		return o;
 	}
 
 	@Override
 	public String getStringDatos() {
+		
 		return this.personaid + " " + this.nombre + " " + this.apellido +" "+this.documentoNum+" "+ this.email+" " + this.telefono +" "+this.direccion+" "+this.ciudad.getCiudad();
 	}
 

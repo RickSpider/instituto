@@ -1,0 +1,221 @@
+<?page title="personaModal" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Persona Crear/Ver/Editar" border="normal"
+		position="center,center" closable="true" mode="modal"
+		action="show: slideDown;hide: slideUp">
+
+		<vlayout>
+			<hlayout>
+				<hlayout>
+					<hbox width="130px">
+						<label value="Nombres: "
+							style="font-weight:bold" />
+					</hbox>
+					<textbox value="@load(vm.alumnoSelected.persona.nombre)"
+						width="150px" readonly="true" />
+				</hlayout>
+
+				<hlayout>
+
+					<hbox width="130px">
+						<label value="Apellidos: "
+							style="font-weight:bold" />
+					</hbox>
+					<textbox value="@load(vm.alumnoSelected.persona.apellido)"
+						width="150px" readonly="true" />
+
+				</hlayout>
+
+			</hlayout>
+
+
+			<hlayout>
+
+				<hlayout>
+					<hbox width="130px">
+						<label value="Tipo documento: "
+							style="font-weight:bold" />
+					</hbox>
+					<textbox
+						value="@load(vm.alumnoSelected.persona.documentoTipo.tipo)" width="150px"
+						readonly="true" />
+				</hlayout>
+
+
+				<hlayout>
+					<hbox width="130px">
+						<label value="Documento #: "
+							style="font-weight:bold" />
+					</hbox>
+					<textbox value="@load(vm.alumnoSelected.persona.documentoNum)"
+						width="150px" readonly="true" />
+				</hlayout>
+
+			</hlayout>
+
+			<hlayout>
+
+				<hlayout>
+					<hbox width="130px">
+						<label value="Fecha Nacimiento: "
+							style="font-weight:bold" />
+					</hbox>
+					<datebox value="@load(vm.alumnoSelected.persona.fechaNacimiento)"
+						format="short " width="150px" readonly="true" />
+				</hlayout>
+
+				<hlayout>
+					<hbox width="130px">
+						<label value="RUC: " style="font-weight:bold" />
+					</hbox>
+					<textbox value="@load(vm.alumnoSelected.persona.ruc)" width="150px"
+						readonly="true" />
+				</hlayout>
+
+			</hlayout>
+
+
+			<hlayout>
+				<hlayout>
+
+					<hbox width="130px">
+						<label value="Estado Civil: "
+							style="font-weight:bold" />
+					</hbox>
+					<textbox value="@load(vm.alumnoSelected.persona.estadoCivil.tipo)"
+						width="150px" readonly="true" />
+				</hlayout>
+				
+				<hlayout>
+
+				<hbox width="130px">
+					<label value="Nacionalidad: "
+						style="font-weight:bold" />
+				</hbox>
+				<textbox
+					value="@load(vm.alumnoSelected.persona.nacionalidad.gentilicio)" width="150px"
+					readonly="true" />
+
+			</hlayout>
+				
+
+
+			</hlayout>
+
+
+			
+			<hlayout>
+				<hlayout>
+
+					<hbox width="130px">
+						<label value="Ciudad: "
+							style="font-weight:bold" />
+					</hbox>
+
+				<textbox
+					value="@load(vm.alumnoSelected.persona.ciudad.ciudad)" width="150px"
+					readonly="true" />
+
+
+				</hlayout>
+
+
+
+				<hlayout>
+
+					<hbox width="130px">
+						<label value="Dirección: "
+							style="font-weight:bold" />
+					</hbox>
+					<textbox
+						value="@load(vm.alumnoSelected.persona.direccion)"
+						width="150px" readonly="true" />
+
+				</hlayout>
+
+			</hlayout>
+
+			<hlayout>
+				<hlayout>
+
+					<hbox width="130px">
+						<label value="Telefono: "
+							style="font-weight:bold" />
+					</hbox>
+					<textbox
+						value="@load(vm.alumnoSelected.persona.telefono)"
+						 width="150px" readonly="true" />
+
+				</hlayout>
+
+				<hlayout>
+
+					<hbox width="130px">
+						<label value="Email: " style="font-weight:bold" />
+					</hbox>
+					<textbox type="email"
+						value="@load(vm.alumnoSelected.persona.email)"
+						readonly ="true"
+						width="150px" 
+						tooltiptext="@load(vm.alumnoSelected.persona.email)"/>
+
+				</hlayout>
+			</hlayout>
+
+
+
+			<hlayout>
+				<hlayout>
+
+					<hbox width="130px">
+						<label value="GradoAcademico: "
+							style="font-weight:bold" />
+					</hbox>
+					<textbox type="email"
+						value="@load(vm.alumnoSelected.persona.gradoAcademico.gradoacademico)"
+						readonly ="true"
+						width="150px" />
+
+
+				</hlayout>
+
+				<hlayout>
+
+					<hbox width="130px">
+						<label value="Año Egreso: "
+							style="font-weight:bold" />
+					</hbox>
+					<intbox
+						value="@load(vm.alumnoSelected.persona.egresoAno)"
+						readonly="true" width="150px" />
+
+				</hlayout>
+
+
+			</hlayout>
+
+			<hlayout>
+
+				<hlayout>
+
+					<hbox width="130px">
+						<label value="Institucion laboral: "
+							style="font-weight:bold" />
+					</hbox>
+
+					<textbox type="email"
+						value="@load(vm.alumnoSelected.persona.institucion.institucion)"
+						readonly ="true"
+						width="150px" 
+						tooltiptext="@load(vm.alumnoSelected.persona.institucion.institucion)"/>
+
+
+				</hlayout>
+
+			</hlayout>
+
+		</vlayout>
+
+
+	</window>
+</zk>

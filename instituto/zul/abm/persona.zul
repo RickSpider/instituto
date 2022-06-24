@@ -29,13 +29,15 @@
 								 />
 							<listheader label="Documento #" align="left"
 								/>
-							<listheader label="Email" align="left"
-								/>
-							<listheader label="Telefono" align="left"
-								/>
+							
 							<listheader label="Direccion" align="left"
 								/>
 							<listheader label="Ciudad" align="left"
+								/>
+								
+							<listheader label="Grado Academico" align="left"
+								/>
+							<listheader label="Institucion Laboral" align="left"
 								/>
 							<listheader align="center" 
 								width ="100px"/>
@@ -106,14 +108,13 @@
 								<listcell
 									label="@load(each.documentoNum)" />
 								<listcell
-									label="@load(each.email)" />
-								<listcell
-									label="@load(each.telefono)" />
-								<listcell
 									label="@load(each.direccion)" />
 								<listcell
 									label="@load(each.ciudad.ciudad)" />
-
+								<listcell
+									label="@load(each.gradoAcademico.gradoacademico)" />
+								<listcell
+									label="@load(each.institucion.institucion)" />
 								<listcell>
 									<hlayout>
 
