@@ -148,7 +148,6 @@ public class AlumnoVM extends TemplateViewModelLocal {
 	}
 	
 	private List<CursoVigenteAlumno> lCursosVigentesAlumnos;
-	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
 	@Command
 	public void modalAlumnoCurso(@BindingParam("alumnoid") long alumnoid) {
@@ -365,14 +364,5 @@ public class AlumnoVM extends TemplateViewModelLocal {
 	public void setlCursosVigentesAlumnos(List<CursoVigenteAlumno> lCursosVigentesAlumnos) {
 		this.lCursosVigentesAlumnos = lCursosVigentesAlumnos;
 	}
-
-	public SimpleDateFormat getSdf() {
-		return sdf;
-	}
-
-	public void setSdf(SimpleDateFormat sdf) {
-		this.sdf = sdf;
-	}
-
 
 }

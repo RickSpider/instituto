@@ -63,8 +63,6 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	private boolean opQuitarCursoVigenteMateria;
 	private boolean opEditarCursoVigenteMateria;
 
-	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
 	@Init(superclass = true)
 	public void initCursoVigenteVM() {
 
@@ -522,13 +520,17 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 		}
 
-		for (CursoVigenteAlumno x : this.lAlumnosCursosVigentes) {
+		for (CursoVigenteAlumno x : this.lAlumnosCursosVigentesOri) {
 
 			if (this.buscarSelectedAlumno.getAlumnoid() == x.getAlumno().getAlumnoid()) {
 
 				this.mensajeError("El CursoVigente ya tiene el alumno " + x.getAlumno().getFullNombre());
 
+				this.buscarAlumno = "";
+				this.buscarSelectedAlumno = null;
+				
 				return;
+				
 
 			}
 
@@ -1080,14 +1082,6 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 	public void setlConceptosBuscar(List<Object[]> lConceptosBuscar) {
 		this.lConceptosBuscar = lConceptosBuscar;
-	}
-
-	public SimpleDateFormat getSdf() {
-		return sdf;
-	}
-
-	public void setSdf(SimpleDateFormat sdf) {
-		this.sdf = sdf;
 	}
 
 	public boolean isOpAgregarCursoVigenteMateria() {
