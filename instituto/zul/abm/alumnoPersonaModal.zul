@@ -61,7 +61,8 @@
 							style="font-weight:bold" />
 					</hbox>
 					<datebox value="@load(vm.alumnoSelected.persona.fechaNacimiento)"
-						format="short " width="150px" readonly="true" />
+						format="short " width="150px" readonly="true" 
+						buttonVisible="false"/>
 				</hlayout>
 
 				<hlayout>
