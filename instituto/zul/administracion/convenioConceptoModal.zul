@@ -78,6 +78,7 @@
 					<label value="Importe: " style="font-weight:bold" />
 				</hbox>
 				<doublebox value="@load(vm.convenioConceptoSelected.importe) @save(vm.convenioConceptoSelected.importe, before='guardarConcepto')" 
+				format="#,###" 
 				constraint="no empty: Es campo obligatorio."/>
 			</hlayout>
 

@@ -23,9 +23,9 @@
 						
 						<listcell label="@load(each.cursoVigente.sede.sede)" />
 						
-						<listcell label="@load(vm.sdf.format(each.cursoVigente.fechaInicio))" />
+						<listcell label="@load(each.cursoVigente.fechaInicio) @converter('formatedDate', format='dd/MM/yyy')" />
 						
-						<listcell label="@load(vm.sdf.format(each.cursoVigente.fechaFin))" />
+						<listcell label="@load(each.cursoVigente.fechaFin) @converter('formatedDate', format='dd/MM/yyy')" />
 						
 					</listitem>
 

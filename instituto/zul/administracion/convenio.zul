@@ -362,7 +362,7 @@
 												label="@load(each.convenioconceptopk.concepto.concepto)"
 												tooltiptext="@load(each.convenioconceptopk.concepto.concepto)" />
 											<listcell
-												label="@load(each.importe)"
+												label="@load(each.importe) @converter('formatedNumber', format='#,###')"
 												tooltiptext="@load(each.importe)" />
 
 											<listcell>

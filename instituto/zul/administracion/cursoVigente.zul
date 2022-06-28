@@ -70,9 +70,9 @@
 								label="@load(each.cursovigenteid)" />
 							<listcell label="@load(each.curso.curso)" />
 							<listcell
-								label="@load(vm.sdf.format(each.fechaInicio))" />
+								label="@load(each.fechaInicio) @converter('formatedDate', format='dd/MM/yyy')" />
 							<listcell
-								label="@load(vm.sdf.format(each.fechaFin))" />
+								label="@load(each.fechaFin) @converter('formatedDate', format='dd/MM/yyy')" />
 
 
 							<listcell>
@@ -354,7 +354,7 @@
 												label="@load(each.cursovigenteconceptopk.concepto.concepto)"
 												tooltiptext="@load(each.cursovigenteconceptopk.concepto.concepto)" />
 											<listcell
-												label="@load(each.importe)"
+												label="@load(each.importe) @converter('formatedNumber', format='#,###')"
 												tooltiptext="@load(each.importe)" />
 
 											<listcell>
