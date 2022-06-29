@@ -13,6 +13,26 @@
 					<listheader label="Sede" hflex="min"/>
 					<listheader label="Fecha Inicio" hflex="min" />
 					<listheader label="Fecha Fin" hflex="min" />
+					<listheader label="D" align="center"
+							hflex="min" />
+
+						<listheader label="L" align="center"
+							hflex="min" />
+
+						<listheader label="MA" align="center"
+							hflex="min" />
+
+						<listheader label="MI" align="center"
+							hflex="min" />
+
+						<listheader label="J" align="center"
+							hflex="min" />
+
+						<listheader label="V" align="center"
+							hflex="min" />
+
+						<listheader label="S" align="center"
+							hflex="min" />
 				</listhead>
 
 				<template name="model">
@@ -26,6 +46,62 @@
 						<listcell label="@load(each.cursoVigente.fechaInicio) @converter('formatedDate', format='dd/MM/yyy')" />
 						
 						<listcell label="@load(each.cursoVigente.fechaFin) @converter('formatedDate', format='dd/MM/yyy')" />
+						
+						<listcell>
+							
+								<if test="@load(each.cursoVigente.booleanDias[0])">
+									<label value="Si" />
+								</if>
+							 
+							</listcell>
+							
+							<listcell>
+							
+								<if test="@load(each.cursoVigente.booleanDias[1])">
+									<label value="Si" />
+								</if>
+							 
+							</listcell>
+							
+							<listcell>
+							
+								<if test="@load(each.cursoVigente.booleanDias[2])">
+									<label value="Si" />
+								</if>
+							 
+							</listcell>
+							
+							<listcell>
+							
+								<if test="@load(each.cursoVigente.booleanDias[3])">
+									<label value="Si" />
+								</if>
+							 
+							</listcell>
+							
+							<listcell>
+							
+								<if test="@load(each.cursoVigente.booleanDias[4])">
+									<label value="Si" />
+								</if>
+							 
+							</listcell>
+							
+							<listcell>
+							
+								<if test="@load(each.cursoVigente.booleanDias[5])">
+									<label value="Si" />
+								</if>
+							 
+							</listcell>
+							
+							<listcell>
+							
+								<if test="@load(each.cursoVigente.booleanDias[6])">
+									<label value="Si" />
+								</if>
+							 
+							</listcell>
 						
 					</listitem>
 
