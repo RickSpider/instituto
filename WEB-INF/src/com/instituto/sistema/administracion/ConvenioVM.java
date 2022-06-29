@@ -397,7 +397,7 @@ public class ConvenioVM extends TemplateViewModel {
 
 		for (ConvenioAlumno x : this.lAlumnosConveniosOri) {
 
-			if (this.buscarSelectedAlumno.getAlumnoid() == x.getAlumno().getAlumnoid()) {
+			if (this.buscarSelectedAlumno.getAlumnoid().longValue() == x.getAlumno().getAlumnoid().longValue()) {
 
 				this.mensajeError("El Convenio ya tiene el alumno " + x.getAlumno().getFullNombre());
 
