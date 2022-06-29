@@ -1,6 +1,8 @@
 package com.instituto.sistema.administracion;
 
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.zkoss.bind.BindUtils;
@@ -19,6 +21,8 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
 import com.doxacore.TemplateViewModel;
+import com.doxacore.util.Register;
+import com.google.common.collect.ComparisonChain;
 import com.instituto.modelo.Alumno;
 import com.instituto.modelo.Concepto;
 import com.instituto.modelo.Convenio;
@@ -28,7 +32,6 @@ import com.instituto.modelo.CursoVigenteConcepto;
 import com.instituto.modelo.CursoVigenteMateria;
 import com.instituto.modelo.Materia;
 import com.instituto.modelo.Curso;
-import com.instituto.modelo.CursoVigente;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
 
@@ -410,8 +413,21 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	public void refrescarAlumnos(@BindingParam("cursoVigente") CursoVigente cursoVigente) {
 
 		this.cursoVigenteSelectedAlumnoConceptoMateria = cursoVigente;
-		this.lAlumnosCursosVigentes = this.reg.getAllObjectsByCondicionOrder(CursoVigenteAlumno.class.getName(),
-				"cursoVigenteid = " + cursoVigente.getCursovigenteid(), "creado asc");
+		
+		String[] join = {"en.alumno as a", "a.persona as p"};
+		String[] condicion = {"cursoVigenteid = " + cursoVigente.getCursovigenteid()};
+		String[] orden =  {};
+		
+		this.lAlumnosCursosVigentes = this.reg.getAllObjectsByCondicionOrder(CursoVigenteAlumno.class.getName(), "cursoVigenteid = " + cursoVigente.getCursovigenteid(), null);
+
+		Collections.sort(this.lAlumnosCursosVigentes, new Comparator<CursoVigenteAlumno>() {
+
+			@Override
+			public int compare(CursoVigenteAlumno o1, CursoVigenteAlumno o2) {
+				return o1.getAlumno().getFullNombre().compareToIgnoreCase(o2.getAlumno().getFullNombre());
+			}
+
+		} );
 		
 		this.lAlumnosCursosVigentesOri = this.lAlumnosCursosVigentes;
 		
@@ -522,7 +538,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 		for (CursoVigenteAlumno x : this.lAlumnosCursosVigentesOri) {
 
-			if (this.buscarSelectedAlumno.getAlumnoid() == x.getAlumno().getAlumnoid()) {
+			if (this.buscarSelectedAlumno.getAlumnoid().longValue() == x.getAlumno().getAlumnoid().longValue()) {
 
 				this.mensajeError("El CursoVigente ya tiene el alumno " + x.getAlumno().getFullNombre());
 
@@ -541,7 +557,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		cu.setCursoVigente(this.cursoVigenteSelectedAlumnoConceptoMateria);
 		this.save(cu);
 		
-		this.lastPageListBox((Listbox) this.mainComponent.query("#lbAlumnos"));
+		//this.lastPageListBox((Listbox) this.mainComponent.query("#lbAlumnos"));
 		
 		this.refrescarAlumnos(this.cursoVigenteSelectedAlumnoConceptoMateria);
 

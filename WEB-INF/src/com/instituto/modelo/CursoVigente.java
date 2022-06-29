@@ -121,6 +121,22 @@ public class CursoVigente extends Modelo implements Serializable{
 		return this.cursovigenteid + " " +this.curso.getCurso() + " " +sdf.format(this.fechaInicio)+" "+ sdf.format(this.fechaFin);
 		
 	}
+	
+	public boolean[] getBooleanDias() {
+		
+		boolean[] bDias = new boolean[7];
+		
+		String[] sDias = dias.split(";");
+
+		for (int i = 0; i < sDias.length; i++) {
+
+			bDias[i] = new Boolean(sDias[i]);
+
+		}
+		
+		return bDias;
+		
+	}
 
 	
 }

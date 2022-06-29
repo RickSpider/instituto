@@ -30,6 +30,28 @@
 							hflex="min" />
 						<listheader label="Fecha Fin" align="center"
 							hflex="min" />
+
+						<listheader label="D" align="center"
+							hflex="min" />
+
+						<listheader label="L" align="center"
+							hflex="min" />
+
+						<listheader label="MA" align="center"
+							hflex="min" />
+
+						<listheader label="MI" align="center"
+							hflex="min" />
+
+						<listheader label="J" align="center"
+							hflex="min" />
+
+						<listheader label="V" align="center"
+							hflex="min" />
+
+						<listheader label="S" align="center"
+							hflex="min" />
+							
 						<listheader align="center" hflex="min" />
 
 
@@ -59,6 +81,13 @@
 						</auxheader>
 
 						<auxheader />
+						<auxheader />
+						<auxheader />
+						<auxheader />
+						<auxheader />
+						<auxheader />
+						<auxheader />
+						
 					</auxhead>
 
 					<template name="model">
@@ -73,7 +102,62 @@
 								label="@load(each.fechaInicio) @converter('formatedDate', format='dd/MM/yyy')" />
 							<listcell
 								label="@load(each.fechaFin) @converter('formatedDate', format='dd/MM/yyy')" />
-
+							<listcell>
+							
+								<if test="@load(each.booleanDias[0])">
+									<label value="Si" />
+								</if>
+							 
+							</listcell>
+							
+							<listcell>
+							
+								<if test="@load(each.booleanDias[1])">
+									<label value="Si" />
+								</if>
+							 
+							</listcell>
+							
+							<listcell>
+							
+								<if test="@load(each.booleanDias[2])">
+									<label value="Si" />
+								</if>
+							 
+							</listcell>
+							
+							<listcell>
+							
+								<if test="@load(each.booleanDias[3])">
+									<label value="Si" />
+								</if>
+							 
+							</listcell>
+							
+							<listcell>
+							
+								<if test="@load(each.booleanDias[4])">
+									<label value="Si" />
+								</if>
+							 
+							</listcell>
+							
+							<listcell>
+							
+								<if test="@load(each.booleanDias[5])">
+									<label value="Si" />
+								</if>
+							 
+							</listcell>
+							
+							<listcell>
+							
+								<if test="@load(each.booleanDias[6])">
+									<label value="Si" />
+								</if>
+							 
+							</listcell>
+							
 
 							<listcell>
 								<hlayout>
@@ -210,7 +294,7 @@
 
 										<listheader width="30px"
 											align="center" />
-										<listheader label="ID"
+										<listheader label="#"
 											align="right" hflex="min" />
 										<listheader label="Alumno"
 											align="left" />
@@ -249,7 +333,7 @@
 
 											<listcell />
 											<listcell
-												label="@load(each.cursovigentealumnopk.alumno.alumnoid)" />
+												label="@load(forEachStatus.index+1)" />
 											<listcell
 												label="@load(each.cursovigentealumnopk.alumno.fullNombre)"
 												tooltiptext="@load(each.cursovigentealumnopk.alumno.fullNombre)" />
@@ -333,13 +417,15 @@
 										<auxheader>
 											<textbox
 												value="@bind(vm.filtroColumnsConceptos[0])" instant="true"
-												onChange="@command('filtrarCursoVigenteConcepto')" hflex="1" />
+												onChange="@command('filtrarCursoVigenteConcepto')"
+												hflex="1" />
 										</auxheader>
 
 										<auxheader>
 											<textbox
 												value="@bind(vm.filtroColumnsConceptos[1])" instant="true"
-												onChange="@command('filtrarCursoVigenteConcepto')" hflex="1" />
+												onChange="@command('filtrarCursoVigenteConcepto')"
+												hflex="1" />
 										</auxheader>
 									</auxhead>
 
@@ -429,10 +515,10 @@
 
 
 									</listhead>
-									
+
 									<auxhead>
 										<auxheader />
-										
+
 										<auxheader>
 											<textbox
 												value="@bind(vm.filtroColumnsMaterias[0])" instant="true"
