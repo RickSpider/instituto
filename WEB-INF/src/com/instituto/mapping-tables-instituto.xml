@@ -15,3 +15,5 @@
 <mapping class="com.instituto.modelo.CursoVigenteAlumno" />
 <mapping class="com.instituto.modelo.CursoVigenteConcepto" />
 <mapping class="com.instituto.modelo.CursoVigenteMateria" />
+<mapping class="com.instituto.modelo.CursoVigenteConvenio" />
+<mapping class="com.instituto.modelo.MovimientoCuenta" />

@@ -101,7 +101,11 @@ public class ParamsLocal extends Params {
 	
 	public static final String OP_AGREGAR_CURSOVIGENTE_MATERIA = "AgregarCursoVigenteMateria";
 	public static final String OP_QUITAR_CURSOVIGENTE_MATERIA = "QuitarCursoVigenteMateria";
-	public static final String OP_EDITAR_CURSOVIGENTE_MATERIA = "EditarCursoVigenteMateria";
+	public static final String OP_EDITAR_CURSOVIGENTE_MATERIA = "EditarCursoVigenteMateria";	
+
+	public static final String OP_AGREGAR_CURSOVIGENTE_CONVENIO = "AgregarCursoVigenteConvenio";
+	public static final String OP_QUITAR_CURSOVIGENTE_CONVENIO = "QuitarCursoVigenteConvenio";
+	public static final String OP_EDITAR_CURSOVIGENTE_CONVENIO = "EditarCursoVigenteConvenio";
 	
 	
 }

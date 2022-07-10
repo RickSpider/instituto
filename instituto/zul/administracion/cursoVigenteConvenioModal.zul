@@ -1,0 +1,79 @@
+<?page title="cursoVigenteConvenioModal" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Convenio Crear/Ver/Editar" border="normal"
+		position="center,center" closable="true" mode="modal"
+		action="show: slideDown;hide: slideUp">
+
+		<vlayout>
+
+			<hlayout>
+
+				<hbox width="130px">
+					<label value="Convenio: " style="font-weight:bold" />
+				</hbox>
+
+				<bandbox id="bd" value="@load(vm.buscarConvenio) @save(vm.buscarConvenio, before='guardarConvenio')"
+					constraint="no empty: Es campo obligatorio."
+					mold="rounded" autodrop="true" width="150px"
+					onOpen="@command('generarListaBuscarConvenio')" readonly="true" disabled="@load(vm.editar)">
+					<bandpopup>
+
+						<vbox>
+
+							<hbox>
+
+								<label value="Buscar:" />
+
+								<textbox instant="true"
+									value="@bind(vm.buscarConvenio)"
+									onChange="@command('filtrarConvenioBuscar')" />
+
+							</hbox>
+
+							<listbox height="250px" width="450px"
+								mold="paging" autopaging="true" onSelect="bd.close()"
+								model="@load(vm.lConveniosBuscar)">
+
+								<listhead>
+									<listheader label="ID" hflex="min" />
+									<listheader label="Convenio" />
+									
+								</listhead>
+
+								<template name="model">
+
+									<listitem 
+										onClick="@command('onSelectConvenio', id = each[0])">
+
+										<listcell
+											label="@load(each[0])" />
+
+										<listcell
+											label="@load(each[1])" />
+
+									</listitem>
+
+								</template>
+								<listitem />
+							</listbox>
+
+						</vbox>
+					</bandpopup>
+				</bandbox>
+
+
+			</hlayout>
+
+			<space height="10px" />
+
+			<hlayout>
+
+				<button label="Aceptar" onClick="@command('guardarConvenio')"/>
+
+			</hlayout>
+
+		</vlayout>
+
+
+	</window>
+</zk>
