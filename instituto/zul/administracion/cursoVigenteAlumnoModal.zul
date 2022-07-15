@@ -1,0 +1,87 @@
+<?page title="cursoVigenteAlumnoModal" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Alumno Crear/Ver/Editar" border="normal"
+		position="center,center" closable="true" mode="modal"
+		action="show: slideDown;hide: slideUp">
+
+		<vlayout>
+
+			<hlayout>
+
+				<hbox width="130px">
+					<label value="Alumno: " style="font-weight:bold" />
+				</hbox>
+
+				<bandbox id="bd" value="@load(vm.buscarAlumno) @save(vm.buscarAlumno, before='guardarAlumno')"
+					constraint="no empty: Es campo obligatorio."
+					mold="rounded" autodrop="true" width="150px"
+					onOpen="@command('generarListaBuscarAlumno')" readonly="true" disabled="@load(vm.editar)">
+					<bandpopup>
+
+						<vbox>
+
+							<hbox>
+
+								<label value="Buscar:" />
+
+								<textbox instant="true"
+									value="@bind(vm.buscarAlumno)"
+									onChange="@command('filtrarAlumnoBuscar')" />
+
+							</hbox>
+
+							<listbox height="250px" width="450px"
+								mold="paging" autopaging="true" onSelect="bd.close()"
+								model="@load(vm.lAlumnosBuscar)">
+
+								<listhead>
+									<listheader label="ID" hflex="min" />
+									<listheader label="Alumno" />
+									<listheader label="Apellido" />
+									<listheader label="Documento #" />
+									
+								</listhead>
+
+								<template name="model">
+
+									<listitem 
+										onClick="@command('onSelectAlumno', id = each[0])">
+
+										<listcell
+											label="@load(each[0])" />
+
+										<listcell
+											label="@load(each[1])" />
+										
+										<listcell
+											label="@load(each[2])" />
+											
+										<listcell
+											label="@load(each[3])" />
+
+									</listitem>
+
+								</template>
+								<listitem />
+							</listbox>
+
+						</vbox>
+					</bandpopup>
+				</bandbox>
+
+
+			</hlayout>
+
+			<space height="10px" />
+
+			<hlayout>
+
+				<button label="Aceptar" onClick="@command('guardarAlumno')"/>
+
+			</hlayout>
+
+		</vlayout>
+
+
+	</window>
+</zk>

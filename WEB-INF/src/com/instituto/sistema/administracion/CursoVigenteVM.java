@@ -45,6 +45,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	private List<CursoVigenteMateria> lMateriasCursosVigentesOri;
 	private List<CursoVigenteConvenio> lConveniosCursosVigentesOri;
 	private List<CursoVigenteConvenio> lConveniosCursosVigentes;
+	private CursoVigenteAlumno cursoVigenteAlumnoSelected;
 	private CursoVigenteConcepto cursoVigenteConceptoSelected;
 	private CursoVigenteMateria cursoVigenteMateriaSelected;
 	private CursoVigenteConvenio cursoVigenteConvenioSelected;
@@ -54,8 +55,10 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	private boolean opCrearCursoVigente;
 	private boolean opEditarCursoVigente;
 	private boolean opBorrarCursoVigente;
+	
 	private boolean opAgregarCursoVigenteAlumno;
 	private boolean opQuitarCursoVigenteAlumno;
+	private boolean opEditarCursoVigenteAlumno;
 
 	private boolean opAgregarCursoVigenteConcepto;
 	private boolean opQuitarCursoVigenteConcepto;
@@ -90,7 +93,8 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 		this.opAgregarCursoVigenteAlumno = this.operacionHabilitada(ParamsLocal.OP_AGREGAR_CURSOVIGENTE_ALUMNO);
 		this.opQuitarCursoVigenteAlumno = this.operacionHabilitada(ParamsLocal.OP_QUITAR_CURSOVIGENTE_ALUMNO);
-
+		this.opEditarCursoVigenteAlumno = this.operacionHabilitada(ParamsLocal.OP_EDITAR_CURSOVIGENTE_ALUMNO);
+		
 		this.opAgregarCursoVigenteConcepto = this.operacionHabilitada(ParamsLocal.OP_AGREGAR_CURSOVIGENTE_CONCEPTO);
 		this.opQuitarCursoVigenteConcepto = this.operacionHabilitada(ParamsLocal.OP_QUITAR_CURSOVIGENTE_CONCEPTO);
 		this.opEditarCursoVigenteConcepto = this.operacionHabilitada(ParamsLocal.OP_EDITAR_CURSOVIGENTE_CONCEPTO);
@@ -153,7 +157,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			this.filtroColumnsMaterias[i] = "";
 
 		}
-		
+
 		for (int i = 0; i < this.filtroColumnsConvenios.length; i++) {
 
 			this.filtroColumnsConvenios[i] = "";
@@ -411,7 +415,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 	@Command
 	@NotifyChange({ "lAlumnosCursosVigentes", "buscarAlumno", "lConceptosCursosVigentes", "buscarConcepto",
-			"lMateriasCursosVigentes", "buscarMateria","lConveniosCursosVigentes", "buscarConvenio" })
+			"lMateriasCursosVigentes", "buscarMateria", "lConveniosCursosVigentes", "buscarConvenio" })
 	public void refrescarAll(@BindingParam("cursoVigente") CursoVigente cursoVigente) {
 
 		this.refrescarAlumnos(cursoVigente);
@@ -424,31 +428,94 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	// Seccion alumnos cursoVigente
 
 	@Command
+	public void modalCursoVigenteAlumnoAgregar() {
+
+		if (!this.opAgregarCursoVigenteAlumno)
+			return;
+
+		if (this.cursoVigenteSelectedAlumnoConceptoMateriaConvenio == null) {
+
+			this.mensajeInfo("Seleccione un Curso Vigente.");
+			return;
+		}
+
+		this.editar = false;
+		modalCursoVigenteAlumno(null);
+
+	}
+
+	@Command
+	public void modalCursoVigenteAlumno(@BindingParam("cursovigentealumno") CursoVigenteAlumno cursoVigenteAlumno) {
+
+		if (cursoVigenteAlumno != null) {
+
+			if (!this.opEditarCursoVigenteAlumno)
+				return;
+
+			this.cursoVigenteAlumnoSelected = cursoVigenteAlumno;
+			this.buscarAlumno = this.cursoVigenteAlumnoSelected.getAlumno().getFullNombre();
+			this.editar = true;
+
+		} else {
+
+			this.cursoVigenteAlumnoSelected = new CursoVigenteAlumno();
+			this.cursoVigenteAlumnoSelected.setCursoVigente(this.cursoVigenteSelectedAlumnoConceptoMateriaConvenio);
+			this.buscarAlumno = "";
+
+		}
+
+		modal = (Window) Executions.createComponents("/instituto/zul/administracion/cursoVigenteAlumnoModal.zul",
+				this.mainComponent, null);
+		Selectors.wireComponents(modal, this, false);
+		modal.doModal();
+
+	}
+
+	public boolean verificarCamposAlumno() {
+
+		return true;
+	}
+
+	@Command
+	@NotifyChange({ "lAlumnosCursosVigentes" })
+	public void guardarAlumno() {
+
+		if (!verificarCamposAlumno()) {
+			return;
+		}
+
+		this.save(cursoVigenteAlumnoSelected);
+
+		this.cursoVigenteAlumnoSelected = null;
+
+		this.modal.detach();
+
+		if (editar) {
+
+			Notification.show("El Alumno fue Actualizado.");
+			this.editar = false;
+		} else {
+
+			Notification.show("El Alumno fue agregado.");
+		}
+
+		this.refrescarAlumnos(this.cursoVigenteSelectedAlumnoConceptoMateriaConvenio);
+
+	}
+
+	@Command
 	@NotifyChange({ "lAlumnosCursosVigentes", "buscarAlumno" })
 	public void refrescarAlumnos(@BindingParam("cursoVigente") CursoVigente cursoVigente) {
 
 		this.cursoVigenteSelectedAlumnoConceptoMateriaConvenio = cursoVigente;
-
-		String[] join = { "en.alumno as a", "a.persona as p" };
-		String[] condicion = { "cursoVigenteid = " + cursoVigente.getCursovigenteid() };
-		String[] orden = {};
-
 		this.lAlumnosCursosVigentes = this.reg.getAllObjectsByCondicionOrder(CursoVigenteAlumno.class.getName(),
-				"cursoVigenteid = " + cursoVigente.getCursovigenteid(), null);
-
-		Collections.sort(this.lAlumnosCursosVigentes, new Comparator<CursoVigenteAlumno>() {
-
-			@Override
-			public int compare(CursoVigenteAlumno o1, CursoVigenteAlumno o2) {
-				return o1.getAlumno().getFullNombre().compareToIgnoreCase(o2.getAlumno().getFullNombre());
-			}
-
-		});
+				"cursoVigenteid = " + cursoVigente.getCursovigenteid(), "alumnoid asc");
 
 		this.lAlumnosCursosVigentesOri = this.lAlumnosCursosVigentes;
 
-		this.buscarSelectedAlumno = null;
-		this.buscarAlumno = "";
+		/*
+		 * .buscarSelectedAlumno = null; this.buscarAlumno = "";
+		 */
 
 	}
 
@@ -463,7 +530,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 		}
 
-		this.mensajeEliminar("El Alumno " + ca.getAlumno().getFullNombre() + " sera removido del Curso "
+		this.mensajeEliminar("El Alumno " + ca.getAlumno().getFullNombre() + " sera removido del Curso Vigente"
 				+ ca.getCursoVigente().getCurso().getCurso() + " \n Continuar?", new EventListener() {
 
 					@Override
@@ -491,10 +558,6 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 	}
 
-	// fin alumnos cursoVigente
-
-	// seccion buscador
-
 	private List<Object[]> lAlumnosbuscarOri;
 	private List<Object[]> lAlumnosBuscar;
 	private Alumno buscarSelectedAlumno;
@@ -519,7 +582,8 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			return;
 		}
 
-		String sqlBuscarAlumno = this.um.getSql("buscarAlumno.sql");
+		String sqlBuscarAlumno = this.um.getSql("buscarAlumnoNotCursoVigente.sql").replace("?1",
+				this.cursoVigenteSelectedAlumnoConceptoMateriaConvenio.getCursovigenteid() + "");
 
 		this.lAlumnosBuscar = this.reg.sqlNativo(sqlBuscarAlumno);
 		this.lAlumnosbuscarOri = this.lAlumnosBuscar;
@@ -531,54 +595,9 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 		this.buscarSelectedAlumno = this.reg.getObjectById(Alumno.class.getName(), id);
 		this.buscarAlumno = buscarSelectedAlumno.getFullNombre();
+		this.cursoVigenteAlumnoSelected.setAlumno(buscarSelectedAlumno);
 
 	}
-
-	@Command
-	@NotifyChange({ "lAlumnosCursosVigentes", "buscarAlumno" })
-	public void agregarAlumno() {
-
-		if (!this.opAgregarCursoVigenteAlumno) {
-
-			this.mensajeError("No tienes permiso para agregar un Alumno al CursoVigente. ");
-			return;
-		}
-
-		if (this.buscarSelectedAlumno == null) {
-
-			this.mensajeInfo("Selecciona un Alumno para agregar.");
-
-			return;
-
-		}
-
-		for (CursoVigenteAlumno x : this.lAlumnosCursosVigentesOri) {
-
-			if (this.buscarSelectedAlumno.getAlumnoid().longValue() == x.getAlumno().getAlumnoid().longValue()) {
-
-				this.mensajeError("El CursoVigente ya tiene el alumno " + x.getAlumno().getFullNombre());
-
-				this.buscarAlumno = "";
-				this.buscarSelectedAlumno = null;
-
-				return;
-
-			}
-
-		}
-
-		CursoVigenteAlumno cu = new CursoVigenteAlumno();
-		cu.setAlumno(this.buscarSelectedAlumno);
-		cu.setCursoVigente(this.cursoVigenteSelectedAlumnoConceptoMateriaConvenio);
-		this.save(cu);
-
-		// this.lastPageListBox((Listbox) this.mainComponent.query("#lbAlumnos"));
-
-		this.refrescarAlumnos(this.cursoVigenteSelectedAlumnoConceptoMateriaConvenio);
-
-	}
-
-	// fins buscador
 
 	// Seccion Conceptos cursoVigente
 
@@ -593,10 +612,10 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			this.mensajeInfo("Seleccione un Curso Vigente.");
 			return;
 		}
-		
+
 		if (this.lAlumnosCursosVigentesOri.size() > 0) {
-			
-			this.mensajeInfo("No se puede agregar Conceptos, ya existen alumnos.");			
+
+			this.mensajeInfo("No se puede agregar Conceptos, ya existen alumnos.");
 			return;
 		}
 
@@ -953,10 +972,10 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			this.mensajeInfo("Seleccione un Curso Vigente.");
 			return;
 		}
-		
+
 		if (this.lAlumnosCursosVigentesOri.size() > 0) {
-			
-			this.mensajeInfo("No se puede agregar Convenios, ya existen alumnos.");			
+
+			this.mensajeInfo("No se puede agregar Convenios, ya existen alumnos.");
 			return;
 		}
 
@@ -1104,8 +1123,8 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			return;
 		}
 
-		String sqlBuscarConvenio = this.um.getSql("buscarConvenioNotCursoVigente.sql")
-				.replace("?1", this.cursoVigenteSelectedAlumnoConceptoMateriaConvenio.getCursovigenteid() + "");
+		String sqlBuscarConvenio = this.um.getSql("buscarConvenioNotCursoVigente.sql").replace("?1",
+				this.cursoVigenteSelectedAlumnoConceptoMateriaConvenio.getCursovigenteid() + "");
 
 		this.lConveniosBuscar = this.reg.sqlNativo(sqlBuscarConvenio);
 		this.lConveniosbuscarOri = this.lConveniosBuscar;

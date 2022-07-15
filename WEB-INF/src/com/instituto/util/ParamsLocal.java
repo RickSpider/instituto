@@ -94,6 +94,7 @@ public class ParamsLocal extends Params {
 	
 	public static final String OP_AGREGAR_CURSOVIGENTE_ALUMNO = "AgregarCursoVigenteAlumno";
 	public static final String OP_QUITAR_CURSOVIGENTE_ALUMNO = "QuitarCursoVigenteAlumno";
+	public static final String OP_EDITAR_CURSOVIGENTE_ALUMNO = "EditarCursoVigenteAlumno";
 	
 	public static final String OP_AGREGAR_CURSOVIGENTE_CONCEPTO = "AgregarCursoVigenteConcepto";
 	public static final String OP_QUITAR_CURSOVIGENTE_CONCEPTO = "QuitarCursoVigenteConcepto";

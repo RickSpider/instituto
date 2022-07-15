@@ -539,73 +539,13 @@
 
 								<hbox pack="end" hflex="1">
 
-									<label value="Agragar Nuevo Alumno:"
-										style="font-weight:bold" />
-
-									<bandbox id="bd"
-										value="@load(vm.buscarAlumno)" mold="rounded" autodrop="true"
-										width="250px" onOpen="@command('generarListaBuscarAlumno')"
-										readonly="true">
-										<bandpopup>
-
-											<vbox>
-
-												<hbox>
-
-													<label
-														value="Buscar:" />
-
-													<textbox
-														instant="true" value="@bind(vm.buscarAlumno)"
-														onChange="@command('filtrarAlumnoBuscar')" />
-
-												</hbox>
-
-												<listbox height="250px"
-													emptyMessage="lista vacía..." width="450px" mold="paging"
-													autopaging="true" onSelect="bd.close()"
-													model="@load(vm.lAlumnosBuscar)">
-
-													<listhead>
-														<listheader
-															label="ID" hflex="min" />
-														<listheader
-															label="Nombre" />
-														<listheader
-															label="Apellido" />
-													</listhead>
-
-													<template
-														name="model">
-
-														<listitem
-															value="@load(each[1])"
-															onClick="@command('onSelectAlumno', id = each[0])">
-
-															<listcell
-																label="@load(each[0])" />
-
-															<listcell
-																label="@load(each[1])" />
-
-															<listcell
-																label="@load(each[2])" />
-
-														</listitem>
-
-													</template>
-													<listitem />
-												</listbox>
-
-											</vbox>
-										</bandpopup>
-									</bandbox>
-
-									<button iconSclass=" z-icon-plus"
-										onClick="@command('agregarAlumno')"
+									<button label="Agregar"
+										iconSclass=" z-icon-plus"
+										onClick="@command('modalCursoVigenteAlumnoAgregar')"
 										disabled="@load(!vm.opAgregarCursoVigenteAlumno)" />
 
 								</hbox>
+
 
 								<listbox id="lbAlumnos"
 									emptyMessage="lista vacía..." mold="paging" vflex="1" hflex="1"
