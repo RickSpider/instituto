@@ -1,6 +1,5 @@
 package com.instituto.sistema.administracion;
 
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -594,6 +593,12 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			this.mensajeInfo("Seleccione un Curso Vigente.");
 			return;
 		}
+		
+		if (this.lAlumnosCursosVigentesOri.size() > 0) {
+			
+			this.mensajeInfo("No se puede agregar Conceptos, ya existen alumnos.");			
+			return;
+		}
 
 		this.editar = false;
 		modalCursoVigenteConcepto(null);
@@ -946,6 +951,12 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		if (this.cursoVigenteSelectedAlumnoConceptoMateriaConvenio == null) {
 
 			this.mensajeInfo("Seleccione un Curso Vigente.");
+			return;
+		}
+		
+		if (this.lAlumnosCursosVigentesOri.size() > 0) {
+			
+			this.mensajeInfo("No se puede agregar Convenios, ya existen alumnos.");			
 			return;
 		}
 

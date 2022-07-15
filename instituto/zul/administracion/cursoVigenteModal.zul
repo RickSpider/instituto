@@ -15,9 +15,9 @@
 				<bandbox id="bdCurso"
 					value="@load(vm.buscarCurso) @save(vm.buscarCurso, before='guardar')"
 					constraint="no empty: Es campo obligatorio." mold="rounded"
-					autodrop="true" width="150px"
+					autodrop="true" width="250px"
 					onOpen="@command('generarListaBuscarCurso')" readonly="true"
-					disabled="@load(vm.editar)">
+					disabled="@load(vm.editar)" tooltiptext="@load(vm.buscarCurso)">
 					<bandpopup>
 
 						<vbox>
@@ -76,7 +76,7 @@
 					<label value="Sede: " style="font-weight:bold" />
 				</hbox>
 				<textbox
-					value="@bind(vm.cursoVigenteSelected.sede.sede)" width="150px"
+					value="@bind(vm.cursoVigenteSelected.sede.sede)" width="250px"
 					readonly="true" />
 			</hlayout>
 
