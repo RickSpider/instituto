@@ -11,7 +11,7 @@ import com.instituto.modelo.CursoVigenteConvenio;
 import com.instituto.modelo.Feriado;
 import com.instituto.modelo.MovimientoCuenta;
 
-public class generarMovimiento {
+public class GenerarMovimiento {
 	
 	private Register reg = new Register();
 
