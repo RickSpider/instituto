@@ -105,6 +105,61 @@ public class GenerarMovimiento {
 
 
 			}
+			
+			if (x.getConcepto().getConcepto().compareTo("TALLER") == 0) {
+				
+				esIgual = true;
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(cva.getCursoVigente().getFechaFin());
+				int diaVencimiento = calendar.get(Calendar.DAY_OF_MONTH);
+				
+				String sqlTalleres = "select \n" + 
+						"cvm.orden,\n" + 
+						"count(cvm.orden) as cantidadMaterias\n" + 
+						"from cursosvigentesmaterias cvm\n" + 
+						"left join materias m on m.materiaid = cvm.materiaid\n" + 
+						"left join tipos t on t.tipoid = m.materiatipoid\n" + 
+						"where \n" + 
+						"cursovigenteid = "+cva.getCursoVigente().getCursovigenteid()+" and \n" + 
+						"t.sigla = 'MATERIA_TALLER'\n" + 
+						"group by cvm.orden";
+				
+				List<Object []> lOrdenTalleres = this.reg.sqlNativo(sqlTalleres);
+				
+				int ordenMayor = Integer.parseInt(lOrdenTalleres.get(lOrdenTalleres.size()-1)[0].toString());
+				
+				List<Calendar> fechasPosibles = new ArrayList<Calendar>();
+				
+				for (int i = 0; i < ordenMayor; i++) {
+				
+					calendar.set(Calendar.DAY_OF_MONTH, diaVencimiento);
+					calendar = calculoVencimiento(calendar, lFeriados);
+					
+					fechasPosibles.add(calendar);
+					
+					calendar.add(Calendar.MONTH, 1);								
+					
+				}
+				
+				for (int i = 0; i<lOrdenTalleres.size(); i++){
+					
+					int ordenTaller = Integer.parseInt(lOrdenTalleres.get(i)[0].toString());
+					
+					MovimientoCuenta mc = new MovimientoCuenta();
+					mc.setAlumno(cva.getAlumno());
+					mc.setConcepto(x.getConcepto());
+					mc.setPeriodo(i + 1);
+					mc.setMonto(x.getImporte()); 
+					
+					mc.setVencimiento(fechasPosibles.get(ordenTaller-1).getTime());
+					
+					out.add(mc);
+					
+				}
+				
+				
+				
+			}
 
 			if (!esIgual) {
 				
