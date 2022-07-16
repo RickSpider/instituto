@@ -21,11 +21,15 @@ public class GenerarMovimiento {
 		List<Feriado> lFeriados = this.reg.getAllObjects(Feriado.class.getName());
 		
 		String sql = "select \n" + 
-				"orden,\n" + 
-				"count(orden) as cantidadMaterias \n" + 
-				"from cursosvigentesmaterias\n" + 
-				"where cursovigenteid = "+ cva.getCursoVigente().getCursovigenteid() +"\n" + 
-				"group by orden;";
+				"cvm.orden,\n" + 
+				"count(cvm.orden) as cantidadMaterias\n" + 
+				"from cursosvigentesmaterias cvm\n" + 
+				"left join materias m on m.materiaid = cvm.materiaid\n" + 
+				"left join tipos t on t.tipoid = m.materiatipoid\n" + 
+				"where \n" + 
+				"cursovigenteid = "+cva.getCursoVigente().getCursovigenteid()+" and \n" + 
+				"t.sigla = 'MATERIA_AULA'\n" + 
+				"group by cvm.orden";
 		
 		List<Object []> lOrdenMaterias = this.reg.sqlNativo(sql);
 
@@ -104,30 +108,34 @@ public class GenerarMovimiento {
 
 			if (!esIgual) {
 				
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(cva.getCursoVigente().getFechaFin());	
+				int diaVencimiento = calendar.get(Calendar.DAY_OF_MONTH);
 				
+				
+				MovimientoCuenta mc = new MovimientoCuenta();
+				mc.setAlumno(cva.getAlumno());
+				mc.setConcepto(x.getConcepto());
+				mc.setPeriodo(1);
+				mc.setMonto(x.getImporte()); 
+				
+				calendar.set(Calendar.DAY_OF_MONTH, diaVencimiento);
+				calendar = calculoVencimiento(calendar, lFeriados);
+				
+				mc.setVencimiento(calendar.getTime());
+				
+				out.add(mc);
+				
+				calendar.add(Calendar.MONTH, 1);
 				
 			}
 
 		}
 		
-		
-
-		/*
-		 * if (concepto.getConcepto().compareTo("MATRICULA") == 0) {
-		 * 
-		 * 
-		 * }
-		 * 
-		 * if (concepto.getConcepto().compareTo("MODULO")==0) {
-		 * 
-		 * movimientoCuota(lCursoVigenteAlumno, concepto);
-		 * 
-		 * }
-		 */
 
 	}
 	
-	public Calendar calculoVencimiento(Calendar calendar, List<Feriado> lFeriados) {
+	private Calendar calculoVencimiento(Calendar calendar, List<Feriado> lFeriados) {
 		
 		
 		if (calendar.get(Calendar.MONTH) == Calendar.JANUARY) {
