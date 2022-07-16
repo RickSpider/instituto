@@ -1,10 +1,13 @@
 package com.instituto.modelo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.doxacore.modelo.Modelo;
 
@@ -19,6 +22,9 @@ public class CursoVigenteAlumno extends Modelo implements Serializable {
 
 	@EmbeddedId
 	private CursoVigenteAlumnoPK cursovigentealumnopk = new CursoVigenteAlumnoPK();
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date inscripcion = new Date();
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -68,6 +74,14 @@ public class CursoVigenteAlumno extends Modelo implements Serializable {
 	public String getStringDatos() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public Date getInscripcion() {
+		return inscripcion;
+	}
+
+	public void setInscripcion(Date inscripcion) {
+		this.inscripcion = inscripcion;
 	}
 	
 }

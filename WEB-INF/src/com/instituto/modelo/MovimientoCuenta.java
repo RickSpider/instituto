@@ -47,9 +47,9 @@ public class MovimientoCuenta extends Modelo implements Serializable{
 	private Date vencimiento;
 	
 	private int periodo;
-	private double montoDescuento;
-	private double monto;
-	private double pago;
+	private double montoDescuento = 0.0;
+	private double monto = 0.0;
+	private double pago = 0.0;
 	
 	public Long getMovimientocuentaid() {
 		return movimientocuentaid;

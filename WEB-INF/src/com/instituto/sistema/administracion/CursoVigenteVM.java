@@ -486,8 +486,6 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 		this.save(cursoVigenteAlumnoSelected);
 
-		this.cursoVigenteAlumnoSelected = null;
-
 		this.modal.detach();
 
 		if (editar) {
@@ -495,12 +493,28 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			Notification.show("El Alumno fue Actualizado.");
 			this.editar = false;
 		} else {
-
+			
+			generarMovmimientos(cursoVigenteAlumnoSelected);
 			Notification.show("El Alumno fue agregado.");
 		}
+		
+		this.cursoVigenteAlumnoSelected = null;
 
 		this.refrescarAlumnos(this.cursoVigenteSelectedAlumnoConceptoMateriaConvenio);
 
+	}
+	
+	private void generarMovmimientos(CursoVigenteAlumno cva) {
+		
+		 List<CursoVigenteConcepto> lcvconcepto = this.reg.getAllObjectsByCondicionOrder(CursoVigenteConcepto.class.getName(),
+				"cursoVigenteid = " + cva.getCursoVigente().getCursovigenteid(), "conceptoid asc");
+		
+		 List<CursoVigenteConvenio> lcvconveniothis = this.reg.getAllObjectsByCondicionOrder(CursoVigenteConvenio.class.getName(),
+					"cursoVigenteid = " + cva.getCursoVigente().getCursovigenteid(), "orden asc");
+		 
+		 
+
+		
 	}
 
 	@Command
