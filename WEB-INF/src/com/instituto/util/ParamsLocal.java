@@ -19,6 +19,8 @@ public class ParamsLocal extends Params {
 	public static final String SIGLA_DOCUMENTO = "DOCUMENTO";
 	public static final String SIGLA_IMPUESTO = "IMPUESTO";
 	public static final String SIGLA_MATERIA = "MATERIA";
+	public static final String SIGLA_PERSONA= "PERSONA";
+	public static final String SIGLA_ESTADO_CV_MATERIA = "ESTADO_CV_MATERIA";
 	
 	//Sede
 	public static final String OP_CREAR_SEDE = "CrearSede";

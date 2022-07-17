@@ -109,8 +109,7 @@
 					</hbox>
 					<textbox
 						value="@load(vm.personaSelected.documentoNum) @save(vm.personaSelected.documentoNum, before='guardar')"
-						width="150px" readonly="@load(vm.editar)"
-						onBlur="@command('onBlurDocumentoNum', comp = self)"
+						width="150px" onBlur="@command('onBlurDocumentoNum', comp = self)"
 						constraint="no empty: Es campo obligatorio." />
 				</hlayout>
 
@@ -136,6 +135,88 @@
 					<textbox
 						value="@load(vm.personaSelected.ruc) @save(vm.personaSelected.ruc, before='guardar')"
 						width="150px" />
+				</hlayout>
+
+			</hlayout>
+
+			<hlayout>
+
+				<hlayout>
+
+					<hbox width="130px">
+						<label value="Persona Tipo: "
+							style="font-weight:bold" />
+					</hbox>
+
+					<bandbox id="bdTipoPersona"
+						value="@load(vm.buscarPersonaTipo) @save(vm.buscarPersonaTipo, before='guardar')"
+						constraint="no empty: Es campo obligatorio." mold="rounded"
+						autodrop="true" width="150px"
+						onOpen="@command('generarListaBuscarPersonaTipo')"
+						readonly="true">
+						<bandpopup>
+
+							<vbox>
+
+								<hbox>
+
+									<label value="Buscar:" />
+
+									<textbox instant="true"
+										value="@bind(vm.buscarPersonaTipo)"
+										onChange="@command('filtrarPersonaTipoBuscar')" />
+
+								</hbox>
+
+								<listbox height="250px" width="450px"
+									mold="paging" autopaging="true"
+									onSelect="bdTipoPersona.close()"
+									model="@load(vm.lPersonasTiposBuscar)">
+
+									<listhead>
+										<listheader label="ID"
+											hflex="min" />
+										<listheader label="PersonaTipo" />
+										<listheader label="Descripcion" />
+									</listhead>
+
+									<template name="model">
+
+										<listitem
+											onClick="@command('onSelectPersonaTipo', id = each[0])">
+
+											<listcell
+												label="@load(each[0])" />
+
+											<listcell
+												label="@load(each[1])" />
+
+											<listcell
+												label="@load(each[2])" />
+
+											<listcell
+												label="@load(each[3])" />
+
+										</listitem>
+
+									</template>
+									<listitem />
+								</listbox>
+
+							</vbox>
+						</bandpopup>
+					</bandbox>
+
+				</hlayout>
+				
+				<hlayout>
+					<hbox width="130px">
+						<label value="Razon Social: "
+							style="font-weight:bold" />
+					</hbox>
+					<textbox
+						value="@load(vm.personaSelected.razonSocial) @save(vm.personaSelected.razonSocial, before='guardar')"
+						width="150px" constraint="no empty: Es campo obligatorio." />
 				</hlayout>
 
 			</hlayout>
@@ -494,8 +575,7 @@
 					<bandbox id="bdInstitucion"
 						value="@load(vm.buscarInstitucion) @save(vm.buscarInstitucion, before='guardar')"
 						mold="rounded" autodrop="true" width="150px"
-						onOpen="@command('generarListaBuscarInstitucion')"
-						readonly="true"
+						onOpen="@command('generarListaBuscarInstitucion')" readonly="true"
 						tooltiptext="@load(vm.buscarInstitucion)">
 						<bandpopup>
 
@@ -512,8 +592,7 @@
 								</hbox>
 
 								<listbox height="250px" width="450px"
-									emptyMessage="lista vacía..."
-									mold="paging" autopaging="true"
+									emptyMessage="lista vacía..." mold="paging" autopaging="true"
 									onSelect="bdInstitucion.close()"
 									model="@load(vm.lInstitucionesBuscar)">
 
@@ -522,7 +601,8 @@
 											hflex="min" />
 										<listheader label="Institucion" />
 										<listheader label="Ciudad" />
-										<listheader label="Departamento" />
+										<listheader
+											label="Departamento" />
 
 									</listhead>
 
@@ -532,16 +612,16 @@
 											onClick="@command('onSelectInstitucion', id = each[0])">
 
 											<listcell
-												label="@load(each[0])" tooltiptext="@load(each[0])"/>
+												label="@load(each[0])" tooltiptext="@load(each[0])" />
 
 											<listcell
-												label="@load(each[1])" tooltiptext="@load(each[1])"/>
+												label="@load(each[1])" tooltiptext="@load(each[1])" />
 
 											<listcell
-												label="@load(each[2])" tooltiptext="@load(each[2])"/>
+												label="@load(each[2])" tooltiptext="@load(each[2])" />
 
 											<listcell
-												label="@load(each[3])" tooltiptext="@load(each[3])"/>
+												label="@load(each[3])" tooltiptext="@load(each[3])" />
 
 										</listitem>
 

@@ -40,6 +40,10 @@ public class Persona extends Modelo implements Serializable {
 	private String direccion;
 	
 	@ManyToOne
+	@JoinColumn(name = "personaTipoid")
+	private Tipo personaTipo;
+	
+	@ManyToOne
 	@JoinColumn(name = "gradoacademicoid")
 	private GradoAcademico gradoAcademico;
 	
@@ -56,6 +60,7 @@ public class Persona extends Modelo implements Serializable {
 	@Column(name = "documentoNum", unique = true)
 	private String documentoNum;
 	
+	private String razonSocial;
 	private String ruc;
 	
 	@ManyToOne
@@ -227,6 +232,22 @@ public class Persona extends Modelo implements Serializable {
 
 	public void setInstitucion(Institucion institucion) {
 		this.institucion = institucion;
+	}
+
+	public Tipo getPersonaTipo() {
+		return personaTipo;
+	}
+
+	public void setPersonaTipo(Tipo personaTipo) {
+		this.personaTipo = personaTipo;
+	}
+
+	public String getRazonSocial() {
+		return razonSocial;
+	}
+
+	public void setRazonSocial(String razonSocial) {
+		this.razonSocial = razonSocial;
 	}
 
 }

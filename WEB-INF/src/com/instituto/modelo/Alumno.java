@@ -33,6 +33,12 @@ public class Alumno extends Modelo implements Serializable{
 	@JoinColumn(name = "sedeid")
 	private Sede sede;
 	
+	private String comentario;
+	
+	@ManyToOne
+	@JoinColumn(name = "personaFacturacionid")
+	private Persona personaFacturacion;
+	
 	private boolean activo;
 
 	@Override
@@ -93,6 +99,22 @@ public class Alumno extends Modelo implements Serializable{
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public String getComentario() {
+		return comentario;
+	}
+
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
+	}
+
+	public Persona getPersonaFacturacion() {
+		return personaFacturacion;
+	}
+
+	public void setPersonaFacturacion(Persona personaFacturacion) {
+		this.personaFacturacion = personaFacturacion;
 	}
 	
 	

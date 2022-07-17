@@ -5,17 +5,19 @@
 		action="show: slideDown;hide: slideUp">
 
 		<vlayout>
-		
-		<hlayout>
+
+			<hlayout>
 
 				<hbox width="130px">
 					<label value="Persona: " style="font-weight:bold" />
 				</hbox>
 
-				<bandbox id="bd" value="@load(vm.buscarPersona) @save(vm.buscarPersona, before='guardar')"
-					constraint="no empty: Es campo obligatorio."
-					mold="rounded" autodrop="true" width="200px"
-					onOpen="@command('generarListaBuscarPersona')" readonly="true" disabled="@load(vm.editar)">
+				<bandbox id="bd"
+					value="@load(vm.buscarPersona) @save(vm.buscarPersona, before='guardar')"
+					constraint="no empty: Es campo obligatorio." mold="rounded"
+					autodrop="true" width="200px"
+					onOpen="@command('generarListaBuscarPersona')" readonly="true"
+					disabled="@load(vm.editar)">
 					<bandpopup>
 
 						<vbox>
@@ -42,7 +44,7 @@
 
 								<template name="model">
 
-									<listitem 
+									<listitem
 										onClick="@command('onSelectPersona', id = each[0])">
 
 										<listcell
@@ -66,18 +68,93 @@
 
 
 			</hlayout>
-			
-			
+
+
 			<hlayout>
 				<hbox width="130px">
 					<label value="Sede: " style="font-weight:bold" />
 				</hbox>
-				<textbox
-					value="@bind(vm.alumnoSelected.sede.sede)"
-					width="200px"
-					readonly="true"/>
+				<textbox value="@bind(vm.alumnoSelected.sede.sede)"
+					width="200px" readonly="true" />
+			</hlayout>
+
+			<hlayout>
+
+				<hbox width="130px">
+					<label value="Facturacion: "
+						style="font-weight:bold" />
+				</hbox>
+
+				<bandbox id="bdPersonaFacturacion"
+					value="@load(vm.buscarPersonaFacturacion) @save(vm.buscarPersonaFacturacion, before='guardar')"
+					mold="rounded"
+					autodrop="true" width="200px"
+					onOpen="@command('generarListaBuscarPersonaFacturacion')"
+					readonly="true">
+					<bandpopup>
+
+						<vbox>
+
+							<hbox>
+
+								<label value="Buscar:" />
+
+								<textbox instant="true"
+									value="@bind(vm.buscarPersonaFacturacion)"
+									onChange="@command('filtrarPersonaFacturacionBuscar')" />
+
+							</hbox>
+
+							<listbox height="250px" width="450px"
+								mold="paging" autopaging="true"
+								onSelect="bdPersonaFacturacion.close()"
+								model="@load(vm.lPersonasFacturacionBuscar)">
+
+								<listhead>
+									<listheader label="ID" hflex="min" />
+									<listheader label="Nombre Completo" />
+									<listheader label="Razon Social" />
+									<listheader label="Ruc" />
+								</listhead>
+
+								<template name="model">
+
+									<listitem
+										onClick="@command('onSelectPersonaFacturacion', id = each[0])">
+
+										<listcell
+											label="@load(each[0])" />
+
+										<listcell
+											label="@load(each[1])" />
+
+										<listcell
+											label="@load(each[2])" />
+											
+										<listcell
+											label="@load(each[3])" />
+
+									</listitem>
+
+								</template>
+								<listitem />
+							</listbox>
+
+						</vbox>
+					</bandpopup>
+				</bandbox>
+
+
 			</hlayout>
 			
+			<hlayout>
+				<hbox width="130px">
+					<label value="Comentario: " style="font-weight:bold" />
+				</hbox>
+				<textbox value="@bind(vm.alumnoSelected.comentario)"
+					width="200px" />
+			</hlayout>
+
 			<hlayout>
 				<hbox width="130px">
 					<label value="Activo: " style="font-weight:bold" />

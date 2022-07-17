@@ -12,10 +12,12 @@
 					<label value="Materia: " style="font-weight:bold" />
 				</hbox>
 
-				<bandbox id="bd" value="@load(vm.buscarMateria) @save(vm.buscarMateria, before='guardarMateria')"
-					constraint="no empty: Es campo obligatorio."
-					mold="rounded" autodrop="true" width="150px"
-					onOpen="@command('generarListaBuscarMateria')" readonly="true" disabled="@load(vm.editar)">
+				<bandbox id="bd"
+					value="@load(vm.buscarMateria) @save(vm.buscarMateria, before='guardarMateria')"
+					constraint="no empty: Es campo obligatorio." mold="rounded"
+					autodrop="true" width="150px"
+					onOpen="@command('generarListaBuscarMateria')" readonly="true"
+					disabled="@load(vm.editar)">
 					<bandpopup>
 
 						<vbox>
@@ -37,12 +39,12 @@
 								<listhead>
 									<listheader label="ID" hflex="min" />
 									<listheader label="Materia" />
-									
+
 								</listhead>
 
 								<template name="model">
 
-									<listitem 
+									<listitem
 										onClick="@command('onSelectMateria', id = each[0])">
 
 										<listcell
@@ -64,19 +66,88 @@
 
 			</hlayout>
 
+
+
+			<hlayout>
+
+				<hbox width="130px">
+					<label value="Estado: "
+						style="font-weight:bold" />
+				</hbox>
+
+				<bandbox id="bdEstado"
+					value="@load(vm.buscarEstado) @save(vm.buscarEstado, before='guardar')"
+					constraint="no empty: Es campo obligatorio." mold="rounded"
+					autodrop="true" width="150px"
+					onOpen="@command('generarListaBuscarEstado')" readonly="true">
+					<bandpopup>
+
+						<vbox>
+
+							<hbox>
+
+								<label value="Buscar:" />
+
+								<textbox instant="true"
+									value="@bind(vm.buscarEstado)"
+									onChange="@command('filtrarEstadoBuscar')" />
+
+							</hbox>
+
+							<listbox height="250px" width="450px"
+								mold="paging" autopaging="true" onSelect="bdEstado.close()"
+								model="@load(vm.lEstadosBuscar)">
+
+								<listhead>
+									<listheader label="ID" hflex="min" />
+									<listheader label="Estado" />
+									<listheader label="Descripcion" />
+								</listhead>
+
+								<template name="model">
+
+									<listitem
+										onClick="@command('onSelectEstado', id = each[0])">
+
+										<listcell
+											label="@load(each[0])" />
+
+										<listcell
+											label="@load(each[1])" />
+
+										<listcell
+											label="@load(each[2])" />
+
+										<listcell
+											label="@load(each[3])" />
+
+									</listitem>
+
+								</template>
+								<listitem />
+							</listbox>
+
+						</vbox>
+					</bandpopup>
+				</bandbox>
+
+			</hlayout>
+
 			<hlayout>
 				<hbox width="130px">
 					<label value="Orden: " style="font-weight:bold" />
 				</hbox>
-				<doublebox value="@load(vm.cursoVigenteMateriaSelected.orden) @save(vm.cursoVigenteMateriaSelected.orden, before='guardarMateria')" 
-				constraint="no empty: Es campo obligatorio."/>
+				<doublebox
+					value="@load(vm.cursoVigenteMateriaSelected.orden) @save(vm.cursoVigenteMateriaSelected.orden, before='guardarMateria')"
+					constraint="no empty: Es campo obligatorio." />
 			</hlayout>
 
 			<space height="10px" />
 
 			<hlayout>
 
-				<button label="Aceptar" onClick="@command('guardarMateria')"/>
+				<button label="Aceptar"
+					onClick="@command('guardarMateria')" />
 
 			</hlayout>
 

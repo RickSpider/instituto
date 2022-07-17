@@ -119,12 +119,20 @@ public class AlumnoVM extends TemplateViewModelLocal {
 			this.alumnoSelected = this.reg.getObjectById(Alumno.class.getName(), alumnoid);
 			this.buscarPersona = this.alumnoSelected.getPersona().getNombreCompleto();
 			this.editar = true;
+			this.buscarPersonaFacturacion = "";
+			
+			if(this.alumnoSelected.getPersonaFacturacion() != null) {
+				
+				this.buscarPersonaFacturacion = this.alumnoSelected.getPersonaFacturacion().getRazonSocial();
+				
+			}
 
 		} else {
 
 			alumnoSelected = new Alumno();
 			alumnoSelected.setSede(getCurrentSede());
 			this.buscarPersona = "";
+			this.buscarPersonaFacturacion = "";
 
 		}
 
@@ -284,6 +292,44 @@ public class AlumnoVM extends TemplateViewModelLocal {
 	}
 
 	// fin buscador de Persona
+	
+	// seccion buscarPersonaFacturacion
+
+		private List<Object[]> lPersonasFacturacionBuscarOri = null;
+		private List<Object[]> lPersonasFacturacionBuscar = null;
+		private Persona buscarSelectedPersonaFacturacion = null;
+		private String buscarPersonaFacturacion = "";
+
+		@Command
+		@NotifyChange("lPersonasFacturacionBuscar")
+		public void filtrarPersonaFacturacionBuscar() {
+
+			this.lPersonasFacturacionBuscar = this.filtrarListaObject(buscarPersonaFacturacion, this.lPersonasFacturacionBuscarOri);
+
+		}
+
+		@Command
+		@NotifyChange("lPersonasFacturacionBuscar")
+		public void generarListaBuscarPersonaFacturacion() {
+
+			String sqlPersonaFacturacion = this.um.getSql("buscarPersonaFacturacion.sql");
+
+			this.lPersonasFacturacionBuscar = this.reg.sqlNativo(sqlPersonaFacturacion);
+
+			this.lPersonasFacturacionBuscarOri = this.lPersonasFacturacionBuscar;
+		}
+
+		@Command
+		@NotifyChange("lPersonasFacturacionBuscar")
+		public void onSelectPersonaFacturacion(@BindingParam("id") long id) {
+
+			this.buscarSelectedPersonaFacturacion = this.reg.getObjectById(Persona.class.getName(), id);
+			this.buscarPersonaFacturacion = this.buscarSelectedPersonaFacturacion.getRazonSocial();
+			this.alumnoSelected.setPersonaFacturacion(buscarSelectedPersonaFacturacion);
+
+		}
+
+		// fin buscador de PersonaFacturacion
 
 	public List<Alumno> getlAlumnos() {
 		return lAlumnos;
@@ -363,6 +409,22 @@ public class AlumnoVM extends TemplateViewModelLocal {
 
 	public void setlCursosVigentesAlumnos(List<CursoVigenteAlumno> lCursosVigentesAlumnos) {
 		this.lCursosVigentesAlumnos = lCursosVigentesAlumnos;
+	}
+
+	public List<Object[]> getlPersonasFacturacionBuscar() {
+		return lPersonasFacturacionBuscar;
+	}
+
+	public void setlPersonasFacturacionBuscar(List<Object[]> lPersonasFacturacionBuscar) {
+		this.lPersonasFacturacionBuscar = lPersonasFacturacionBuscar;
+	}
+
+	public String getBuscarPersonaFacturacion() {
+		return buscarPersonaFacturacion;
+	}
+
+	public void setBuscarPersonaFacturacion(String buscarPersonaFacturacion) {
+		this.buscarPersonaFacturacion = buscarPersonaFacturacion;
 	}
 
 }

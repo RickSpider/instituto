@@ -18,6 +18,8 @@ import org.zkoss.zk.ui.util.Notification;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
+import com.doxacore.modelo.Tipo;
+import com.doxacore.modelo.Tipotipo;
 import com.instituto.modelo.Alumno;
 import com.instituto.modelo.Concepto;
 import com.instituto.modelo.Convenio;
@@ -55,7 +57,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	private boolean opCrearCursoVigente;
 	private boolean opEditarCursoVigente;
 	private boolean opBorrarCursoVigente;
-	
+
 	private boolean opAgregarCursoVigenteAlumno;
 	private boolean opQuitarCursoVigenteAlumno;
 	private boolean opEditarCursoVigenteAlumno;
@@ -94,7 +96,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		this.opAgregarCursoVigenteAlumno = this.operacionHabilitada(ParamsLocal.OP_AGREGAR_CURSOVIGENTE_ALUMNO);
 		this.opQuitarCursoVigenteAlumno = this.operacionHabilitada(ParamsLocal.OP_QUITAR_CURSOVIGENTE_ALUMNO);
 		this.opEditarCursoVigenteAlumno = this.operacionHabilitada(ParamsLocal.OP_EDITAR_CURSOVIGENTE_ALUMNO);
-		
+
 		this.opAgregarCursoVigenteConcepto = this.operacionHabilitada(ParamsLocal.OP_AGREGAR_CURSOVIGENTE_CONCEPTO);
 		this.opQuitarCursoVigenteConcepto = this.operacionHabilitada(ParamsLocal.OP_QUITAR_CURSOVIGENTE_CONCEPTO);
 		this.opEditarCursoVigenteConcepto = this.operacionHabilitada(ParamsLocal.OP_EDITAR_CURSOVIGENTE_CONCEPTO);
@@ -493,28 +495,27 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			Notification.show("El Alumno fue Actualizado.");
 			this.editar = false;
 		} else {
-			
+
 			generarMovmimientos(cursoVigenteAlumnoSelected);
 			Notification.show("El Alumno fue agregado.");
 		}
-		
+
 		this.cursoVigenteAlumnoSelected = null;
 
 		this.refrescarAlumnos(this.cursoVigenteSelectedAlumnoConceptoMateriaConvenio);
 
 	}
-	
-	private void generarMovmimientos(CursoVigenteAlumno cva) {
-		
-		 List<CursoVigenteConcepto> lcvconcepto = this.reg.getAllObjectsByCondicionOrder(CursoVigenteConcepto.class.getName(),
-				"cursoVigenteid = " + cva.getCursoVigente().getCursovigenteid(), "conceptoid asc");
-		
-		 List<CursoVigenteConvenio> lcvconveniothis = this.reg.getAllObjectsByCondicionOrder(CursoVigenteConvenio.class.getName(),
-					"cursoVigenteid = " + cva.getCursoVigente().getCursovigenteid(), "orden asc");
-		 
-		 
 
-		
+	private void generarMovmimientos(CursoVigenteAlumno cva) {
+
+		List<CursoVigenteConcepto> lcvconcepto = this.reg.getAllObjectsByCondicionOrder(
+				CursoVigenteConcepto.class.getName(), "cursoVigenteid = " + cva.getCursoVigente().getCursovigenteid(),
+				"conceptoid asc");
+
+		List<CursoVigenteConvenio> lcvconveniothis = this.reg.getAllObjectsByCondicionOrder(
+				CursoVigenteConvenio.class.getName(), "cursoVigenteid = " + cva.getCursoVigente().getCursovigenteid(),
+				"orden asc");
+
 	}
 
 	@Command
@@ -826,13 +827,15 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			this.cursoVigenteMateriaSelected = cursoVigenteMateria;
 			this.buscarMateria = this.cursoVigenteMateriaSelected.getMateria().getMateria();
 			this.editar = true;
+			this.buscarEstado = this.cursoVigenteMateriaSelected.getEstado().getTipo();
 
 		} else {
 
 			this.cursoVigenteMateriaSelected = new CursoVigenteMateria();
 			this.cursoVigenteMateriaSelected.setCursoVigente(this.cursoVigenteSelectedAlumnoConceptoMateriaConvenio);
 			this.buscarMateria = "";
-
+			this.buscarEstado = "";
+			
 		}
 
 		modal = (Window) Executions.createComponents("/instituto/zul/administracion/cursoVigenteMateriaModal.zul",
@@ -863,11 +866,11 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 		if (editar) {
 
-			Notification.show("El Materia fue Actualizado.");
+			Notification.show("La Materia fue Actualizado.");
 			this.editar = false;
 		} else {
 
-			Notification.show("El Materia fue agregado.");
+			Notification.show("La Materia fue agregado.");
 		}
 
 		this.refrescarMaterias(this.cursoVigenteSelectedAlumnoConceptoMateriaConvenio);
@@ -1155,6 +1158,48 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	}
 
 	// fin curso vigente convenio
+
+	// buscarEstado
+
+	private List<Object[]> lEstadosBuscarOri = null;
+	private List<Object[]> lEstadosBuscar = null;
+	private Tipo buscarSelectedEstado = null;
+	private String buscarEstado = "";
+
+	@Command
+	@NotifyChange("lEstadosBuscar")
+	public void filtrarEstadoBuscar() {
+
+		this.lEstadosBuscar = this.filtrarListaObject(buscarEstado, this.lEstadosBuscarOri);
+
+	}
+
+	@Command
+	@NotifyChange("lEstadosBuscar")
+	public void generarListaBuscarEstado() {
+
+		Tipotipo tipotipo = this.reg.getObjectByColumnString(Tipotipo.class.getName(), "sigla",
+				ParamsLocal.SIGLA_ESTADO_CV_MATERIA);
+		String buscarEstadoSQL = this.um.getSql("buscarTipos.sql").replace("?1", "" + tipotipo.getTipotipoid());
+
+		System.out.println(buscarEstadoSQL);
+
+		this.lEstadosBuscar = this.reg.sqlNativo(buscarEstadoSQL);
+
+		this.lEstadosBuscarOri = this.lEstadosBuscar;
+	}
+
+	@Command
+	@NotifyChange("buscarEstado")
+	public void onSelectEstado(@BindingParam("id") long id) {
+
+		this.buscarSelectedEstado = this.reg.getObjectById(Tipo.class.getName(), id);
+		this.buscarEstado = this.buscarSelectedEstado.getTipo();
+		this.cursoVigenteMateriaSelected.setEstado(buscarSelectedEstado);
+
+	}
+
+	// fin buscarEstado
 
 	public List<CursoVigente> getlCursosVigentes() {
 		return lCursosVigentes;
@@ -1466,6 +1511,22 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 	public void setlConveniosBuscar(List<Object[]> lConveniosBuscar) {
 		this.lConveniosBuscar = lConveniosBuscar;
+	}
+
+	public List<Object[]> getlEstadosBuscar() {
+		return lEstadosBuscar;
+	}
+
+	public void setlEstadosBuscar(List<Object[]> lEstadosBuscar) {
+		this.lEstadosBuscar = lEstadosBuscar;
+	}
+
+	public String getBuscarEstado() {
+		return buscarEstado;
+	}
+
+	public void setBuscarEstado(String buscarEstado) {
+		this.buscarEstado = buscarEstado;
 	}
 
 }

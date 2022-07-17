@@ -4,9 +4,12 @@ import java.io.Serializable;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.doxacore.modelo.Modelo;
+import com.doxacore.modelo.Tipo;
 
 @Entity
 @Table(name="cursosvigentesmaterias")
@@ -15,12 +18,14 @@ public class CursoVigenteMateria extends Modelo implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 6430353924616240202L;
+	private static final long serialVersionUID = -1752716860981653289L;
 
 	@EmbeddedId
 	private CursoVigenteMateriaPK cursovigentemateriapk = new CursoVigenteMateriaPK();
 	
-	private double importe;
+	@ManyToOne
+	@JoinColumn(name = "estadoid")
+	private Tipo estado;
 	
 	@Override
 	public Object[] getArrayObjectDatos() {
@@ -28,22 +33,8 @@ public class CursoVigenteMateria extends Modelo implements Serializable {
 		return o;
 	}
 
-	@Override
-	public String getStringDatos() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
-	}
-
-	public double getImporte() {
-		return importe;
-	}
-
-	public void setImporte(double importe) {
-		this.importe = importe;
 	}
 
 	public CursoVigenteMateriaPK getCursovigentemateriapk() {
@@ -77,9 +68,20 @@ public class CursoVigenteMateria extends Modelo implements Serializable {
 		this.cursovigentemateriapk.setMateria(materia);
 		
 	}
-	
-	
-	
+
+	public Tipo getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Tipo estado) {
+		this.estado = estado;
+	}
+
+	@Override
+	public String getStringDatos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 
 }

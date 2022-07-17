@@ -127,14 +127,18 @@ public class PersonaVM extends TemplateViewModel {
 				this.buscarPais = this.personaSelected.getNacionalidad().getGentilicio();
 				this.buscarCiudad = this.personaSelected.getCiudad().getCiudad();
 				this.buscarGradoAcademico = this.personaSelected.getGradoAcademico().getGradoacademico();
+				this.buscarInstitucion = "";
+				this.buscarPersonaTipo = "";
 				
 				if ( this.personaSelected.getInstitucion() != null) {
 					
 					this.buscarInstitucion = this.personaSelected.getInstitucion().getInstitucion();
 					
-				}else {
+				}
 					
-					this.buscarInstitucion = "";
+				if ( this.personaSelected.getPersonaTipo() != null) {
+					
+					this.buscarPersonaTipo = this.personaSelected.getPersonaTipo().getTipo();
 					
 				}
 				
@@ -149,6 +153,7 @@ public class PersonaVM extends TemplateViewModel {
 				this.buscarCiudad = "";
 				this.buscarGradoAcademico = "";
 				this.buscarInstitucion = "";
+				this.buscarPersonaTipo = "";
 
 			}
 
@@ -568,6 +573,47 @@ public class PersonaVM extends TemplateViewModel {
 			}
 
 			// fin buscar ciudad
+			
+			//buscarPersonaTipo
+			
+			private List<Object[]> lPersonasTiposBuscarOri = null;
+			private List<Object[]> lPersonasTiposBuscar = null;
+			private Tipo buscarSelectedPersonaTipo = null;
+			private String buscarPersonaTipo = "";
+						
+			@Command
+			@NotifyChange("lPersonasTiposBuscar")
+			public void filtrarPersonaTipoBuscar() {
+
+				this.lPersonasTiposBuscar = this.filtrarListaObject(buscarPersonaTipo, this.lPersonasTiposBuscarOri);
+
+			}
+			
+			@Command
+			@NotifyChange("lPersonasTiposBuscar")
+			public void generarListaBuscarPersonaTipo() {
+				
+				Tipotipo tipotipo = this.reg.getObjectByColumnString(Tipotipo.class.getName(), "sigla", ParamsLocal.SIGLA_PERSONA);
+				String buscarPersonaTipoSQL = this.um.getSql("buscarTipos.sql").replace("?1", ""+tipotipo.getTipotipoid());
+				
+				//System.out.println(buscarPersonaTipoSQL);
+				
+				this.lPersonasTiposBuscar = this.reg.sqlNativo(buscarPersonaTipoSQL);
+				
+				this.lPersonasTiposBuscarOri = this.lPersonasTiposBuscar;
+			}
+			
+			@Command
+			@NotifyChange("buscarPersonaTipo")
+			public void onSelectPersonaTipo(@BindingParam("id") long id) {
+				
+				this.buscarSelectedPersonaTipo = this.reg.getObjectById(Tipo.class.getName(), id);	
+				this.buscarPersonaTipo = this.buscarSelectedPersonaTipo.getTipo();
+				this.personaSelected.setPersonaTipo(buscarSelectedPersonaTipo);
+
+			}
+			
+			//fin buscarPersonaTipo
 
 			
 			public List<Persona> getlPersonas() {
@@ -720,6 +766,22 @@ public class PersonaVM extends TemplateViewModel {
 
 			public void setlInstitucionesBuscar(List<Object[]> lInstitucionesBuscar) {
 				this.lInstitucionesBuscar = lInstitucionesBuscar;
+			}
+
+			public List<Object[]> getlPersonasTiposBuscar() {
+				return lPersonasTiposBuscar;
+			}
+
+			public void setlPersonasTiposBuscar(List<Object[]> lPersonasTiposBuscar) {
+				this.lPersonasTiposBuscar = lPersonasTiposBuscar;
+			}
+
+			public String getBuscarPersonaTipo() {
+				return buscarPersonaTipo;
+			}
+
+			public void setBuscarPersonaTipo(String buscarPersonaTipo) {
+				this.buscarPersonaTipo = buscarPersonaTipo;
 			}
 			
 			//fin buscador de ciudad 
