@@ -453,6 +453,8 @@
 											align="center" hflex="min" />
 										<listheader label="Materia"
 											align="left" />
+										<listheader label="Estado"
+											align="left" hflex="min" />
 										<listheader align="center"
 											hflex="min" />
 
@@ -473,6 +475,11 @@
 												value="@bind(vm.filtroColumnsMaterias[1])" instant="true"
 												onChange="@command('filtrarCursoVigenteMateria')" hflex="1" />
 										</auxheader>
+										<auxheader>
+											<textbox
+												value="@bind(vm.filtroColumnsMaterias[2])" instant="true"
+												onChange="@command('filtrarCursoVigenteMateria')" hflex="1" />
+										</auxheader>
 									</auxhead>
 
 									<template name="model">
@@ -485,8 +492,12 @@
 												label="@load(each.orden)" tooltiptext="@load(each.orden)" />
 
 											<listcell
-												label="@load(each.cursovigentemateriapk.materia.materia)"
-												tooltiptext="@load(each.cursovigentemateriapk.materia.materia)" />
+												label="@load(each.materia.materia)"
+												tooltiptext="@load(each.materia.materia)" />
+												
+											<listcell
+												label="@load(each.estado.tipo)"
+												tooltiptext="@load(each.estado.tipo)" />
 
 
 											<listcell>

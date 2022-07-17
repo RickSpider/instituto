@@ -133,7 +133,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 		this.filtroColumnsAlumnos = new String[2];
 		this.filtroColumnsConceptos = new String[2];
-		this.filtroColumnsMaterias = new String[2];
+		this.filtroColumnsMaterias = new String[3];
 		this.filtroColumnsConvenios = new String[2];
 
 		for (int i = 0; i < this.filtroColumns.length; i++) {

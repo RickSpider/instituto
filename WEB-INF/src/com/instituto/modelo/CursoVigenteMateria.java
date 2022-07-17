@@ -29,7 +29,7 @@ public class CursoVigenteMateria extends Modelo implements Serializable {
 	
 	@Override
 	public Object[] getArrayObjectDatos() {
-		Object [] o = {this.getOrden(), this.getMateria().getMateria()}; 
+		Object [] o = {this.getOrden(), this.getMateria().getMateria(), this.estado.getTipo()}; 
 		return o;
 	}
 
