@@ -15,8 +15,7 @@ public class GenerarMovimiento {
 	
 	private Register reg = new Register();
 
-	public void generarMovimientoAlumno(CursoVigenteAlumno cva, List<CursoVigenteConcepto> lCVConceptos,
-			List<CursoVigenteConvenio> lCVConvenios) {
+	public List<MovimientoCuenta> generarMovimientoAlumno(CursoVigenteAlumno cva, List<CursoVigenteConcepto> lCVConceptos) {
 		
 		List<Feriado> lFeriados = this.reg.getAllObjects(Feriado.class.getName());
 		
@@ -44,7 +43,7 @@ public class GenerarMovimiento {
 				esIgual = true;
 				
 				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(cva.getCursoVigente().getFechaFin());
+				calendar.setTime(cva.getCursoVigente().getFechaInicio());
 				int diaVencimiento = calendar.get(Calendar.DAY_OF_MONTH);
 
 				int periodoEducativo = cva.getCursoVigente().getCurso().getPeriodoEducativo();
@@ -54,6 +53,7 @@ public class GenerarMovimiento {
 				for (int i = 0; i < periodoEducativo; i++) {
 
 					MovimientoCuenta mc = new MovimientoCuenta();
+					mc.setCursoVigente(cva.getCursoVigente());
 					mc.setAlumno(cva.getAlumno());
 					mc.setConcepto(x.getConcepto());
 					mc.setPeriodo(i + 1);
@@ -67,8 +67,6 @@ public class GenerarMovimiento {
 					out.add(mc);
 					
 					calendar.add(Calendar.MONTH, cantMeses);
-					
-					out.add(mc);
 
 				}
 
@@ -79,7 +77,7 @@ public class GenerarMovimiento {
 				esIgual = true;
 				
 				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(cva.getCursoVigente().getFechaFin());
+				calendar.setTime(cva.getCursoVigente().getFechaInicio());
 				int diaVencimiento = calendar.get(Calendar.DAY_OF_MONTH);
 			
 				for (int i = 0; i < lOrdenMaterias.size(); i++) {
@@ -87,6 +85,7 @@ public class GenerarMovimiento {
 					int cantidadMaterias = Integer.parseInt(lOrdenMaterias.get(i)[1].toString()); 
 
 					MovimientoCuenta mc = new MovimientoCuenta();
+					mc.setCursoVigente(cva.getCursoVigente());
 					mc.setAlumno(cva.getAlumno());
 					mc.setConcepto(x.getConcepto());
 					mc.setPeriodo(i + 1);
@@ -110,7 +109,7 @@ public class GenerarMovimiento {
 				
 				esIgual = true;
 				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(cva.getCursoVigente().getFechaFin());
+				calendar.setTime(cva.getCursoVigente().getFechaInicio());
 				int diaVencimiento = calendar.get(Calendar.DAY_OF_MONTH);
 				
 				String sqlTalleres = "select \n" + 
@@ -146,6 +145,7 @@ public class GenerarMovimiento {
 					int ordenTaller = Integer.parseInt(lOrdenTalleres.get(i)[0].toString());
 					
 					MovimientoCuenta mc = new MovimientoCuenta();
+					mc.setCursoVigente(cva.getCursoVigente());
 					mc.setAlumno(cva.getAlumno());
 					mc.setConcepto(x.getConcepto());
 					mc.setPeriodo(i + 1);
@@ -164,11 +164,12 @@ public class GenerarMovimiento {
 			if (!esIgual) {
 				
 				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(cva.getCursoVigente().getFechaFin());	
+				calendar.setTime(cva.getCursoVigente().getFechaInicio());	
 				int diaVencimiento = calendar.get(Calendar.DAY_OF_MONTH);
 				
 				
 				MovimientoCuenta mc = new MovimientoCuenta();
+				mc.setCursoVigente(cva.getCursoVigente());
 				mc.setAlumno(cva.getAlumno());
 				mc.setConcepto(x.getConcepto());
 				mc.setPeriodo(1);
@@ -187,6 +188,7 @@ public class GenerarMovimiento {
 
 		}
 		
+		return out;
 
 	}
 	

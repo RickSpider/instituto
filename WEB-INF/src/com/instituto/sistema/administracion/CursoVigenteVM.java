@@ -29,6 +29,7 @@ import com.instituto.modelo.CursoVigenteConcepto;
 import com.instituto.modelo.CursoVigenteConvenio;
 import com.instituto.modelo.CursoVigenteMateria;
 import com.instituto.modelo.Materia;
+import com.instituto.modelo.MovimientoCuenta;
 import com.instituto.modelo.Curso;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
@@ -496,25 +497,21 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			this.editar = false;
 		} else {
 
-			generarMovmimientos(cursoVigenteAlumnoSelected);
+			GenerarMovimiento gm = new GenerarMovimiento();
+			List<MovimientoCuenta> lmv = gm.generarMovimientoAlumno(this.cursoVigenteAlumnoSelected, this.lConceptosCursosVigentesOri);
+			
+			for (MovimientoCuenta x : lmv) {
+				
+				this.save(x);
+				
+			}
+			
 			Notification.show("El Alumno fue agregado.");
 		}
 
 		this.cursoVigenteAlumnoSelected = null;
 
 		this.refrescarAlumnos(this.cursoVigenteSelectedAlumnoConceptoMateriaConvenio);
-
-	}
-
-	private void generarMovmimientos(CursoVigenteAlumno cva) {
-
-		List<CursoVigenteConcepto> lcvconcepto = this.reg.getAllObjectsByCondicionOrder(
-				CursoVigenteConcepto.class.getName(), "cursoVigenteid = " + cva.getCursoVigente().getCursovigenteid(),
-				"conceptoid asc");
-
-		List<CursoVigenteConvenio> lcvconveniothis = this.reg.getAllObjectsByCondicionOrder(
-				CursoVigenteConvenio.class.getName(), "cursoVigenteid = " + cva.getCursoVigente().getCursovigenteid(),
-				"orden asc");
 
 	}
 
