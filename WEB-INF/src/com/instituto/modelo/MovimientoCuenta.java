@@ -51,6 +51,10 @@ public class MovimientoCuenta extends Modelo implements Serializable{
 	private double monto = 0.0;
 	private double pago = 0.0;
 	
+	private boolean inactivo = false;
+	private Date fechaInactivacion;
+	private String motivoInactivacion; 
+	
 	public Long getMovimientocuentaid() {
 		return movimientocuentaid;
 	}
@@ -117,6 +121,24 @@ public class MovimientoCuenta extends Modelo implements Serializable{
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	public boolean isInactivo() {
+		return inactivo;
+	}
+	public void setInactivo(boolean inactivo) {
+		this.inactivo = inactivo;
+	}
+	public Date getFechaInactivacion() {
+		return fechaInactivacion;
+	}
+	public void setFechaInactivacion(Date fechaInactivacion) {
+		this.fechaInactivacion = fechaInactivacion;
+	}
+	public String getMotivoInactivacion() {
+		return motivoInactivacion;
+	}
+	public void setMotivoInactivacion(String motivoInactivacion) {
+		this.motivoInactivacion = motivoInactivacion;
 	}
 	
 	

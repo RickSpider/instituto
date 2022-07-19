@@ -71,6 +71,21 @@
 
 
 			</hlayout>
+			
+			<hlayout>
+			
+				<hlayout>
+					<hbox width="130px">
+						<label value="Fecha Inscripcion: "
+							style="font-weight:bold" />
+					</hbox>
+					<datebox
+						value="@load(vm.cursoVigenteAlumnoSelected.fechaInscripcion) @save(vm.cursoVigenteAlumnoSelected.fechaInscripcion, before='guardar')"
+						format="short " width="150px"
+						constraint="no empty: Es campo obligatorio." />
+				</hlayout>
+			
+			</hlayout>
 
 			<space height="10px" />
 

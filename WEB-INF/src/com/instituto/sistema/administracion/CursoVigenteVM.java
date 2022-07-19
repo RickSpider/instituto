@@ -1526,4 +1526,12 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		this.buscarEstado = buscarEstado;
 	}
 
+	public CursoVigenteAlumno getCursoVigenteAlumnoSelected() {
+		return cursoVigenteAlumnoSelected;
+	}
+
+	public void setCursoVigenteAlumnoSelected(CursoVigenteAlumno cursoVigenteAlumnoSelected) {
+		this.cursoVigenteAlumnoSelected = cursoVigenteAlumnoSelected;
+	}
+
 }

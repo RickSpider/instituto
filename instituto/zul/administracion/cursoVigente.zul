@@ -573,6 +573,8 @@
 											align="left" />
 										<listheader label="Documento"
 											align="left" />
+										<listheader label="Fecha Inscripcion"
+											align="center" hflex="min" />
 										<listheader align="center"
 											width="50px" />
 
@@ -595,6 +597,8 @@
 												value="@bind(vm.filtroColumnsAlumnos[1])" instant="true"
 												onChange="@command('filtrarCursoVigenteAlumno')" hflex="1" />
 										</auxheader>
+										
+										<auxheader />
 
 										<auxheader />
 
@@ -613,6 +617,9 @@
 											<listcell
 												label="@load(each.cursovigentealumnopk.alumno.persona.documentoNum)"
 												tooltiptext="@load(each.cursovigentealumnopk.alumno.persona.documentoNum)" />
+											<listcell
+												label="@load(each.fechaInscripcion) @converter('formatedDate', format='dd/MM/yyy')"
+												tooltiptext="@load(each.fechaInscripcion) @converter('formatedDate', format='dd/MM/yyy')" />
 
 											<listcell>
 												<hlayout>

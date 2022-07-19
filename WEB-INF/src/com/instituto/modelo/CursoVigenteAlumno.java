@@ -24,7 +24,7 @@ public class CursoVigenteAlumno extends Modelo implements Serializable {
 	private CursoVigenteAlumnoPK cursovigentealumnopk = new CursoVigenteAlumnoPK();
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date inscripcion = new Date();
+	private Date fechaInscripcion = new Date();
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -76,12 +76,13 @@ public class CursoVigenteAlumno extends Modelo implements Serializable {
 		return null;
 	}
 
-	public Date getInscripcion() {
-		return inscripcion;
+	public Date getFechaInscripcion() {
+		return fechaInscripcion;
 	}
 
-	public void setInscripcion(Date inscripcion) {
-		this.inscripcion = inscripcion;
+	public void setFechaInscripcion(Date fechaInscripcion) {
+		this.fechaInscripcion = fechaInscripcion;
 	}
+
 	
 }
