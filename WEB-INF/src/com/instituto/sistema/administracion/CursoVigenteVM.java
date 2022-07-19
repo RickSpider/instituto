@@ -497,14 +497,14 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			this.editar = false;
 		} else {
 
-			GenerarMovimiento gm = new GenerarMovimiento();
+			/*GenerarMovimiento gm = new GenerarMovimiento();
 			List<MovimientoCuenta> lmv = gm.generarMovimientoAlumno(this.cursoVigenteAlumnoSelected, this.lConceptosCursosVigentesOri);
 			
 			for (MovimientoCuenta x : lmv) {
 				
 				this.save(x);
 				
-			}
+			}*/
 			
 			Notification.show("El Alumno fue agregado.");
 		}
@@ -594,8 +594,8 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			return;
 		}
 
-		String sqlBuscarAlumno = this.um.getSql("buscarAlumnoNotCursoVigente.sql").replace("?1",
-				this.cursoVigenteSelectedAlumnoConceptoMateriaConvenio.getCursovigenteid() + "");
+		String sqlBuscarAlumno = this.um.getSql("buscarAlumnoNotCursoVigente.sql").replace("?1", this.getCurrentSede().getSedeid()+"")
+				.replace("?2", this.cursoVigenteSelectedAlumnoConceptoMateriaConvenio.getCursovigenteid() + "");
 
 		this.lAlumnosBuscar = this.reg.sqlNativo(sqlBuscarAlumno);
 		this.lAlumnosbuscarOri = this.lAlumnosBuscar;

@@ -20,6 +20,7 @@ import com.doxacore.TemplateViewModel;
 import com.doxacore.report.CustomDataSource;
 import com.doxacore.report.ReportConfig;
 import com.instituto.util.ParamsLocal;
+import com.instituto.util.TemplateViewModelLocal;
 import com.doxacore.util.UtilStaticMetodos;
 import com.instituto.modelo.Convenio;
 import com.instituto.modelo.ConvenioAlumno;
@@ -31,7 +32,7 @@ import com.instituto.modelo.Institucion;
 import com.instituto.modelo.Alumno;
 import com.instituto.modelo.Concepto;
 
-public class ConvenioVM extends TemplateViewModel {
+public class ConvenioVM extends TemplateViewModelLocal {
 
 	private List<Convenio> lConvenios;
 	private List<Convenio> lConveniosOri;
@@ -362,7 +363,7 @@ public class ConvenioVM extends TemplateViewModel {
 			return;
 		}
 
-		String sqlBuscarAlumno = this.um.getSql("buscarAlumno.sql");
+		String sqlBuscarAlumno = this.um.getSql("buscarAlumno.sql").replace("?1", this.getCurrentSede().getSedeid()+"");
 
 		this.lAlumnosBuscar = this.reg.sqlNativo(sqlBuscarAlumno);
 		this.lAlumnosbuscarOri = this.lAlumnosBuscar;
