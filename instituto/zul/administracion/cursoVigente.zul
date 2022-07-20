@@ -453,8 +453,10 @@
 											align="center" hflex="min" />
 										<listheader label="Materia"
 											align="left" />
+										<listheader label="Tipo"
+											align="center" hflex="min" />
 										<listheader label="Estado"
-											align="left" hflex="min" />
+											align="center" hflex="min" />
 										<listheader align="center"
 											hflex="min" />
 
@@ -480,6 +482,11 @@
 												value="@bind(vm.filtroColumnsMaterias[2])" instant="true"
 												onChange="@command('filtrarCursoVigenteMateria')" hflex="1" />
 										</auxheader>
+										<auxheader>
+											<textbox
+												value="@bind(vm.filtroColumnsMaterias[3])" instant="true"
+												onChange="@command('filtrarCursoVigenteMateria')" hflex="1" />
+										</auxheader>
 									</auxhead>
 
 									<template name="model">
@@ -494,6 +501,10 @@
 											<listcell
 												label="@load(each.materia.materia)"
 												tooltiptext="@load(each.materia.materia)" />
+											
+											<listcell
+												label="@load(each.materia.materiaTipo.tipo)"
+												tooltiptext="@load(each.materia.materiaTipo.tipo)" />
 												
 											<listcell
 												label="@load(each.estado.tipo)"
@@ -549,6 +560,10 @@
 							<vlayout hflex="1" vflex="1">
 
 								<hbox pack="end" hflex="1">
+
+									<!-- <button label="Generar"
+										iconSclass=" z-icon-plus"
+										onClick="@command('generarEstadoCuentaCursoVigente')" />  -->
 
 									<button label="Agregar"
 										iconSclass=" z-icon-plus"

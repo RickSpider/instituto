@@ -115,7 +115,7 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 			this.cursoVigenteSelected = this.reg.getObjectById(CursoVigente.class.getName(), id);
 			this.buscarCursoVigente = cursoVigenteSelected.getCurso().getCurso();
 			
-			this.lEstadosCuentas = this.reg.getAllObjectsByCondicionOrder(EstadoCuenta.class.getName(), "cursoVigenteid = "+this.cursoVigenteSelected.getCursovigenteid(), "estadocuentaid asc");
+			this.lEstadosCuentas = this.reg.getAllObjectsByCondicionOrder(EstadoCuenta.class.getName(), "cursoVigenteid = "+this.cursoVigenteSelected.getCursovigenteid()+" AND alumnoid = "+this.alumnoSelected.getAlumnoid(), "estadocuentaid asc");
 
 		}
 

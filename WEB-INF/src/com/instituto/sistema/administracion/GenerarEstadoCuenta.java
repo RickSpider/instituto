@@ -2,6 +2,7 @@ package com.instituto.sistema.administracion;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import com.doxacore.util.Register;
@@ -127,14 +128,14 @@ public class GenerarEstadoCuenta {
 				
 				int ordenMayor = Integer.parseInt(lOrdenTalleres.get(lOrdenTalleres.size()-1)[0].toString());
 				
-				List<Calendar> fechasPosibles = new ArrayList<Calendar>();
+				List<Date> fechasPosibles = new ArrayList<Date>();
 				
 				for (int i = 0; i < ordenMayor; i++) {
 				
 					calendar.set(Calendar.DAY_OF_MONTH, diaVencimiento);
 					calendar = calculoVencimiento(calendar, lFeriados);
 					
-					fechasPosibles.add(calendar);
+					fechasPosibles.add(calendar.getTime());
 					
 					calendar.add(Calendar.MONTH, 1);								
 					
@@ -148,10 +149,10 @@ public class GenerarEstadoCuenta {
 					ec.setCursoVigente(cva.getCursoVigente());
 					ec.setAlumno(cva.getAlumno());
 					ec.setConcepto(x.getConcepto());
-					ec.setPeriodo(i + 1);
+					ec.setPeriodo((i + 1));
 					ec.setMonto(x.getImporte()); 
 					
-					ec.setVencimiento(fechasPosibles.get(ordenTaller-1).getTime());
+					ec.setVencimiento(fechasPosibles.get(ordenTaller-1));
 					
 					out.add(ec);
 					
