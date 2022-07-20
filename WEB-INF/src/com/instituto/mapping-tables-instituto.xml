@@ -16,5 +16,5 @@
 <mapping class="com.instituto.modelo.CursoVigenteConcepto" />
 <mapping class="com.instituto.modelo.CursoVigenteMateria" />
 <mapping class="com.instituto.modelo.CursoVigenteConvenio" />
-<mapping class="com.instituto.modelo.MovimientoCuenta" />
+<mapping class="com.instituto.modelo.EstadoCuenta" />
 <mapping class="com.instituto.modelo.Feriado" />

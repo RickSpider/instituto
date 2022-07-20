@@ -29,7 +29,7 @@ import com.instituto.modelo.CursoVigenteConcepto;
 import com.instituto.modelo.CursoVigenteConvenio;
 import com.instituto.modelo.CursoVigenteMateria;
 import com.instituto.modelo.Materia;
-import com.instituto.modelo.MovimientoCuenta;
+import com.instituto.modelo.EstadoCuenta;
 import com.instituto.modelo.Curso;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
@@ -497,14 +497,14 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			this.editar = false;
 		} else {
 
-			/*GenerarMovimiento gm = new GenerarMovimiento();
-			List<MovimientoCuenta> lmv = gm.generarMovimientoAlumno(this.cursoVigenteAlumnoSelected, this.lConceptosCursosVigentesOri);
+			GenerarEstadoCuenta gec = new GenerarEstadoCuenta();
+			List<EstadoCuenta> lec = gec.generarMovimientoAlumno(this.cursoVigenteAlumnoSelected, this.lConceptosCursosVigentesOri);
 			
-			for (MovimientoCuenta x : lmv) {
+			for (EstadoCuenta x : lec) {
 				
 				this.save(x);
 				
-			}*/
+			}
 			
 			Notification.show("El Alumno fue agregado.");
 		}

@@ -1,0 +1,232 @@
+<?page title="Estado de Cuenta" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Estado de Cuenta" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.administracion.EstadoCuentaVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<vlayout vflex="1">
+
+			<tablelayout columns="2">
+
+				<tablechildren>
+					<label value="Alumno:" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+
+					<hbox pack="end" hflex="1">
+
+						<bandbox id="bdAlumno"
+							value="@load(vm.buscarAlumno)" mold="rounded" autodrop="true"
+							width="250px" onOpen="@command('generarListaBuscarAlumno')"
+							readonly="true">
+							<bandpopup>
+
+								<vbox>
+
+									<hbox>
+
+										<label value="Buscar:" />
+
+										<textbox instant="true"
+											value="@bind(vm.buscarAlumno)"
+											onChange="@command('filtrarAlumnoBuscar')" />
+
+									</hbox>
+
+									<listbox height="250px"
+										emptyMessage="lista vacía..." width="450px" mold="paging"
+										autopaging="true" onSelect="bdAlumno.close()"
+										model="@load(vm.lAlumnosBuscar)">
+
+										<listhead>
+											<listheader label="ID"
+												hflex="min" />
+											<listheader label="Nombre" />
+											<listheader
+												label="Apellido" />
+											<listheader
+												label="Documento Num" />
+										</listhead>
+
+										<template name="model">
+
+											<listitem
+												value="@load(each[1])"
+												onClick="@command('onSelectAlumno', id = each[0])">
+
+												<listcell
+													label="@load(each[0])" />
+
+												<listcell
+													label="@load(each[1])" />
+
+												<listcell
+													label="@load(each[2])" />
+												<listcell
+													label="@load(each[3])" />
+
+											</listitem>
+
+										</template>
+										<listitem />
+									</listbox>
+
+								</vbox>
+							</bandpopup>
+						</bandbox>
+
+					</hbox>
+
+				</tablechildren>
+
+				<tablechildren>
+					<label value="Curso:" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+
+					<hbox pack="end" hflex="1">
+
+						<bandbox id="bdCursoVigente"
+							value="@load(vm.buscarCursoVigente)" mold="rounded"
+							autodrop="true" width="250px"
+							onOpen="@command('generarListaBuscarCursoVigente')"
+							readonly="true">
+							<bandpopup>
+
+								<vbox>
+
+									<hbox>
+
+										<label value="Buscar:" />
+
+										<textbox instant="true"
+											value="@bind(vm.buscarCursoVigente)"
+											onChange="@command('filtrarCursoVigenteBuscar')" />
+
+									</hbox>
+
+									<listbox height="250px"
+										emptyMessage="lista vacía..." width="450px" mold="paging"
+										autopaging="true" onSelect="bdCursoVigente.close()"
+										model="@load(vm.lCursosVigentesBuscar)">
+
+										<listhead>
+											<listheader label="ID"
+												hflex="min" />
+											<listheader label="Curso" />
+											<listheader
+												label="Fecha Inicio" />
+											<listheader
+												label="Fecha Fin" />
+										</listhead>
+
+										<template name="model">
+
+											<listitem
+												value="@load(each[1])"
+												onClick="@command('onSelectCursoVigente', id = each[0])">
+
+												<listcell
+													label="@load(each[0])" />
+
+												<listcell
+													label="@load(each[1])" />
+
+												<listcell
+													label="@load(each[2]) @converter('formatedDate', format='dd/MM/yyyy')" />
+
+												<listcell
+													label="@load(each[3]) @converter('formatedDate', format='dd/MM/yyyy')" />
+
+											</listitem>
+
+										</template>
+										<listitem />
+									</listbox>
+
+								</vbox>
+							</bandpopup>
+						</bandbox>
+
+					</hbox>
+
+				</tablechildren>
+			</tablelayout>
+
+			<vlayout vflex="1">
+
+				<listbox emptyMessage="lista vacía..." mold="paging"
+					autopaging="true" vflex="1" model="@load(vm.lEstadosCuentas)">
+
+					<listhead visible="false">
+
+						<listheader label="Fecha Vencimiento"
+							align="center" />
+						
+						<listheader label="Concepto" align="Center" />
+						<listheader label="Periodo" align="Center" />
+						
+						<listheader label="Monto Total" align="right" />
+						<listheader label="Pago" align="right" />
+						<listheader label="Descuento" align="right" />
+
+
+
+					</listhead>
+
+					<auxhead>
+
+						<auxheader label="Estados de Cuenta" colspan="6"
+							align="center" />
+
+					</auxhead>
+
+					<auxhead>
+
+						<auxheader label="Fecha Vencimiento"
+							align="center" />
+						<auxheader label="Concepto" align="center" />
+						<auxheader label="Periodo" align="center" />
+						<auxheader label="Monto Total" align="center" />
+						<auxheader label="Pago" align="center" />
+						<auxheader label="Descuento" align="center" />
+
+					</auxhead>
+
+					<template name="model">
+
+						<listitem>
+
+							<listcell label="@load(each.vencimiento) @converter('formatedDate', format='dd/MM/yyyy')" />
+							<listcell label="@load(each.concepto.concepto)" />
+							<listcell label="@load(each.periodo)" />
+							<listcell label="@load(each.monto) @converter('formatedNumber', format='#,###')"/>
+							<listcell label="@load(each.pago) @converter('formatedNumber', format='#,###')"/>
+							<listcell
+								label="@load(each.montoDescuento)" />
+
+						</listitem>
+
+					</template>
+
+					<listfoot>
+						<listfooter span="6" align="left">
+							<hlayout>
+								<label
+									value="@load(vm.lEstadosCuentas.size())" />
+								<label value="items" />
+							</hlayout>
+						</listfooter>
+					</listfoot>
+
+				</listbox>
+
+
+			</vlayout>
+
+
+
+		</vlayout>
+
+	</window>
+</zk>

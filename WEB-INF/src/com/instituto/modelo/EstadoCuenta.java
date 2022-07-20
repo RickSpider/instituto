@@ -18,18 +18,18 @@ import com.doxacore.modelo.Modelo;
 
 
 @Entity
-@Table(name="movimientoscuentas")
-public class MovimientoCuenta extends Modelo implements Serializable{
-	
+@Table(name="estadoscuentas")
+public class EstadoCuenta extends Modelo implements Serializable{
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4796589090322095018L;
+	private static final long serialVersionUID = 2438628348177674128L;
 
 	@Id
-	@Column(name ="movimientocuentaid")
+	@Column(name ="estadocuentaid")
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long movimientocuentaid;
+	private Long estadocuentaid;
 	
 	@ManyToOne
 	@JoinColumn(name = "alumnoid")
@@ -50,17 +50,12 @@ public class MovimientoCuenta extends Modelo implements Serializable{
 	private double montoDescuento = 0.0;
 	private double monto = 0.0;
 	private double pago = 0.0;
-	
+		
 	private boolean inactivo = false;
 	private Date fechaInactivacion;
 	private String motivoInactivacion; 
 	
-	public Long getMovimientocuentaid() {
-		return movimientocuentaid;
-	}
-	public void setMovimientocuentaid(Long movimientocuentaid) {
-		this.movimientocuentaid = movimientocuentaid;
-	}
+	
 	public Alumno getAlumno() {
 		return alumno;
 	}
@@ -139,6 +134,12 @@ public class MovimientoCuenta extends Modelo implements Serializable{
 	}
 	public void setMotivoInactivacion(String motivoInactivacion) {
 		this.motivoInactivacion = motivoInactivacion;
+	}
+	public Long getEstadocuentaid() {
+		return estadocuentaid;
+	}
+	public void setEstadocuentaid(Long estadocuentaid) {
+		this.estadocuentaid = estadocuentaid;
 	}
 	
 	

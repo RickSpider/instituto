@@ -9,13 +9,13 @@ import com.instituto.modelo.CursoVigenteAlumno;
 import com.instituto.modelo.CursoVigenteConcepto;
 import com.instituto.modelo.CursoVigenteConvenio;
 import com.instituto.modelo.Feriado;
-import com.instituto.modelo.MovimientoCuenta;
+import com.instituto.modelo.EstadoCuenta;
 
-public class GenerarMovimiento {
+public class GenerarEstadoCuenta {
 	
 	private Register reg = new Register();
 
-	public List<MovimientoCuenta> generarMovimientoAlumno(CursoVigenteAlumno cva, List<CursoVigenteConcepto> lCVConceptos) {
+	public List<EstadoCuenta> generarMovimientoAlumno(CursoVigenteAlumno cva, List<CursoVigenteConcepto> lCVConceptos) {
 		
 		List<Feriado> lFeriados = this.reg.getAllObjects(Feriado.class.getName());
 		
@@ -32,7 +32,7 @@ public class GenerarMovimiento {
 		
 		List<Object []> lOrdenMaterias = this.reg.sqlNativo(sql);
 
-		ArrayList<MovimientoCuenta> out = new ArrayList<MovimientoCuenta>();
+		ArrayList<EstadoCuenta> out = new ArrayList<EstadoCuenta>();
 
 		for (CursoVigenteConcepto x : lCVConceptos) {
 
@@ -52,19 +52,19 @@ public class GenerarMovimiento {
 
 				for (int i = 0; i < periodoEducativo; i++) {
 
-					MovimientoCuenta mc = new MovimientoCuenta();
-					mc.setCursoVigente(cva.getCursoVigente());
-					mc.setAlumno(cva.getAlumno());
-					mc.setConcepto(x.getConcepto());
-					mc.setPeriodo(i + 1);
-					mc.setMonto(x.getImporte());
+					EstadoCuenta ec = new EstadoCuenta();
+					ec.setCursoVigente(cva.getCursoVigente());
+					ec.setAlumno(cva.getAlumno());
+					ec.setConcepto(x.getConcepto());
+					ec.setPeriodo(i + 1);
+					ec.setMonto(x.getImporte());
 					
 					calendar.set(Calendar.DAY_OF_MONTH, diaVencimiento);
 					calendar = calculoVencimiento(calendar, lFeriados);
 					
-					mc.setVencimiento(calendar.getTime());
+					ec.setVencimiento(calendar.getTime());
 					
-					out.add(mc);
+					out.add(ec);
 					
 					calendar.add(Calendar.MONTH, cantMeses);
 
@@ -84,19 +84,19 @@ public class GenerarMovimiento {
 					
 					int cantidadMaterias = Integer.parseInt(lOrdenMaterias.get(i)[1].toString()); 
 
-					MovimientoCuenta mc = new MovimientoCuenta();
-					mc.setCursoVigente(cva.getCursoVigente());
-					mc.setAlumno(cva.getAlumno());
-					mc.setConcepto(x.getConcepto());
-					mc.setPeriodo(i + 1);
-					mc.setMonto(x.getImporte()*cantidadMaterias); 
+					EstadoCuenta ec = new EstadoCuenta();
+					ec.setCursoVigente(cva.getCursoVigente());
+					ec.setAlumno(cva.getAlumno());
+					ec.setConcepto(x.getConcepto());
+					ec.setPeriodo(i + 1);
+					ec.setMonto(x.getImporte()*cantidadMaterias); 
 					
 					calendar.set(Calendar.DAY_OF_MONTH, diaVencimiento);
 					calendar = calculoVencimiento(calendar, lFeriados);
 					
-					mc.setVencimiento(calendar.getTime());
+					ec.setVencimiento(calendar.getTime());
 					
-					out.add(mc);
+					out.add(ec);
 					
 					calendar.add(Calendar.MONTH, 1);
 
@@ -144,16 +144,16 @@ public class GenerarMovimiento {
 					
 					int ordenTaller = Integer.parseInt(lOrdenTalleres.get(i)[0].toString());
 					
-					MovimientoCuenta mc = new MovimientoCuenta();
-					mc.setCursoVigente(cva.getCursoVigente());
-					mc.setAlumno(cva.getAlumno());
-					mc.setConcepto(x.getConcepto());
-					mc.setPeriodo(i + 1);
-					mc.setMonto(x.getImporte()); 
+					EstadoCuenta ec = new EstadoCuenta();
+					ec.setCursoVigente(cva.getCursoVigente());
+					ec.setAlumno(cva.getAlumno());
+					ec.setConcepto(x.getConcepto());
+					ec.setPeriodo(i + 1);
+					ec.setMonto(x.getImporte()); 
 					
-					mc.setVencimiento(fechasPosibles.get(ordenTaller-1).getTime());
+					ec.setVencimiento(fechasPosibles.get(ordenTaller-1).getTime());
 					
-					out.add(mc);
+					out.add(ec);
 					
 				}
 				
@@ -168,19 +168,19 @@ public class GenerarMovimiento {
 				int diaVencimiento = calendar.get(Calendar.DAY_OF_MONTH);
 				
 				
-				MovimientoCuenta mc = new MovimientoCuenta();
-				mc.setCursoVigente(cva.getCursoVigente());
-				mc.setAlumno(cva.getAlumno());
-				mc.setConcepto(x.getConcepto());
-				mc.setPeriodo(1);
-				mc.setMonto(x.getImporte()); 
+				EstadoCuenta ec = new EstadoCuenta();
+				ec.setCursoVigente(cva.getCursoVigente());
+				ec.setAlumno(cva.getAlumno());
+				ec.setConcepto(x.getConcepto());
+				ec.setPeriodo(1);
+				ec.setMonto(x.getImporte()); 
 				
 				calendar.set(Calendar.DAY_OF_MONTH, diaVencimiento);
 				calendar = calculoVencimiento(calendar, lFeriados);
 				
-				mc.setVencimiento(calendar.getTime());
+				ec.setVencimiento(calendar.getTime());
 				
-				out.add(mc);
+				out.add(ec);
 				
 				calendar.add(Calendar.MONTH, 1);
 				
