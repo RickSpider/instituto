@@ -6,7 +6,7 @@
 
 		<vlayout vflex="1">
 
-			<tablelayout columns="2">
+			<tablelayout columns="4">
 
 				<tablechildren>
 					<label value="Alumno:" style="font-weight:bold" />
@@ -33,7 +33,7 @@
 
 									</hbox>
 
-									<listbox height="250px"
+									<listbox id="lbAlumno" height="250px"
 										emptyMessage="lista vacía..." width="450px" mold="paging"
 										autopaging="true" onSelect="bdAlumno.close()"
 										model="@load(vm.lAlumnosBuscar)">
@@ -78,6 +78,10 @@
 					</hbox>
 
 				</tablechildren>
+				
+				<tablechildren colspan="2">
+					<label value="@load(vm.alumnoSelected.fullNombre)"/>
+				</tablechildren>
 
 				<tablechildren>
 					<label value="Curso:" style="font-weight:bold" />
@@ -87,9 +91,8 @@
 					<hbox pack="end" hflex="1">
 
 						<bandbox id="bdCursoVigente"
-							value="@load(vm.buscarCursoVigente)" mold="rounded"
-							autodrop="true" width="250px"
-							onOpen="@command('generarListaBuscarCursoVigente')"
+							value="@load(vm.buscarCursoVigente)" mold="rounded" autodrop="true" 
+							width="250px" onOpen="@command('generarListaBuscarCursoVigente')"
 							readonly="true">
 							<bandpopup>
 
@@ -105,7 +108,7 @@
 
 									</hbox>
 
-									<listbox height="250px"
+									<listbox id="lbCursoVigente" height="250px"
 										emptyMessage="lista vacía..." width="450px" mold="paging"
 										autopaging="true" onSelect="bdCursoVigente.close()"
 										model="@load(vm.lCursosVigentesBuscar)">
@@ -151,6 +154,11 @@
 					</hbox>
 
 				</tablechildren>
+				
+				<tablechildren colspan="2">
+					<label value="@load(vm.cursoVigenteSelected.curso.curso)"/>
+				</tablechildren>
+				
 			</tablelayout>
 
 			<vlayout vflex="1">
@@ -186,7 +194,7 @@
 						<auxheader label="Fecha Vencimiento"
 							align="center" />
 						<auxheader label="Concepto" align="center" />
-						<auxheader label="Periodo" align="center" />
+						<auxheader label="Periodo/Cuota #" align="center" />
 						<auxheader label="Monto Total" align="center" />
 						<auxheader label="Pago" align="center" />
 						<auxheader label="Descuento" align="center" />

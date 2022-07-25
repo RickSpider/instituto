@@ -1,5 +1,6 @@
 package com.instituto.sistema.administracion;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.zkoss.bind.annotation.AfterCompose;
@@ -19,7 +20,7 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 	private Alumno alumnoSelected;
 	private CursoVigente cursoVigenteSelected;
 	private List<EstadoCuenta> lEstadosCuentas;
-	
+
 	@Init(superclass = true)
 	public void initEstadoCuentaVM() {
 
@@ -29,149 +30,157 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 	public void afterComposeEstadoCuentaVM() {
 
 	}
-	
+
 	@Override
 	protected void inicializarOperaciones() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	// Seccion Buscar alumno
-	
+
 	// seccion buscador
 
-		private List<Object[]> lAlumnosbuscarOri;
-		private List<Object[]> lAlumnosBuscar;
-		private String buscarAlumno = "";
+	private List<Object[]> lAlumnosbuscarOri;
+	private List<Object[]> lAlumnosBuscar;
+	private String buscarAlumno = "";
 
-		@Command
-		@NotifyChange("lAlumnosBuscar")
-		public void filtrarAlumnoBuscar() {
+	@Command
+	@NotifyChange("lAlumnosBuscar")
+	public void filtrarAlumnoBuscar() {
 
-			this.lAlumnosBuscar = this.filtrarListaObject(buscarAlumno, this.lAlumnosbuscarOri);
+		this.lAlumnosBuscar = this.filtrarListaObject(buscarAlumno, this.lAlumnosbuscarOri);
 
-		}
+	}
 
-		@Command
-		@NotifyChange("lAlumnosBuscar")
-		public void generarListaBuscarAlumno() {
-
-			String sqlBuscarAlumno = this.um.getSql("buscarAlumno.sql").replace("?1", this.getCurrentSede().getSedeid()+"");
-
-			this.lAlumnosBuscar = this.reg.sqlNativo(sqlBuscarAlumno);
-			this.lAlumnosbuscarOri = this.lAlumnosBuscar;
-		}
-
-		@Command
-		@NotifyChange("*")
-		public void onSelectAlumno(@BindingParam("id") long id) {
-
-			this.alumnoSelected = this.reg.getObjectById(Alumno.class.getName(), id);
-			this.buscarAlumno = alumnoSelected.getFullNombre();
-			this.cursoVigenteSelected = null;
-			this.buscarCursoVigente="";
-			this.lEstadosCuentas = null;
-
-		}
-
-		// fin alumno buscador
+	@Command
+	@NotifyChange("*")
+	public void generarListaBuscarAlumno() {
 		
-		//buscar curso vigente
+		this.buscarAlumno="";
+		this.buscarCursoVigente="";
+
+		String sqlBuscarAlumno = this.um.getSql("buscarAlumno.sql").replace("?1",
+				this.getCurrentSede().getSedeid() + "");
+
+		this.lAlumnosBuscar = this.reg.sqlNativo(sqlBuscarAlumno);
+		this.lAlumnosbuscarOri = this.lAlumnosBuscar;
+	}
+
+	@Command
+	@NotifyChange("*")
+	public void onSelectAlumno(@BindingParam("id") long id) {
+
+		this.alumnoSelected = this.reg.getObjectById(Alumno.class.getName(), id);
+		this.buscarAlumno = alumnoSelected.getFullNombre();
+		this.cursoVigenteSelected = null;
+		this.buscarCursoVigente = "";
+		this.lEstadosCuentas = null;
+
+	}
+
+	// fin alumno buscador
+
+	// buscar curso vigente
+
+	private List<Object[]> lCursosVigentesbuscarOri;
+	private List<Object[]> lCursosVigentesBuscar;
+	private String buscarCursoVigente = "";
+
+	@Command
+	@NotifyChange("lCursosVigentesBuscar")
+	public void filtrarCursoVigenteBuscar() {
+
+		this.lCursosVigentesBuscar = this.filtrarListaObject(buscarCursoVigente, this.lCursosVigentesbuscarOri);
+
+	}
+
+	@Command
+	@NotifyChange({"lCursosVigentesBuscar","buscarCursoVigente"})
+	public void generarListaBuscarCursoVigente() {
+
+		if (this.alumnoSelected == null) {
+
+			return;
+
+		}
 		
-		private List<Object[]> lCursosVigentesbuscarOri;
-		private List<Object[]> lCursosVigentesBuscar;
-		private String buscarCursoVigente = "";
+		this.buscarCursoVigente="";
 
-		
+		String sqlBuscarCursoVigente = this.um.getSql("buscarCursoVigentePorAlumno.sql").replace("?1",
+				this.alumnoSelected.getAlumnoid() + "");
 
-		@Command
-		@NotifyChange("lCursosVigentesBuscar")
-		public void filtrarCursoVigenteBuscar() {
+		this.lCursosVigentesBuscar = this.reg.sqlNativo(sqlBuscarCursoVigente);
+		this.lCursosVigentesbuscarOri = this.lCursosVigentesBuscar;
+	}
 
-			this.lCursosVigentesBuscar = this.filtrarListaObject(buscarCursoVigente, this.lCursosVigentesbuscarOri);
+	@Command
+	@NotifyChange({ "buscarCursoVigente", "lEstadosCuentas", "cursoVigenteSelected" })
+	public void onSelectCursoVigente(@BindingParam("id") long id) {
 
-		}
+		this.cursoVigenteSelected = this.reg.getObjectById(CursoVigente.class.getName(), id);
+		this.buscarCursoVigente = cursoVigenteSelected.getCurso().getCurso();
 
-		@Command
-		@NotifyChange("lCursosVigentesBuscar")
-		public void generarListaBuscarCursoVigente() {
-			
-			if (this.alumnoSelected == null) {
-				
-				return;
-				
-			}
+		this.lEstadosCuentas = this.reg.getAllObjectsByCondicionOrder(EstadoCuenta.class.getName(),
+				"cursoVigenteid = " + this.cursoVigenteSelected.getCursovigenteid() + " AND alumnoid = "
+						+ this.alumnoSelected.getAlumnoid(),
+				"vencimiento asc");
 
-			String sqlBuscarCursoVigente = this.um.getSql("buscarCursoVigentePorAlumno.sql").replace("?1", this.alumnoSelected.getAlumnoid()+"");
+	}
 
-			this.lCursosVigentesBuscar = this.reg.sqlNativo(sqlBuscarCursoVigente);
-			this.lCursosVigentesbuscarOri = this.lCursosVigentesBuscar;
-		}
+	public Alumno getAlumnoSelected() {
+		return alumnoSelected;
+	}
 
-		@Command
-		@NotifyChange({"buscarCursoVigente", "lEstadosCuentas"})
-		public void onSelectCursoVigente(@BindingParam("id") long id) {
+	public void setAlumnoSelected(Alumno alumnoSelected) {
+		this.alumnoSelected = alumnoSelected;
+	}
 
-			this.cursoVigenteSelected = this.reg.getObjectById(CursoVigente.class.getName(), id);
-			this.buscarCursoVigente = cursoVigenteSelected.getCurso().getCurso();
-			
-			this.lEstadosCuentas = this.reg.getAllObjectsByCondicionOrder(EstadoCuenta.class.getName(), "cursoVigenteid = "+this.cursoVigenteSelected.getCursovigenteid()+" AND alumnoid = "+this.alumnoSelected.getAlumnoid(), "estadocuentaid asc");
+	public CursoVigente getCursoVigenteSelected() {
+		return cursoVigenteSelected;
+	}
 
-		}
+	public void setCursoVigenteSelected(CursoVigente cursoVigenteSelected) {
+		this.cursoVigenteSelected = cursoVigenteSelected;
+	}
 
-		public Alumno getAlumnoSelected() {
-			return alumnoSelected;
-		}
+	public List<EstadoCuenta> getlEstadosCuentas() {
+		return lEstadosCuentas;
+	}
 
-		public void setAlumnoSelected(Alumno alumnoSelected) {
-			this.alumnoSelected = alumnoSelected;
-		}
+	public void setlEstadosCuentas(List<EstadoCuenta> lEstadosCuentas) {
+		this.lEstadosCuentas = lEstadosCuentas;
+	}
 
-		public CursoVigente getCursoVigenteSelected() {
-			return cursoVigenteSelected;
-		}
+	public List<Object[]> getlAlumnosBuscar() {
+		return lAlumnosBuscar;
+	}
 
-		public void setCursoVigenteSelected(CursoVigente cursoVigenteSelected) {
-			this.cursoVigenteSelected = cursoVigenteSelected;
-		}
+	public void setlAlumnosBuscar(List<Object[]> lAlumnosBuscar) {
+		this.lAlumnosBuscar = lAlumnosBuscar;
+	}
 
-		public List<EstadoCuenta> getlEstadosCuentas() {
-			return lEstadosCuentas;
-		}
+	public String getBuscarAlumno() {
+		return buscarAlumno;
+	}
 
-		public void setlEstadosCuentas(List<EstadoCuenta> lEstadosCuentas) {
-			this.lEstadosCuentas = lEstadosCuentas;
-		}
+	public void setBuscarAlumno(String buscarAlumno) {
+		this.buscarAlumno = buscarAlumno;
+	}
 
-		public List<Object[]> getlAlumnosBuscar() {
-			return lAlumnosBuscar;
-		}
+	public List<Object[]> getlCursosVigentesBuscar() {
+		return lCursosVigentesBuscar;
+	}
 
-		public void setlAlumnosBuscar(List<Object[]> lAlumnosBuscar) {
-			this.lAlumnosBuscar = lAlumnosBuscar;
-		}
+	public void setlCursosVigentesBuscar(List<Object[]> lCursosVigentesBuscar) {
+		this.lCursosVigentesBuscar = lCursosVigentesBuscar;
+	}
 
-		public String getBuscarAlumno() {
-			return buscarAlumno;
-		}
+	public String getBuscarCursoVigente() {
+		return buscarCursoVigente;
+	}
 
-		public void setBuscarAlumno(String buscarAlumno) {
-			this.buscarAlumno = buscarAlumno;
-		}
-
-		public List<Object[]> getlCursosVigentesBuscar() {
-			return lCursosVigentesBuscar;
-		}
-
-		public void setlCursosVigentesBuscar(List<Object[]> lCursosVigentesBuscar) {
-			this.lCursosVigentesBuscar = lCursosVigentesBuscar;
-		}
-
-		public String getBuscarCursoVigente() {
-			return buscarCursoVigente;
-		}
-
-		public void setBuscarCursoVigente(String buscarCursoVigente) {
-			this.buscarCursoVigente = buscarCursoVigente;
-		}
+	public void setBuscarCursoVigente(String buscarCursoVigente) {
+		this.buscarCursoVigente = buscarCursoVigente;
+	}
 }

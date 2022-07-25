@@ -515,7 +515,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 	}
 	
-	/*@Command
+	@Command
 	public void generarEstadoCuentaCursoVigente() {
 		
 		if(this.cursoVigenteSelectedAlumnoConceptoMateriaConvenio == null) {
@@ -544,7 +544,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		
 		
 		
-	}*/
+	}
 
 	@Command
 	@NotifyChange({ "lAlumnosCursosVigentes", "buscarAlumno" })

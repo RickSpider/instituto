@@ -561,9 +561,9 @@
 
 								<hbox pack="end" hflex="1">
 
-									<!-- <button label="Generar"
+								<!--  	<button label="Generar"
 										iconSclass=" z-icon-plus"
-										onClick="@command('generarEstadoCuentaCursoVigente')" />  -->
+										onClick="@command('generarEstadoCuentaCursoVigente')" />   -->
 
 									<button label="Agregar"
 										iconSclass=" z-icon-plus"
