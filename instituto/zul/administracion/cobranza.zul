@@ -1,0 +1,262 @@
+<?page title="Convenios" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Cobranzas" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.administracion.CobranzaVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<vlayout>
+			<tablelayout columns="10">
+
+				<tablechildren style="padding-left: 5px">
+					<label value="Alumno:" />
+				</tablechildren>
+				<tablechildren style="padding-left: 5px">
+					<bandbox id="bd"
+						value="@load(vm.buscarAlumno) @save(vm.buscarAlumno, before='guardarAlumno')"
+						constraint="no empty: Es campo obligatorio." mold="rounded"
+						autodrop="true" width="150px"
+						onOpen="@command('generarListaBuscarAlumno')" readonly="true"
+						disabled="@load(vm.editar)">
+						<bandpopup>
+
+							<vbox>
+
+								<hbox>
+
+									<label value="Buscar:" />
+
+									<textbox instant="true"
+										value="@bind(vm.buscarAlumno)"
+										onChange="@command('filtrarAlumnoBuscar')" />
+
+								</hbox>
+
+								<listbox height="250px" width="450px"
+									mold="paging" autopaging="true" onSelect="bd.close()"
+									model="@load(vm.lAlumnosBuscar)">
+
+									<listhead>
+										<listheader label="ID"
+											hflex="min" />
+										<listheader label="Alumno" />
+										<listheader label="Apellido" />
+										<listheader label="Documento #" />
+
+									</listhead>
+
+									<template name="model">
+
+										<listitem
+											onClick="@command('onSelectAlumno', id = each[0])">
+
+											<listcell
+												label="@load(each[0])" />
+
+											<listcell
+												label="@load(each[1])" />
+
+											<listcell
+												label="@load(each[2])" />
+
+											<listcell
+												label="@load(each[3])" />
+
+										</listitem>
+
+									</template>
+									<listitem />
+								</listbox>
+
+							</vbox>
+						</bandpopup>
+					</bandbox>
+				</tablechildren>
+
+				<tablechildren style="padding-left: 5px">
+					<label value="Saldo" />
+				</tablechildren>
+				<tablechildren style="padding-left: 5px">
+					<doublebox />
+				</tablechildren>
+
+				<tablechildren style="padding-left: 5px">
+					<label value="Recibo" />
+				</tablechildren>
+
+				<tablechildren style="padding-left: 5px">
+					<checkbox
+						checked="@bind(vm.cobranzaSelected.esRecibo)" />
+				</tablechildren>
+
+				<tablechildren style="padding-left: 5px">
+					<label value="Factura" />
+				</tablechildren>
+				<tablechildren style="padding-left: 5px">
+					<checkbox
+						checked="@bind(vm.cobranzaSelected.esFactura)" />
+				</tablechildren>
+
+			</tablelayout>
+
+		</vlayout>
+
+		<vlayout vflex="1">
+				
+			<listbox emptyMessage="lista vacía..." mold="paging"
+				autopaging="true" vflex="1" model="@load(vm.lDetalles)">
+
+				<listhead visible="false">
+
+					<listheader label="Fecha Vencimiento"
+						align="center" />
+					<listheader label="Curso" align="Center" />
+					<listheader label="Concepto" align="Center" />
+					<listheader label="Periodo" align="Center" />
+
+					<listheader label="Monto Total" align="right" />
+					<listheader label="Pago" align="right" />
+	
+					<listheader visible="@load(!vm.editar)" hflex="min"/>
+
+
+				</listhead>
+				
+				<auxhead>
+
+						<auxheader colspan="7" align="center">
+							<button label="Agregar Detalle" iconSclass=" z-icon-plus"
+								onClick=""
+								disabled="@load(vm.editar)" style="background-color:green"/>
+						</auxheader>
+
+					</auxhead>
+
+				<auxhead>
+
+					<auxheader label="Fecha Vencimiento" align="center" />
+					<auxheader label="Curso" align="center" />
+					<auxheader label="Concepto" align="center" />
+					<auxheader label="Periodo/Cuota #" align="center" />
+					<auxheader label="Monto Total" align="center" />
+					<auxheader label="Pago" align="center" />
+					<auxheader/>
+
+				</auxhead>
+
+				<template name="model">
+
+					<listitem>
+
+						<listcell
+							label="@load(each.estadoCuenta.vencimiento) @converter('formatedDate', format='dd/MM/yyyy')" />
+						<listcell
+							label="@load(each.estadoCuenta.cursoVigente.curso.curso)" />
+						<listcell
+							label="@load(each.estadoCuenta.concepto.concepto)" />
+						<listcell
+							label="@load(each.estadoCuenta.periodo)" />
+						<listcell
+							label="@load(each.estadoCuenta.monto) @converter('formatedNumber', format='#,###')" />
+						<listcell>
+							<doublebox value="@bind(each.monto)" readonly="@load(vm.editar)"/>
+						</listcell>
+						<listcell label="@load(each.montoDescuento)" />
+						
+						<listcell>
+						
+							<button iconSclass="z-icon-trash-o"
+										style="background-color:red"
+										onClick=""
+										tooltiptext="Borrar"
+										disabled="@load(vm.editar)"/>
+						
+						</listcell>
+
+					</listitem>
+
+				</template>
+
+				<listfoot>
+					<listfooter span="6" align="left">
+						<hlayout>
+							<label value="@load(vm.lDetalles.size())" />
+							<label value="items" />
+						</hlayout>
+					</listfooter>
+				</listfoot>
+
+			</listbox>
+			
+			<listbox emptyMessage="lista vacía..." mold="paging"
+				autopaging="true" vflex="1" model="@load(vm.lDetallesCobros)">
+
+				<listhead visible="false">
+
+					<listheader label="Tipo Pago" align="Center" />
+					<listheader label="Monto" align="right" />
+	
+					<listheader visible="@load(!vm.editar)" hflex="min"/>
+
+
+				</listhead>
+				
+				<auxhead>
+
+						<auxheader colspan="3" align="center">
+							<button label="Agregar Tipo Pago" iconSclass=" z-icon-plus"
+								onClick=""
+								disabled="@load(vm.editar)" style="background-color:green"/>
+						</auxheader>
+
+					</auxhead>
+
+				<auxhead>
+
+					
+					<auxheader label="Tipo Pago" align="center" />
+					<auxheader label="Monto" align="center" />
+					<auxheader/>
+
+				</auxhead>
+
+				<template name="model">
+
+					<listitem>
+
+						<listcell
+							label="@load(each.cobranzaTipo.tipo)" />
+						<listcell>
+							<doublebox value="@bind(each.monto)" readonly="@load(vm.editar)"/>
+						</listcell>
+						<listcell label="@load(each.montoDescuento)" />
+						
+						<listcell>
+						
+							<button iconSclass="z-icon-trash-o"
+										style="background-color:red"
+										onClick=""
+										tooltiptext="Borrar"
+										disabled="@load(vm.editar)"/>
+						
+						</listcell>
+
+					</listitem>
+
+				</template>
+
+				<listfoot>
+					<listfooter span="6" align="left">
+						<hlayout>
+							<label value="@load(vm.lDetallesCobros.size())" />
+							<label value="items" />
+						</hlayout>
+					</listfooter>
+				</listfoot>
+
+			</listbox>
+			
+
+		</vlayout>
+
+	</window>
+</zk>

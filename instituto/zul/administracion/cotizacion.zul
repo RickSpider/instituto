@@ -1,0 +1,131 @@
+<?page title="Cotizaciones" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="Cotizacion" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.administracion.CotizacionVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<hlayout vflex="1">
+			
+				<vlayout hflex="1" vflex="1">
+
+					<hbox pack="end" hflex="1" >
+
+						<button label="Agregar"
+							iconSclass=" z-icon-plus" onClick="@command('modalCotizacionAgregar')" disabled="@load(!vm.opCrearCotizacion)" />
+
+					</hbox>
+
+					<listbox emptyMessage="lista vacía..." mold="paging"
+						vflex="1" model="@load(vm.lCotizaciones)" checkmark="true">
+
+						<listhead>
+
+							<listheader hflex="min" align="center" />
+							<listheader label="ID" align="right"
+								hflex="min" />
+							<listheader label="Moneda" align="left"
+								 />
+							<listheader label="Fecha" align="left"
+								/>
+							<listheader label="Compra" align="left"
+								 />
+							<listheader label="Venta" align="left"
+								 />
+							<listheader align="center" 
+								width="100px"/>
+
+
+						</listhead>
+
+
+						<auxhead>
+
+							<auxheader />
+							<auxheader />
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[0])" instant="true"
+									onChange="@command('filtrarCotizacion')" hflex="1" />
+							</auxheader>
+
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[1])" instant="true"
+									onChange="@command('filtrarCotizacion')" hflex="1" />
+							</auxheader>
+							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[2])" instant="true"
+									onChange="@command('filtrarCotizacion')" hflex="1" />
+							</auxheader>
+							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[3])" instant="true"
+									onChange="@command('filtrarCotizacion')" hflex="1" />
+							</auxheader>
+				
+
+							<auxheader />
+						</auxhead>
+
+						<template name="model">
+
+							<listitem>
+								<listcell />
+								<listcell label="@load(each.cotizacionid)" />
+							
+								<listcell
+									label="@load(each.monedaTipo.tipo)" />
+								<listcell
+									label="@load(each.fecha) @converter('formatedDate', format='dd/MM/yyyy')" />
+								<listcell
+									label="@load(each.compra) @converter('formatedNumber', format='#,###')" />
+								<listcell
+									label="@load(each.venta) @converter('formatedNumber', format='#,###')" />
+
+								<listcell>
+									<hlayout>
+
+										<button iconSclass="z-icon-edit"
+											onClick="@command('modalCotizacion', cotizacionid=each.cotizacionid)"
+											tooltiptext="Editar" disabled="@load(!vm.opEditarCotizacion)"/>
+										<button
+											iconSclass="z-icon-trash-o" style="background-color:red"
+											onClick="@command('borrarCotizacionConfirmacion', cotizacion=each)"
+											tooltiptext="Borrar" disabled="@load(!vm.opBorrarCotizacion)"/>
+
+
+									</hlayout>
+
+
+								</listcell>
+
+
+							</listitem>
+
+
+						</template>
+
+						<listfoot>
+							<listfooter span="4" align="left">
+								<hlayout>
+									<label
+										value="@load(vm.lCotizaciones.size())" />
+									<label value="items" />
+								</hlayout>
+							</listfooter>
+						</listfoot>
+
+
+					</listbox>
+
+				</vlayout>
+
+		
+			
+		</hlayout>
+
+	</window>
+</zk>

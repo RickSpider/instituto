@@ -21,6 +21,7 @@ public class ParamsLocal extends Params {
 	public static final String SIGLA_MATERIA = "MATERIA";
 	public static final String SIGLA_PERSONA= "PERSONA";
 	public static final String SIGLA_ESTADO_CV_MATERIA = "ESTADO_CV_MATERIA";
+	public static final String SIGLA_MONEDA="MONEDA";
 	
 	//Sede
 	public static final String OP_CREAR_SEDE = "CrearSede";
@@ -110,5 +111,16 @@ public class ParamsLocal extends Params {
 	public static final String OP_QUITAR_CURSOVIGENTE_CONVENIO = "QuitarCursoVigenteConvenio";
 	public static final String OP_EDITAR_CURSOVIGENTE_CONVENIO = "EditarCursoVigenteConvenio";
 	
+	//Cotizacion
+	
+	public static final String OP_CREAR_COTIZACION = "CrearCotizacion";
+	public static final String OP_EDITAR_COTIZACION = "EditarCotizacion";
+	public static final String OP_BORRAR_COTIZACION = "BorrarCotizacion";
+	
+	//Cobranza
+	public static final String OP_CREAR_COBRANZA = "CrearCobranza";
+	public static final String OP_EDITAR_COBRANZA = "EditarCobranza";
+	public static final String OP_BORRAR_COBRANZA = "BorrarCobranza";
+	public static final String OP_ANULAR_COBRANZA = "AnularCobranza";
 	
 }
