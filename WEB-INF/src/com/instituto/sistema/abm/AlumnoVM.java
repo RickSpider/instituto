@@ -20,8 +20,10 @@ import org.zkoss.zul.Window;
 import com.doxacore.TemplateViewModel;
 import com.doxacore.modelo.Ciudad;
 import com.instituto.modelo.Alumno;
+import com.instituto.modelo.AlumnoEntidad;
 import com.instituto.modelo.CursoVigente;
 import com.instituto.modelo.CursoVigenteAlumno;
+import com.instituto.modelo.Entidad;
 import com.instituto.modelo.Persona;
 import com.instituto.modelo.Sede;
 import com.instituto.util.ParamsLocal;
@@ -36,6 +38,8 @@ public class AlumnoVM extends TemplateViewModelLocal {
 	private boolean opCrearAlumno;
 	private boolean opEditarAlumno;
 	private boolean opBorrarAlumno;
+	private boolean opCrearAlumnoEntidad;
+	private boolean opBorrarAlumnoEntidad;
 
 	@Init(superclass = true)
 	public void initAlumnoVM() {
@@ -56,12 +60,14 @@ public class AlumnoVM extends TemplateViewModelLocal {
 		this.opCrearAlumno = this.operacionHabilitada(ParamsLocal.OP_CREAR_ALUMNO);
 		this.opEditarAlumno = this.operacionHabilitada(ParamsLocal.OP_EDITAR_ALUMNO);
 		this.opBorrarAlumno = this.operacionHabilitada(ParamsLocal.OP_BORRAR_ALUMNO);
-
+		this.opCrearAlumnoEntidad = this.operacionHabilitada(ParamsLocal.OP_CREAR_ALUMNOENTIDAD);
+		this.opBorrarAlumnoEntidad = this.operacionHabilitada(ParamsLocal.OP_BORRAR_ALUMNOENTIDAD);
 	}
 
 	private void cargarAlumnos() {
 
-		this.lAlumnos = this.reg.getAllObjectsByCondicionOrder(Alumno.class.getName(), "sedeid = "+this.getCurrentSede().getSedeid(), "Alumnoid asc");
+		this.lAlumnos = this.reg.getAllObjectsByCondicionOrder(Alumno.class.getName(),
+				"sedeid = " + this.getCurrentSede().getSedeid(), "Alumnoid asc");
 		this.lAlumnosOri = this.lAlumnos;
 	}
 
@@ -120,11 +126,11 @@ public class AlumnoVM extends TemplateViewModelLocal {
 			this.buscarPersona = this.alumnoSelected.getPersona().getNombreCompleto();
 			this.editar = true;
 			this.buscarPersonaFacturacion = "";
-			
-			if(this.alumnoSelected.getPersonaFacturacion() != null) {
-				
+
+			if (this.alumnoSelected.getPersonaFacturacion() != null) {
+
 				this.buscarPersonaFacturacion = this.alumnoSelected.getPersonaFacturacion().getRazonSocial();
-				
+
 			}
 
 		} else {
@@ -141,49 +147,50 @@ public class AlumnoVM extends TemplateViewModelLocal {
 		modal.doModal();
 
 	}
-	
+
 	@Command
 	public void modalAlumnoPersona(@BindingParam("alumnoid") long alumnoid) {
 
-		
 		this.alumnoSelected = this.reg.getObjectById(Alumno.class.getName(), alumnoid);
 		this.buscarPersona = this.alumnoSelected.getPersona().getNombreCompleto();
 
-		modal = (Window) Executions.createComponents("/instituto/zul/abm/alumnoPersonaModal.zul", this.mainComponent, null);
+		modal = (Window) Executions.createComponents("/instituto/zul/abm/alumnoPersonaModal.zul", this.mainComponent,
+				null);
 		Selectors.wireComponents(modal, this, false);
 		modal.doModal();
 
 	}
-	
+
 	private List<CursoVigenteAlumno> lCursosVigentesAlumnos;
 
 	@Command
 	public void modalAlumnoCurso(@BindingParam("alumnoid") long alumnoid) {
 
-		
 		this.alumnoSelected = this.reg.getObjectById(Alumno.class.getName(), alumnoid);
 		this.buscarPersona = this.alumnoSelected.getPersona().getNombreCompleto();
-		
-		lCursosVigentesAlumnos = this.reg.getAllObjectsByCondicionOrder(CursoVigenteAlumno.class.getName(), "alumnoid = "+alumnoid, "cursovigenteid asc");
 
-		modal = (Window) Executions.createComponents("/instituto/zul/abm/alumnoCursoModal.zul", this.mainComponent, null);
+		lCursosVigentesAlumnos = this.reg.getAllObjectsByCondicionOrder(CursoVigenteAlumno.class.getName(),
+				"alumnoid = " + alumnoid, "cursovigenteid asc");
+
+		modal = (Window) Executions.createComponents("/instituto/zul/abm/alumnoCursoModal.zul", this.mainComponent,
+				null);
 		Selectors.wireComponents(modal, this, false);
 		modal.doModal();
 
 	}
 
 	private boolean verificarCampos() {
-		
+
 		if (this.alumnoSelected.getPersona() == null) {
-			
+
 			return false;
-			
+
 		}
-		
+
 		if (this.alumnoSelected.getSede() == null) {
-			
+
 			return false;
-			
+
 		}
 
 		return true;
@@ -196,7 +203,7 @@ public class AlumnoVM extends TemplateViewModelLocal {
 		if (!verificarCampos()) {
 			return;
 		}
-		
+
 		this.alumnoSelected.setSede(this.getCurrentSede());
 
 		this.save(alumnoSelected);
@@ -292,44 +299,205 @@ public class AlumnoVM extends TemplateViewModelLocal {
 	}
 
 	// fin buscador de Persona
-	
+
 	// seccion buscarPersonaFacturacion
 
-		private List<Object[]> lPersonasFacturacionBuscarOri = null;
-		private List<Object[]> lPersonasFacturacionBuscar = null;
-		private Persona buscarSelectedPersonaFacturacion = null;
-		private String buscarPersonaFacturacion = "";
+	private List<Object[]> lPersonasFacturacionBuscarOri = null;
+	private List<Object[]> lPersonasFacturacionBuscar = null;
+	private Persona buscarSelectedPersonaFacturacion = null;
+	private String buscarPersonaFacturacion = "";
 
-		@Command
-		@NotifyChange("lPersonasFacturacionBuscar")
-		public void filtrarPersonaFacturacionBuscar() {
+	@Command
+	@NotifyChange("lPersonasFacturacionBuscar")
+	public void filtrarPersonaFacturacionBuscar() {
 
-			this.lPersonasFacturacionBuscar = this.filtrarListaObject(buscarPersonaFacturacion, this.lPersonasFacturacionBuscarOri);
+		this.lPersonasFacturacionBuscar = this.filtrarListaObject(buscarPersonaFacturacion,
+				this.lPersonasFacturacionBuscarOri);
+
+	}
+
+	@Command
+	@NotifyChange("lPersonasFacturacionBuscar")
+	public void generarListaBuscarPersonaFacturacion() {
+
+		String sqlPersonaFacturacion = this.um.getSql("buscarPersonaFacturacion.sql");
+
+		this.lPersonasFacturacionBuscar = this.reg.sqlNativo(sqlPersonaFacturacion);
+
+		this.lPersonasFacturacionBuscarOri = this.lPersonasFacturacionBuscar;
+	}
+
+	@Command
+	@NotifyChange("lPersonasFacturacionBuscar")
+	public void onSelectPersonaFacturacion(@BindingParam("id") long id) {
+
+		this.buscarSelectedPersonaFacturacion = this.reg.getObjectById(Persona.class.getName(), id);
+		this.buscarPersonaFacturacion = this.buscarSelectedPersonaFacturacion.getRazonSocial();
+		this.alumnoSelected.setPersonaFacturacion(buscarSelectedPersonaFacturacion);
+
+	}
+
+	// fin buscador de PersonaFacturacion
+	
+	//seccion AlumnoEntidad
+	
+	private String cuenta;
+	private List<AlumnoEntidad> lAlumnoEntidades;
+	
+	@Command
+	@NotifyChange({"lAlumnoEntidades","cuenta","buscarEntidad"})
+	public void modalAlumnoEntidad(@BindingParam("alumnoid") long alumnoid) {
+
+		this.alumnoSelected = this.reg.getObjectById(Alumno.class.getName(), alumnoid);
+		
+		this.buscarEntidad="";
+		this.cuenta="";
+		this.buscarSelectedEntidad=null;
+		
+		this.cargarAlumnoEntidades();
+
+		modal = (Window) Executions.createComponents("/instituto/zul/abm/alumnoEntidadModal.zul", this.mainComponent,
+				null);
+		Selectors.wireComponents(modal, this, false);
+		modal.doModal();
+
+	}
+	
+	@Command
+	public void cerrarVentana() {
+		
+		this.modal.detach();
+		
+	}
+	
+	@Command
+	@NotifyChange({"buscarEntidad","cuenta","lAlumnoEntidades"})
+	public void agregarAlumnoEntidad() {
+		
+		if (!this.isOpCrearAlumnoEntidad()) {
+			
+			this.mensajeInfo("No tienes Permiso para agregar una entidad al alumno");
+			return;
+			
+		}
+		
+		if (this.alumnoSelected == null) {
+			return;
+		}
+		
+		if (this.buscarSelectedEntidad == null) {
+			
+			return;
+		}
+		
+		if (this.cuenta.length() < 1) {
+			
+			return;
+		}
+		
+		AlumnoEntidad alumnoEntidad = new AlumnoEntidad();
+		alumnoEntidad.setAlumno(this.alumnoSelected);
+		alumnoEntidad.setEntidad(this.buscarSelectedEntidad);
+		alumnoEntidad.setCuenta(this.cuenta);
+		
+		this.save(alumnoEntidad);
+		
+		this.buscarEntidad="";
+		this.cuenta="";
+		this.buscarSelectedEntidad=null;
+		
+		this.cargarAlumnoEntidades();
+		
+		
+	}
+	
+	
+	@NotifyChange("lAlumnoEntidades")
+	private void cargarAlumnoEntidades() {
+		
+		this.lAlumnoEntidades = this.reg.getAllObjectsByCondicionOrder(AlumnoEntidad.class.getName(),
+				"alumnoid = " + this.alumnoSelected.getAlumnoid(), "entidadid asc");
+		
+	}
+	
+	@Command
+	public void borrarEntidadConfirmacion(@BindingParam("alumnoEntidad") final AlumnoEntidad ca) {
+
+		if (!this.opBorrarAlumnoEntidad) {
+
+			this.mensajeError("No tienes permisos para Borrar Entidades a los Alumnos.");
+
+			return;
 
 		}
 
-		@Command
-		@NotifyChange("lPersonasFacturacionBuscar")
-		public void generarListaBuscarPersonaFacturacion() {
+		this.mensajeEliminar("La Entidad sera removida"
+				+" \n Continuar?", new EventListener() {
 
-			String sqlPersonaFacturacion = this.um.getSql("buscarPersonaFacturacion.sql");
+					@Override
+					public void onEvent(Event evt) throws Exception {
 
-			this.lPersonasFacturacionBuscar = this.reg.sqlNativo(sqlPersonaFacturacion);
+						if (evt.getName().equals(Messagebox.ON_YES)) {
 
-			this.lPersonasFacturacionBuscarOri = this.lPersonasFacturacionBuscar;
-		}
+							borrarAlumnoEntidad(ca);
 
-		@Command
-		@NotifyChange("lPersonasFacturacionBuscar")
-		public void onSelectPersonaFacturacion(@BindingParam("id") long id) {
+						}
 
-			this.buscarSelectedPersonaFacturacion = this.reg.getObjectById(Persona.class.getName(), id);
-			this.buscarPersonaFacturacion = this.buscarSelectedPersonaFacturacion.getRazonSocial();
-			this.alumnoSelected.setPersonaFacturacion(buscarSelectedPersonaFacturacion);
+					}
 
-		}
+				});
 
-		// fin buscador de PersonaFacturacion
+	}
+
+	private void borrarAlumnoEntidad(AlumnoEntidad ae) {
+
+		this.reg.deleteObject(ae);
+
+		this.cargarAlumnoEntidades();
+
+		BindUtils.postNotifyChange(null, null, this, "lAlumnoEntidades");
+
+	}
+	
+	// seccion buscarEntidad
+
+	private List<Object[]> lEntidadesBuscarOri = null;
+	private List<Object[]> lEntidadesBuscar = null;
+	private Entidad buscarSelectedEntidad = null;
+	private String buscarEntidad = "";
+
+	@Command
+	@NotifyChange("lEntidadesBuscar")
+	public void filtrarEntidadBuscar() {
+
+		this.lEntidadesBuscar = this.filtrarListaObject(buscarEntidad, this.lEntidadesBuscarOri);
+
+	}
+
+	@Command
+	@NotifyChange("lEntidadesBuscar")
+	public void generarListaBuscarEntidad() {
+
+		String sqlEntidad = this.um.getSql("buscarEntidad.sql");
+
+		this.lEntidadesBuscar = this.reg.sqlNativo(sqlEntidad);
+
+		this.lEntidadesBuscarOri = this.lEntidadesBuscar;
+	}
+
+	@Command
+	@NotifyChange({"lEntidadesBuscar","buscarEntidad"})
+	public void onSelectEntidad(@BindingParam("id") long id) {
+
+		this.buscarSelectedEntidad = this.reg.getObjectById(Entidad.class.getName(), id);
+		this.buscarEntidad = this.buscarSelectedEntidad.getEntidad();
+
+	}
+	
+	
+
+
+	// fin buscador de Entidad
 
 	public List<Alumno> getlAlumnos() {
 		return lAlumnos;
@@ -425,6 +593,54 @@ public class AlumnoVM extends TemplateViewModelLocal {
 
 	public void setBuscarPersonaFacturacion(String buscarPersonaFacturacion) {
 		this.buscarPersonaFacturacion = buscarPersonaFacturacion;
+	}
+
+	public String getCuenta() {
+		return cuenta;
+	}
+
+	public void setCuenta(String cuenta) {
+		this.cuenta = cuenta;
+	}
+
+	public List<Object[]> getlEntidadesBuscar() {
+		return lEntidadesBuscar;
+	}
+
+	public void setlEntidadesBuscar(List<Object[]> lEntidadesBuscar) {
+		this.lEntidadesBuscar = lEntidadesBuscar;
+	}
+
+	public String getBuscarEntidad() {
+		return buscarEntidad;
+	}
+
+	public void setBuscarEntidad(String buscarEntidad) {
+		this.buscarEntidad = buscarEntidad;
+	}
+
+	public List<AlumnoEntidad> getlAlumnoEntidades() {
+		return lAlumnoEntidades;
+	}
+
+	public void setlAlumnoEntidades(List<AlumnoEntidad> lAlumnoEntidades) {
+		this.lAlumnoEntidades = lAlumnoEntidades;
+	}
+
+	public boolean isOpCrearAlumnoEntidad() {
+		return opCrearAlumnoEntidad;
+	}
+
+	public void setOpCrearAlumnoEntidad(boolean opCrearAlumnoEntidad) {
+		this.opCrearAlumnoEntidad = opCrearAlumnoEntidad;
+	}
+
+	public boolean isOpBorrarAlumnoEntidad() {
+		return opBorrarAlumnoEntidad;
+	}
+
+	public void setOpBorrarAlumnoEntidad(boolean opBorrarAlumnoEntidad) {
+		this.opBorrarAlumnoEntidad = opBorrarAlumnoEntidad;
 	}
 
 }

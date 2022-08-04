@@ -1,0 +1,129 @@
+<?page title="sedeModal" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Entidades Crear/Ver" width="500px" height="500px" border="normal"
+		position="center,center" closable="true" mode="modal"
+		action="show: slideDown;hide: slideUp">
+		
+		<vlayout >
+		
+			<tablelayout columns="4">
+			
+				<tablechildren>
+					<label value="Entidad" />
+				</tablechildren>
+				<tablechildren>
+						<bandbox id="bdEntidad"
+						value="@load(vm.buscarEntidad) @save(vm.buscarEntidad, before='guardar')"
+						constraint="no empty: Es campo obligatorio." mold="rounded"
+						autodrop="true" width="150px"
+						onOpen="@command('generarListaBuscarEntidad')"
+						readonly="true">
+						<bandpopup>
+
+							<vbox>
+
+								<hbox>
+
+									<label value="Buscar:" />
+
+									<textbox instant="true"
+										value="@bind(vm.buscarEntidad)"
+										onChange="@command('filtrarEntidadBuscar')" />
+
+								</hbox>
+
+								<listbox height="250px" width="450px"
+									mold="paging" autopaging="true" onSelect="bdEntidad.close()"
+									model="@load(vm.lEntidadesBuscar)">
+
+									<listhead>
+										<listheader label="ID"
+											hflex="min" />
+										<listheader label="Entidad" />
+									</listhead>
+
+									<template name="model">
+
+										<listitem
+											onClick="@command('onSelectEntidad', id = each[0])">
+
+											<listcell
+												label="@load(each[0])" />
+
+											<listcell
+												label="@load(each[1])" />
+
+										</listitem>
+
+									</template>
+									<listitem />
+								</listbox>
+
+							</vbox>
+						</bandpopup>
+					</bandbox>
+				</tablechildren>
+				<tablechildren>
+					<textbox value="@bind(vm.cuenta)" />
+				</tablechildren>
+				<tablechildren>
+					<button label="Agregar"
+							iconSclass=" z-icon-plus" onClick="@command('agregarAlumnoEntidad')" disabled="@load(!vm.opCrearAlumnoEntidad)" />
+				</tablechildren>
+			</tablelayout>
+		
+		</vlayout>
+
+		<vlayout vflex="1">
+			<listbox emptyMessage="lista vacía..." mold="paging"
+				vflex="1" model="@load(vm.lAlumnoEntidades)">
+
+				<listhead>
+
+					<listheader label="Entidad" align="center" />
+					<listheader label="Cuenta" align="center" />
+					<listheader align="center" hflex="min"/>
+
+
+				</listhead>
+
+				<template name="model">
+
+					<listitem>
+						<listcell label="@load(each.entidad.entidad)" />
+						<listcell label="@load(each.cuenta)" />
+
+						<listcell>
+							<hlayout>
+
+								<button iconSclass="z-icon-trash-o"
+									style="background-color:red"
+									onClick="@command('borrarEntidadConfirmacion', alumnoEntidad=each)"
+									tooltiptext="Borrar" disabled="@load(!vm.opBorrarAlumnoEntidad)" />
+
+
+							</hlayout>
+
+
+						</listcell>
+
+
+					</listitem>
+
+
+				</template>
+
+			</listbox>
+
+		</vlayout>
+
+		<space height="10px" />
+
+		<hlayout>
+
+			<button label="Aceptar" onClick="@command('cerrarVentana')"/>
+
+		</hlayout>
+
+	</window>
+</zk>

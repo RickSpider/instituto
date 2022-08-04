@@ -23,3 +23,4 @@
 <mapping class="com.instituto.modelo.Cobranza" />
 <mapping class="com.instituto.modelo.CobranzaDetalle" />
 <mapping class="com.instituto.modelo.CobranzaDetalleCobro" />
+<mapping class="com.instituto.modelo.AlumnoEntidad" />
