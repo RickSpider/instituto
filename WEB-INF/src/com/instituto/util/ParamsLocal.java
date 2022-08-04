@@ -22,6 +22,14 @@ public class ParamsLocal extends Params {
 	public static final String SIGLA_PERSONA= "PERSONA";
 	public static final String SIGLA_ESTADO_CV_MATERIA = "ESTADO_CV_MATERIA";
 	public static final String SIGLA_MONEDA="MONEDA";
+	public static final String SIGLA_COBRANZA="COBRANZA";
+	public static final String SIGLA_COBRANZA_EFECTIVO="COBRANZA_EFECTIVO";
+	public static final String SIGLA_COBRANZA_TRANSFERENCIA="COBRANZA_TRANSFERENCIA";
+	public static final String SIGLA_COBRANZA_TARJETA_DEBITO="COBRANZA_TARJETA_DEBITO";
+	public static final String SIGLA_COBRANZA_TARJETA_CREDITO="COBRANZA_TARJETA_CREDITO";
+	public static final String SIGLA_COBRANZA_GIRO="COBRANZA_GIRO";
+	public static final String SIGLA_COBRANZA_QR="COBRANZA_GIRO";
+	public static final String SIGLA_COBRANZA_CHEQUE="COBRANZA_CHEQUE";
 	
 	//Sede
 	public static final String OP_CREAR_SEDE = "CrearSede";
@@ -116,6 +124,11 @@ public class ParamsLocal extends Params {
 	public static final String OP_CREAR_COTIZACION = "CrearCotizacion";
 	public static final String OP_EDITAR_COTIZACION = "EditarCotizacion";
 	public static final String OP_BORRAR_COTIZACION = "BorrarCotizacion";
+	
+	//Entidad
+	public static final String OP_CREAR_ENTIDAD = "CrearEntidad";
+	public static final String OP_EDITAR_ENTIDAD = "EditarEntidad";
+	public static final String OP_BORRAR_ENTIDAD = "BorrarEntidad";
 	
 	//Cobranza
 	public static final String OP_CREAR_COBRANZA = "CrearCobranza";
