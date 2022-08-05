@@ -7,7 +7,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Embeddable
-public class AlumnoEntidadPK implements Serializable {
+public class PersonaEntidadPK implements Serializable {
 
 	/**
 	 * 
@@ -15,21 +15,13 @@ public class AlumnoEntidadPK implements Serializable {
 	private static final long serialVersionUID = 1268738427063601519L;
 
 	@ManyToOne
-	@JoinColumn(name="alumnoid")
-	private Alumno alumno;
+	@JoinColumn(name="personaid")
+	private Persona persona;
 	
 	@ManyToOne
 	@JoinColumn(name="entidadid")
 	private Entidad entidad;
 	private String cuenta;
-
-	public Alumno getAlumno() {
-		return alumno;
-	}
-
-	public void setAlumno(Alumno alumno) {
-		this.alumno = alumno;
-	}
 
 	public Entidad getEntidad() {
 		return entidad;
@@ -50,5 +42,15 @@ public class AlumnoEntidadPK implements Serializable {
 	public void setCuenta(String cuenta) {
 		this.cuenta = cuenta;
 	}
+
+	public Persona getPersona() {
+		return persona;
+	}
+
+	public void setPersona(Persona persona) {
+		this.persona = persona;
+	}
+
+
 	
 }

@@ -40,7 +40,7 @@
 							<listheader label="Institucion Laboral" align="left"
 								/>
 							<listheader align="center" 
-								width ="100px"/>
+								hflex="min"/>
 
 
 						</listhead>
@@ -117,6 +117,10 @@
 									label="@load(each.institucion.institucion)" />
 								<listcell>
 									<hlayout>
+									
+									<button iconSclass=" z-icon-th-list" style="background-color:#8000FF"
+											onClick="@command('modalPersonaEntidad', personaid=each.personaid)"
+											tooltiptext="Entidades" disabled="@load(!vm.opCrearPersonaEntidad)"/>
 
 										<button iconSclass="z-icon-edit"
 											onClick="@command('modalPersona', personaid=each.personaid)"

@@ -45,13 +45,14 @@ public class ParamsLocal extends Params {
 	public static final String OP_CREAR_PERSONA = "CrearPersona";
 	public static final String OP_EDITAR_PERSONA = "EditarPersona";
 	public static final String OP_BORRAR_PERSONA = "BorrarPersona";
+	public static final String OP_CREAR_PERSONAENTIDAD = "CrearPersonaEntidad";
+	public static final String OP_BORRAR_PERSONAENTIDAD = "BorrarPersonaEntidad";
 	
 	//Alumno
 	public static final String OP_CREAR_ALUMNO = "CrearAlumno";
 	public static final String OP_EDITAR_ALUMNO = "EditarAlumno";
 	public static final String OP_BORRAR_ALUMNO = "BorrarAlumno";
-	public static final String OP_CREAR_ALUMNOENTIDAD = "CrearAlumnoEntidad";
-	public static final String OP_BORRAR_ALUMNOENTIDAD = "BorrarAlumnoEntidad";
+	
 	
 	//GradoAcademico
 	public static final String OP_CREAR_GRADOACADEMICO = "CrearGradoAcademico";

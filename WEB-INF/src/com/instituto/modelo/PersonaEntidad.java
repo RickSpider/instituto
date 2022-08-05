@@ -9,15 +9,15 @@ import javax.persistence.Table;
 import com.doxacore.modelo.Modelo;
 
 @Entity
-@Table(name="AlumnosEntidades")
-public class AlumnoEntidad extends Modelo implements Serializable {
+@Table(name="PersonaEntidad")
+public class PersonaEntidad extends Modelo implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2567767576133627818L;
 	@EmbeddedId
-	private AlumnoEntidadPK alumnoentidadpk = new AlumnoEntidadPK();
+	private PersonaEntidadPK personaentidadpk = new PersonaEntidadPK();
 	
 	@Override
 	public Object[] getArrayObjectDatos() {
@@ -31,40 +31,40 @@ public class AlumnoEntidad extends Modelo implements Serializable {
 		return null;
 	}
 
-	public AlumnoEntidadPK getAlumnoentidadpk() {
-		return alumnoentidadpk;
-	}
-
-	public void setAlumnoentidadpk(AlumnoEntidadPK alumnoentidadpk) {
-		this.alumnoentidadpk = alumnoentidadpk;
-	}
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 	
-	public Alumno getAlumno() {
-		return this.alumnoentidadpk.getAlumno();
+	public Persona getPersona() {
+		return this.personaentidadpk.getPersona();
 	}
 	
-	public void setAlumno(Alumno alumno) {
-		this.alumnoentidadpk.setAlumno(alumno);
+	public void setPersona(Persona persona) {
+		this.personaentidadpk.setPersona(persona);
 	}
 	
 	public Entidad getEntidad() {
-		return this.alumnoentidadpk.getEntidad();
+		return this.personaentidadpk.getEntidad();
 	}
 	
 	public void setEntidad(Entidad entidad) {
-		this.alumnoentidadpk.setEntidad(entidad);
+		this.personaentidadpk.setEntidad(entidad);
 	}
 	
 	public String getCuenta() {
-		return this.alumnoentidadpk.getCuenta();
+		return this.personaentidadpk.getCuenta();
 	}
 	
 	public void setCuenta(String cuenta) {
-		this.alumnoentidadpk.setCuenta(cuenta);
+		this.personaentidadpk.setCuenta(cuenta);
+	}
+
+	public PersonaEntidadPK getPersonaentidadpk() {
+		return personaentidadpk;
+	}
+
+	public void setPersonaentidadpk(PersonaEntidadPK personaentidadpk) {
+		this.personaentidadpk = personaentidadpk;
 	}
 
 }

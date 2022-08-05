@@ -68,7 +68,7 @@
 				</tablechildren>
 				<tablechildren>
 					<button label="Agregar"
-							iconSclass=" z-icon-plus" onClick="@command('agregarAlumnoEntidad')" disabled="@load(!vm.opCrearAlumnoEntidad)" />
+							iconSclass=" z-icon-plus" onClick="@command('agregarPersonaEntidad')" disabled="@load(!vm.opCrearPersonaEntidad)" />
 				</tablechildren>
 			</tablelayout>
 		
@@ -76,7 +76,7 @@
 
 		<vlayout vflex="1">
 			<listbox emptyMessage="lista vacía..." mold="paging"
-				vflex="1" model="@load(vm.lAlumnoEntidades)">
+				vflex="1" model="@load(vm.lPersonaEntidades)">
 
 				<listhead>
 
@@ -98,8 +98,8 @@
 
 								<button iconSclass="z-icon-trash-o"
 									style="background-color:red"
-									onClick="@command('borrarEntidadConfirmacion', alumnoEntidad=each)"
-									tooltiptext="Borrar" disabled="@load(!vm.opBorrarAlumnoEntidad)" />
+									onClick="@command('borrarEntidadConfirmacion', personaEntidad=each)"
+									tooltiptext="Borrar" disabled="@load(!vm.opBorrarPersonaEntidad)" />
 
 
 							</hlayout>

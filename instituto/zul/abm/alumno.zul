@@ -138,10 +138,6 @@
 										<button iconSclass="z-icon-list-alt" style="background-color:orange"
 											onClick="@command('modalAlumnoCurso', alumnoid=each.alumnoid)"
 											tooltiptext="Cursos" disabled="@load(!vm.opEditarAlumno)"/>
-											
-										<button iconSclass=" z-icon-th-list" style="background-color:#8000FF"
-											onClick="@command('modalAlumnoEntidad', alumnoid=each.alumnoid)"
-											tooltiptext="Entidades" disabled="@load(!vm.opEditarAlumno)"/>
 																						
 										<button iconSclass="z-icon-edit"
 											onClick="@command('modalAlumno', alumnoid=each.alumnoid)"
