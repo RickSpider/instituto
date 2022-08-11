@@ -21,9 +21,10 @@ public class CobranzaDetalle extends Modelo implements Serializable {
 
 
 	@EmbeddedId
-	private CobranzaDetallePK cobranzadetallepk;
+	private CobranzaDetallePK cobranzadetallepk = new CobranzaDetallePK();
 	
 	private double monto;
+	private double montoDescuento;
 	
 	public double getMonto() {
 		return monto;
@@ -76,6 +77,14 @@ public class CobranzaDetalle extends Modelo implements Serializable {
 		
 		this.cobranzadetallepk.setEstadoCuenta(estadoCuenta);
 		
+	}
+
+	public double getMontoDescuento() {
+		return montoDescuento;
+	}
+
+	public void setMontoDescuento(double montoDescuento) {
+		this.montoDescuento = montoDescuento;
 	}
 	
 }

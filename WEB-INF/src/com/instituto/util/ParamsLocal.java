@@ -30,6 +30,8 @@ public class ParamsLocal extends Params {
 	public static final String SIGLA_COBRANZA_GIRO="COBRANZA_GIRO";
 	public static final String SIGLA_COBRANZA_QR="COBRANZA_GIRO";
 	public static final String SIGLA_COBRANZA_CHEQUE="COBRANZA_CHEQUE";
+	public static final String SIGLA_COMPROBANTE = "COMPROBANTE";
+	public static final String SIGLA_FORMA_PAGO = "FORMA_PAGO";
 	
 	//Sede
 	public static final String OP_CREAR_SEDE = "CrearSede";

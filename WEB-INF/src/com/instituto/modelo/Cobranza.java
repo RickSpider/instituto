@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.doxacore.modelo.Modelo;
+import com.doxacore.modelo.Tipo;
 
 @Entity
 @Table(name = "Cobranzas")
@@ -27,9 +28,6 @@ public class Cobranza extends Modelo implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long cobranzaid;
 	
-	private boolean esFactura = false;
-	private boolean esRecibo = false;
-	
 	@ManyToOne
 	@JoinColumn(name = "alumnoid")
 	private Alumno alumno;
@@ -37,6 +35,10 @@ public class Cobranza extends Modelo implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "personaFacturacionid")
 	private Persona personaFacturacion;
+	
+	@ManyToOne
+	@JoinColumn(name = "comprobanteTipoid")
+	private Tipo comprobanteTipo;
 	
 	@Override
 	public Object[] getArrayObjectDatos() {
@@ -52,22 +54,6 @@ public class Cobranza extends Modelo implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
-	}
-
-	public boolean isEsFactura() {
-		return esFactura;
-	}
-
-	public void setEsFactura(boolean esFactura) {
-		this.esFactura = esFactura;
-	}
-
-	public boolean isEsRecibo() {
-		return esRecibo;
-	}
-
-	public void setEsRecibo(boolean esRecibo) {
-		this.esRecibo = esRecibo;
 	}
 
 	public Long getCobranzaid() {
@@ -92,6 +78,14 @@ public class Cobranza extends Modelo implements Serializable {
 
 	public void setPersonaFacturacion(Persona personaFacturacion) {
 		this.personaFacturacion = personaFacturacion;
+	}
+
+	public Tipo getComprobanteTipo() {
+		return comprobanteTipo;
+	}
+
+	public void setComprobanteTipo(Tipo comprobanteTipo) {
+		this.comprobanteTipo = comprobanteTipo;
 	}
 
 }

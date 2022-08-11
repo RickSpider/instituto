@@ -1,13 +1,18 @@
 package com.instituto.modelo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.doxacore.modelo.Modelo;
 import com.doxacore.modelo.Tipo;
@@ -22,9 +27,29 @@ public class CobranzaDetalleCobro  extends Modelo implements Serializable{
 	private static final long serialVersionUID = 8601693248579254130L;
 
 	@EmbeddedId
-	private CobranzaDetalleCobroPK cobranzacobrodetallepk;
+	private CobranzaDetalleCobroPK cobranzacobrodetallepk = new CobranzaDetalleCobroPK();
 	
-	private double monto;
+	@ManyToOne
+	@JoinColumn(name = "monedaTipoid")
+	private Tipo monedaTipo;
+	
+	@ManyToOne
+	@JoinColumn(name = "entidadid")
+	private Entidad Entidad;
+	
+	private double monto = 0.0;
+	
+	private String cuentaNum;
+	private String transaccionNum;
+	private String chequeNum;
+	
+	private String Titular;
+	
+	@Temporal(TemporalType.DATE)
+	private Date emision;
+	
+	@Temporal(TemporalType.DATE)
+	private Date vencimiento;
 
 	@Override
 	public Object[] getArrayObjectDatos() {
@@ -68,12 +93,76 @@ public class CobranzaDetalleCobro  extends Modelo implements Serializable{
 		this.cobranzacobrodetallepk.setCobranza(cobranza);
 	}
 	
-	public Tipo getCobranzaTipo() {
-		return this.cobranzacobrodetallepk.getCobranzaTipo();
+	public Tipo getFormaPago() {
+		return this.cobranzacobrodetallepk.getFormaPago();
 	}
 	
-	public void setCobranzaTipo(Tipo cobranzaTipo) {
-		this.cobranzacobrodetallepk.setCobranzaTipo(cobranzaTipo);
+	public void setFormaPago(Tipo formaPago) {
+		this.cobranzacobrodetallepk.setFormaPago(formaPago);
+	}
+
+	public Tipo getMonedaTipo() {
+		return monedaTipo;
+	}
+
+	public void setMonedaTipo(Tipo monedaTipo) {
+		this.monedaTipo = monedaTipo;
+	}
+
+	public Entidad getEntidad() {
+		return Entidad;
+	}
+
+	public void setEntidad(Entidad entidad) {
+		Entidad = entidad;
+	}
+
+	public String getCuentaNum() {
+		return cuentaNum;
+	}
+
+	public void setCuentaNum(String cuentaNum) {
+		this.cuentaNum = cuentaNum;
+	}
+
+	public String getTransaccionNum() {
+		return transaccionNum;
+	}
+
+	public void setTransaccionNum(String transaccionNum) {
+		this.transaccionNum = transaccionNum;
+	}
+
+	public String getChequeNum() {
+		return chequeNum;
+	}
+
+	public void setChequeNum(String chequeNum) {
+		this.chequeNum = chequeNum;
+	}
+
+	public String getTitular() {
+		return Titular;
+	}
+
+	public void setTitular(String titular) {
+		Titular = titular;
+	}
+
+	public Date getEmision() {
+		return emision;
+	}
+
+	public void setEmision(Date emision) {
+		this.emision = emision;
+	}
+
+	public Date getVencimiento() {
+		return vencimiento;
+	}
+
+	public void setVencimiento(Date vencimiento) {
+		this.vencimiento = vencimiento;
 	}
 	
 }

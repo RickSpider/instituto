@@ -1,0 +1,193 @@
+<?page title="sedeModal" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Tipos de cobros Crear/Ver/Editar" border="normal"
+		position="center,center" closable="true"
+		mode="modal" action="show: slideDown;hide: slideUp">
+
+		<tablelayout columns="2">
+		
+			<tablechildren>
+				<label value="Forma de Pago:" />
+			</tablechildren>
+			<tablechildren>
+				<bandbox id="bdFormaPago"
+						value="@load(vm.buscarFormaPago) @save(vm.buscarFormaPago, before='guardar')"
+						constraint="no empty: Es campo obligatorio." mold="rounded"
+						autodrop="true" width="150px"
+						onOpen="@command('generarListaBuscarFormaPago')"
+						readonly="true">
+						<bandpopup>
+
+							<vbox>
+
+								<hbox>
+
+									<label value="Buscar:" />
+
+									<textbox instant="true"
+										value="@bind(vm.filtroBuscarTipo)"
+										onChange="@command('filtrarTipoBuscar')" />
+
+								</hbox>
+
+								<listbox height="250px" width="450px"
+									mold="paging" autopaging="true" onSelect="bdFormaPago.close()"
+									model="@load(vm.lTiposBuscar)">
+
+									<listhead>
+										<listheader label="ID"
+											hflex="min" />
+										<listheader label="FormaPago" />
+										<listheader label="Descripcion" />
+									</listhead>
+
+									<template name="model">
+
+										<listitem
+											onClick="@command('onSelectFormaPago', id = each[0])">
+
+											<listcell
+												label="@load(each[0])" />
+
+											<listcell
+												label="@load(each[1])" />
+
+											<listcell
+												label="@load(each[2])" />
+
+										</listitem>
+
+									</template>
+									<listitem />
+								</listbox>
+
+							</vbox>
+						</bandpopup>
+					</bandbox>
+			
+			</tablechildren>
+
+			<tablechildren>
+				<label value="Tipo de Moneda:" />
+			</tablechildren>
+			<tablechildren>
+			
+				<bandbox id="bdMoneda"
+						value="@load(vm.buscarMoneda) @save(vm.buscarMoneda, before='guardar')"
+						constraint="no empty: Es campo obligatorio." mold="rounded"
+						autodrop="true" width="150px"
+						onOpen="@command('generarListaBuscarMoneda')"
+						readonly="true">
+						<bandpopup>
+
+							<vbox>
+
+								<hbox>
+
+									<label value="Buscar:" />
+
+									<textbox instant="true"
+										value="@bind(vm.filtroBuscarTipo)"
+										onChange="@command('filtrarTipoBuscar')" />
+
+								</hbox>
+
+								<listbox height="250px" width="450px"
+									mold="paging" autopaging="true" onSelect="bdMoneda.close()"
+									model="@load(vm.lTiposBuscar)">
+
+									<listhead>
+										<listheader label="ID"
+											hflex="min" />
+										<listheader label="Moneda" />
+										<listheader label="Descripcion" />
+									</listhead>
+
+									<template name="model">
+
+										<listitem
+											onClick="@command('onSelectMoneda', id = each[0])">
+
+											<listcell
+												label="@load(each[0])" />
+
+											<listcell
+												label="@load(each[1])" />
+
+											<listcell
+												label="@load(each[2])" />
+
+										</listitem>
+
+									</template>
+									<listitem />
+								</listbox>
+
+							</vbox>
+						</bandpopup>
+					</bandbox>
+			
+			</tablechildren>
+
+			<tablechildren>
+				<label value="Entidad:" />
+			</tablechildren>
+			<tablechildren>
+			</tablechildren>
+
+			<tablechildren>
+				<label value="Monto:" />
+			</tablechildren>
+			<tablechildren>
+			</tablechildren>
+
+			<tablechildren>
+				<label value="Cuenta #:" />
+			</tablechildren>
+			<tablechildren>
+			</tablechildren>
+
+			<tablechildren>
+				<label value="Transaccion #:" />
+			</tablechildren>
+			<tablechildren>
+			</tablechildren>
+
+			<tablechildren>
+				<label value="Cheque #:" />
+			</tablechildren>
+			<tablechildren>
+			</tablechildren>
+
+			<tablechildren>
+				<label value="Titular:" />
+			</tablechildren>
+			<tablechildren>
+			</tablechildren>
+
+			<tablechildren>
+				<label value="Fecha Emision:" />
+			</tablechildren>
+			<tablechildren>
+			</tablechildren>
+
+			<tablechildren>
+				<label value="Fecha Vencimiento:" />
+			</tablechildren>
+			<tablechildren>
+			</tablechildren>
+			
+			
+		
+		</tablelayout>
+
+		<space height="10px" />
+
+		<hlayout>
+
+			<button label="Aceptar" onClick="@command('agregarCobranzaDetalleCobro')" />
+
+		</hlayout>
+
+	</window>
+</zk>

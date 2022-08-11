@@ -3,7 +3,6 @@
 	<window title="Cobranzas" border="normal"
 		viewModel="@id('vm') @init('com.instituto.sistema.administracion.CobranzaVM')"
 		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
-
 		<vlayout>
 			<tablelayout columns="10">
 
@@ -73,27 +72,71 @@
 				</tablechildren>
 
 				<tablechildren style="padding-left: 5px">
-					<label value="Saldo" />
+					<label value="Saldo:" />
 				</tablechildren>
 				<tablechildren style="padding-left: 5px">
 					<doublebox />
 				</tablechildren>
 
 				<tablechildren style="padding-left: 5px">
-					<label value="Recibo" />
+					<label value="Comprobante:" />
 				</tablechildren>
 
 				<tablechildren style="padding-left: 5px">
-					<checkbox
-						checked="@bind(vm.cobranzaSelected.esRecibo)" />
-				</tablechildren>
+						<bandbox id="bdComprobante"
+						value="@load(vm.buscarComprobante) @save(vm.buscarComprobante, before='guardar')"
+						constraint="no empty: Es campo obligatorio." mold="rounded"
+						autodrop="true" width="150px"
+						onOpen="@command('generarListaBuscarComprobante')"
+						readonly="true">
+						<bandpopup>
 
-				<tablechildren style="padding-left: 5px">
-					<label value="Factura" />
-				</tablechildren>
-				<tablechildren style="padding-left: 5px">
-					<checkbox
-						checked="@bind(vm.cobranzaSelected.esFactura)" />
+							<vbox>
+
+								<hbox>
+
+									<label value="Buscar:" />
+
+									<textbox instant="true"
+										value="@bind(vm.filtroBuscarTipo)"
+										onChange="@command('filtrarComprobanteBuscar')" />
+
+								</hbox>
+
+								<listbox height="250px" width="450px"
+									mold="paging" autopaging="true" onSelect="bdComprobante.close()"
+									model="@load(vm.lTiposBuscar)">
+
+									<listhead>
+										<listheader label="ID"
+											hflex="min" />
+										<listheader label="Comprobante" />
+										<listheader label="Descripcion" />
+									</listhead>
+
+									<template name="model">
+
+										<listitem
+											onClick="@command('onSelectComprobante', id = each[0])">
+
+											<listcell
+												label="@load(each[0])" />
+
+											<listcell
+												label="@load(each[1])" />
+
+											<listcell
+												label="@load(each[2])" />
+
+										</listitem>
+
+									</template>
+									<listitem />
+								</listbox>
+
+							</vbox>
+						</bandpopup>
+					</bandbox>
 				</tablechildren>
 
 			</tablelayout>
@@ -115,6 +158,8 @@
 
 					<listheader label="Monto Total" align="right" />
 					<listheader label="Pago" align="right" />
+					
+					<listheader label="Descuento" align="right" />
 	
 					<listheader visible="@load(!vm.editar)" hflex="min"/>
 
@@ -123,9 +168,9 @@
 				
 				<auxhead>
 
-						<auxheader colspan="7" align="center">
+						<auxheader colspan="8" align="center">
 							<button label="Agregar Detalle" iconSclass=" z-icon-plus"
-								onClick=""
+								onClick="@command('modalCobranzaDetalle')"
 								disabled="@load(vm.editar)" style="background-color:green"/>
 						</auxheader>
 
@@ -139,6 +184,7 @@
 					<auxheader label="Periodo/Cuota #" align="center" />
 					<auxheader label="Monto Total" align="center" />
 					<auxheader label="Pago" align="center" />
+					<auxheader label="Descuento" align="center" />
 					<auxheader/>
 
 				</auxhead>
@@ -158,7 +204,7 @@
 						<listcell
 							label="@load(each.estadoCuenta.monto) @converter('formatedNumber', format='#,###')" />
 						<listcell>
-							<doublebox value="@bind(each.monto)" readonly="@load(vm.editar)"/>
+							<doublebox value="@bind(each.monto)" readonly="@load(vm.editar)" style="text-align:right" hflex="1"/>
 						</listcell>
 						<listcell label="@load(each.montoDescuento)" />
 						
@@ -166,7 +212,7 @@
 						
 							<button iconSclass="z-icon-trash-o"
 										style="background-color:red"
-										onClick=""
+										onClick="@command('borrarDetalle', dato=each)"
 										tooltiptext="Borrar"
 										disabled="@load(vm.editar)"/>
 						
@@ -193,7 +239,19 @@
 				<listhead visible="false">
 
 					<listheader label="Tipo Pago" align="Center" />
+					<listheader label="Moneda" align="Center" />
+					<listheader label="Entidad" align="Center" />
 					<listheader label="Monto" align="right" />
+					
+					<listheader label="Cuenta #" align="Center" />
+					<listheader label="Transaccion #" align="Center" />
+					<listheader label="Cheque #" align="Center" />
+					
+					<listheader label="Titular" align="Center" />
+					
+					<listheader label="Fecha Emisión" align="Center" />
+					
+					<listheader label="Vendicimiento" align="Center" />
 	
 					<listheader visible="@load(!vm.editar)" hflex="min"/>
 
@@ -202,9 +260,9 @@
 				
 				<auxhead>
 
-						<auxheader colspan="3" align="center">
+						<auxheader colspan="11" align="center">
 							<button label="Agregar Tipo Pago" iconSclass=" z-icon-plus"
-								onClick=""
+								onClick="@command('modalCobranzaDetalleCobro')"
 								disabled="@load(vm.editar)" style="background-color:green"/>
 						</auxheader>
 
@@ -213,8 +271,16 @@
 				<auxhead>
 
 					
-					<auxheader label="Tipo Pago" align="center" />
+					<auxheader label="Forma Pago" align="center" />
+					<auxheader label="Moneda" align="center" />
+					<auxheader label="Entidad" align="center" />
 					<auxheader label="Monto" align="center" />
+					<auxheader label="Cuenta #" align="center" />
+					<auxheader label="Transaccion #" align="center" />
+					<auxheader label="Cheque #" align="center" />
+					<auxheader label="Titular" align="center" />
+					<auxheader label="Fecha Emisión" align="center" />
+					<auxheader label="Vencimiento" align="center" />
 					<auxheader/>
 
 				</auxhead>

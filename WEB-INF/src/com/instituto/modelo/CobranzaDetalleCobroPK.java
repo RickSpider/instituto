@@ -26,8 +26,8 @@ public class CobranzaDetalleCobroPK  implements Serializable {
 	private Cobranza cobranza;
 	
 	@ManyToOne
-	@JoinColumn(name="cobranzatipoid")
-	private Tipo cobranzaTipo;
+	@JoinColumn(name="formapagoid")
+	private Tipo formaPago;
 
 
 	public static long getSerialversionuid() {
@@ -45,14 +45,16 @@ public class CobranzaDetalleCobroPK  implements Serializable {
 	}
 
 
-	public Tipo getCobranzaTipo() {
-		return cobranzaTipo;
+	public Tipo getFormaPago() {
+		return formaPago;
 	}
 
 
-	public void setCobranzaTipo(Tipo cobranzaTipo) {
-		this.cobranzaTipo = cobranzaTipo;
+	public void setFormaPago(Tipo formaPago) {
+		this.formaPago = formaPago;
 	}
+
+
 	
 	
 	
