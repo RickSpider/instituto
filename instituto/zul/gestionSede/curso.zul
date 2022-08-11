@@ -112,82 +112,81 @@
 				</listbox>
 			</vlayout>
 
-			<vlayout vflex="1" hflex="1">
+			<vlayout vflex="1" hflex="1" >
 
-				<groupbox vflex="1" hflex="1">
+				<groupbox vflex="1" hflex="1"  >
 					<caption label="Materias por Curso" />
 
-					<vlayout hflex="1" vflex="1">
+					<vbox hflex="1" vflex="1" >
 
-						<hbox pack="end" hflex="1">
-						
-							<label value="Agragar Nueva Materia:" style="font-weight:bold"/>
+					<hbox pack="end" hflex="1">
 
-							<bandbox id="bd"
-								value="@load(vm.buscarMateria)" mold="rounded" autodrop="true"
-								width="250px" onOpen="@command('generarListaBuscarMateria')"
-								readonly="true">
-								<bandpopup>
+						<label value="Agragar Nueva Materia:"
+							style="font-weight:bold" />
 
-									<vbox>
+						<bandbox id="bd" value="@load(vm.buscarMateria)"
+							mold="rounded" autodrop="true" width="250px"
+							onOpen="@command('generarListaBuscarMateria')" readonly="true">
+							<bandpopup>
 
-										<hbox>
+								<vbox>
 
-											<label value="Buscar:" />
+									<hbox>
 
-											<textbox instant="true"
-												value="@bind(vm.buscarMateria)"
-												onChange="@command('filtrarMateriaBuscar')" />
+										<label value="Buscar:" />
 
-										</hbox>
+										<textbox instant="true"
+											value="@bind(vm.buscarMateria)"
+											onChange="@command('filtrarMateriaBuscar')" />
 
-										<listbox height="250px"
-											emptyMessage="lista vacía..." width="450px" mold="paging"
-											autopaging="true" onSelect="bd.close()"
-											model="@load(vm.lMateriasBuscar)">
+									</hbox>
 
-											<listhead>
-												<listheader label="ID"
-													hflex="min" />
-												<listheader
-													label="Materia" />
-												<listheader
-													label="Descripción" />
-											</listhead>
+									<listbox height="250px"
+										emptyMessage="lista vacía..." width="450px" mold="paging"
+										autopaging="true" onSelect="bd.close()"
+										model="@load(vm.lMateriasBuscar)">
 
-											<template name="model">
+										<listhead>
+											<listheader label="ID"
+												hflex="min" />
+											<listheader label="Materia" />
+											<listheader
+												label="Descripción" />
+										</listhead>
 
-												<listitem
-													value="@load(each[1])"
-													onClick="@command('onSelectMateria', id = each[0])">
+										<template name="model">
 
-													<listcell
-														label="@load(each[0])" />
+											<listitem
+												value="@load(each[1])"
+												onClick="@command('onSelectMateria', id = each[0])">
 
-													<listcell
-														label="@load(each[1])" />
+												<listcell
+													label="@load(each[0])" />
 
-													<listcell
-														label="@load(each[2])" />
+												<listcell
+													label="@load(each[1])" />
 
-												</listitem>
+												<listcell
+													label="@load(each[2])" />
 
-											</template>
-											<listitem />
-										</listbox>
+											</listitem>
 
-									</vbox>
-								</bandpopup>
-							</bandbox>
+										</template>
+										<listitem />
+									</listbox>
 
-							<button iconSclass=" z-icon-plus"
-								onClick="@command('agregarMateria')"
-								disabled="@load(!vm.opAgregarMateria)" />
+								</vbox>
+							</bandpopup>
+						</bandbox>
 
-						</hbox>
+						<button iconSclass=" z-icon-plus"
+							onClick="@command('agregarMateria')"
+							disabled="@load(!vm.opAgregarMateria)" />
 
-						<listbox emptyMessage="lista vacía..."
-							mold="paging" autopaging="true" vflex="1" hflex="1"
+					</hbox>
+
+					<listbox vflex="1" emptyMessage="lista vacía..."
+							mold="paging" autopaging="true" 
 							model="@load(vm.lMateriasCursos)" checkmark="true">
 
 							<listhead>
@@ -247,9 +246,9 @@
 								</listfooter>
 							</listfoot>
 
-						</listbox>
+						</listbox> 
 
-					</vlayout>
+					</vbox>
 
 
 				</groupbox>
