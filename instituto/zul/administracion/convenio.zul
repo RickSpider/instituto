@@ -21,14 +21,17 @@
 
 					<listhead>
 
-						<listheader width="30px" align="center" />
+						<listheader align="center" hflex="min" />
 						<listheader label="ID" align="right"
 							hflex="min" />
 						<listheader label="Descripcion" align="left" />
 						<listheader label="Institucion" align="left" />
 						<listheader label="Activo" align="Center"
 							width="80px" />
-						<listheader align="center" width="100px" />
+						<listheader label="Fecha Inicio" align="center" hflex="min" />
+						<listheader label="Fecha Fin" align="center" hflex="min" />
+						
+						<listheader align="center" hflex="min" />
 
 
 					</listhead>
@@ -51,6 +54,8 @@
 
 						<auxheader />
 						<auxheader />
+						<auxheader />
+						<auxheader />
 
 					</auxhead>
 
@@ -64,6 +69,8 @@
 							<listcell label="@load(each.descripcion)" />
 							<listcell
 								label="@load(each.institucion.institucion)" />
+								
+							
 
 							<listcell>
 
@@ -77,6 +84,12 @@
 								</if>
 
 							</listcell>
+							
+							<listcell
+							label="@load(each.fechaInicio) @converter('formatedDate', format='dd/MM/yyyy')" />
+							
+							<listcell
+							label="@load(each.fechaFin) @converter('formatedDate', format='dd/MM/yyyy')" />
 
 
 							<listcell>
@@ -102,7 +115,7 @@
 
 					</template>
 					<listfoot>
-						<listfooter span="7" align="left">
+						<listfooter span="8" align="left">
 							<hlayout>
 								<label
 									value="@load(vm.lConvenios.size())" />

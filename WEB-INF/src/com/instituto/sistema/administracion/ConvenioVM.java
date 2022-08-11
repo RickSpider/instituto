@@ -468,7 +468,12 @@ public class ConvenioVM extends TemplateViewModelLocal {
 	@Command
 	@NotifyChange({ "lConceptosConvenios"})
 	public void guardarConcepto() {
-
+		
+		if (this.convenioConceptoSelected.isPorcentaje() && this.convenioConceptoSelected.getImporte() > 100) {
+			
+			this.mensajeInfo("Al ser porcentaje el valor no puede superar 100%");
+			return;
+		}
 
 		this.save(convenioConceptoSelected);
 
