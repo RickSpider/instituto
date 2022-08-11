@@ -1,191 +1,258 @@
 <?page title="sedeModal" contentType="text/html;charset=UTF-8"?>
 <zk>
 	<window title="Tipos de cobros Crear/Ver/Editar" border="normal"
-		position="center,center" closable="true"
-		mode="modal" action="show: slideDown;hide: slideUp">
+		position="center,center" closable="true" mode="modal"
+		action="show: slideDown;hide: slideUp">
 
 		<tablelayout columns="2">
-		
+
 			<tablechildren>
 				<label value="Forma de Pago:" />
 			</tablechildren>
 			<tablechildren>
 				<bandbox id="bdFormaPago"
-						value="@load(vm.buscarFormaPago) @save(vm.buscarFormaPago, before='guardar')"
-						constraint="no empty: Es campo obligatorio." mold="rounded"
-						autodrop="true" width="150px"
-						onOpen="@command('generarListaBuscarFormaPago')"
-						readonly="true">
-						<bandpopup>
+					value="@load(vm.buscarFormaPago) @save(vm.buscarFormaPago, before='guardar')"
+					constraint="no empty: Es campo obligatorio." mold="rounded"
+					autodrop="true" width="150px"
+					onOpen="@command('generarListaBuscarFormaPago')" readonly="true">
+					<bandpopup>
 
-							<vbox>
+						<vbox>
 
-								<hbox>
+							<hbox>
 
-									<label value="Buscar:" />
+								<label value="Buscar:" />
 
-									<textbox instant="true"
-										value="@bind(vm.filtroBuscarTipo)"
-										onChange="@command('filtrarTipoBuscar')" />
+								<textbox instant="true"
+									value="@bind(vm.filtroBuscarTipo)"
+									onChange="@command('filtrarTipoBuscar')" />
 
-								</hbox>
+							</hbox>
 
-								<listbox height="250px" width="450px"
-									mold="paging" autopaging="true" onSelect="bdFormaPago.close()"
-									model="@load(vm.lTiposBuscar)">
+							<listbox height="250px" width="450px"
+								mold="paging" autopaging="true" onSelect="bdFormaPago.close()"
+								model="@load(vm.lTiposBuscar)">
 
-									<listhead>
-										<listheader label="ID"
-											hflex="min" />
-										<listheader label="FormaPago" />
-										<listheader label="Descripcion" />
-									</listhead>
+								<listhead>
+									<listheader label="ID" hflex="min" />
+									<listheader label="FormaPago" />
+									<listheader label="Descripcion" />
+								</listhead>
 
-									<template name="model">
+								<template name="model">
 
-										<listitem
-											onClick="@command('onSelectFormaPago', id = each[0])">
+									<listitem
+										onClick="@command('onSelectFormaPago', id = each[0])">
 
-											<listcell
-												label="@load(each[0])" />
+										<listcell
+											label="@load(each[0])" />
 
-											<listcell
-												label="@load(each[1])" />
+										<listcell
+											label="@load(each[1])" />
 
-											<listcell
-												label="@load(each[2])" />
+										<listcell
+											label="@load(each[2])" />
 
-										</listitem>
+									</listitem>
 
-									</template>
-									<listitem />
-								</listbox>
+								</template>
+								<listitem />
+							</listbox>
 
-							</vbox>
-						</bandpopup>
-					</bandbox>
-			
+						</vbox>
+					</bandpopup>
+				</bandbox>
+
 			</tablechildren>
 
 			<tablechildren>
 				<label value="Tipo de Moneda:" />
 			</tablechildren>
 			<tablechildren>
-			
+
 				<bandbox id="bdMoneda"
-						value="@load(vm.buscarMoneda) @save(vm.buscarMoneda, before='guardar')"
-						constraint="no empty: Es campo obligatorio." mold="rounded"
-						autodrop="true" width="150px"
-						onOpen="@command('generarListaBuscarMoneda')"
-						readonly="true">
-						<bandpopup>
+					value="@load(vm.buscarMoneda) @save(vm.buscarMoneda, before='guardar')"
+					constraint="no empty: Es campo obligatorio." mold="rounded"
+					autodrop="true" width="150px"
+					onOpen="@command('generarListaBuscarMoneda')" readonly="true">
+					<bandpopup>
 
-							<vbox>
+						<vbox>
 
-								<hbox>
+							<hbox>
 
-									<label value="Buscar:" />
+								<label value="Buscar:" />
 
-									<textbox instant="true"
-										value="@bind(vm.filtroBuscarTipo)"
-										onChange="@command('filtrarTipoBuscar')" />
+								<textbox instant="true"
+									value="@bind(vm.filtroBuscarTipo)"
+									onChange="@command('filtrarTipoBuscar')" />
 
-								</hbox>
+							</hbox>
 
-								<listbox height="250px" width="450px"
-									mold="paging" autopaging="true" onSelect="bdMoneda.close()"
-									model="@load(vm.lTiposBuscar)">
+							<listbox height="250px" width="450px"
+								mold="paging" autopaging="true" onSelect="bdMoneda.close()"
+								model="@load(vm.lTiposBuscar)">
 
-									<listhead>
-										<listheader label="ID"
-											hflex="min" />
-										<listheader label="Moneda" />
-										<listheader label="Descripcion" />
-									</listhead>
+								<listhead>
+									<listheader label="ID" hflex="min" />
+									<listheader label="Moneda" />
+									<listheader label="Descripcion" />
+								</listhead>
 
-									<template name="model">
+								<template name="model">
 
-										<listitem
-											onClick="@command('onSelectMoneda', id = each[0])">
+									<listitem
+										onClick="@command('onSelectMoneda', id = each[0])">
 
-											<listcell
-												label="@load(each[0])" />
+										<listcell
+											label="@load(each[0])" />
 
-											<listcell
-												label="@load(each[1])" />
+										<listcell
+											label="@load(each[1])" />
 
-											<listcell
-												label="@load(each[2])" />
+										<listcell
+											label="@load(each[2])" />
 
-										</listitem>
+									</listitem>
 
-									</template>
-									<listitem />
-								</listbox>
+								</template>
+								<listitem />
+							</listbox>
 
-							</vbox>
-						</bandpopup>
-					</bandbox>
-			
+						</vbox>
+					</bandpopup>
+				</bandbox>
+
 			</tablechildren>
 
 			<tablechildren>
 				<label value="Entidad:" />
 			</tablechildren>
 			<tablechildren>
+
+				<bandbox id="bd"
+					value="@load(vm.buscarEntidad) @save(vm.buscarEntidad, before='guardarEntidad')"
+					constraint="no empty: Es campo obligatorio." mold="rounded"
+					autodrop="true" width="150px"
+					onOpen="@command('generarListaBuscarEntidad')" readonly="true"
+					disabled="@load(vm.camposCobroModal[0])">
+					<bandpopup>
+
+						<vbox>
+
+							<hbox>
+
+								<label value="Buscar:" />
+
+								<textbox instant="true"
+									value="@bind(vm.buscarEntidad)"
+									onChange="@command('filtrarEntidadBuscar')" />
+
+							</hbox>
+
+							<listbox height="250px" width="450px"
+								mold="paging" autopaging="true" onSelect="bd.close()"
+								model="@load(vm.lEntidadesBuscar)">
+
+								<listhead>
+									<listheader label="ID" hflex="min" />
+									<listheader label="" />
+									<listheader label="Apellido" />
+									<listheader label="Documento #" />
+
+								</listhead>
+
+								<template name="model">
+
+									<listitem
+										onClick="@command('onSelectEntidad', id = each[0])">
+
+										<listcell
+											label="@load(each[0])" />
+
+										<listcell
+											label="@load(each[1])" />
+
+										<listcell
+											label="@load(each[2])" />
+
+										<listcell
+											label="@load(each[3])" />
+
+									</listitem>
+
+								</template>
+								<listitem />
+							</listbox>
+
+						</vbox>
+					</bandpopup>
+				</bandbox>
+
 			</tablechildren>
 
 			<tablechildren>
 				<label value="Monto:" />
 			</tablechildren>
 			<tablechildren>
+				<doublebox value="@load(vm.cobranzaDetalleCobroSelected.monto) @save(vm.cobranzaDetalleCobroSelected.monto, before='agregarCobranzaDetalleCobro')" 
+				constraint="no empty: Es campo obligatorio." style="text-align:right" hflex="1"/>
 			</tablechildren>
 
 			<tablechildren>
 				<label value="Cuenta #:" />
 			</tablechildren>
 			<tablechildren>
+				<textbox value="@bind(vm.cobranzaDetalleCobroSelected.cuentaNum)" disabled="@load(vm.camposCobroModal[1])"/>
 			</tablechildren>
 
 			<tablechildren>
 				<label value="Transaccion #:" />
 			</tablechildren>
 			<tablechildren>
+				<textbox value="@bind(vm.cobranzaDetalleCobroSelected.transaccionNum)" disabled="@load(vm.camposCobroModal[2])"/>
 			</tablechildren>
 
 			<tablechildren>
 				<label value="Cheque #:" />
 			</tablechildren>
 			<tablechildren>
+				<textbox value="@bind(vm.cobranzaDetalleCobroSelected.chequeNum)" disabled="@load(vm.camposCobroModal[3])" />
 			</tablechildren>
 
 			<tablechildren>
 				<label value="Titular:" />
 			</tablechildren>
 			<tablechildren>
+				<textbox value="@bind(vm.cobranzaDetalleCobroSelected.titular)" disabled="@load(vm.camposCobroModal[4])" />
 			</tablechildren>
 
 			<tablechildren>
 				<label value="Fecha Emision:" />
 			</tablechildren>
 			<tablechildren>
+				<datebox
+					value="@bind(vm.cobranzaDetalleCobroSelected.emision)"
+					format="dd/MM/yyyy" hflex="1" disabled="@load(vm.camposCobroModal[5])"/>
 			</tablechildren>
 
 			<tablechildren>
 				<label value="Fecha Vencimiento:" />
 			</tablechildren>
 			<tablechildren>
+				<datebox
+					value="@bind(vm.cobranzaDetalleCobroSelected.vencimiento)"
+					format="dd/MM/yyyy" hflex="1" disabled="@load(vm.camposCobroModal[6])"/>
 			</tablechildren>
-			
-			
-		
+
 		</tablelayout>
 
 		<space height="10px" />
 
 		<hlayout>
 
-			<button label="Aceptar" onClick="@command('agregarCobranzaDetalleCobro')" />
+			<button label="Aceptar"
+				onClick="@command('agregarCobranzaDetalleCobro')" />
 
 		</hlayout>
 

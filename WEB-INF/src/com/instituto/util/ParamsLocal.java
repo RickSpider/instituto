@@ -22,16 +22,17 @@ public class ParamsLocal extends Params {
 	public static final String SIGLA_PERSONA= "PERSONA";
 	public static final String SIGLA_ESTADO_CV_MATERIA = "ESTADO_CV_MATERIA";
 	public static final String SIGLA_MONEDA="MONEDA";
-	public static final String SIGLA_COBRANZA="COBRANZA";
-	public static final String SIGLA_COBRANZA_EFECTIVO="COBRANZA_EFECTIVO";
-	public static final String SIGLA_COBRANZA_TRANSFERENCIA="COBRANZA_TRANSFERENCIA";
-	public static final String SIGLA_COBRANZA_TARJETA_DEBITO="COBRANZA_TARJETA_DEBITO";
-	public static final String SIGLA_COBRANZA_TARJETA_CREDITO="COBRANZA_TARJETA_CREDITO";
-	public static final String SIGLA_COBRANZA_GIRO="COBRANZA_GIRO";
-	public static final String SIGLA_COBRANZA_QR="COBRANZA_GIRO";
-	public static final String SIGLA_COBRANZA_CHEQUE="COBRANZA_CHEQUE";
+	public static final String SIGLA_MONEDA_GUARANI="MONEDA_GUARANI";
+	public static final String SIGLA_MONEDA_DOLAR="MONEDA_DOLAR";
 	public static final String SIGLA_COMPROBANTE = "COMPROBANTE";
 	public static final String SIGLA_FORMA_PAGO = "FORMA_PAGO";
+	public static final String SIGLA_FORMA_PAGO_EFECTIVO="FORMA_PAGO_EFECTIVO";
+	public static final String SIGLA_FORMA_PAGO_TRANSFERENCIA="FORMA_PAGO_TRANSFERENCIA";
+	public static final String SIGLA_FORMA_PAGO_TARJETA_DEBITO="FORMA_PAGO_TARJETA_DEBITO";
+	public static final String SIGLA_FORMA_PAGO_TARJETA_CREDITO="FORMA_PAGO_TARJETA_CREDITO";
+	public static final String SIGLA_FORMA_PAGO_GIRO="FORMA_PAGO_GIRO";
+	public static final String SIGLA_FORMA_PAGO_QR="FORMA_PAGO_GIRO";
+	public static final String SIGLA_FORMA_PAGO_CHEQUE="FORMA_PAGO_CHEQUE";
 	
 	//Sede
 	public static final String OP_CREAR_SEDE = "CrearSede";

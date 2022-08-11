@@ -17,6 +17,7 @@ import com.instituto.modelo.Alumno;
 import com.instituto.modelo.Cobranza;
 import com.instituto.modelo.CobranzaDetalle;
 import com.instituto.modelo.CobranzaDetalleCobro;
+import com.instituto.modelo.Entidad;
 import com.instituto.modelo.EstadoCuenta;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
@@ -91,123 +92,271 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	// fin Buscar Alumno
-	
-	//Seccion modal detalles
-	
+
+	// Seccion modal detalles
+
 	private Window modal;
 	private List<EstadoCuenta> lEstadosCuentas = new ArrayList<EstadoCuenta>();
 	private List<EstadoCuenta> lEstadosCuentasAux = new ArrayList<EstadoCuenta>();
-	
+
 	@Command
 	public void modalCobranzaDetalle() {
-		
-		if( this.cobranzaSelected.getAlumno() == null) {
+
+		if (this.cobranzaSelected.getAlumno() == null) {
 			return;
 		}
-		
-		
-		
+
 		String condicion2 = "";
-		
+
 		if (this.lDetalles.size() > 0) {
-			
+
 			StringBuffer ids = new StringBuffer();
-			
-			for (int i = 0 ; i<lDetalles.size() ; i++ ) {
-				
-				if (i!=0) {
-					
+
+			for (int i = 0; i < lDetalles.size(); i++) {
+
+				if (i != 0) {
+
 					ids.append(", ");
-					
+
 				}
-				
+
 				ids.append(this.lDetalles.get(i).getEstadoCuenta().getEstadocuentaid());
-				
+
 			}
-			
-			condicion2 = "AND estadocuentaid not in ("+ids+") ";
-			
+
+			condicion2 = "AND estadocuentaid not in (" + ids + ") ";
+
 		}
-		
-		this.lEstadosCuentas = this.reg.getAllObjectsByCondicionOrder(EstadoCuenta.class.getName(), 
-				"alumnoid = "+ this.cobranzaSelected.getAlumno().getAlumnoid() + "AND monto > (pago+montodescuento) "+condicion2, 
+
+		this.lEstadosCuentas = this.reg.getAllObjectsByCondicionOrder(EstadoCuenta.class.getName(), "alumnoid = "
+				+ this.cobranzaSelected.getAlumno().getAlumnoid() + "AND monto > (pago+montodescuento) " + condicion2,
 				"vencimiento asc");
-		
-		modal = (Window) Executions.createComponents("/instituto/zul/administracion/cobranzaDetalleModal.zul", this.mainComponent, null);
+
+		modal = (Window) Executions.createComponents("/instituto/zul/administracion/cobranzaDetalleModal.zul",
+				this.mainComponent, null);
 		Selectors.wireComponents(modal, this, false);
 		modal.doModal();
 
 	}
-	
+
 	@Command
 	@NotifyChange("lDetalles")
-	public void borrarDetalle(@BindingParam("dato") CobranzaDetalle	dato) {
-		
-		if(editar) {
-			
+	public void borrarDetalle(@BindingParam("dato") CobranzaDetalle dato) {
+
+		if (editar) {
+
 			return;
-			
+
 		}
-		
+
 		this.lDetalles.remove(dato);
-		
+
 	}
-	
+
 	@Command
-	public void onSelectEstadocuenta(@BindingParam("dato") EstadoCuenta dato){
-		
+	public void onSelectEstadocuenta(@BindingParam("dato") EstadoCuenta dato) {
+
 		this.lEstadosCuentasAux.add(dato);
-		
+
 	}
-	
+
 	@Command
 	@NotifyChange("lDetalles")
 	public void agregarCobranzaDetalle() {
-		
+
 		for (EstadoCuenta x : this.lEstadosCuentasAux) {
-			
+
 			CobranzaDetalle cobranzaDetalle = new CobranzaDetalle();
 			cobranzaDetalle.setEstadoCuenta(x);
 			this.lDetalles.add(cobranzaDetalle);
 		}
-		
-		this.lEstadosCuentasAux =  new ArrayList<EstadoCuenta>();
+
+		this.lEstadosCuentasAux = new ArrayList<EstadoCuenta>();
 		this.modal.detach();
 	}
-	
-	//Fin modal detalles
-	
+
+	// Fin modal detalles
+
 	// Seccion detalle Cobro
-	
-	private CobranzaDetalleCobro cobranzaDetalleCobroSelected ;
-	
+
+	private CobranzaDetalleCobro cobranzaDetalleCobroSelected;
+
 	@Command
 	public void modalCobranzaDetalleCobro() {
-		
-		if( this.cobranzaSelected.getAlumno() == null) {
+
+		if (this.cobranzaSelected.getAlumno() == null) {
 			return;
 		}
 		
-		this.buscarMoneda = "";
-		this.buscarFormaPago = "";
-		
-		cobranzaDetalleCobroSelected = new CobranzaDetalleCobro();
+		if (this.lDetalles.size() == 0 ) {
+			
+			return;
+			
+		}
 
-		modal = (Window) Executions.createComponents("/instituto/zul/administracion/cobranzaDetalleCobroModal.zul", this.mainComponent, null);
+		this.buscarEntidad = "";
+
+		cobranzaDetalleCobroSelected = new CobranzaDetalleCobro();
+		
+		this.defaultCamposCobro();
+		this.desabilitarCampos();
+
+		modal = (Window) Executions.createComponents("/instituto/zul/administracion/cobranzaDetalleCobroModal.zul",
+				this.mainComponent, null);
 		Selectors.wireComponents(modal, this, false);
 		modal.doModal();
 
 	}
 	
-	// fin detalle cobro
+	private void defaultCamposCobro() {
+		
+		Tipo efectivo = this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_FORMA_PAGO_EFECTIVO);
+		Tipo guarani = this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_MONEDA_GUARANI);
+		this.cobranzaDetalleCobroSelected.setFormaPago(efectivo);
+		this.cobranzaDetalleCobroSelected.setMonedaTipo(guarani);
+		
+		this.buscarFormaPago = this.cobranzaDetalleCobroSelected.getFormaPago().getTipo();
+		this.buscarMoneda = this.cobranzaDetalleCobroSelected.getMonedaTipo().getTipo();
+		
+	};
+
+	@Command
+	@NotifyChange("lDetallesCobros")
+	public void agregarCobranzaDetalleCobro() {
+
+		this.lDetallesCobros.add(cobranzaDetalleCobroSelected);
+
+		this.modal.detach();
+
+	}
+
+	@Command
+	@NotifyChange("lDetallesCobros")
+	public void borrarCobranzaDetalleCobro(@BindingParam("dato") CobranzaDetalleCobro dato) {
+
+		if (editar) {
+
+			return;
+
+		}
+
+		this.lDetallesCobros.remove(dato);
+
+	}
+
+	private boolean[] camposCobroModal = new boolean[7];
+
 	
+	private void desabilitarCampos() {
+
+		for (int i = 0; i < camposCobroModal.length; i++) {
+
+			camposCobroModal[i] = true;
+
+		}
+
+		if (this.cobranzaDetalleCobroSelected.getFormaPago().getSigla()
+				.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_EFECTIVO) == 0) {
+
+			for (int i = 0; i < camposCobroModal.length; i++) {
+
+				camposCobroModal[i] = true;
+
+			}
+
+		}
+
+		if (this.cobranzaDetalleCobroSelected.getFormaPago().getSigla()
+				.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_TARJETA_CREDITO) == 0
+				|| this.cobranzaDetalleCobroSelected.getFormaPago().getSigla()
+						.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_TARJETA_DEBITO) == 0
+				|| this.cobranzaDetalleCobroSelected.getFormaPago().getSigla()
+						.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_QR) == 0) {
+
+			camposCobroModal[0] = false;
+			camposCobroModal[2] = false;
+			camposCobroModal[4] = false;
+			camposCobroModal[5] = false;
+
+		}
+
+		if (this.cobranzaDetalleCobroSelected.getFormaPago().getSigla()
+				.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_CHEQUE) == 0) {
+
+			camposCobroModal[0] = false;
+			camposCobroModal[3] = false;
+			camposCobroModal[4] = false;
+			camposCobroModal[5] = false;
+			camposCobroModal[6] = false;
+
+		}
+		
+		if (this.cobranzaDetalleCobroSelected.getFormaPago().getSigla()
+				.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_GIRO) == 0) {
+
+			camposCobroModal[0] = false;
+			camposCobroModal[1] = false;
+			camposCobroModal[2] = false;
+			camposCobroModal[4] = false;
+
+		}
+		
+		if (this.cobranzaDetalleCobroSelected.getFormaPago().getSigla()
+				.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_TRANSFERENCIA) == 0) {
+
+			camposCobroModal[0] = false;
+			camposCobroModal[1] = false;
+			camposCobroModal[4] = false;
+
+		}
+
+	}
+
+	// fin detalle cobro
+
+	// Seccion Buscar Entidad
+	private List<Object[]> lEntidadesbuscarOri;
+	private List<Object[]> lEntidadesBuscar;
+	private Entidad buscarSelectedEntidad;
+	private String buscarEntidad = "";
+
+	@Command
+	@NotifyChange("lEntidadesBuscar")
+	public void filtrarEntidadBuscar() {
+
+		this.lEntidadesBuscar = this.filtrarListaObject(buscarEntidad, this.lEntidadesbuscarOri);
+
+	}
+
+	@Command
+	@NotifyChange("lEntidadesBuscar")
+	public void generarListaBuscarEntidad() {
+
+		String sqlBuscarEntidad = this.um.getSql("buscarEntidad.sql");
+
+		this.lEntidadesBuscar = this.reg.sqlNativo(sqlBuscarEntidad);
+		this.lEntidadesbuscarOri = this.lEntidadesBuscar;
+	}
+
+	@Command
+	@NotifyChange("buscarEntidad")
+	public void onSelectEntidad(@BindingParam("id") long id) {
+
+		this.buscarSelectedEntidad = this.reg.getObjectById(Entidad.class.getName(), id);
+		this.buscarEntidad = buscarSelectedEntidad.getEntidad();
+		this.cobranzaDetalleCobroSelected.setEntidad(buscarSelectedEntidad);
+
+	}
+
+	// fin Buscar Entidad
+
 	// buscarTipo
 
 	private List<Object[]> lTiposbuscarOri;
 	private List<Object[]> lTiposBuscar;
-	
+
 	private String filtroBuscarTipo;
-	
+
 	private String buscarMoneda = "";
 	private String buscarFormaPago = "";
 	private String buscarComprobante = "";
@@ -224,35 +373,34 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	@NotifyChange("lTiposBuscar")
 	public void generarListaBuscarTipo(String sigla) {
 
-		String sqlBuscarTipo = this.um.getCoreSql("buscarTiposPorSiglaTipotipo.sql").replace("?1",
-				sigla);
+		String sqlBuscarTipo = this.um.getCoreSql("buscarTiposPorSiglaTipotipo.sql").replace("?1", sigla);
 
 		this.lTiposBuscar = this.reg.sqlNativo(sqlBuscarTipo);
 		this.lTiposbuscarOri = this.lTiposBuscar;
 	}
-	
+
 	@Command
 	@NotifyChange("lTiposBuscar")
 	public void generarListaBuscarFormaPago() {
-		
+
 		generarListaBuscarTipo(ParamsLocal.SIGLA_FORMA_PAGO);
-		
+
 	}
-	
+
 	@Command
 	@NotifyChange("lTiposBuscar")
 	public void generarListaBuscarMoneda() {
-		
+
 		generarListaBuscarTipo(ParamsLocal.SIGLA_MONEDA);
-		
+
 	}
-	
+
 	@Command
 	@NotifyChange("lTiposBuscar")
 	public void generarListaBuscarComprobante() {
-		
+
 		generarListaBuscarTipo(ParamsLocal.SIGLA_COMPROBANTE);
-		
+
 	}
 
 	@Command
@@ -262,19 +410,21 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		Tipo tipo = this.reg.getObjectById(Tipo.class.getName(), id);
 		this.cobranzaDetalleCobroSelected.setMonedaTipo(tipo);
 		this.buscarMoneda = tipo.getTipo();
-		this.filtroBuscarTipo="";
+		this.filtroBuscarTipo = "";
 	}
-	
+
 	@Command
-	@NotifyChange("buscarFormaPago")
+	@NotifyChange({"buscarFormaPago","camposCobroModal"})
 	public void onSelectFormaPago(@BindingParam("id") long id) {
 
 		Tipo tipo = this.reg.getObjectById(Tipo.class.getName(), id);
 		this.cobranzaDetalleCobroSelected.setFormaPago(tipo);
 		this.buscarFormaPago = tipo.getTipo();
-		this.filtroBuscarTipo="";
+		this.filtroBuscarTipo = "";
+		
+		desabilitarCampos();
 	}
-	
+
 	@Command
 	@NotifyChange("buscarComprobante")
 	public void onSelectComprobante(@BindingParam("id") long id) {
@@ -282,12 +432,11 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		Tipo comprobante = this.reg.getObjectById(Tipo.class.getName(), id);
 		this.cobranzaSelected.setComprobanteTipo(comprobante);
 		this.buscarComprobante = comprobante.getTipo();
-		this.filtroBuscarTipo="";
+		this.filtroBuscarTipo = "";
 	}
 
-
 	// fin buscarTipo
-	
+
 	public Cobranza getCobranzaSelected() {
 		return cobranzaSelected;
 	}
@@ -398,6 +547,30 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	public void setBuscarFormaPago(String buscarFormaPago) {
 		this.buscarFormaPago = buscarFormaPago;
+	}
+
+	public List<Object[]> getlEntidadesBuscar() {
+		return lEntidadesBuscar;
+	}
+
+	public void setlEntidadesBuscar(List<Object[]> lEntidadesBuscar) {
+		this.lEntidadesBuscar = lEntidadesBuscar;
+	}
+
+	public String getBuscarEntidad() {
+		return buscarEntidad;
+	}
+
+	public void setBuscarEntidad(String buscarEntidad) {
+		this.buscarEntidad = buscarEntidad;
+	}
+
+	public boolean[] getCamposCobroModal() {
+		return camposCobroModal;
+	}
+
+	public void setCamposCobroModal(boolean[] camposCobroModal) {
+		this.camposCobroModal = camposCobroModal;
 	}
 
 }

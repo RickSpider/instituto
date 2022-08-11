@@ -289,18 +289,22 @@
 
 					<listitem>
 
-						<listcell
-							label="@load(each.cobranzaTipo.tipo)" />
-						<listcell>
-							<doublebox value="@bind(each.monto)" readonly="@load(vm.editar)"/>
-						</listcell>
-						<listcell label="@load(each.montoDescuento)" />
+						<listcell label="@load(each.formaPago.tipo)" />
+						<listcell label="@load(each.monedaTipo.tipo)" />
+						<listcell label="@load(each.entidad.entidad)" />
+						<listcell label="@load(each.monto)" />
+						<listcell label="@load(each.cuentaNum)" />
+						<listcell label="@load(each.transaccionNum)" />
+						<listcell label="@load(each.chequeNum)" />
+						<listcell label="@load(each.titular)" />
+						<listcell label="@load(each.emision)  @converter('formatedDate', format='dd/MM/yyyy')" />
+						<listcell label="@load(each.vencimiento)  @converter('formatedDate', format='dd/MM/yyyy')" />
 						
 						<listcell>
 						
 							<button iconSclass="z-icon-trash-o"
 										style="background-color:red"
-										onClick=""
+										onClick="@command('borrarCobranzaDetalleCobro', dato=each)"
 										tooltiptext="Borrar"
 										disabled="@load(vm.editar)"/>
 						
