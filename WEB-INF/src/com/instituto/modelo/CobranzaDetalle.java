@@ -23,8 +23,8 @@ public class CobranzaDetalle extends Modelo implements Serializable {
 	@EmbeddedId
 	private CobranzaDetallePK cobranzadetallepk = new CobranzaDetallePK();
 	
-	private double monto;
-	private double montoDescuento;
+	private double monto = 0.0;
+	private double montoDescuento = 0.0;
 	
 	public double getMonto() {
 		return monto;

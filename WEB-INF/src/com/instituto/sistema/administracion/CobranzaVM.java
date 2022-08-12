@@ -17,6 +17,7 @@ import com.instituto.modelo.Alumno;
 import com.instituto.modelo.Cobranza;
 import com.instituto.modelo.CobranzaDetalle;
 import com.instituto.modelo.CobranzaDetalleCobro;
+import com.instituto.modelo.CursoVigenteConvenio;
 import com.instituto.modelo.Entidad;
 import com.instituto.modelo.EstadoCuenta;
 import com.instituto.util.ParamsLocal;
@@ -28,6 +29,8 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	private boolean editar = false;
 	private List<CobranzaDetalleCobro> lDetallesCobros = new ArrayList<CobranzaDetalleCobro>();
 	private List<CobranzaDetalle> lDetalles = new ArrayList<CobranzaDetalle>();
+	private double saldoTotal;
+	private double saldoVencido;
 
 	@Init(superclass = true)
 	public void initConvenioVM() {
@@ -72,7 +75,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	@Command
-	@NotifyChange("buscarAlumno")
+	@NotifyChange({"buscarAlumno","saldoTotal","saldoVencido"})
 	public void onSelectAlumno(@BindingParam("id") long id) {
 
 		this.buscarSelectedAlumno = this.reg.getObjectById(Alumno.class.getName(), id);
@@ -88,6 +91,15 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			this.cobranzaSelected.setPersonaFacturacion(buscarSelectedAlumno.getPersonaFacturacion());
 
 		}
+		
+		String sqlSaldoTotal = this.um.getSql("saldoTotalPorAlumno.sql").replace("?1", this.buscarSelectedAlumno.getAlumnoid()+"");
+		List<Object[]> resultSaldoTotal = this.reg.sqlNativo(sqlSaldoTotal);
+		this.saldoTotal = Double.parseDouble(resultSaldoTotal.get(0)[1].toString());
+		
+		String sqlSaldoVencido = this.um.getSql("saldoVencidoPorAlumno.sql").replace("?1", this.buscarSelectedAlumno.getAlumnoid()+"");
+		List<Object[]> resultSaldoVencido = this.reg.sqlNativo(sqlSaldoVencido);
+		this.saldoVencido = Double.parseDouble(resultSaldoVencido.get(0)[1].toString());
+		
 
 	}
 
@@ -168,11 +180,58 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 			CobranzaDetalle cobranzaDetalle = new CobranzaDetalle();
 			cobranzaDetalle.setEstadoCuenta(x);
+			cobranzaDetalle = buscarDescuento(cobranzaDetalle);
+			cobranzaDetalle.setMonto(cobranzaDetalle.getEstadoCuenta().getMonto() - cobranzaDetalle.getMontoDescuento());
 			this.lDetalles.add(cobranzaDetalle);
+			
 		}
 
 		this.lEstadosCuentasAux = new ArrayList<EstadoCuenta>();
 		this.modal.detach();
+	}
+
+	private CobranzaDetalle buscarDescuento(CobranzaDetalle cobranzaDetalle) {
+
+		String sql = this.um.getSql("bucarDescuentoConvenio.sql")
+				.replace("?1", cobranzaDetalle.getEstadoCuenta().getCursoVigente().getCursovigenteid() + "")
+				.replace("?2", cobranzaDetalle.getEstadoCuenta().getConcepto().getConceptoid() + "")
+				.replace("?3", cobranzaDetalle.getEstadoCuenta().getAlumno().getAlumnoid() + "");
+
+		List<Object[]> result = this.reg.sqlNativo(sql);
+
+		if (result.size() > 0) {
+
+			boolean porcentaje = Boolean.parseBoolean(result.get(0)[5].toString());
+			double importe = Double.parseDouble(result.get(0)[4].toString());
+			String[] periodos = result.get(0)[6].toString().split(",");
+
+			for (int i = 0; i < periodos.length - 1; i++) {
+
+				int periodo = Integer.parseInt(periodos[i]);
+
+				if (periodo == -1 || cobranzaDetalle.getEstadoCuenta().getPeriodo() == periodo) {
+
+					if (porcentaje) {
+
+						double porcentajeCalculo = importe / 100;
+
+						double descuento = cobranzaDetalle.getEstadoCuenta().getMonto() / porcentajeCalculo;
+
+						cobranzaDetalle.setMontoDescuento(descuento);
+
+					} else {
+
+						cobranzaDetalle.setMontoDescuento(importe);
+
+					}
+				}
+
+			}
+
+		}
+
+		return cobranzaDetalle;
+
 	}
 
 	// Fin modal detalles
@@ -187,17 +246,17 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		if (this.cobranzaSelected.getAlumno() == null) {
 			return;
 		}
-		
-		if (this.lDetalles.size() == 0 ) {
-			
+
+		if (this.lDetalles.size() == 0) {
+
 			return;
-			
+
 		}
 
 		this.buscarEntidad = "";
 
 		cobranzaDetalleCobroSelected = new CobranzaDetalleCobro();
-		
+
 		this.defaultCamposCobro();
 		this.desabilitarCampos();
 
@@ -207,17 +266,17 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		modal.doModal();
 
 	}
-	
+
 	private void defaultCamposCobro() {
-		
+
 		Tipo efectivo = this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_FORMA_PAGO_EFECTIVO);
 		Tipo guarani = this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_MONEDA_GUARANI);
 		this.cobranzaDetalleCobroSelected.setFormaPago(efectivo);
 		this.cobranzaDetalleCobroSelected.setMonedaTipo(guarani);
-		
+
 		this.buscarFormaPago = this.cobranzaDetalleCobroSelected.getFormaPago().getTipo();
 		this.buscarMoneda = this.cobranzaDetalleCobroSelected.getMonedaTipo().getTipo();
-		
+
 	};
 
 	@Command
@@ -246,7 +305,6 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	private boolean[] camposCobroModal = new boolean[7];
 
-	
 	private void desabilitarCampos() {
 
 		for (int i = 0; i < camposCobroModal.length; i++) {
@@ -290,7 +348,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			camposCobroModal[6] = false;
 
 		}
-		
+
 		if (this.cobranzaDetalleCobroSelected.getFormaPago().getSigla()
 				.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_GIRO) == 0) {
 
@@ -300,7 +358,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			camposCobroModal[4] = false;
 
 		}
-		
+
 		if (this.cobranzaDetalleCobroSelected.getFormaPago().getSigla()
 				.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_TRANSFERENCIA) == 0) {
 
@@ -414,14 +472,14 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	@Command
-	@NotifyChange({"buscarFormaPago","camposCobroModal"})
+	@NotifyChange({ "buscarFormaPago", "camposCobroModal" })
 	public void onSelectFormaPago(@BindingParam("id") long id) {
 
 		Tipo tipo = this.reg.getObjectById(Tipo.class.getName(), id);
 		this.cobranzaDetalleCobroSelected.setFormaPago(tipo);
 		this.buscarFormaPago = tipo.getTipo();
 		this.filtroBuscarTipo = "";
-		
+
 		desabilitarCampos();
 	}
 
@@ -571,6 +629,22 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	public void setCamposCobroModal(boolean[] camposCobroModal) {
 		this.camposCobroModal = camposCobroModal;
+	}
+
+	public double getSaldoTotal() {
+		return saldoTotal;
+	}
+
+	public void setSaldoTotal(double saldoTotal) {
+		this.saldoTotal = saldoTotal;
+	}
+
+	public double getSaldoVencido() {
+		return saldoVencido;
+	}
+
+	public void setSaldoVencido(double saldoVencido) {
+		this.saldoVencido = saldoVencido;
 	}
 
 }
