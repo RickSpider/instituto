@@ -24,6 +24,8 @@ public class ConvenioConcepto extends Modelo implements Serializable {
 
 	private double importe;
 	
+	private String periodos;
+	
 	@Override
 	public Object[] getArrayObjectDatos() {
 		Object [] o = {this.getConcepto().getConcepto(), this.importe};
@@ -87,5 +89,14 @@ public class ConvenioConcepto extends Modelo implements Serializable {
 	public void setImporte(double importe) {
 		this.importe = importe;
 	}
+
+	public String getPeriodos() {
+		return periodos;
+	}
+
+	public void setPeriodos(String periodos) {
+		this.periodos = periodos;
+	}
+
 
 }

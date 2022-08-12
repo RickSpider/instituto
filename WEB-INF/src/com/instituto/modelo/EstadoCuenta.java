@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import com.doxacore.modelo.Modelo;
 
 
@@ -50,8 +52,12 @@ public class EstadoCuenta extends Modelo implements Serializable{
 	private double montoDescuento = 0.0;
 	private double monto = 0.0;
 	private double pago = 0.0;
-		
+	
+	
 	private boolean inactivo = false;
+	
+    @Column(updatable = false)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaInactivacion;
 	private String motivoInactivacion; 
 	
