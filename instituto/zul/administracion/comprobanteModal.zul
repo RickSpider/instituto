@@ -95,8 +95,7 @@
 			<tablechildren>
 				<datebox
 					value="@load(vm.comprobanteSelected.emision) @save(vm.comprobanteSelected.emision, before='guardar')"
-					format="dd/MM/yyyy" width="150px"
-					constraint="no empty: Es campo obligatorio." />
+					format="dd/MM/yyyy" width="150px" />
 			</tablechildren>
 			
 			<tablechildren>
@@ -105,8 +104,7 @@
 			<tablechildren>
 				<datebox
 					value="@load(vm.comprobanteSelected.vencimiento) @save(vm.comprobanteSelected.vencimiento, before='guardar')"
-					format="dd/MM/yyyy" width="150px"
-					constraint="no empty: Es campo obligatorio." />
+					format="dd/MM/yyyy" width="150px" />
 			</tablechildren>
 			
 			

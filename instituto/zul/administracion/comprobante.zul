@@ -23,7 +23,7 @@
 							<listheader hflex="min" align="center" />
 							<listheader label="ID" align="right"
 								hflex="min" />
-							<listheader label="Sede" align="left"
+							<listheader label="Sede" align="center"
 								 />
 							<listheader label="Comprobante" align="center"
 								/>
@@ -44,7 +44,7 @@
 								 />
 								 
 							<listheader label="Activo" align="center"
-								 />
+								 hflex="min"/>
 								 
 							<listheader align="center" 
 								hflex="min"/>
