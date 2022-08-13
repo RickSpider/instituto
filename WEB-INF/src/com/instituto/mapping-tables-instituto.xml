@@ -20,6 +20,7 @@
 <mapping class="com.instituto.modelo.Feriado" />
 <mapping class="com.instituto.modelo.Cotizacion" />
 <mapping class="com.instituto.modelo.Entidad" />
+<mapping class="com.instituto.modelo.Comprobante" />
 <mapping class="com.instituto.modelo.Cobranza" />
 <mapping class="com.instituto.modelo.CobranzaDetalle" />
 <mapping class="com.instituto.modelo.CobranzaDetalleCobro" />

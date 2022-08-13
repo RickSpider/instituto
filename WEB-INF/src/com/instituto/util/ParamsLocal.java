@@ -136,6 +136,11 @@ public class ParamsLocal extends Params {
 	public static final String OP_EDITAR_ENTIDAD = "EditarEntidad";
 	public static final String OP_BORRAR_ENTIDAD = "BorrarEntidad";
 	
+	//Comprobante
+	public static final String OP_CREAR_COMPROBANTE = "CrearComprobante";
+	public static final String OP_EDITAR_COMPROBANTE = "EditarComprobante";
+	public static final String OP_BORRAR_COMPROBANTE = "BorrarComprobante";
+	
 	//Cobranza
 	public static final String OP_CREAR_COBRANZA = "CrearCobranza";
 	public static final String OP_EDITAR_COBRANZA = "EditarCobranza";
