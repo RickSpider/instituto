@@ -31,6 +31,7 @@ public class Sede extends Modelo implements Serializable{
 	private String direccion;
 	private String telefono;
 	private String email;
+	private String establecimiento;
 	
 	@ManyToOne
 	@JoinColumn(name = "ciudadid")
@@ -108,6 +109,14 @@ public class Sede extends Modelo implements Serializable{
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public String getEstablecimiento() {
+		return establecimiento;
+	}
+
+	public void setEstablecimiento(String establecimiento) {
+		this.establecimiento = establecimiento;
 	}
 
 	

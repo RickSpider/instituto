@@ -26,6 +26,18 @@
 					width="150px" />
 
 			</hlayout>
+			
+			<hlayout>
+
+				<hbox width="130px">
+					<label value="Establecimiento Cod.: "
+						style="font-weight:bold" />
+				</hbox>
+				<textbox value="@load(vm.sedeSelected.establecimiento) @save(vm.sedeSelected.establecimiento, before='guardar')"
+					constraint="no empty: Es campo obligatorio."
+					width="150px" />
+
+			</hlayout>
 
 
 			<hlayout>
