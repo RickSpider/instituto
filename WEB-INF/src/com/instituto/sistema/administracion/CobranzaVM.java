@@ -9,7 +9,10 @@ import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.Selectors;
+import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
 import com.doxacore.modelo.Tipo;
@@ -17,6 +20,7 @@ import com.instituto.modelo.Alumno;
 import com.instituto.modelo.Cobranza;
 import com.instituto.modelo.CobranzaDetalle;
 import com.instituto.modelo.CobranzaDetalleCobro;
+import com.instituto.modelo.Comprobante;
 import com.instituto.modelo.CursoVigenteConvenio;
 import com.instituto.modelo.Entidad;
 import com.instituto.modelo.EstadoCuenta;
@@ -31,7 +35,8 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	private List<CobranzaDetalle> lDetalles = new ArrayList<CobranzaDetalle>();
 	private double saldoTotal;
 	private double saldoVencido;
-
+	private boolean condicionHabilitada = false;
+	
 	@Init(superclass = true)
 	public void initConvenioVM() {
 
@@ -84,24 +89,35 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 		if (buscarSelectedAlumno.getPersonaFacturacion() == null) {
 
-			this.cobranzaSelected.setPersonaFacturacion(buscarSelectedAlumno.getPersona());
+			
 
 		} else {
 
-			this.cobranzaSelected.setPersonaFacturacion(buscarSelectedAlumno.getPersonaFacturacion());
+			
 
 		}
 		
 		String sqlSaldoTotal = this.um.getSql("saldoTotalPorAlumno.sql").replace("?1", this.buscarSelectedAlumno.getAlumnoid()+"");
 		List<Object[]> resultSaldoTotal = this.reg.sqlNativo(sqlSaldoTotal);
-		this.saldoTotal = Double.parseDouble(resultSaldoTotal.get(0)[1].toString());
+		this.saldoTotal = 0;
+		if (resultSaldoTotal.size() > 0) {
+			this.saldoTotal = Double.parseDouble(resultSaldoTotal.get(0)[1].toString());
+		}
+		
 		
 		String sqlSaldoVencido = this.um.getSql("saldoVencidoPorAlumno.sql").replace("?1", this.buscarSelectedAlumno.getAlumnoid()+"");
 		List<Object[]> resultSaldoVencido = this.reg.sqlNativo(sqlSaldoVencido);
-		this.saldoVencido = Double.parseDouble(resultSaldoVencido.get(0)[1].toString());
+		this.saldoVencido = 0;
+		if (resultSaldoVencido.size() > 0) {
+			this.saldoVencido = Double.parseDouble(resultSaldoVencido.get(0)[1].toString());			
+		}
+		
+		
 		
 
 	}
+	
+	
 
 	// fin Buscar Alumno
 
@@ -141,7 +157,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		}
 
 		this.lEstadosCuentas = this.reg.getAllObjectsByCondicionOrder(EstadoCuenta.class.getName(), "alumnoid = "
-				+ this.cobranzaSelected.getAlumno().getAlumnoid() + "AND monto > (pago+montodescuento) " + condicion2,
+				+ this.cobranzaSelected.getAlumno().getAlumnoid() + "AND monto > (pago+montodescuento) AND inactivo = FALSE " + condicion2,
 				"vencimiento asc");
 
 		modal = (Window) Executions.createComponents("/instituto/zul/administracion/cobranzaDetalleModal.zul",
@@ -181,7 +197,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			CobranzaDetalle cobranzaDetalle = new CobranzaDetalle();
 			cobranzaDetalle.setEstadoCuenta(x);
 			cobranzaDetalle = buscarDescuento(cobranzaDetalle);
-			cobranzaDetalle.setMonto(cobranzaDetalle.getEstadoCuenta().getMonto() - cobranzaDetalle.getMontoDescuento());
+			cobranzaDetalle.setMonto(cobranzaDetalle.getSaldo());
 			this.lDetalles.add(cobranzaDetalle);
 			
 		}
@@ -191,43 +207,47 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	private CobranzaDetalle buscarDescuento(CobranzaDetalle cobranzaDetalle) {
-
-		String sql = this.um.getSql("bucarDescuentoConvenio.sql")
-				.replace("?1", cobranzaDetalle.getEstadoCuenta().getCursoVigente().getCursovigenteid() + "")
-				.replace("?2", cobranzaDetalle.getEstadoCuenta().getConcepto().getConceptoid() + "")
-				.replace("?3", cobranzaDetalle.getEstadoCuenta().getAlumno().getAlumnoid() + "");
-
-		List<Object[]> result = this.reg.sqlNativo(sql);
-
-		if (result.size() > 0) {
-
-			boolean porcentaje = Boolean.parseBoolean(result.get(0)[5].toString());
-			double importe = Double.parseDouble(result.get(0)[4].toString());
-			String[] periodos = result.get(0)[6].toString().split(",");
-
-			for (int i = 0; i < periodos.length - 1; i++) {
-
-				int periodo = Integer.parseInt(periodos[i]);
-
-				if (periodo == -1 || cobranzaDetalle.getEstadoCuenta().getPeriodo() == periodo) {
-
-					if (porcentaje) {
-
-						double porcentajeCalculo = importe / 100;
-
-						double descuento = cobranzaDetalle.getEstadoCuenta().getMonto() / porcentajeCalculo;
-
-						cobranzaDetalle.setMontoDescuento(descuento);
-
-					} else {
-
-						cobranzaDetalle.setMontoDescuento(importe);
-
+		
+		if (cobranzaDetalle.getEstadoCuenta().getPago() == 0) {
+	
+			String sql = this.um.getSql("bucarDescuentoConvenio.sql")
+					.replace("?1", cobranzaDetalle.getEstadoCuenta().getCursoVigente().getCursovigenteid() + "")
+					.replace("?2", cobranzaDetalle.getEstadoCuenta().getConcepto().getConceptoid() + "")
+					.replace("?3", cobranzaDetalle.getEstadoCuenta().getAlumno().getAlumnoid() + "");
+	
+			List<Object[]> result = this.reg.sqlNativo(sql);
+	
+			if (result.size() > 0) {
+	
+				boolean porcentaje = Boolean.parseBoolean(result.get(0)[5].toString());
+				double importe = Double.parseDouble(result.get(0)[4].toString());
+				String[] periodos = result.get(0)[6].toString().split(",");
+	
+				for (int i = 0; i < periodos.length - 1; i++) {
+	
+					int periodo = Integer.parseInt(periodos[i]);
+	
+					if (periodo == -1 || cobranzaDetalle.getEstadoCuenta().getPeriodo() == periodo) {
+	
+						if (porcentaje) {
+	
+							double porcentajeCalculo = importe / 100;
+	
+							double descuento = cobranzaDetalle.getEstadoCuenta().getMonto() / porcentajeCalculo;
+	
+							cobranzaDetalle.setMontoDescuento(descuento);
+	
+						} else {
+	
+							cobranzaDetalle.setMontoDescuento(importe);
+	
+						}
 					}
+	
 				}
-
+	
 			}
-
+		
 		}
 
 		return cobranzaDetalle;
@@ -418,6 +438,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	private String buscarMoneda = "";
 	private String buscarFormaPago = "";
 	private String buscarComprobante = "";
+	private String buscarCondicionVenta = "";
 
 	@Command
 	@NotifyChange("lTiposBuscar")
@@ -460,6 +481,23 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		generarListaBuscarTipo(ParamsLocal.SIGLA_COMPROBANTE);
 
 	}
+	
+	@Command
+	@NotifyChange("lTiposBuscar")
+	public void generarListaBuscarCondicionVenta() {
+		
+		if (this.cobranzaSelected.getComprobanteTipo() == null) {
+			
+			this.mensajeInfo("Seleccione un Comprobante Primero");
+			
+			return;
+			
+		}
+
+		generarListaBuscarTipo(ParamsLocal.SIGLA_CONDICION_VENTA);
+
+	}
+
 
 	@Command
 	@NotifyChange("buscarMoneda")
@@ -484,16 +522,196 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	@Command
-	@NotifyChange("buscarComprobante")
+	@NotifyChange({"buscarComprobante","condicionHabilitada","buscarCondicionVenta"})
 	public void onSelectComprobante(@BindingParam("id") long id) {
 
 		Tipo comprobante = this.reg.getObjectById(Tipo.class.getName(), id);
 		this.cobranzaSelected.setComprobanteTipo(comprobante);
 		this.buscarComprobante = comprobante.getTipo();
 		this.filtroBuscarTipo = "";
+		
+		if (this.cobranzaSelected.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_FACTURA)==0) {
+			
+			this.condicionHabilitada = true;
+			Tipo condicion = this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_CONDICION_VENTA_CONTADO);
+			this.cobranzaSelected.setCondicionVentaTipo(condicion);
+			this.buscarCondicionVenta = this.cobranzaSelected.getCondicionVentaTipo().getTipo();
+		}
+		
+		if (this.cobranzaSelected.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_RECIBO)==0) {
+			
+			this.condicionHabilitada = false;
+			this.cobranzaSelected.setCondicionVentaTipo(null);
+			this.buscarCondicionVenta ="";
+			
+		}
+		
+	}
+	
+	@Command
+	@NotifyChange("buscarCondicionVenta")
+	public void onSelectCondicionVenta(@BindingParam("id") long id) {
+
+		Tipo condicionVenta = this.reg.getObjectById(Tipo.class.getName(), id);
+		this.cobranzaSelected.setCondicionVentaTipo(condicionVenta);
+		this.buscarCondicionVenta = condicionVenta.getTipo();
+		this.filtroBuscarTipo = "";
+		
 	}
 
 	// fin buscarTipo
+	
+	@Command
+	public void guaradarCobranza() {
+		
+		if (this.cobranzaSelected.getComprobanteTipo() == null) {
+			
+			this.mensajeInfo("No hay Comprobante seleccionado.");
+			return;
+			
+		}
+		
+		if (this.lDetalles.size() == 0) {
+			
+			this.mensajeInfo("No hay Detalles agregados.");
+			return;
+			
+		}
+		
+		if (this.lDetallesCobros.size() == 0) {
+			
+			this.mensajeInfo("No hay Tipos de Pagos agregados.");
+			return;
+			
+		}		
+		
+		if (!this.existeComprobante()) {
+			
+			this.mensajeInfo("No hay comprobante vigente para esta operacion.");
+			return;
+			
+		}
+		
+		double totalDetalle = 0;
+		
+		for (CobranzaDetalle x : lDetalles) {
+			
+			totalDetalle += x.getMonto();
+			
+		}
+		
+		double totalDetalleCobro = 0;
+		
+		for (CobranzaDetalleCobro x : lDetallesCobros) {
+			
+			totalDetalleCobro += x.getMonto();
+			
+		}
+		
+		if (totalDetalle > totalDetalleCobro) {
+			
+			this.mensajeInfo("El tipo de Pago total no se ajusta al monto total de los detalles.");
+			return;
+			
+		}
+		
+
+		EventListener event = new EventListener() {
+
+			@Override
+			public void onEvent(Event evt) throws Exception {
+
+				if (evt.getName().equals(Messagebox.ON_YES)) {
+
+					procesarCobranza();
+
+				}
+
+			}
+
+		};
+		
+		this.mensajeEliminar("Se empezara a procesar el cobro. \n Continuar?", event);
+		
+	}
+	
+	
+	private void procesarCobranza() {
+		
+		String comprobanteNum = this.getNumeroComprobante();
+		this.cobranzaSelected.setComprobanteNum(comprobanteNum);
+		
+		this.cobranzaSelected = this.save(this.cobranzaSelected);
+		
+		for (CobranzaDetalle x : lDetalles) {
+			
+			x.setCobranza(this.cobranzaSelected);			
+			this.save(x);
+			
+			x.getEstadoCuenta().setPago(x.getEstadoCuenta().getPago()+x.getMonto());
+			x.getEstadoCuenta().setMontoDescuento(x.getMontoDescuento());
+			
+			this.save(x.getEstadoCuenta());
+			
+		}
+		
+		for (CobranzaDetalleCobro x : lDetallesCobros) {
+			
+			x.setCobranza(this.cobranzaSelected);
+			this.save(x);
+			
+		}
+		
+	}
+	
+	private boolean existeComprobante() {
+		
+		Comprobante comprobante = this.reg.getObjectByCondicion(Comprobante.class.getName(), 
+				"activo = true "+
+				"AND sedeid = "+this.getCurrentSede().getSedeid()+" "+
+				"AND comprobantetipoid = "+this.cobranzaSelected.getComprobanteTipo().getTipoid()+" "+
+				"AND emision <= current_date "+
+				"AND vencimiento >= current_date "+
+				"AND siguiente <= fin ");
+		
+		if (comprobante == null) {
+			
+			return false;
+		}
+		
+		return true;
+		
+	}
+	
+	private synchronized String getNumeroComprobante() {
+		
+		StringBuffer out = new StringBuffer();;
+		
+		Comprobante comprobante = this.reg.getObjectByCondicion(Comprobante.class.getName(), 
+				"activo = true "+
+				"AND sedeid = "+this.getCurrentSede().getSedeid()+" "+
+				"AND comprobantetipoid = "+this.cobranzaSelected.getComprobanteTipo().getTipoid()+" "+
+				"AND emision <= current_date "+
+				"AND vencimiento >= current_date "+
+				"AND siguiente <= fin ");
+		
+		out.append(this.getCurrentSede().getEstablecimiento()+"-"+comprobante.getPuntoExpdicion()+"-");
+		
+		
+		for (int i = 0 ; i < 7-comprobante.getSiguiente().toString().length() ; i++) {
+	
+			out.append("0");
+			
+		}
+		
+		out.append(comprobante.getSiguiente());
+		
+		comprobante.setSiguiente(comprobante.getSiguiente()+1);
+		
+		this.save(comprobante);
+		
+		return out.toString();
+	}
 
 	public Cobranza getCobranzaSelected() {
 		return cobranzaSelected;
@@ -645,6 +863,22 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	public void setSaldoVencido(double saldoVencido) {
 		this.saldoVencido = saldoVencido;
+	}
+
+	public String getBuscarCondicionVenta() {
+		return buscarCondicionVenta;
+	}
+
+	public void setBuscarCondicionVenta(String buscarCondicionVenta) {
+		this.buscarCondicionVenta = buscarCondicionVenta;
+	}
+
+	public boolean isCondicionHabilitada() {
+		return condicionHabilitada;
+	}
+
+	public void setCondicionHabilitada(boolean condicionHabilitada) {
+		this.condicionHabilitada = condicionHabilitada;
 	}
 
 }

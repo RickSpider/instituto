@@ -87,4 +87,8 @@ public class CobranzaDetalle extends Modelo implements Serializable {
 		this.montoDescuento = montoDescuento;
 	}
 	
+	public double getSaldo() {
+		return this.getEstadoCuenta().getMonto() - (getEstadoCuenta().getPago() + getEstadoCuenta().getMontoDescuento());
+	}
+	
 }

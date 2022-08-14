@@ -25,6 +25,8 @@ public class ParamsLocal extends Params {
 	public static final String SIGLA_MONEDA_GUARANI="MONEDA_GUARANI";
 	public static final String SIGLA_MONEDA_DOLAR="MONEDA_DOLAR";
 	public static final String SIGLA_COMPROBANTE = "COMPROBANTE";
+	public static final String SIGLA_COMPROBANTE_FACTURA = "COMPROBANTE_FACTURA";
+	public static final String SIGLA_COMPROBANTE_RECIBO = "COMPROBANTE_RECIBO";
 	public static final String SIGLA_FORMA_PAGO = "FORMA_PAGO";
 	public static final String SIGLA_FORMA_PAGO_EFECTIVO="FORMA_PAGO_EFECTIVO";
 	public static final String SIGLA_FORMA_PAGO_TRANSFERENCIA="FORMA_PAGO_TRANSFERENCIA";
@@ -33,6 +35,10 @@ public class ParamsLocal extends Params {
 	public static final String SIGLA_FORMA_PAGO_GIRO="FORMA_PAGO_GIRO";
 	public static final String SIGLA_FORMA_PAGO_QR="FORMA_PAGO_GIRO";
 	public static final String SIGLA_FORMA_PAGO_CHEQUE="FORMA_PAGO_CHEQUE";
+	public static final String SIGLA_CONDICION_VENTA="CONDICION_VENTA";
+	public static final String SIGLA_CONDICION_VENTA_CONTADO="CONDICION_VENTA_CONTADO";
+	public static final String SIGLA_CONDICION_VENTA_CREDITO="CONDICION_VENTA_CREDITO";
+	
 	
 	//Sede
 	public static final String OP_CREAR_SEDE = "CrearSede";

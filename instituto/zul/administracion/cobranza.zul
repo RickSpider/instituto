@@ -3,155 +3,252 @@
 	<window title="Cobranzas" border="normal"
 		viewModel="@id('vm') @init('com.instituto.sistema.administracion.CobranzaVM')"
 		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
-		<vlayout>
-			<tablelayout columns="10">
+		<hlayout>
 
-				<tablechildren style="padding-left: 5px">
-					<label value="Alumno:" />
-				</tablechildren>
-				<tablechildren style="padding-left: 5px">
-					<bandbox id="bd"
-						value="@load(vm.buscarAlumno) @save(vm.buscarAlumno, before='guardarAlumno')"
-						constraint="no empty: Es campo obligatorio." mold="rounded"
-						autodrop="true" width="150px"
-						onOpen="@command('generarListaBuscarAlumno')" readonly="true"
-						disabled="@load(vm.editar)">
-						<bandpopup>
+			<vlayout vflex="1">
+				<tablelayout columns="6">
 
-							<vbox>
+					<tablechildren style="padding-left: 5px">
+						<label value="Alumno:" />
+					</tablechildren>
+					<tablechildren style="padding-left: 5px">
+						<bandbox id="bd"
+							value="@load(vm.buscarAlumno) @save(vm.buscarAlumno, before='guardarAlumno')"
+							constraint="no empty: Es campo obligatorio." mold="rounded"
+							autodrop="true" width="250px"
+							onOpen="@command('generarListaBuscarAlumno')" readonly="true"
+							disabled="@load(vm.editar)">
+							<bandpopup>
 
-								<hbox>
+								<vbox>
 
-									<label value="Buscar:" />
+									<hbox>
 
-									<textbox instant="true"
-										value="@bind(vm.buscarAlumno)"
-										onChange="@command('filtrarAlumnoBuscar')" />
+										<label value="Buscar:" />
 
-								</hbox>
+										<textbox instant="true"
+											value="@bind(vm.buscarAlumno)"
+											onChange="@command('filtrarAlumnoBuscar')" />
 
-								<listbox height="250px" width="450px"
-									mold="paging" autopaging="true" onSelect="bd.close()"
-									model="@load(vm.lAlumnosBuscar)">
+									</hbox>
 
-									<listhead>
-										<listheader label="ID"
-											hflex="min" />
-										<listheader label="Alumno" />
-										<listheader label="Apellido" />
-										<listheader label="Documento #" />
+									<listbox height="250px"
+										width="450px" mold="paging" autopaging="true"
+										onSelect="bd.close()" model="@load(vm.lAlumnosBuscar)">
 
-									</listhead>
+										<listhead>
+											<listheader label="ID"
+												hflex="min" />
+											<listheader label="Alumno" />
+											<listheader
+												label="Apellido" />
+											<listheader
+												label="Documento #" />
 
-									<template name="model">
+										</listhead>
 
-										<listitem
-											onClick="@command('onSelectAlumno', id = each[0])">
+										<template name="model">
 
-											<listcell
-												label="@load(each[0])" />
+											<listitem
+												onClick="@command('onSelectAlumno', id = each[0])">
 
-											<listcell
-												label="@load(each[1])" />
+												<listcell
+													label="@load(each[0])" />
 
-											<listcell
-												label="@load(each[2])" />
+												<listcell
+													label="@load(each[1])" />
 
-											<listcell
-												label="@load(each[3])" />
+												<listcell
+													label="@load(each[2])" />
 
-										</listitem>
+												<listcell
+													label="@load(each[3])" />
 
-									</template>
-									<listitem />
-								</listbox>
+											</listitem>
 
-							</vbox>
-						</bandpopup>
-					</bandbox>
-				</tablechildren>
+										</template>
+										<listitem />
+									</listbox>
 
-				<tablechildren style="padding-left: 5px">
-					<label value="Saldo Vencido:" />
-				</tablechildren>
-				<tablechildren style="padding-left: 5px">
-					<doublebox value = "@load(vm.saldoVencido)" format="#,###" style="text-align:right" readonly="true"/>
-				</tablechildren>
-				
-				<tablechildren style="padding-left: 5px">
-					<label value="Saldo Total:" />
-				</tablechildren>
-				<tablechildren style="padding-left: 5px">
-					<doublebox value = "@load(vm.saldoTotal)" format="#,###" style="text-align:right" readonly="true"/>
-				</tablechildren>
+								</vbox>
+							</bandpopup>
+						</bandbox>
+					</tablechildren>
 
-				<tablechildren style="padding-left: 5px">
-					<label value="Comprobante:" />
-				</tablechildren>
+					<tablechildren style="padding-left: 5px">
+						<label value="Saldo Vencido:" />
+					</tablechildren>
+					<tablechildren style="padding-left: 5px">
+						<doublebox width="120px"
+							value="@load(vm.saldoVencido)" format="#,###"
+							style="text-align:right" readonly="true" />
+					</tablechildren>
 
-				<tablechildren style="padding-left: 5px">
+					<tablechildren style="padding-left: 5px">
+						<label value="Saldo Total:" />
+					</tablechildren>
+					<tablechildren style="padding-left: 5px">
+						<doublebox width="120px"
+							value="@load(vm.saldoTotal)" format="#,###"
+							style="text-align:right" readonly="true" />
+					</tablechildren>
+
+					<tablechildren style="padding-left: 5px">
+						<label value="Comprobante:" />
+					</tablechildren>
+
+					<tablechildren style="padding-left: 5px">
 						<bandbox id="bdComprobante"
-						value="@load(vm.buscarComprobante) @save(vm.buscarComprobante, before='guardar')"
-						constraint="no empty: Es campo obligatorio." mold="rounded"
-						autodrop="true" width="150px"
-						onOpen="@command('generarListaBuscarComprobante')"
-						readonly="true">
-						<bandpopup>
+							value="@load(vm.buscarComprobante) @save(vm.buscarComprobante, before='guardar')"
+							constraint="no empty: Es campo obligatorio." mold="rounded"
+							autodrop="true" width="250px"
+							onOpen="@command('generarListaBuscarComprobante')"
+							readonly="true">
+							<bandpopup>
 
-							<vbox>
+								<vbox>
 
-								<hbox>
+									<hbox>
 
-									<label value="Buscar:" />
+										<label value="Buscar:" />
 
-									<textbox instant="true"
-										value="@bind(vm.filtroBuscarTipo)"
-										onChange="@command('filtrarComprobanteBuscar')" />
+										<textbox instant="true"
+											value="@bind(vm.filtroBuscarTipo)"
+											onChange="@command('filtrarComprobanteBuscar')" />
 
-								</hbox>
+									</hbox>
 
-								<listbox height="250px" width="450px"
-									mold="paging" autopaging="true" onSelect="bdComprobante.close()"
-									model="@load(vm.lTiposBuscar)">
+									<listbox height="250px"
+										width="450px" mold="paging" autopaging="true"
+										onSelect="bdComprobante.close()"
+										model="@load(vm.lTiposBuscar)">
 
-									<listhead>
-										<listheader label="ID"
-											hflex="min" />
-										<listheader label="Comprobante" />
-										<listheader label="Descripcion" />
-									</listhead>
+										<listhead>
+											<listheader label="ID"
+												hflex="min" />
+											<listheader
+												label="Comprobante" />
+											<listheader
+												label="Descripcion" />
+										</listhead>
 
-									<template name="model">
+										<template name="model">
 
-										<listitem
-											onClick="@command('onSelectComprobante', id = each[0])">
+											<listitem
+												onClick="@command('onSelectComprobante', id = each[0])">
 
-											<listcell
-												label="@load(each[0])" />
+												<listcell
+													label="@load(each[0])" />
 
-											<listcell
-												label="@load(each[1])" />
+												<listcell
+													label="@load(each[1])" />
 
-											<listcell
-												label="@load(each[2])" />
+												<listcell
+													label="@load(each[2])" />
 
-										</listitem>
+											</listitem>
 
-									</template>
-									<listitem />
-								</listbox>
+										</template>
+										<listitem />
+									</listbox>
 
-							</vbox>
-						</bandpopup>
-					</bandbox>
-				</tablechildren>
+								</vbox>
+							</bandpopup>
+						</bandbox>
+					</tablechildren>
 
-			</tablelayout>
+					<tablechildren style="padding-left: 5px">
+						<label value="Comprobante #:" />
+					</tablechildren>
+					<tablechildren style="padding-left: 5px">
+						<textbox
+							value="@load(vm.cobranzaSelected.comprobanteNum) @save(vm.cobranzaSelected.comprobanteNum, before='guardar')"
+							width="120px" constraint="no empty: Es campo obligatorio."
+							readonly="true" />
 
-		</vlayout>
+					</tablechildren>
+
+					<tablechildren style="padding-left: 5px"
+						visible="@load(vm.condicionHabilitada)">
+						<label value="Condicion Venta" />
+					</tablechildren>
+					<tablechildren
+						visible="@load(vm.condicionHabilitada)"
+						style="padding-left: 5px">
+						<bandbox id="bdCondicionVenta"
+							value="@load(vm.buscarCondicionVenta) @save(vm.buscarCondicionVenta, before='guardar')"
+							constraint="no empty: Es campo obligatorio." mold="rounded"
+							autodrop="true" width="150px"
+							onOpen="@command('generarListaBuscarCondicionVenta')"
+							readonly="true">
+
+							<bandpopup>
+
+								<vbox>
+
+									<hbox>
+
+										<label value="Buscar:" />
+
+										<textbox instant="true"
+											value="@bind(vm.filtroBuscarTipo)"
+											onChange="@command('filtrarCondicionVentaBuscar')" />
+
+									</hbox>
+
+									<listbox height="250px"
+										width="450px" mold="paging" autopaging="true"
+										onSelect="bdCondicionVenta.close()"
+										model="@load(vm.lTiposBuscar)">
+
+										<listhead>
+											<listheader label="ID"
+												hflex="min" />
+											<listheader
+												label="Condicion de Venta" />
+											<listheader
+												label="Descripcion" />
+										</listhead>
+
+										<template name="model">
+
+											<listitem
+												onClick="@command('onSelectCondicionVenta', id = each[0])">
+
+												<listcell
+													label="@load(each[0])" />
+
+												<listcell
+													label="@load(each[1])" />
+
+												<listcell
+													label="@load(each[2])" />
+
+											</listitem>
+
+										</template>
+										<listitem />
+									</listbox>
+
+								</vbox>
+							</bandpopup>
+						</bandbox>
+					</tablechildren>
+
+
+				</tablelayout>
+			</vlayout>
+			<vlayout vflex="2" hflex="2" >
+				<hbox vflex="1" hflex="1" pack="center" align="center" >
+					<button label="COBRAR" onClick="@command('guaradarCobranza')" style="background-color:green" />
+				</hbox>
+				
+			</vlayout>
+
+		</hlayout>
 
 		<vlayout vflex="1">
-				
+
 			<listbox emptyMessage="lista vacía..." mold="paging"
 				autopaging="true" vflex="1" model="@load(vm.lDetalles)">
 
@@ -164,26 +261,29 @@
 					<listheader label="Periodo" align="Center" />
 
 					<listheader label="Monto Total" align="right" />
+					<listheader label="Monto Pagado" align="right" />
+					<listheader label="Saldo" align="right" />
 					<listheader label="Pago" align="right" />
-					
+
 					<listheader label="Descuento" align="right" />
-					
+
 					<listheader label="Convenio" align="right" />
-	
-					<listheader visible="@load(!vm.editar)" hflex="min"/>
+
+					<listheader visible="@load(!vm.editar)" hflex="min" />
 
 
 				</listhead>
-				
+
 				<auxhead>
 
-						<auxheader colspan="9" align="center">
-							<button label="Agregar Detalle" iconSclass=" z-icon-plus"
-								onClick="@command('modalCobranzaDetalle')"
-								disabled="@load(vm.editar)" style="background-color:green"/>
-						</auxheader>
+					<auxheader colspan="10" align="center">
+						<button label="Agregar Detalle"
+							iconSclass=" z-icon-plus"
+							onClick="@command('modalCobranzaDetalle')"
+							disabled="@load(vm.editar)" style="background-color:green" />
+					</auxheader>
 
-					</auxhead>
+				</auxhead>
 
 				<auxhead>
 
@@ -192,10 +292,12 @@
 					<auxheader label="Concepto" align="center" />
 					<auxheader label="Periodo/Cuota #" align="center" />
 					<auxheader label="Monto Total" align="center" />
+					<auxheader label="Monto Pagado" align="center" />
+					<auxheader label="Saldo" align="center" />
 					<auxheader label="Pago" align="center" />
 					<auxheader label="Descuento" align="center" />
 					<auxheader label="Descuento" align="right" />
-					<auxheader/>
+					<auxheader />
 
 				</auxhead>
 
@@ -213,21 +315,29 @@
 							label="@load(each.estadoCuenta.periodo)" />
 						<listcell
 							label="@load(each.estadoCuenta.monto) @converter('formatedNumber', format='#,###')" />
+
+						<listcell
+							label="@load(each.estadoCuenta.pago) @converter('formatedNumber', format='#,###')" />
+
+						<listcell
+							label="@load(each.saldo) @converter('formatedNumber', format='#,###')" />
+
 						<listcell>
-							<doublebox value="@bind(each.monto)" readonly="@load(vm.editar)" style="text-align:right" hflex="1"/>
+							<doublebox value="@bind(each.monto)"
+								readonly="@load(vm.editar)" style="text-align:right" hflex="1" />
 						</listcell>
-						<listcell label="@load(each.montoDescuento) @converter('formatedNumber', format='#,###')" />
-						
+						<listcell
+							label="@load(each.montoDescuento) @converter('formatedNumber', format='#,###')" />
+
 						<listcell />
-						
+
 						<listcell>
-						
+
 							<button iconSclass="z-icon-trash-o"
-										style="background-color:red"
-										onClick="@command('borrarDetalle', dato=each)"
-										tooltiptext="Borrar"
-										disabled="@load(vm.editar)"/>
-						
+								style="background-color:red"
+								onClick="@command('borrarDetalle', dato=each)"
+								tooltiptext="Borrar" disabled="@load(vm.editar)" />
+
 						</listcell>
 
 					</listitem>
@@ -244,7 +354,7 @@
 				</listfoot>
 
 			</listbox>
-			
+
 			<listbox emptyMessage="lista vacía..." mold="paging"
 				autopaging="true" vflex="1" model="@load(vm.lDetallesCobros)">
 
@@ -254,35 +364,36 @@
 					<listheader label="Moneda" align="Center" />
 					<listheader label="Entidad" align="Center" />
 					<listheader label="Monto" align="right" />
-					
+
 					<listheader label="Cuenta #" align="Center" />
 					<listheader label="Transaccion #" align="Center" />
 					<listheader label="Cheque #" align="Center" />
-					
+
 					<listheader label="Titular" align="Center" />
-					
+
 					<listheader label="Fecha Emisión" align="Center" />
-					
+
 					<listheader label="Vendicimiento" align="Center" />
-	
-					<listheader visible="@load(!vm.editar)" hflex="min"/>
+
+					<listheader visible="@load(!vm.editar)" hflex="min" />
 
 
 				</listhead>
-				
-				<auxhead>
-
-						<auxheader colspan="11" align="center">
-							<button label="Agregar Tipo Pago" iconSclass=" z-icon-plus"
-								onClick="@command('modalCobranzaDetalleCobro')"
-								disabled="@load(vm.editar)" style="background-color:green"/>
-						</auxheader>
-
-					</auxhead>
 
 				<auxhead>
 
-					
+					<auxheader colspan="11" align="center">
+						<button label="Agregar Tipo Pago"
+							iconSclass=" z-icon-plus"
+							onClick="@command('modalCobranzaDetalleCobro')"
+							disabled="@load(vm.editar)" style="background-color:green" />
+					</auxheader>
+
+				</auxhead>
+
+				<auxhead>
+
+
 					<auxheader label="Forma Pago" align="center" />
 					<auxheader label="Moneda" align="center" />
 					<auxheader label="Entidad" align="center" />
@@ -293,7 +404,7 @@
 					<auxheader label="Titular" align="center" />
 					<auxheader label="Fecha Emisión" align="center" />
 					<auxheader label="Vencimiento" align="center" />
-					<auxheader/>
+					<auxheader />
 
 				</auxhead>
 
@@ -309,17 +420,18 @@
 						<listcell label="@load(each.transaccionNum)" />
 						<listcell label="@load(each.chequeNum)" />
 						<listcell label="@load(each.titular)" />
-						<listcell label="@load(each.emision)  @converter('formatedDate', format='dd/MM/yyyy')" />
-						<listcell label="@load(each.vencimiento)  @converter('formatedDate', format='dd/MM/yyyy')" />
-						
+						<listcell
+							label="@load(each.emision)  @converter('formatedDate', format='dd/MM/yyyy')" />
+						<listcell
+							label="@load(each.vencimiento)  @converter('formatedDate', format='dd/MM/yyyy')" />
+
 						<listcell>
-						
+
 							<button iconSclass="z-icon-trash-o"
-										style="background-color:red"
-										onClick="@command('borrarCobranzaDetalleCobro', dato=each)"
-										tooltiptext="Borrar"
-										disabled="@load(vm.editar)"/>
-						
+								style="background-color:red"
+								onClick="@command('borrarCobranzaDetalleCobro', dato=each)"
+								tooltiptext="Borrar" disabled="@load(vm.editar)" />
+
 						</listcell>
 
 					</listitem>
@@ -329,14 +441,15 @@
 				<listfoot>
 					<listfooter span="6" align="left">
 						<hlayout>
-							<label value="@load(vm.lDetallesCobros.size())" />
+							<label
+								value="@load(vm.lDetallesCobros.size())" />
 							<label value="items" />
 						</hlayout>
 					</listfooter>
 				</listfoot>
 
 			</listbox>
-			
+
 
 		</vlayout>
 
