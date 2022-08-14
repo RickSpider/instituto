@@ -13,7 +13,7 @@
 					</tablechildren>
 					<tablechildren style="padding-left: 5px">
 						<bandbox id="bd"
-							value="@load(vm.buscarAlumno) @save(vm.buscarAlumno, before='guardarAlumno')"
+							value="@load(vm.buscarAlumno) @save(vm.buscarAlumno, before='guaradarCobranza')"
 							constraint="no empty: Es campo obligatorio." mold="rounded"
 							autodrop="true" width="250px"
 							onOpen="@command('generarListaBuscarAlumno')" readonly="true"
@@ -99,7 +99,7 @@
 
 					<tablechildren style="padding-left: 5px">
 						<bandbox id="bdComprobante"
-							value="@load(vm.buscarComprobante) @save(vm.buscarComprobante, before='guardar')"
+							value="@load(vm.buscarComprobante) @save(vm.buscarComprobante, before='guaradarCobranza')"
 							constraint="no empty: Es campo obligatorio." mold="rounded"
 							autodrop="true" width="250px"
 							onOpen="@command('generarListaBuscarComprobante')"
@@ -163,9 +163,8 @@
 					</tablechildren>
 					<tablechildren style="padding-left: 5px">
 						<textbox
-							value="@load(vm.cobranzaSelected.comprobanteNum) @save(vm.cobranzaSelected.comprobanteNum, before='guardar')"
-							width="120px" constraint="no empty: Es campo obligatorio."
-							readonly="true" />
+							value="@load(vm.cobranzaSelected.comprobanteNum)"
+							width="120px" readonly="true" />
 
 					</tablechildren>
 
@@ -177,12 +176,12 @@
 						visible="@load(vm.condicionHabilitada)"
 						style="padding-left: 5px">
 						<bandbox id="bdCondicionVenta"
-							value="@load(vm.buscarCondicionVenta) @save(vm.buscarCondicionVenta, before='guardar')"
+							value="@load(vm.buscarCondicionVenta) @save(vm.buscarCondicionVenta, before='guaradarCobranza')"
 							constraint="no empty: Es campo obligatorio." mold="rounded"
 							autodrop="true" width="150px"
 							onOpen="@command('generarListaBuscarCondicionVenta')"
 							readonly="true"
-							disable="@laod(vm.verCobranza)">>
+							disable="@laod(vm.verCobranza)">
 
 							<bandpopup>
 
@@ -243,7 +242,7 @@
 			<vlayout vflex="2" hflex="2" >
 				<hbox vflex="1" hflex="1" pack="center" align="center" >
 				
-					<button label="COBRAR" onClick="@command('guaradarCobranza')" style="background-color:green" disable="@laod(vm.verCobranza)">/>
+					<button label="COBRAR" onClick="@command('guaradarCobranza')" style="background-color:green" disable="@laod(vm.verCobranza)" />
 					<button label="LIMPIAR" onClick="@command('limpiar')" />
 					
 				</hbox>
@@ -259,11 +258,11 @@
 
 				<listhead visible="false">
 
-					<listheader label="Fecha Vencimiento"
+					<listheader label="Vencimiento"
 						align="center" />
 					<listheader label="Curso" align="Center" />
 					<listheader label="Concepto" align="Center" />
-					<listheader label="Periodo" align="Center" />
+					<listheader label="Cuota" align="Center" />
 
 					<listheader label="Monto Total" align="right" />
 					<listheader label="Monto Pagado" align="right" />
@@ -292,10 +291,10 @@
 
 				<auxhead>
 
-					<auxheader label="Fecha Vencimiento" align="center" />
+					<auxheader label="Vencimiento" align="center" />
 					<auxheader label="Curso" align="center" />
 					<auxheader label="Concepto" align="center" />
-					<auxheader label="Periodo/Cuota #" align="center" />
+					<auxheader label="Cuota #" align="center" />
 					<auxheader label="Monto Total" align="center" />
 					<auxheader label="Monto Pagado" align="center" />
 					<auxheader label="Saldo" align="center" />
@@ -449,7 +448,7 @@
 
 				<listfoot>
 					<listfooter span="12" align="left">
-						<hlayout hflex="1">
+						<hlayout>
 								<label value="Total en Guaranies" />
 								<space width="100px"/>
 								<label value="@load(vm.totalDetalleCobro) @converter('formatedNumber', format='#,###')"  style="font-weight: bold;"/>

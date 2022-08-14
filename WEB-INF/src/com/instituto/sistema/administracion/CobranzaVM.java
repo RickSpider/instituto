@@ -35,14 +35,15 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	private boolean verCobranza = false;
 	private List<CobranzaDetalleCobro> lDetallesCobros = new ArrayList<CobranzaDetalleCobro>();
 	private List<CobranzaDetalle> lDetalles = new ArrayList<CobranzaDetalle>();
-	private double saldoTotal;
-	private double saldoVencido;
-	private boolean condicionHabilitada = false;
+	private double saldoTotal = 0;
+	private double saldoVencido = 0;
+	private boolean condicionHabilitada = true;
 	
 	@Init(superclass = true)
 	public void initConvenioVM() {
 
 		cobranzaSelected = new Cobranza();
+		defaultCobranza();
 
 	}
 
@@ -65,14 +66,32 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		verCobranza = false;
 		lDetallesCobros = new ArrayList<CobranzaDetalleCobro>();
 		lDetalles = new ArrayList<CobranzaDetalle>();
+		lTiposBuscar = new ArrayList<Object[]>();
 		saldoTotal = 0;
 		saldoVencido = 0;
-		condicionHabilitada = false;
+		condicionHabilitada = true;
 		this.buscarAlumno = "";
 		this.buscarComprobante = "";
 		this.buscarCondicionVenta ="";
 		
+		defaultCobranza();
+		
 	}
+	
+	private void defaultCobranza() {
+		
+
+		Tipo comprobanteTipo = this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_COMPROBANTE_FACTURA);
+		this.cobranzaSelected.setComprobanteTipo(comprobanteTipo);
+		this.buscarComprobante = comprobanteTipo.getTipo();
+		
+		Tipo condicionVenta = this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_CONDICION_VENTA_CONTADO);
+		this.cobranzaSelected.setCondicionVentaTipo(condicionVenta);
+		this.buscarCondicionVenta = condicionVenta.getTipo();
+		
+	}
+	
+	
 
 	// Seccion Buscar Alumno
 	private List<Object[]> lAlumnosbuscarOri;
@@ -463,7 +482,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	private List<Object[]> lTiposbuscarOri;
 	private List<Object[]> lTiposBuscar;
 
-	private String filtroBuscarTipo;
+	private String filtroBuscarTipo = "";
 
 	private String buscarMoneda = "";
 	private String buscarFormaPago = "";
