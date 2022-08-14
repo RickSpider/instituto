@@ -3,6 +3,7 @@ package com.instituto.sistema.administracion;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
@@ -21,6 +22,7 @@ import com.instituto.modelo.Cobranza;
 import com.instituto.modelo.CobranzaDetalle;
 import com.instituto.modelo.CobranzaDetalleCobro;
 import com.instituto.modelo.Comprobante;
+import com.instituto.modelo.Cotizacion;
 import com.instituto.modelo.CursoVigenteConvenio;
 import com.instituto.modelo.Entidad;
 import com.instituto.modelo.EstadoCuenta;
@@ -30,7 +32,7 @@ import com.instituto.util.TemplateViewModelLocal;
 public class CobranzaVM extends TemplateViewModelLocal {
 
 	private Cobranza cobranzaSelected;
-	private boolean editar = false;
+	private boolean verCobranza = false;
 	private List<CobranzaDetalleCobro> lDetallesCobros = new ArrayList<CobranzaDetalleCobro>();
 	private List<CobranzaDetalle> lDetalles = new ArrayList<CobranzaDetalle>();
 	private double saldoTotal;
@@ -53,6 +55,23 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	protected void inicializarOperaciones() {
 		// TODO Auto-generated method stub
 
+	}
+	
+	@Command
+	@NotifyChange("*")
+	public void limpiar() {
+		
+		cobranzaSelected = new Cobranza();
+		verCobranza = false;
+		lDetallesCobros = new ArrayList<CobranzaDetalleCobro>();
+		lDetalles = new ArrayList<CobranzaDetalle>();
+		saldoTotal = 0;
+		saldoVencido = 0;
+		condicionHabilitada = false;
+		this.buscarAlumno = "";
+		this.buscarComprobante = "";
+		this.buscarCondicionVenta ="";
+		
 	}
 
 	// Seccion Buscar Alumno
@@ -171,7 +190,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	@NotifyChange("lDetalles")
 	public void borrarDetalle(@BindingParam("dato") CobranzaDetalle dato) {
 
-		if (editar) {
+		if (this.verCobranza) {
 
 			return;
 
@@ -189,7 +208,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	@Command
-	@NotifyChange("lDetalles")
+	@NotifyChange({"lDetalles","totalDetalle"})
 	public void agregarCobranzaDetalle() {
 
 		for (EstadoCuenta x : this.lEstadosCuentasAux) {
@@ -300,8 +319,19 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	};
 
 	@Command
-	@NotifyChange("lDetallesCobros")
+	@NotifyChange({"lDetallesCobros","totalDetalleCobro"})
 	public void agregarCobranzaDetalleCobro() {
+		
+		for (CobranzaDetalleCobro x : this.lDetallesCobros) {
+			
+			if (x.getFormaPago().getSigla().compareTo(cobranzaDetalleCobroSelected.getFormaPago().getSigla()) == 0) {
+				
+				this.mensajeInfo("Ya existe una Forma de Pago "+x.getFormaPago().getTipo());
+				
+				return;
+			}
+			
+		}
 
 		this.lDetallesCobros.add(cobranzaDetalleCobroSelected);
 
@@ -313,7 +343,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	@NotifyChange("lDetallesCobros")
 	public void borrarCobranzaDetalleCobro(@BindingParam("dato") CobranzaDetalleCobro dato) {
 
-		if (editar) {
+		if (this.verCobranza) {
 
 			return;
 
@@ -504,9 +534,35 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	public void onSelectMoneda(@BindingParam("id") long id) {
 
 		Tipo tipo = this.reg.getObjectById(Tipo.class.getName(), id);
-		this.cobranzaDetalleCobroSelected.setMonedaTipo(tipo);
+		
+		Cotizacion cotizacion = this.reg.getObjectByCondicion(Cotizacion.class.getName(), 
+				" monedaTipoid =  "+tipo.getTipoid()+" "
+				+"AND fecha = current_date ");
+		
+		if (tipo.getSigla().compareTo(ParamsLocal.SIGLA_MONEDA_GUARANI) != 0 && cotizacion == null) {
+		
+			this.mensajeInfo("No existe cotizacion de la moneda para la fecha de hoy.");
+				
+			return;
+			
+		}
+		
+		this.cobranzaDetalleCobroSelected.setMonedaTipo(tipo);				
+		
+		if (tipo.getSigla().compareTo(ParamsLocal.SIGLA_MONEDA_GUARANI) == 0) {
+			
+			this.cobranzaDetalleCobroSelected.setMonedaCambio(1);
+			
+		}else {
+			
+			this.cobranzaDetalleCobroSelected.setMonedaCambio(cotizacion.getCompra());
+			
+		}
+		
 		this.buscarMoneda = tipo.getTipo();
 		this.filtroBuscarTipo = "";
+		
+		
 	}
 
 	@Command
@@ -592,23 +648,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			
 		}
 		
-		double totalDetalle = 0;
-		
-		for (CobranzaDetalle x : lDetalles) {
-			
-			totalDetalle += x.getMonto();
-			
-		}
-		
-		double totalDetalleCobro = 0;
-		
-		for (CobranzaDetalleCobro x : lDetallesCobros) {
-			
-			totalDetalleCobro += x.getMonto();
-			
-		}
-		
-		if (totalDetalle > totalDetalleCobro) {
+		if (this.getTotalDetalle() != this.getTotalDetalleCobro()) {
 			
 			this.mensajeInfo("El tipo de Pago total no se ajusta al monto total de los detalles.");
 			return;
@@ -632,6 +672,33 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		};
 		
 		this.mensajeEliminar("Se empezara a procesar el cobro. \n Continuar?", event);
+		
+	}
+	
+	public double getTotalDetalle() {
+		
+		double totalDetalle = 0;
+		
+		for (CobranzaDetalle x : lDetalles) {
+			
+			totalDetalle += x.getMonto();
+			
+		}
+		
+		return totalDetalle;
+	}
+	
+	public double getTotalDetalleCobro() {
+		
+		double totalDetalleCobro = 0;
+		
+		for (CobranzaDetalleCobro x : lDetallesCobros) {
+			
+			totalDetalleCobro += x.getMonto()*x.getMonedaCambio();
+			
+		}
+		
+		return totalDetalleCobro;
 		
 	}
 	
@@ -661,6 +728,10 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			this.save(x);
 			
 		}
+		
+		this.verCobranza = true;
+		
+		BindUtils.postNotifyChange(null, null, this, "*");
 		
 	}
 	
@@ -712,6 +783,8 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		
 		return out.toString();
 	}
+	
+	
 
 	public Cobranza getCobranzaSelected() {
 		return cobranzaSelected;
@@ -735,14 +808,6 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	public void setBuscarAlumno(String buscarAlumno) {
 		this.buscarAlumno = buscarAlumno;
-	}
-
-	public boolean isEditar() {
-		return editar;
-	}
-
-	public void setEditar(boolean editar) {
-		this.editar = editar;
 	}
 
 	public List<CobranzaDetalleCobro> getlDetallesCobros() {
@@ -879,6 +944,14 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	public void setCondicionHabilitada(boolean condicionHabilitada) {
 		this.condicionHabilitada = condicionHabilitada;
+	}
+
+	public boolean isVerCobranza() {
+		return verCobranza;
+	}
+
+	public void setVerCobranza(boolean verCobranza) {
+		this.verCobranza = verCobranza;
 	}
 
 }

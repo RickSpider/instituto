@@ -17,7 +17,7 @@
 							constraint="no empty: Es campo obligatorio." mold="rounded"
 							autodrop="true" width="250px"
 							onOpen="@command('generarListaBuscarAlumno')" readonly="true"
-							disabled="@load(vm.editar)">
+							disabled="@load(vm.verCobranza)">
 							<bandpopup>
 
 								<vbox>
@@ -103,7 +103,8 @@
 							constraint="no empty: Es campo obligatorio." mold="rounded"
 							autodrop="true" width="250px"
 							onOpen="@command('generarListaBuscarComprobante')"
-							readonly="true">
+							readonly="true"
+							disable="@laod(vm.verCobranza)">
 							<bandpopup>
 
 								<vbox>
@@ -180,7 +181,8 @@
 							constraint="no empty: Es campo obligatorio." mold="rounded"
 							autodrop="true" width="150px"
 							onOpen="@command('generarListaBuscarCondicionVenta')"
-							readonly="true">
+							readonly="true"
+							disable="@laod(vm.verCobranza)">>
 
 							<bandpopup>
 
@@ -240,7 +242,10 @@
 			</vlayout>
 			<vlayout vflex="2" hflex="2" >
 				<hbox vflex="1" hflex="1" pack="center" align="center" >
-					<button label="COBRAR" onClick="@command('guaradarCobranza')" style="background-color:green" />
+				
+					<button label="COBRAR" onClick="@command('guaradarCobranza')" style="background-color:green" disable="@laod(vm.verCobranza)">/>
+					<button label="LIMPIAR" onClick="@command('limpiar')" />
+					
 				</hbox>
 				
 			</vlayout>
@@ -269,18 +274,18 @@
 
 					<listheader label="Convenio" align="right" />
 
-					<listheader visible="@load(!vm.editar)" hflex="min" />
+					<listheader visible="@load(!vm.verCobranza)" hflex="min" />
 
 
 				</listhead>
 
 				<auxhead>
 
-					<auxheader colspan="10" align="center">
+					<auxheader colspan="11" align="center">
 						<button label="Agregar Detalle"
 							iconSclass=" z-icon-plus"
 							onClick="@command('modalCobranzaDetalle')"
-							disabled="@load(vm.editar)" style="background-color:green" />
+							disabled="@load(vm.verCobranza)" style="background-color:green" />
 					</auxheader>
 
 				</auxhead>
@@ -324,7 +329,7 @@
 
 						<listcell>
 							<doublebox value="@bind(each.monto)"
-								readonly="@load(vm.editar)" style="text-align:right" hflex="1" />
+								readonly="@load(vm.verCobranza)" style="text-align:right" hflex="1" />
 						</listcell>
 						<listcell
 							label="@load(each.montoDescuento) @converter('formatedNumber', format='#,###')" />
@@ -336,7 +341,7 @@
 							<button iconSclass="z-icon-trash-o"
 								style="background-color:red"
 								onClick="@command('borrarDetalle', dato=each)"
-								tooltiptext="Borrar" disabled="@load(vm.editar)" />
+								tooltiptext="Borrar" disabled="@load(vm.verCobranza)" />
 
 						</listcell>
 
@@ -347,8 +352,9 @@
 				<listfoot>
 					<listfooter span="6" align="left">
 						<hlayout>
-							<label value="@load(vm.lDetalles.size())" />
-							<label value="items" />
+								<label value="Total en Guaranies" />
+								<space width="100px"/>
+								<label value="@load(vm.totalDetalle) @converter('formatedNumber', format='#,###')" style="font-weight: bold;"/>
 						</hlayout>
 					</listfooter>
 				</listfoot>
@@ -362,6 +368,7 @@
 
 					<listheader label="Tipo Pago" align="Center" />
 					<listheader label="Moneda" align="Center" />
+					<listheader label="Cambio Compra" align="Center" />
 					<listheader label="Entidad" align="Center" />
 					<listheader label="Monto" align="right" />
 
@@ -375,18 +382,18 @@
 
 					<listheader label="Vendicimiento" align="Center" />
 
-					<listheader visible="@load(!vm.editar)" hflex="min" />
+					<listheader visible="@load(!vm.verCobranza)" hflex="min" />
 
 
 				</listhead>
 
 				<auxhead>
 
-					<auxheader colspan="11" align="center">
+					<auxheader colspan="12" align="center">
 						<button label="Agregar Tipo Pago"
 							iconSclass=" z-icon-plus"
 							onClick="@command('modalCobranzaDetalleCobro')"
-							disabled="@load(vm.editar)" style="background-color:green" />
+							disabled="@load(vm.verCobranza)" style="background-color:green" />
 					</auxheader>
 
 				</auxhead>
@@ -396,6 +403,7 @@
 
 					<auxheader label="Forma Pago" align="center" />
 					<auxheader label="Moneda" align="center" />
+					<auxheader label="Cambio Compra" align="center" />
 					<auxheader label="Entidad" align="center" />
 					<auxheader label="Monto" align="center" />
 					<auxheader label="Cuenta #" align="center" />
@@ -414,8 +422,9 @@
 
 						<listcell label="@load(each.formaPago.tipo)" />
 						<listcell label="@load(each.monedaTipo.tipo)" />
+						<listcell label="@load(each.monedaCambio) @converter('formatedNumber', format='#,###')" />
 						<listcell label="@load(each.entidad.entidad)" />
-						<listcell label="@load(each.monto)" />
+						<listcell label="@load(each.monto) @converter('formatedNumber', format='#,###')" />
 						<listcell label="@load(each.cuentaNum)" />
 						<listcell label="@load(each.transaccionNum)" />
 						<listcell label="@load(each.chequeNum)" />
@@ -430,7 +439,7 @@
 							<button iconSclass="z-icon-trash-o"
 								style="background-color:red"
 								onClick="@command('borrarCobranzaDetalleCobro', dato=each)"
-								tooltiptext="Borrar" disabled="@load(vm.editar)" />
+								tooltiptext="Borrar" disabled="@load(vm.verCobranza)" />
 
 						</listcell>
 
@@ -439,11 +448,11 @@
 				</template>
 
 				<listfoot>
-					<listfooter span="6" align="left">
-						<hlayout>
-							<label
-								value="@load(vm.lDetallesCobros.size())" />
-							<label value="items" />
+					<listfooter span="12" align="left">
+						<hlayout hflex="1">
+								<label value="Total en Guaranies" />
+								<space width="100px"/>
+								<label value="@load(vm.totalDetalleCobro) @converter('formatedNumber', format='#,###')"  style="font-weight: bold;"/>
 						</hlayout>
 					</listfooter>
 				</listfoot>

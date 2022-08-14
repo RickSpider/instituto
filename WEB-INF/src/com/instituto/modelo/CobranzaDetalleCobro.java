@@ -32,6 +32,7 @@ public class CobranzaDetalleCobro  extends Modelo implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "monedaTipoid")
 	private Tipo monedaTipo;
+	private double monedaCambio = 1;
 	
 	@ManyToOne
 	@JoinColumn(name = "entidadid")
@@ -44,6 +45,8 @@ public class CobranzaDetalleCobro  extends Modelo implements Serializable{
 	private String chequeNum;
 	
 	private String Titular;
+	
+	
 	
 	@Temporal(TemporalType.DATE)
 	private Date emision;
@@ -163,6 +166,14 @@ public class CobranzaDetalleCobro  extends Modelo implements Serializable{
 
 	public void setVencimiento(Date vencimiento) {
 		this.vencimiento = vencimiento;
+	}
+
+	public double getMonedaCambio() {
+		return monedaCambio;
+	}
+
+	public void setMonedaCambio(double monedaCambio) {
+		this.monedaCambio = monedaCambio;
 	}
 	
 }
