@@ -711,7 +711,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			return;
 
 		}
-
+		
 		if (this.lDetalles.size() == 0) {
 
 			this.mensajeInfo("No hay Detalles agregados.");
@@ -877,7 +877,6 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	private synchronized String getNumeroComprobante() {
 
 		StringBuffer out = new StringBuffer();
-		;
 
 		Comprobante comprobante = this.reg.getObjectByCondicion(Comprobante.class.getName(),
 				"activo = true " + "AND sedeid = " + this.getCurrentSede().getSedeid() + " "

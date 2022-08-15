@@ -171,7 +171,7 @@
 					style="padding-left: 5px">
 					<bandbox id="bdCondicionVenta"
 						value="@load(vm.buscarCondicionVenta) @save(vm.buscarCondicionVenta, before='guaradarCobranza')"
-						constraint="no empty: Es campo obligatorio." mold="rounded"
+						mold="rounded"
 						autodrop="true" width="150px"
 						onOpen="@command('generarListaBuscarCondicionVenta')"
 						readonly="true" disabled="@load(vm.verCobranza)">
@@ -522,7 +522,7 @@
 
 					<button label="COBRAR"
 						onClick="@command('guaradarCobranza')"
-						style="background-color:green" disable="@laod(vm.verCobranza)" />
+						style="background-color:green" disable="@load(vm.verCobranza)" />
 					<button label="LIMPIAR"
 						onClick="@command('limpiar')" />
 
