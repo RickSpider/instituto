@@ -257,7 +257,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 				.getAllObjectsByCondicionOrder(EstadoCuenta.class.getName(),
 						"alumnoid = " + this.cobranzaSelected.getAlumno().getAlumnoid()
 								+ "AND monto > (pago+montodescuento) AND inactivo = FALSE " + condicion2,
-						"vencimiento asc");
+						"cursovigenteid asc, vencimiento asc, conceptoid asc ");
 
 		modal = (Window) Executions.createComponents("/instituto/zul/administracion/cobranzaDetalleModal.zul",
 				this.mainComponent, null);
