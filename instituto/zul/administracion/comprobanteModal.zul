@@ -77,7 +77,8 @@
 				<label value="Timbrado:" />
 			</tablechildren>
 			<tablechildren>
-				<longbox value="@load(vm.comprobanteSelected.timbrado) @save(vm.comprobanteSelected.timbrado, before='guardar')" />
+				<longbox value="@load(vm.comprobanteSelected.timbrado) @save(vm.comprobanteSelected.timbrado, before='guardar')" 
+				disabled="@load(!vm.campoTimbrado)"/>
 			</tablechildren>
 			
 			

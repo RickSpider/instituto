@@ -33,6 +33,8 @@ public class ComprobanteVM extends TemplateViewModelLocal {
 	private boolean opCrearComprobante;
 	private boolean opEditarComprobante;
 	private boolean opBorrarComprobante;
+	
+	private boolean campoTimbrado = true;
 
 	@Init(superclass = true)
 	public void initComprobanteVM() {
@@ -256,13 +258,22 @@ public class ComprobanteVM extends TemplateViewModelLocal {
 
 		}
 		@Command
-		@NotifyChange("buscarComprobante")
+		@NotifyChange({"buscarComprobante","campoTimbrado","comprobanteSelected"})
 		public void onSelectComprobante(@BindingParam("id") long id) {
 
 			Tipo comprobante = this.reg.getObjectById(Tipo.class.getName(), id);
 			this.comprobanteSelected.setComprobanteTipo(comprobante);
 			this.buscarComprobante = comprobante.getTipo();
 			this.filtroBuscarTipo = "";
+			
+			this.campoTimbrado = true;
+			
+			if (comprobante.getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_RECIBO)==0) {
+				
+				this.campoTimbrado = false;
+				this.comprobanteSelected.setTimbrado(null);
+				
+			}
 		}
 
 		// fin buscarTipo
@@ -346,6 +357,14 @@ public class ComprobanteVM extends TemplateViewModelLocal {
 
 	public void setBuscarComprobante(String buscarComprobante) {
 		this.buscarComprobante = buscarComprobante;
+	}
+
+	public boolean isCampoTimbrado() {
+		return campoTimbrado;
+	}
+
+	public void setCampoTimbrado(boolean campoTimbrado) {
+		this.campoTimbrado = campoTimbrado;
 	}
 
 	
