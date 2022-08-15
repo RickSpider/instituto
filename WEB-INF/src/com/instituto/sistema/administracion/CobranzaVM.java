@@ -37,8 +37,17 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	private List<CobranzaDetalle> lDetalles = new ArrayList<CobranzaDetalle>();
 	private double saldoTotal = 0;
 	private double saldoVencido = 0;
+	private double iva10 = 0;
+	private double iva5 = 0;
+	private double exento = 0;
 	private boolean condicionHabilitada = true;
 	
+
+	private boolean opCrearCobranza;
+	private boolean opEditarCobranza;
+	private boolean opBorrarCobranza;
+	private boolean opAnularCobranza;
+
 	@Init(superclass = true)
 	public void initConvenioVM() {
 
@@ -54,44 +63,54 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	@Override
 	protected void inicializarOperaciones() {
-		// TODO Auto-generated method stub
+
+		this.opCrearCobranza = this.operacionHabilitada(ParamsLocal.OP_CREAR_COBRANZA);
+		this.opEditarCobranza = this.operacionHabilitada(ParamsLocal.OP_EDITAR_COBRANZA);
+		this.opBorrarCobranza = this.operacionHabilitada(ParamsLocal.OP_BORRAR_COBRANZA);
+		this.opAnularCobranza = this.operacionHabilitada(ParamsLocal.OP_ANULAR_COBRANZA);
 
 	}
-	
+
 	@Command
 	@NotifyChange("*")
 	public void limpiar() {
-		
+
 		cobranzaSelected = new Cobranza();
-		verCobranza = false;
-		lDetallesCobros = new ArrayList<CobranzaDetalleCobro>();
-		lDetalles = new ArrayList<CobranzaDetalle>();
+
+		this.lDetallesCobros = new ArrayList<CobranzaDetalleCobro>();
+		this.lDetalles = new ArrayList<CobranzaDetalle>();
 		lTiposBuscar = new ArrayList<Object[]>();
 		saldoTotal = 0;
 		saldoVencido = 0;
 		condicionHabilitada = true;
 		this.buscarAlumno = "";
 		this.buscarComprobante = "";
-		this.buscarCondicionVenta ="";
-		
+		this.buscarCondicionVenta = "";
+
 		defaultCobranza();
-		
+
 	}
-	
+
 	private void defaultCobranza() {
-		
+
+		if (!this.opCrearCobranza) {
+
+			this.verCobranza = true;
+
+		} else {
+			this.verCobranza = false;
+		}
 
 		Tipo comprobanteTipo = this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_COMPROBANTE_FACTURA);
 		this.cobranzaSelected.setComprobanteTipo(comprobanteTipo);
 		this.buscarComprobante = comprobanteTipo.getTipo();
-		
-		Tipo condicionVenta = this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_CONDICION_VENTA_CONTADO);
+
+		Tipo condicionVenta = this.reg.getObjectBySigla(Tipo.class.getName(),
+				ParamsLocal.SIGLA_CONDICION_VENTA_CONTADO);
 		this.cobranzaSelected.setCondicionVentaTipo(condicionVenta);
 		this.buscarCondicionVenta = condicionVenta.getTipo();
-		
+
 	}
-	
-	
 
 	// Seccion Buscar Alumno
 	private List<Object[]> lAlumnosbuscarOri;
@@ -118,7 +137,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	@Command
-	@NotifyChange({"buscarAlumno","saldoTotal","saldoVencido"})
+	@NotifyChange({ "buscarAlumno", "saldoTotal", "saldoVencido" })
 	public void onSelectAlumno(@BindingParam("id") long id) {
 
 		this.buscarSelectedAlumno = this.reg.getObjectById(Alumno.class.getName(), id);
@@ -127,35 +146,75 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 		if (buscarSelectedAlumno.getPersonaFacturacion() == null) {
 
-			
+			if (buscarSelectedAlumno.getPersona().getRazonSocial()!= null 
+					&& buscarSelectedAlumno.getPersona().getRazonSocial().length() > 0) {
+
+				this.cobranzaSelected.setRazonSocial(buscarSelectedAlumno.getPersona().getRazonSocial());
+
+			} else {
+
+				this.cobranzaSelected.setRazonSocial(buscarSelectedAlumno.getPersona().getNombreCompleto());
+
+			}
+
+			if (buscarSelectedAlumno.getPersona().getRuc() != null
+					&& buscarSelectedAlumno.getPersona().getRuc().length() > 0) {
+
+				this.cobranzaSelected.setRuc(buscarSelectedAlumno.getPersona().getRuc());
+
+			} else {
+
+				this.cobranzaSelected.setRuc(buscarSelectedAlumno.getPersona().getDocumentoNum());
+			}
+
+			this.cobranzaSelected.setDireccion(buscarSelectedAlumno.getPersona().getDireccion());
+			this.cobranzaSelected.setTelefono(buscarSelectedAlumno.getPersona().getTelefono());
 
 		} else {
 
-			
+			if (buscarSelectedAlumno.getPersonaFacturacion().getRazonSocial() != null
+					&& buscarSelectedAlumno.getPersonaFacturacion().getRazonSocial().length() > 0) {
+
+				this.cobranzaSelected.setRazonSocial(buscarSelectedAlumno.getPersonaFacturacion().getRazonSocial());
+
+			} else {
+
+				this.cobranzaSelected.setRazonSocial(buscarSelectedAlumno.getPersonaFacturacion().getNombreCompleto());
+
+			}
+
+			if (buscarSelectedAlumno.getPersona().getRuc()!= null
+					&& buscarSelectedAlumno.getPersona().getRuc().length() > 0) {
+
+				this.cobranzaSelected.setRuc(buscarSelectedAlumno.getPersonaFacturacion().getRuc());
+
+			} else {
+
+				this.cobranzaSelected.setRuc(buscarSelectedAlumno.getPersonaFacturacion().getDocumentoNum());
+			}
+
+			this.cobranzaSelected.setDireccion(buscarSelectedAlumno.getPersonaFacturacion().getDireccion());
+			this.cobranzaSelected.setTelefono(buscarSelectedAlumno.getPersonaFacturacion().getTelefono());
 
 		}
-		
-		String sqlSaldoTotal = this.um.getSql("saldoTotalPorAlumno.sql").replace("?1", this.buscarSelectedAlumno.getAlumnoid()+"");
+
+		String sqlSaldoTotal = this.um.getSql("saldoTotalPorAlumno.sql").replace("?1",
+				this.buscarSelectedAlumno.getAlumnoid() + "");
 		List<Object[]> resultSaldoTotal = this.reg.sqlNativo(sqlSaldoTotal);
 		this.saldoTotal = 0;
 		if (resultSaldoTotal.size() > 0) {
 			this.saldoTotal = Double.parseDouble(resultSaldoTotal.get(0)[1].toString());
 		}
-		
-		
-		String sqlSaldoVencido = this.um.getSql("saldoVencidoPorAlumno.sql").replace("?1", this.buscarSelectedAlumno.getAlumnoid()+"");
+
+		String sqlSaldoVencido = this.um.getSql("saldoVencidoPorAlumno.sql").replace("?1",
+				this.buscarSelectedAlumno.getAlumnoid() + "");
 		List<Object[]> resultSaldoVencido = this.reg.sqlNativo(sqlSaldoVencido);
 		this.saldoVencido = 0;
 		if (resultSaldoVencido.size() > 0) {
-			this.saldoVencido = Double.parseDouble(resultSaldoVencido.get(0)[1].toString());			
+			this.saldoVencido = Double.parseDouble(resultSaldoVencido.get(0)[1].toString());
 		}
-		
-		
-		
 
 	}
-	
-	
 
 	// fin Buscar Alumno
 
@@ -194,9 +253,11 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 		}
 
-		this.lEstadosCuentas = this.reg.getAllObjectsByCondicionOrder(EstadoCuenta.class.getName(), "alumnoid = "
-				+ this.cobranzaSelected.getAlumno().getAlumnoid() + "AND monto > (pago+montodescuento) AND inactivo = FALSE " + condicion2,
-				"vencimiento asc");
+		this.lEstadosCuentas = this.reg
+				.getAllObjectsByCondicionOrder(EstadoCuenta.class.getName(),
+						"alumnoid = " + this.cobranzaSelected.getAlumno().getAlumnoid()
+								+ "AND monto > (pago+montodescuento) AND inactivo = FALSE " + condicion2,
+						"vencimiento asc");
 
 		modal = (Window) Executions.createComponents("/instituto/zul/administracion/cobranzaDetalleModal.zul",
 				this.mainComponent, null);
@@ -227,7 +288,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	@Command
-	@NotifyChange({"lDetalles","totalDetalle"})
+	@NotifyChange({ "lDetalles", "totalDetalle", "totalesDifrencia","iva10","iva5","exento" })
 	public void agregarCobranzaDetalle() {
 
 		for (EstadoCuenta x : this.lEstadosCuentasAux) {
@@ -237,7 +298,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			cobranzaDetalle = buscarDescuento(cobranzaDetalle);
 			cobranzaDetalle.setMonto(cobranzaDetalle.getSaldo());
 			this.lDetalles.add(cobranzaDetalle);
-			
+
 		}
 
 		this.lEstadosCuentasAux = new ArrayList<EstadoCuenta>();
@@ -245,47 +306,47 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	private CobranzaDetalle buscarDescuento(CobranzaDetalle cobranzaDetalle) {
-		
+
 		if (cobranzaDetalle.getEstadoCuenta().getPago() == 0) {
-	
+
 			String sql = this.um.getSql("bucarDescuentoConvenio.sql")
 					.replace("?1", cobranzaDetalle.getEstadoCuenta().getCursoVigente().getCursovigenteid() + "")
 					.replace("?2", cobranzaDetalle.getEstadoCuenta().getConcepto().getConceptoid() + "")
 					.replace("?3", cobranzaDetalle.getEstadoCuenta().getAlumno().getAlumnoid() + "");
-	
+
 			List<Object[]> result = this.reg.sqlNativo(sql);
-	
+
 			if (result.size() > 0) {
-	
+
 				boolean porcentaje = Boolean.parseBoolean(result.get(0)[5].toString());
 				double importe = Double.parseDouble(result.get(0)[4].toString());
 				String[] periodos = result.get(0)[6].toString().split(",");
-	
+
 				for (int i = 0; i < periodos.length - 1; i++) {
-	
+
 					int periodo = Integer.parseInt(periodos[i]);
-	
+
 					if (periodo == -1 || cobranzaDetalle.getEstadoCuenta().getPeriodo() == periodo) {
-	
+
 						if (porcentaje) {
-	
+
 							double porcentajeCalculo = importe / 100;
-	
+
 							double descuento = cobranzaDetalle.getEstadoCuenta().getMonto() / porcentajeCalculo;
-	
+
 							cobranzaDetalle.setMontoDescuento(descuento);
-	
+
 						} else {
-	
+
 							cobranzaDetalle.setMontoDescuento(importe);
-	
+
 						}
 					}
-	
+
 				}
-	
+
 			}
-		
+
 		}
 
 		return cobranzaDetalle;
@@ -338,18 +399,18 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	};
 
 	@Command
-	@NotifyChange({"lDetallesCobros","totalDetalleCobro"})
+	@NotifyChange({ "lDetallesCobros", "totalDetalleCobro", "totalesDiferencia" })
 	public void agregarCobranzaDetalleCobro() {
-		
+
 		for (CobranzaDetalleCobro x : this.lDetallesCobros) {
-			
+
 			if (x.getFormaPago().getSigla().compareTo(cobranzaDetalleCobroSelected.getFormaPago().getSigla()) == 0) {
-				
-				this.mensajeInfo("Ya existe una Forma de Pago "+x.getFormaPago().getTipo());
-				
+
+				this.mensajeInfo("Ya existe una Forma de Pago " + x.getFormaPago().getTipo());
+
 				return;
 			}
-			
+
 		}
 
 		this.lDetallesCobros.add(cobranzaDetalleCobroSelected);
@@ -530,58 +591,55 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		generarListaBuscarTipo(ParamsLocal.SIGLA_COMPROBANTE);
 
 	}
-	
+
 	@Command
 	@NotifyChange("lTiposBuscar")
 	public void generarListaBuscarCondicionVenta() {
-		
+
 		if (this.cobranzaSelected.getComprobanteTipo() == null) {
-			
+
 			this.mensajeInfo("Seleccione un Comprobante Primero");
-			
+
 			return;
-			
+
 		}
 
 		generarListaBuscarTipo(ParamsLocal.SIGLA_CONDICION_VENTA);
 
 	}
 
-
 	@Command
 	@NotifyChange("buscarMoneda")
 	public void onSelectMoneda(@BindingParam("id") long id) {
 
 		Tipo tipo = this.reg.getObjectById(Tipo.class.getName(), id);
-		
-		Cotizacion cotizacion = this.reg.getObjectByCondicion(Cotizacion.class.getName(), 
-				" monedaTipoid =  "+tipo.getTipoid()+" "
-				+"AND fecha = current_date ");
-		
+
+		Cotizacion cotizacion = this.reg.getObjectByCondicion(Cotizacion.class.getName(),
+				" monedaTipoid =  " + tipo.getTipoid() + " " + "AND fecha = current_date ");
+
 		if (tipo.getSigla().compareTo(ParamsLocal.SIGLA_MONEDA_GUARANI) != 0 && cotizacion == null) {
-		
+
 			this.mensajeInfo("No existe cotizacion de la moneda para la fecha de hoy.");
-				
+
 			return;
-			
+
 		}
-		
-		this.cobranzaDetalleCobroSelected.setMonedaTipo(tipo);				
-		
+
+		this.cobranzaDetalleCobroSelected.setMonedaTipo(tipo);
+
 		if (tipo.getSigla().compareTo(ParamsLocal.SIGLA_MONEDA_GUARANI) == 0) {
-			
+
 			this.cobranzaDetalleCobroSelected.setMonedaCambio(1);
-			
-		}else {
-			
+
+		} else {
+
 			this.cobranzaDetalleCobroSelected.setMonedaCambio(cotizacion.getCompra());
-			
+
 		}
-		
+
 		this.buscarMoneda = tipo.getTipo();
 		this.filtroBuscarTipo = "";
-		
-		
+
 	}
 
 	@Command
@@ -597,32 +655,34 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	@Command
-	@NotifyChange({"buscarComprobante","condicionHabilitada","buscarCondicionVenta"})
+	@NotifyChange({ "buscarComprobante", "condicionHabilitada", "buscarCondicionVenta" })
 	public void onSelectComprobante(@BindingParam("id") long id) {
 
 		Tipo comprobante = this.reg.getObjectById(Tipo.class.getName(), id);
 		this.cobranzaSelected.setComprobanteTipo(comprobante);
 		this.buscarComprobante = comprobante.getTipo();
 		this.filtroBuscarTipo = "";
-		
-		if (this.cobranzaSelected.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_FACTURA)==0) {
-			
+
+		if (this.cobranzaSelected.getComprobanteTipo().getSigla()
+				.compareTo(ParamsLocal.SIGLA_COMPROBANTE_FACTURA) == 0) {
+
 			this.condicionHabilitada = true;
 			Tipo condicion = this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_CONDICION_VENTA_CONTADO);
 			this.cobranzaSelected.setCondicionVentaTipo(condicion);
 			this.buscarCondicionVenta = this.cobranzaSelected.getCondicionVentaTipo().getTipo();
 		}
-		
-		if (this.cobranzaSelected.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_RECIBO)==0) {
-			
+
+		if (this.cobranzaSelected.getComprobanteTipo().getSigla()
+				.compareTo(ParamsLocal.SIGLA_COMPROBANTE_RECIBO) == 0) {
+
 			this.condicionHabilitada = false;
 			this.cobranzaSelected.setCondicionVentaTipo(null);
-			this.buscarCondicionVenta ="";
-			
+			this.buscarCondicionVenta = "";
+
 		}
-		
+
 	}
-	
+
 	@Command
 	@NotifyChange("buscarCondicionVenta")
 	public void onSelectCondicionVenta(@BindingParam("id") long id) {
@@ -631,49 +691,54 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		this.cobranzaSelected.setCondicionVentaTipo(condicionVenta);
 		this.buscarCondicionVenta = condicionVenta.getTipo();
 		this.filtroBuscarTipo = "";
-		
+
 	}
 
 	// fin buscarTipo
-	
+
 	@Command
 	public void guaradarCobranza() {
-		
+
+		if (!this.opCrearCobranza) {
+
+			this.mensajeInfo("No tienes permisos para gestionar una cobranza.");
+			return;
+		}
+
 		if (this.cobranzaSelected.getComprobanteTipo() == null) {
-			
+
 			this.mensajeInfo("No hay Comprobante seleccionado.");
 			return;
-			
+
 		}
-		
+
 		if (this.lDetalles.size() == 0) {
-			
+
 			this.mensajeInfo("No hay Detalles agregados.");
 			return;
-			
+
 		}
-		
+
 		if (this.lDetallesCobros.size() == 0) {
-			
+
 			this.mensajeInfo("No hay Tipos de Pagos agregados.");
 			return;
-			
-		}		
-		
+
+		}
+
 		if (!this.existeComprobante()) {
-			
+
 			this.mensajeInfo("No hay comprobante vigente para esta operacion.");
 			return;
-			
+
 		}
-		
-		if (this.getTotalDetalle() != this.getTotalDetalleCobro()) {
-			
+
+		if (this.getTotalDetalle() > this.getTotalDetalleCobro()) {
+
 			this.mensajeInfo("El tipo de Pago total no se ajusta al monto total de los detalles.");
 			return;
-			
+
 		}
-		
 
 		EventListener event = new EventListener() {
 
@@ -689,121 +754,153 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			}
 
 		};
-		
+
 		this.mensajeEliminar("Se empezara a procesar el cobro. \n Continuar?", event);
-		
+
 	}
-	
+
+	@Command
+	@NotifyChange({"totalDetalle","iva10","iva5","exento"})
 	public double getTotalDetalle() {
-		
+
 		double totalDetalle = 0;
-		
+		this.iva10 = 0;
+		this.iva5 = 0;
+		this.exento = 0;
+
 		for (CobranzaDetalle x : lDetalles) {
-			
+
 			totalDetalle += x.getMonto();
 			
+			if (x.getEstadoCuenta().getConcepto().getImpuestoTipo().getSigla().compareTo(ParamsLocal.SIGLA_IMPUESTO_IVA_EXENTO)==0) {
+				
+				this.exento += x.getMonto();
+				
+			}
+			
+			if (x.getEstadoCuenta().getConcepto().getImpuestoTipo().getSigla().compareTo(ParamsLocal.SIGLA_IMPUESTO_IVA_10)==0) {
+				
+				this.iva10 = +x.getMonto()/11;
+				
+			}
+			
+			if (x.getEstadoCuenta().getConcepto().getImpuestoTipo().getSigla().compareTo(ParamsLocal.SIGLA_IMPUESTO_IVA_5)==0) {
+				
+				this.iva5 += x.getMonto()/21;
+				
+			}
+
 		}
-		
+
 		return totalDetalle;
 	}
-	
+
 	public double getTotalDetalleCobro() {
-		
+
 		double totalDetalleCobro = 0;
-		
+
 		for (CobranzaDetalleCobro x : lDetallesCobros) {
-			
-			totalDetalleCobro += x.getMonto()*x.getMonedaCambio();
-			
+
+			totalDetalleCobro += x.getMonto() * x.getMonedaCambio();
+
 		}
-		
+
 		return totalDetalleCobro;
-		
+
 	}
 	
 	
+
+	public double getTotalesDiferencia() {
+
+		return getTotalDetalleCobro() - getTotalDetalle();
+
+	}
+
 	private void procesarCobranza() {
-		
+
 		String comprobanteNum = this.getNumeroComprobante();
 		this.cobranzaSelected.setComprobanteNum(comprobanteNum);
 		
+		this.cobranzaSelected.setTotalDetalle(this.getTotalDetalle());
+		this.cobranzaSelected.setTotalDetalleCobro(this.getTotalDetalleCobro());
+		
+		this.cobranzaSelected.setExento(this.exento);
+		this.cobranzaSelected.setIva10(this.iva10);
+		this.cobranzaSelected.setIva5(this.iva5);
+		
+
 		this.cobranzaSelected = this.save(this.cobranzaSelected);
-		
+
 		for (CobranzaDetalle x : lDetalles) {
-			
-			x.setCobranza(this.cobranzaSelected);			
-			this.save(x);
-			
-			x.getEstadoCuenta().setPago(x.getEstadoCuenta().getPago()+x.getMonto());
-			x.getEstadoCuenta().setMontoDescuento(x.getMontoDescuento());
-			
-			this.save(x.getEstadoCuenta());
-			
-		}
-		
-		for (CobranzaDetalleCobro x : lDetallesCobros) {
-			
+
 			x.setCobranza(this.cobranzaSelected);
 			this.save(x);
-			
+
+			x.getEstadoCuenta().setPago(x.getEstadoCuenta().getPago() + x.getMonto());
+			x.getEstadoCuenta().setMontoDescuento(x.getMontoDescuento());
+
+			this.save(x.getEstadoCuenta());
+
 		}
-		
+
+		for (CobranzaDetalleCobro x : lDetallesCobros) {
+
+			x.setCobranza(this.cobranzaSelected);
+			this.save(x);
+
+		}
+
 		this.verCobranza = true;
-		
+
 		BindUtils.postNotifyChange(null, null, this, "*");
-		
+
 	}
-	
+
 	private boolean existeComprobante() {
-		
-		Comprobante comprobante = this.reg.getObjectByCondicion(Comprobante.class.getName(), 
-				"activo = true "+
-				"AND sedeid = "+this.getCurrentSede().getSedeid()+" "+
-				"AND comprobantetipoid = "+this.cobranzaSelected.getComprobanteTipo().getTipoid()+" "+
-				"AND emision <= current_date "+
-				"AND vencimiento >= current_date "+
-				"AND siguiente <= fin ");
-		
+
+		Comprobante comprobante = this.reg.getObjectByCondicion(Comprobante.class.getName(),
+				"activo = true " + "AND sedeid = " + this.getCurrentSede().getSedeid() + " "
+						+ "AND comprobantetipoid = " + this.cobranzaSelected.getComprobanteTipo().getTipoid() + " "
+						+ "AND emision <= current_date " + "AND vencimiento >= current_date "
+						+ "AND siguiente <= fin ");
+
 		if (comprobante == null) {
-			
+
 			return false;
 		}
-		
+
 		return true;
-		
+
 	}
-	
+
 	private synchronized String getNumeroComprobante() {
-		
-		StringBuffer out = new StringBuffer();;
-		
-		Comprobante comprobante = this.reg.getObjectByCondicion(Comprobante.class.getName(), 
-				"activo = true "+
-				"AND sedeid = "+this.getCurrentSede().getSedeid()+" "+
-				"AND comprobantetipoid = "+this.cobranzaSelected.getComprobanteTipo().getTipoid()+" "+
-				"AND emision <= current_date "+
-				"AND vencimiento >= current_date "+
-				"AND siguiente <= fin ");
-		
-		out.append(this.getCurrentSede().getEstablecimiento()+"-"+comprobante.getPuntoExpdicion()+"-");
-		
-		
-		for (int i = 0 ; i < 7-comprobante.getSiguiente().toString().length() ; i++) {
-	
+
+		StringBuffer out = new StringBuffer();
+		;
+
+		Comprobante comprobante = this.reg.getObjectByCondicion(Comprobante.class.getName(),
+				"activo = true " + "AND sedeid = " + this.getCurrentSede().getSedeid() + " "
+						+ "AND comprobantetipoid = " + this.cobranzaSelected.getComprobanteTipo().getTipoid() + " "
+						+ "AND emision <= current_date " + "AND vencimiento >= current_date "
+						+ "AND siguiente <= fin ");
+
+		out.append(this.getCurrentSede().getEstablecimiento() + "-" + comprobante.getPuntoExpdicion() + "-");
+
+		for (int i = 0; i < 7 - comprobante.getSiguiente().toString().length(); i++) {
+
 			out.append("0");
-			
+
 		}
-		
+
 		out.append(comprobante.getSiguiente());
-		
-		comprobante.setSiguiente(comprobante.getSiguiente()+1);
-		
+
+		comprobante.setSiguiente(comprobante.getSiguiente() + 1);
+
 		this.save(comprobante);
-		
+
 		return out.toString();
 	}
-	
-	
 
 	public Cobranza getCobranzaSelected() {
 		return cobranzaSelected;
@@ -971,6 +1068,62 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	public void setVerCobranza(boolean verCobranza) {
 		this.verCobranza = verCobranza;
+	}
+
+	public double getIva10() {
+		return iva10;
+	}
+
+	public void setIva10(double iva10) {
+		this.iva10 = iva10;
+	}
+
+	public double getIva5() {
+		return iva5;
+	}
+
+	public void setIva5(double iva5) {
+		this.iva5 = iva5;
+	}
+
+	public boolean isOpCrearCobranza() {
+		return opCrearCobranza;
+	}
+
+	public void setOpCrearCobranza(boolean opCrearCobranza) {
+		this.opCrearCobranza = opCrearCobranza;
+	}
+
+	public boolean isOpEditarCobranza() {
+		return opEditarCobranza;
+	}
+
+	public void setOpEditarCobranza(boolean opEditarCobranza) {
+		this.opEditarCobranza = opEditarCobranza;
+	}
+
+	public boolean isOpBorrarCobranza() {
+		return opBorrarCobranza;
+	}
+
+	public void setOpBorrarCobranza(boolean opBorrarCobranza) {
+		this.opBorrarCobranza = opBorrarCobranza;
+	}
+
+	public boolean isOpAnularCobranza() {
+		return opAnularCobranza;
+	}
+
+	public void setOpAnularCobranza(boolean opAnularCobranza) {
+		this.opAnularCobranza = opAnularCobranza;
+	}
+
+	public double getExento() {
+		return exento;
+	}
+
+	public void setExento(double exento) {
+		this.exento = exento;
 	}
 
 }

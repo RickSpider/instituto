@@ -57,6 +57,13 @@ public class Cobranza extends Modelo implements Serializable {
 	private String direccion;
 	private String telefono;
 	
+	private double iva10;
+	private double iva5;
+	private double exento;
+	
+	private double totalDetalle;
+	private double totalDetalleCobro;
+	
 	@Override
 	public Object[] getArrayObjectDatos() {
 		// TODO Auto-generated method stub
@@ -151,6 +158,46 @@ public class Cobranza extends Modelo implements Serializable {
 
 	public void setCondicionVentaTipo(Tipo condicionVentaTipo) {
 		this.condicionVentaTipo = condicionVentaTipo;
+	}
+
+	public double getIva10() {
+		return iva10;
+	}
+
+	public void setIva10(double iva10) {
+		this.iva10 = iva10;
+	}
+
+	public double getIva5() {
+		return iva5;
+	}
+
+	public void setIva5(double iva5) {
+		this.iva5 = iva5;
+	}
+
+	public double getExento() {
+		return exento;
+	}
+
+	public void setExento(double exento) {
+		this.exento = exento;
+	}
+
+	public double getTotalDetalle() {
+		return totalDetalle;
+	}
+
+	public void setTotalDetalle(double totalDetalle) {
+		this.totalDetalle = totalDetalle;
+	}
+
+	public double getTotalDetalleCobro() {
+		return totalDetalleCobro;
+	}
+
+	public void setTotalDetalleCobro(double totalDetalleCobro) {
+		this.totalDetalleCobro = totalDetalleCobro;
 	}
 
 }
