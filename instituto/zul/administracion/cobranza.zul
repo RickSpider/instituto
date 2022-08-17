@@ -522,7 +522,7 @@
 
 					<button label="COBRAR"
 						onClick="@command('guaradarCobranza')"
-						style="background-color:green" disable="@load(vm.verCobranza)" />
+						style="background-color:green" disabled="@load(vm.verCobranza)" />
 					<button label="LIMPIAR"
 						onClick="@command('limpiar')" />
 

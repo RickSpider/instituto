@@ -698,6 +698,12 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	@Command
 	public void guaradarCobranza() {
+		
+		if (this.verCobranza) {
+			
+			return;
+			
+		}
 
 		if (!this.opCrearCobranza) {
 
