@@ -36,7 +36,7 @@ public class ParamsLocal extends Params {
 	public static final String SIGLA_FORMA_PAGO_TARJETA_DEBITO="FORMA_PAGO_TARJETA_DEBITO";
 	public static final String SIGLA_FORMA_PAGO_TARJETA_CREDITO="FORMA_PAGO_TARJETA_CREDITO";
 	public static final String SIGLA_FORMA_PAGO_GIRO="FORMA_PAGO_GIRO";
-	public static final String SIGLA_FORMA_PAGO_QR="FORMA_PAGO_GIRO";
+	public static final String SIGLA_FORMA_PAGO_QR="FORMA_PAGO_QR";
 	public static final String SIGLA_FORMA_PAGO_CHEQUE="FORMA_PAGO_CHEQUE";
 	public static final String SIGLA_CONDICION_VENTA="CONDICION_VENTA";
 	public static final String SIGLA_CONDICION_VENTA_CONTADO="CONDICION_VENTA_CONTADO";

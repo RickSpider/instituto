@@ -212,6 +212,13 @@
 			<tablechildren>
 				<textbox value="@bind(vm.cobranzaDetalleCobroSelected.transaccionNum)" disabled="@load(vm.camposCobroModal[2])"/>
 			</tablechildren>
+			
+			<tablechildren>
+				<label value="Autorizacion #:" />
+			</tablechildren>
+			<tablechildren>
+				<longbox value="@bind(vm.cobranzaDetalleCobroSelected.autorizacionNum)" disabled="@load(vm.camposCobroModal[7])"/>
+			</tablechildren>
 
 			<tablechildren>
 				<label value="Cheque #:" />

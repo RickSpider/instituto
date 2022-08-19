@@ -412,6 +412,12 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			}
 
 		}
+		
+		if (cobranzaDetalleCobroSelected.getMonto() <=0 ) {
+			
+			this.mensajeInfo("El monto no puede ser 0 (cero).");
+			return;
+		}
 
 		this.lDetallesCobros.add(cobranzaDetalleCobroSelected);
 
@@ -433,7 +439,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	}
 
-	private boolean[] camposCobroModal = new boolean[7];
+	private boolean[] camposCobroModal = new boolean[8];
 
 	private void desabilitarCampos() {
 
@@ -465,6 +471,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			camposCobroModal[2] = false;
 			camposCobroModal[4] = false;
 			camposCobroModal[5] = false;
+			camposCobroModal[7] = false;
 
 		}
 
