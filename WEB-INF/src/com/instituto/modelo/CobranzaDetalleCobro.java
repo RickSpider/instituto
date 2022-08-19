@@ -45,7 +45,7 @@ public class CobranzaDetalleCobro  extends Modelo implements Serializable{
 	private String chequeNum;
 	
 	private String Titular;
-	
+	private Long autorizacionNum;
 	
 	
 	@Temporal(TemporalType.DATE)
@@ -174,6 +174,14 @@ public class CobranzaDetalleCobro  extends Modelo implements Serializable{
 
 	public void setMonedaCambio(double monedaCambio) {
 		this.monedaCambio = monedaCambio;
+	}
+
+	public Long getAutorizacionNum() {
+		return autorizacionNum;
+	}
+
+	public void setAutorizacionNum(Long autorizacionNum) {
+		this.autorizacionNum = autorizacionNum;
 	}
 	
 }
