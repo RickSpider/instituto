@@ -525,6 +525,10 @@
 						style="background-color:green" disabled="@load(vm.verCobranza)" />
 					<button label="LIMPIAR"
 						onClick="@command('limpiar')" />
+						
+					<button label="Reporte"
+							onClick="@command('generarReporte')" 
+							/>
 
 				</hlayout>
 

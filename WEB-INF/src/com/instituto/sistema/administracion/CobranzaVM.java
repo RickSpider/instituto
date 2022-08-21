@@ -1,7 +1,10 @@
 package com.instituto.sistema.administracion;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
@@ -17,6 +20,9 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
 import com.doxacore.modelo.Tipo;
+import com.doxacore.report.CustomDataSource;
+import com.doxacore.report.ReportConfig;
+import com.doxacore.util.PasarNumerosLetras;
 import com.instituto.modelo.Alumno;
 import com.instituto.modelo.Cobranza;
 import com.instituto.modelo.CobranzaDetalle;
@@ -41,7 +47,6 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	private double iva5 = 0;
 	private double exento = 0;
 	private boolean condicionHabilitada = true;
-	
 
 	private boolean opCrearCobranza;
 	private boolean opEditarCobranza;
@@ -146,7 +151,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 		if (buscarSelectedAlumno.getPersonaFacturacion() == null) {
 
-			if (buscarSelectedAlumno.getPersona().getRazonSocial()!= null 
+			if (buscarSelectedAlumno.getPersona().getRazonSocial() != null
 					&& buscarSelectedAlumno.getPersona().getRazonSocial().length() > 0) {
 
 				this.cobranzaSelected.setRazonSocial(buscarSelectedAlumno.getPersona().getRazonSocial());
@@ -183,7 +188,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 			}
 
-			if (buscarSelectedAlumno.getPersona().getRuc()!= null
+			if (buscarSelectedAlumno.getPersona().getRuc() != null
 					&& buscarSelectedAlumno.getPersona().getRuc().length() > 0) {
 
 				this.cobranzaSelected.setRuc(buscarSelectedAlumno.getPersonaFacturacion().getRuc());
@@ -253,11 +258,10 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 		}
 
-		this.lEstadosCuentas = this.reg
-				.getAllObjectsByCondicionOrder(EstadoCuenta.class.getName(),
-						"alumnoid = " + this.cobranzaSelected.getAlumno().getAlumnoid()
-								+ "AND monto > (pago+montodescuento) AND inactivo = FALSE " + condicion2,
-						"cursovigenteid asc, vencimiento asc, conceptoid asc ");
+		this.lEstadosCuentas = this.reg.getAllObjectsByCondicionOrder(EstadoCuenta.class.getName(),
+				"alumnoid = " + this.cobranzaSelected.getAlumno().getAlumnoid()
+						+ "AND monto > (pago+montodescuento) AND inactivo = FALSE " + condicion2,
+				"cursovigenteid asc, vencimiento asc, conceptoid asc ");
 
 		modal = (Window) Executions.createComponents("/instituto/zul/administracion/cobranzaDetalleModal.zul",
 				this.mainComponent, null);
@@ -288,7 +292,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	@Command
-	@NotifyChange({ "lDetalles", "totalDetalle", "totalesDifrencia","iva10","iva5","exento" })
+	@NotifyChange({ "lDetalles", "totalDetalle", "totalesDifrencia", "iva10", "iva5", "exento" })
 	public void agregarCobranzaDetalle() {
 
 		for (EstadoCuenta x : this.lEstadosCuentasAux) {
@@ -412,9 +416,9 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			}
 
 		}
-		
-		if (cobranzaDetalleCobroSelected.getMonto() <=0 ) {
-			
+
+		if (cobranzaDetalleCobroSelected.getMonto() <= 0) {
+
 			this.mensajeInfo("El monto no puede ser 0 (cero).");
 			return;
 		}
@@ -705,11 +709,11 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	@Command
 	public void guaradarCobranza() {
-		
+
 		if (this.verCobranza) {
-			
+
 			return;
-			
+
 		}
 
 		if (!this.opCrearCobranza) {
@@ -724,7 +728,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			return;
 
 		}
-		
+
 		if (this.lDetalles.size() == 0) {
 
 			this.mensajeInfo("No hay Detalles agregados.");
@@ -773,7 +777,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	@Command
-	@NotifyChange({"totalDetalle","iva10","iva5","exento"})
+	@NotifyChange({ "totalDetalle", "iva10", "iva5", "exento" })
 	public double getTotalDetalle() {
 
 		double totalDetalle = 0;
@@ -784,23 +788,26 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		for (CobranzaDetalle x : lDetalles) {
 
 			totalDetalle += x.getMonto();
-			
-			if (x.getEstadoCuenta().getConcepto().getImpuestoTipo().getSigla().compareTo(ParamsLocal.SIGLA_IMPUESTO_IVA_EXENTO)==0) {
-				
+
+			if (x.getEstadoCuenta().getConcepto().getImpuestoTipo().getSigla()
+					.compareTo(ParamsLocal.SIGLA_IMPUESTO_IVA_EXENTO) == 0) {
+
 				this.exento += x.getMonto();
-				
+
 			}
-			
-			if (x.getEstadoCuenta().getConcepto().getImpuestoTipo().getSigla().compareTo(ParamsLocal.SIGLA_IMPUESTO_IVA_10)==0) {
-				
-				this.iva10 = +x.getMonto()/11;
-				
+
+			if (x.getEstadoCuenta().getConcepto().getImpuestoTipo().getSigla()
+					.compareTo(ParamsLocal.SIGLA_IMPUESTO_IVA_10) == 0) {
+
+				this.iva10 = +x.getMonto() / 11;
+
 			}
-			
-			if (x.getEstadoCuenta().getConcepto().getImpuestoTipo().getSigla().compareTo(ParamsLocal.SIGLA_IMPUESTO_IVA_5)==0) {
-				
-				this.iva5 += x.getMonto()/21;
-				
+
+			if (x.getEstadoCuenta().getConcepto().getImpuestoTipo().getSigla()
+					.compareTo(ParamsLocal.SIGLA_IMPUESTO_IVA_5) == 0) {
+
+				this.iva5 += x.getMonto() / 21;
+
 			}
 
 		}
@@ -821,8 +828,6 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		return totalDetalleCobro;
 
 	}
-	
-	
 
 	public double getTotalesDiferencia() {
 
@@ -834,14 +839,13 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 		String comprobanteNum = this.getNumeroComprobante();
 		this.cobranzaSelected.setComprobanteNum(comprobanteNum);
-		
+
 		this.cobranzaSelected.setTotalDetalle(this.getTotalDetalle());
 		this.cobranzaSelected.setTotalDetalleCobro(this.getTotalDetalleCobro());
-		
+
 		this.cobranzaSelected.setExento(this.exento);
 		this.cobranzaSelected.setIva10(this.iva10);
 		this.cobranzaSelected.setIva5(this.iva5);
-		
 
 		this.cobranzaSelected = this.save(this.cobranzaSelected);
 
@@ -913,6 +917,38 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 		return out.toString();
 	}
+
+	// ========================Seccion Reportes ============================
+
+	private ReportConfig reportConfig = null;
+
+	@Command("generarReporte")
+	@NotifyChange("reportConfig")
+	public void generarReporte() {
+		
+		Cobranza cobranza = this.reg.getObjectById(Cobranza.class.getName(), 1);
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("Fecha", cobranza.getFecha());
+		params.put("RazonSocial", cobranza.getRazonSocial());
+		params.put("Ruc", cobranza.getRuc());
+		params.put("ComprobanteNum", cobranza.getComprobanteNum());
+		params.put("Total", cobranza.getTotalDetalle());
+		params.put("TotalLetras",new PasarNumerosLetras().Convertir(String.valueOf((int) cobranza.getTotalDetalle()), true));
+		
+		String cobranzaDetalle = this.um.getSql("reciboReporte.sql").replace("?1", 1+"");
+		
+		List<Object[]> data = this.reg.sqlNativo(cobranzaDetalle);
+		String[] columns = {"concepto", "periodo", "monto"};
+		
+		CustomDataSource cds = new CustomDataSource(data, columns);
+		
+		reportConfig = new ReportConfig(this.mainComponent, "reciboReport.jasper", cds ,params);
+		reportConfig.showReport();
+
+	}
+
+	// =====================================================================
 
 	public Cobranza getCobranzaSelected() {
 		return cobranzaSelected;
@@ -1136,6 +1172,14 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	public void setExento(double exento) {
 		this.exento = exento;
+	}
+
+	public ReportConfig getReportConfig() {
+		return reportConfig;
+	}
+
+	public void setReportConfig(ReportConfig reportConfig) {
+		this.reportConfig = reportConfig;
 	}
 
 }
