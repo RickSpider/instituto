@@ -16,17 +16,11 @@ import org.zkoss.zk.ui.util.Notification;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
-import com.doxacore.TemplateViewModel;
-import com.doxacore.report.CustomDataSource;
-import com.doxacore.report.ReportConfig;
+
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
-import com.doxacore.util.UtilStaticMetodos;
 import com.instituto.modelo.Convenio;
 import com.instituto.modelo.ConvenioAlumno;
-import com.instituto.modelo.ConvenioConcepto;
-import com.instituto.modelo.ConvenioConceptoPK;
-import com.instituto.modelo.Convenio;
 import com.instituto.modelo.ConvenioConcepto;
 import com.instituto.modelo.Institucion;
 import com.instituto.modelo.Alumno;
