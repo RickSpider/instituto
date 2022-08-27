@@ -1,10 +1,7 @@
 package com.instituto.sistema.administracion;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
@@ -20,16 +17,12 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
 import com.doxacore.modelo.Tipo;
-import com.doxacore.report.CustomDataSource;
-import com.doxacore.report.ReportConfig;
-import com.doxacore.util.PasarNumerosLetras;
 import com.instituto.modelo.Alumno;
 import com.instituto.modelo.Cobranza;
 import com.instituto.modelo.CobranzaDetalle;
 import com.instituto.modelo.CobranzaDetalleCobro;
 import com.instituto.modelo.Comprobante;
 import com.instituto.modelo.Cotizacion;
-import com.instituto.modelo.CursoVigenteConvenio;
 import com.instituto.modelo.Entidad;
 import com.instituto.modelo.EstadoCuenta;
 import com.instituto.util.ParamsLocal;
@@ -871,6 +864,14 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		this.verCobranza = true;
 
 		BindUtils.postNotifyChange(null, null, this, "*");
+		
+		if (this.cobranzaSelected.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_RECIBO) == 0) {
+			
+			this.generarReporteRecibo();
+			
+		}
+		
+		
 
 	}
 
@@ -920,33 +921,13 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	// ========================Seccion Reportes ============================
 
-	private ReportConfig reportConfig = null;
 
-	@Command("generarReporte")
-	@NotifyChange("reportConfig")
-	public void generarReporte() {
+	public void generarReporteRecibo() {
 		
-		Cobranza cobranza = this.reg.getObjectById(Cobranza.class.getName(), 1);
+		Executions.getCurrent().sendRedirect("/instituto/zul/administracion/reciboReporte.zul?id="+this.cobranzaSelected.getCobranzaid(),"_blank");
 		
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("Fecha", cobranza.getFecha());
-		params.put("RazonSocial", cobranza.getRazonSocial());
-		params.put("Ruc", cobranza.getRuc());
-		params.put("ComprobanteNum", cobranza.getComprobanteNum());
-		params.put("Total", cobranza.getTotalDetalle());
-		params.put("TotalLetras",new PasarNumerosLetras().Convertir(String.valueOf((int) cobranza.getTotalDetalle()), true));
-		
-		String cobranzaDetalle = this.um.getSql("reciboReporte.sql").replace("?1", 1+"");
-		
-		List<Object[]> data = this.reg.sqlNativo(cobranzaDetalle);
-		String[] columns = {"concepto", "periodo", "monto"};
-		
-		CustomDataSource cds = new CustomDataSource(data, columns);
-		
-		reportConfig = new ReportConfig(this.mainComponent, "reciboReport.jasper", cds ,params);
-		reportConfig.showReport();
-
 	}
+	
 
 	// =====================================================================
 
@@ -1172,14 +1153,6 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	public void setExento(double exento) {
 		this.exento = exento;
-	}
-
-	public ReportConfig getReportConfig() {
-		return reportConfig;
-	}
-
-	public void setReportConfig(ReportConfig reportConfig) {
-		this.reportConfig = reportConfig;
 	}
 
 }

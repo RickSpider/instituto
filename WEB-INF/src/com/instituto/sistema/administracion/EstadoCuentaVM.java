@@ -8,11 +8,16 @@ import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.zk.ui.Executions;
 
 import com.instituto.modelo.Alumno;
+import com.instituto.modelo.Cobranza;
+import com.instituto.modelo.CobranzaDetalle;
 import com.instituto.modelo.ConvenioAlumno;
 import com.instituto.modelo.CursoVigente;
+import com.instituto.modelo.CursoVigenteAlumno;
 import com.instituto.modelo.EstadoCuenta;
+import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
 
 public class EstadoCuentaVM extends TemplateViewModelLocal {
@@ -20,6 +25,7 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 	private Alumno alumnoSelected;
 	private CursoVigente cursoVigenteSelected;
 	private List<EstadoCuenta> lEstadosCuentas;
+	private List<CobranzaDetalle> lCobranzasDetalles;
 
 	@Init(superclass = true)
 	public void initEstadoCuentaVM() {
@@ -127,6 +133,28 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 				"vencimiento asc");
 
 	}
+	
+	@Command
+	@NotifyChange({ "lCobranzasDetalles" })
+	public void refrescarCobranzaDetalle(@BindingParam("estadoCuenta") EstadoCuenta estadoCuenta) {
+		
+		this.lCobranzasDetalles = this.reg.getAllObjectsByCondicionOrder(CobranzaDetalle.class.getName(),
+				"estadocuentaid = " + estadoCuenta.getEstadocuentaid(), null);
+		
+	}
+	
+	@Command
+	public void verComprobante(@BindingParam("cobranza") Cobranza cobranza) {
+		
+		if (cobranza.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_RECIBO) == 0) {
+			
+			Executions.getCurrent().sendRedirect("/instituto/zul/administracion/reciboReporte.zul?id="+cobranza.getCobranzaid(),"_blank");
+			
+		}
+		
+		
+		
+	}
 
 	public Alumno getAlumnoSelected() {
 		return alumnoSelected;
@@ -182,5 +210,13 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 
 	public void setBuscarCursoVigente(String buscarCursoVigente) {
 		this.buscarCursoVigente = buscarCursoVigente;
+	}
+
+	public List<CobranzaDetalle> getlCobranzasDetalles() {
+		return lCobranzasDetalles;
+	}
+
+	public void setlCobranzasDetalles(List<CobranzaDetalle> lCobranzasDetalles) {
+		this.lCobranzasDetalles = lCobranzasDetalles;
 	}
 }

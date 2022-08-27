@@ -227,6 +227,16 @@
 						</bandpopup>
 					</bandbox>
 				</tablechildren>
+				
+				<!-- <tablechildren style="padding-left: 5px">
+					<label value="Fecha:" />
+				</tablechildren>
+				
+				<tablechildren style="padding-left: 5px">
+					<datebox
+						value="@bind(vm.cobranzaSelected.fecha)"
+						format="short " width="150px"/>
+				</tablechildren> -->
 
 
 			</tablelayout>
@@ -525,10 +535,6 @@
 						style="background-color:green" disabled="@load(vm.verCobranza)" />
 					<button label="LIMPIAR"
 						onClick="@command('limpiar')" />
-						
-					<button label="Reporte"
-							onClick="@command('generarReporte')" 
-							/>
 
 				</hlayout>
 
