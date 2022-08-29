@@ -1,6 +1,7 @@
 package com.instituto.sistema.administracion;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.zkoss.bind.BindUtils;
@@ -43,6 +44,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	private boolean opCrearCobranza;
 	private boolean opEditarCobranza;
+	private boolean opDefinirFecha;
 	private boolean opBorrarCobranza;
 	private boolean opAnularCobranza;
 
@@ -66,7 +68,8 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		this.opEditarCobranza = this.operacionHabilitada(ParamsLocal.OP_EDITAR_COBRANZA);
 		this.opBorrarCobranza = this.operacionHabilitada(ParamsLocal.OP_BORRAR_COBRANZA);
 		this.opAnularCobranza = this.operacionHabilitada(ParamsLocal.OP_ANULAR_COBRANZA);
-
+		this.opDefinirFecha = this.operacionHabilitada(ParamsLocal.OP_DEFINIR_FECHA_COBRANZA);
+		
 	}
 
 	@Command
@@ -749,6 +752,11 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			return;
 
 		}
+		
+		if (this.cobranzaSelected.getFecha() != null && this.opDefinirFecha == false) {
+			this.mensajeInfo("No tienes permisos para agregar una fecha.");
+			return;
+		}
 
 		EventListener event = new EventListener() {
 
@@ -840,6 +848,12 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		this.cobranzaSelected.setIva10(this.iva10);
 		this.cobranzaSelected.setIva5(this.iva5);
 
+		if (this.cobranzaSelected.getFecha() == null) {
+			
+			this.cobranzaSelected.setFecha(new Date());
+			
+		}
+		
 		this.cobranzaSelected = this.save(this.cobranzaSelected);
 
 		for (CobranzaDetalle x : lDetalles) {
@@ -1153,6 +1167,14 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	public void setExento(double exento) {
 		this.exento = exento;
+	}
+
+	public boolean isOpDefinirFecha() {
+		return opDefinirFecha;
+	}
+
+	public void setOpDefinirFecha(boolean opDefinirFecha) {
+		this.opDefinirFecha = opDefinirFecha;
 	}
 
 }

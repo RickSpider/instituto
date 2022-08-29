@@ -47,7 +47,6 @@ public class Cobranza extends Modelo implements Serializable {
 	
 	private String comprobanteNum;
 	
-	@CreationTimestamp 
     @Column(updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fecha;
