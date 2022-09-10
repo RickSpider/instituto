@@ -152,6 +152,13 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 			
 		}
 		
+		if (cobranza.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_FACTURA) == 0) {
+			
+			Executions.getCurrent().sendRedirect("/instituto/zul/administracion/facturaReporte.zul?id="+cobranza.getCobranzaid(),"_blank");
+			
+		}
+		
+		
 		
 		
 	}

@@ -353,6 +353,8 @@
 											align="center" hflex="min" />
 										<listheader label="Convenio"
 											align="left" />
+										<listheader label="Institucion"
+											align="left" />
 										<listheader align="center"
 											hflex="min" />
 
@@ -363,12 +365,14 @@
 										<auxheader />
 										
 										<auxheader />
+										
 
 										<auxheader>
 											<textbox
 												value="@bind(vm.filtroColumnsConvenios[0])" instant="true"
 												onChange="@command('filtrarCursoVigenteConvenio')" hflex="1" />
 										</auxheader>
+										<auxheader />
 									</auxhead>
 
 									<template name="model">
@@ -383,6 +387,10 @@
 											<listcell
 												label="@load(each.cursovigenteconveniopk.convenio.descripcion)"
 												tooltiptext="@load(each.cursovigenteconveniopk.convenio.descripcion)" />
+												
+											<listcell
+												label="@load(each.cursovigenteconveniopk.convenio.institucion.institucion)"
+												tooltiptext="@load(each.cursovigenteconveniopk.convenio.institucion.institucion)" />
 
 
 											<listcell>
@@ -409,7 +417,7 @@
 									</template>
 
 									<listfoot>
-										<listfooter span="4"
+										<listfooter span="5"
 											align="left">
 											<hlayout>
 												<label

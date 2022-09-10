@@ -296,7 +296,26 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			CobranzaDetalle cobranzaDetalle = new CobranzaDetalle();
 			cobranzaDetalle.setEstadoCuenta(x);
 			cobranzaDetalle = buscarDescuento(cobranzaDetalle);
-			cobranzaDetalle.setMonto(cobranzaDetalle.getSaldo());
+			cobranzaDetalle.setMonto(cobranzaDetalle.getSaldo()-cobranzaDetalle.getMontoDescuento());
+			
+			if (x.getConcepto().getImpuestoTipo().getSigla().compareTo(ParamsLocal.SIGLA_IMPUESTO_IVA_EXENTO)==0) {
+				
+				cobranzaDetalle.setExento(cobranzaDetalle.getSaldo()-cobranzaDetalle.getMontoDescuento());
+				
+			}
+			
+			if (x.getConcepto().getImpuestoTipo().getSigla().compareTo(ParamsLocal.SIGLA_IMPUESTO_IVA_10)==0) {
+				
+				cobranzaDetalle.setIva10((cobranzaDetalle.getSaldo()-cobranzaDetalle.getMontoDescuento())/11);
+				
+			}
+			
+			if (x.getConcepto().getImpuestoTipo().getSigla().compareTo(ParamsLocal.SIGLA_IMPUESTO_IVA_5)==0) {
+				
+				cobranzaDetalle.setIva5((cobranzaDetalle.getSaldo()-cobranzaDetalle.getMontoDescuento())/21);
+				
+			}
+			
 			this.lDetalles.add(cobranzaDetalle);
 
 		}
@@ -314,6 +333,8 @@ public class CobranzaVM extends TemplateViewModelLocal {
 					.replace("?2", cobranzaDetalle.getEstadoCuenta().getConcepto().getConceptoid() + "")
 					.replace("?3", cobranzaDetalle.getEstadoCuenta().getAlumno().getAlumnoid() + "");
 
+			//System.out.println("SQL DESCUENTO ===================\n"+sql);
+			
 			List<Object[]> result = this.reg.sqlNativo(sql);
 
 			if (result.size() > 0) {
@@ -322,7 +343,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 				double importe = Double.parseDouble(result.get(0)[4].toString());
 				String[] periodos = result.get(0)[6].toString().split(",");
 
-				for (int i = 0; i < periodos.length - 1; i++) {
+				for (int i = 0; i < periodos.length; i++) {
 
 					int periodo = Integer.parseInt(periodos[i]);
 
@@ -793,21 +814,21 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			if (x.getEstadoCuenta().getConcepto().getImpuestoTipo().getSigla()
 					.compareTo(ParamsLocal.SIGLA_IMPUESTO_IVA_EXENTO) == 0) {
 
-				this.exento += x.getMonto();
+				this.exento += x.getExento();
 
 			}
 
 			if (x.getEstadoCuenta().getConcepto().getImpuestoTipo().getSigla()
 					.compareTo(ParamsLocal.SIGLA_IMPUESTO_IVA_10) == 0) {
 
-				this.iva10 = +x.getMonto() / 11;
+				this.iva10 = +x.getIva10();
 
 			}
 
 			if (x.getEstadoCuenta().getConcepto().getImpuestoTipo().getSigla()
 					.compareTo(ParamsLocal.SIGLA_IMPUESTO_IVA_5) == 0) {
 
-				this.iva5 += x.getMonto() / 21;
+				this.iva5 += x.getIva5();
 
 			}
 
@@ -838,7 +859,18 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	private void procesarCobranza() {
 
-		String comprobanteNum = this.getNumeroComprobante();
+		Object[] comprobante = this.getNumeroComprobante();
+		
+		if (this.cobranzaSelected.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_FACTURA) == 0) {
+			
+			this.cobranzaSelected.setTimbrado((Long) comprobante[0]);
+			
+		}
+		
+		this.cobranzaSelected.setComprobanteEmision((Date) comprobante[1]);
+		this.cobranzaSelected.setComprobanteVencimiento((Date) comprobante[2]);
+		
+		String comprobanteNum = comprobante[3].toString();
 		this.cobranzaSelected.setComprobanteNum(comprobanteNum);
 
 		this.cobranzaSelected.setTotalDetalle(this.getTotalDetalle());
@@ -881,7 +913,13 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		
 		if (this.cobranzaSelected.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_RECIBO) == 0) {
 			
-			this.generarReporteRecibo();
+			this.generarRecibo();
+			
+		}
+		
+		if (this.cobranzaSelected.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_FACTURA) == 0) {
+			
+			this.generarFactura();
 			
 		}
 		
@@ -901,14 +939,17 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 			return false;
 		}
+		
+		
 
 		return true;
 
 	}
 
-	private synchronized String getNumeroComprobante() {
+	private synchronized Object[] getNumeroComprobante() {
 
-		StringBuffer out = new StringBuffer();
+		StringBuffer numero = new StringBuffer();
+		Object [] out = new Object[4];
 
 		Comprobante comprobante = this.reg.getObjectByCondicion(Comprobante.class.getName(),
 				"activo = true " + "AND sedeid = " + this.getCurrentSede().getSedeid() + " "
@@ -916,29 +957,43 @@ public class CobranzaVM extends TemplateViewModelLocal {
 						+ "AND emision <= current_date " + "AND vencimiento >= current_date "
 						+ "AND siguiente <= fin ");
 
-		out.append(this.getCurrentSede().getEstablecimiento() + "-" + comprobante.getPuntoExpdicion() + "-");
+		numero.append(this.getCurrentSede().getEstablecimiento() + "-" + comprobante.getPuntoExpdicion() + "-");
 
 		for (int i = 0; i < 7 - comprobante.getSiguiente().toString().length(); i++) {
 
-			out.append("0");
+			numero.append("0");
 
 		}
 
-		out.append(comprobante.getSiguiente());
+		numero.append(comprobante.getSiguiente());
 
+		if (comprobante.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_FACTURA) == 0) {
+			out[0] = comprobante.getTimbrado();
+		}
+		
+		out[1] = comprobante.getEmision();
+		out[2] = comprobante.getVencimiento();
+		out[3] = numero;
+		
 		comprobante.setSiguiente(comprobante.getSiguiente() + 1);
 
 		this.save(comprobante);
-
-		return out.toString();
+		
+		return out;
 	}
 
 	// ========================Seccion Reportes ============================
 
 
-	public void generarReporteRecibo() {
+	public void generarRecibo() {
 		
 		Executions.getCurrent().sendRedirect("/instituto/zul/administracion/reciboReporte.zul?id="+this.cobranzaSelected.getCobranzaid(),"_blank");
+		
+	}
+	
+	public void generarFactura() {
+		
+		Executions.getCurrent().sendRedirect("/instituto/zul/administracion/facturaReporte.zul?id="+this.cobranzaSelected.getCobranzaid(),"_blank");
 		
 	}
 	

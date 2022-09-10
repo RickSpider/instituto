@@ -1018,11 +1018,11 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			return;
 		}
 
-		if (this.lAlumnosCursosVigentesOri.size() > 0) {
+		/*if (this.lAlumnosCursosVigentesOri.size() > 0) {
 
 			this.mensajeInfo("No se puede agregar Convenios, ya existen alumnos.");
 			return;
-		}
+		}*/
 
 		this.editar = false;
 		modalCursoVigenteConvenio(null);

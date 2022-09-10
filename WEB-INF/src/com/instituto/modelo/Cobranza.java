@@ -63,6 +63,10 @@ public class Cobranza extends Modelo implements Serializable {
 	private double totalDetalle;
 	private double totalDetalleCobro;
 	
+	private Long timbrado;
+	private Date comprobanteEmision;
+	private Date comprobanteVencimiento;
+	
 	@Override
 	public Object[] getArrayObjectDatos() {
 		// TODO Auto-generated method stub
@@ -198,5 +202,33 @@ public class Cobranza extends Modelo implements Serializable {
 	public void setTotalDetalleCobro(double totalDetalleCobro) {
 		this.totalDetalleCobro = totalDetalleCobro;
 	}
+
+	public Long getTimbrado() {
+		return timbrado;
+	}
+
+	public void setTimbrado(Long timbrado) {
+		this.timbrado = timbrado;
+	}
+
+	public Date getComprobanteEmision() {
+		return comprobanteEmision;
+	}
+
+	public void setComprobanteEmision(Date comprobanteEmision) {
+		this.comprobanteEmision = comprobanteEmision;
+	}
+
+	public Date getComprobanteVencimiento() {
+		return comprobanteVencimiento;
+	}
+
+	public void setComprobanteVencimiento(Date comprobanteVencimiento) {
+		this.comprobanteVencimiento = comprobanteVencimiento;
+	}
+
+	
+
+	
 
 }

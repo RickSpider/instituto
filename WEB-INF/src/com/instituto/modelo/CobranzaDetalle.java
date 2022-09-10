@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import com.doxacore.modelo.Modelo;
 
 @Entity
@@ -25,6 +27,13 @@ public class CobranzaDetalle extends Modelo implements Serializable {
 	
 	private double monto = 0.0;
 	private double montoDescuento = 0.0;
+	
+	@ColumnDefault("0.0")
+	private double exento = 0;
+	@ColumnDefault("0.0")
+	private double iva10 = 0;
+	@ColumnDefault("0.0")
+	private double iva5 = 0;
 	
 	public double getMonto() {
 		return monto;
@@ -89,6 +98,30 @@ public class CobranzaDetalle extends Modelo implements Serializable {
 	
 	public double getSaldo() {
 		return this.getEstadoCuenta().getMonto() - (getEstadoCuenta().getPago() + getEstadoCuenta().getMontoDescuento());
+	}
+
+	public double getIva10() {
+		return iva10;
+	}
+
+	public void setIva10(double iva10) {
+		this.iva10 = iva10;
+	}
+
+	public double getIva5() {
+		return iva5;
+	}
+
+	public void setIva5(double iva5) {
+		this.iva5 = iva5;
+	}
+
+	public double getExento() {
+		return exento;
+	}
+
+	public void setExento(double exento) {
+		this.exento = exento;
 	}
 	
 }

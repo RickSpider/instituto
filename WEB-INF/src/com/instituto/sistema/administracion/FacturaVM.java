@@ -10,25 +10,26 @@ import org.zkoss.bind.annotation.Init;
 import com.doxacore.util.PasarNumerosLetras;
 import com.doxacore.report.TemplateReportViewModel;
 import com.instituto.modelo.Cobranza;
+import com.instituto.util.ParamsLocal;
 
 
-public class ReciboVM extends TemplateReportViewModel {
+public class FacturaVM extends TemplateReportViewModel {
 	
 	@Init(superclass = true)
-	public void initRecivoVM() {
+	public void initFacturaVM() {
 
-		this.source += "reciboReport.jasper";
+		this.source += "facturaReport.jasper";
 
 	}
 
 	@AfterCompose(superclass = true)
-	public void afterComposeRecivoVM() {
+	public void afterComposeFacturaVM() {
 
 	}
 	
 	@Override
 	protected String[] cargarColumas() {
-		String[] columns = {"concepto", "periodo", "monto"};
+		String[] columns = {"concepto", "periodo", "monto", "exento", "iva5", "iva10"};
 		
 		 return columns;
 	}
@@ -48,12 +49,31 @@ public class ReciboVM extends TemplateReportViewModel {
 		PasarNumerosLetras pnl = new PasarNumerosLetras();
 		parameters.put("TotalLetras",pnl.Convertir(String.valueOf(cobranza.getTotalDetalle()), true));
 		
+		parameters.put("Timbrado",cobranza.getTimbrado());
+		parameters.put("FechaInicio", cobranza.getComprobanteEmision());
+		parameters.put("FechaFin", cobranza.getComprobanteVencimiento());
+		
+		if (cobranza.getCondicionVentaTipo().getSigla().compareTo(ParamsLocal.SIGLA_CONDICION_VENTA_CONTADO)==0) {
+			
+			parameters.put("Contado", "X");
+		}
+		
+		if (cobranza.getCondicionVentaTipo().getSigla().compareTo(ParamsLocal.SIGLA_CONDICION_VENTA_CREDITO)==0) {
+			
+			parameters.put("Credito", "X");
+		}
+		
+		parameters.put("Exenta",cobranza.getExento());
+		parameters.put("iva5",cobranza.getIva5());
+		parameters.put("iva10",cobranza.getIva10());
+		
+		
 		return parameters;
 	}
 
 	@Override
 	protected List<Object[]> cargarDatos() {
-		String cobranzaDetalle = this.um.getSql("reciboDetalle.sql").replace("?1", this.id+"");
+		String cobranzaDetalle = this.um.getSql("facturaDetalle.sql").replace("?1", this.id+"");
 		List<Object[]>datos = this.reg.sqlNativo(cobranzaDetalle);
 		
 		return datos;
