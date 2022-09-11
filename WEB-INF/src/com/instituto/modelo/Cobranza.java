@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.doxacore.modelo.Modelo;
@@ -66,6 +67,12 @@ public class Cobranza extends Modelo implements Serializable {
 	private Long timbrado;
 	private Date comprobanteEmision;
 	private Date comprobanteVencimiento;
+	
+	@ColumnDefault("false")
+	private boolean anulado=false;
+	private Date fechaAnulacion;
+	private String motivoAnulacion;
+	private String usuarioAnulacion;
 	
 	@Override
 	public Object[] getArrayObjectDatos() {
@@ -225,6 +232,38 @@ public class Cobranza extends Modelo implements Serializable {
 
 	public void setComprobanteVencimiento(Date comprobanteVencimiento) {
 		this.comprobanteVencimiento = comprobanteVencimiento;
+	}
+
+	public boolean isAnulado() {
+		return anulado;
+	}
+
+	public void setAnulado(boolean anulado) {
+		this.anulado = anulado;
+	}
+
+	public Date getFechaAnulacion() {
+		return fechaAnulacion;
+	}
+
+	public void setFechaAnulacion(Date fechaAnulacion) {
+		this.fechaAnulacion = fechaAnulacion;
+	}
+
+	public String getMotivoAnulacion() {
+		return motivoAnulacion;
+	}
+
+	public void setMotivoAnulacion(String motivoAnulacion) {
+		this.motivoAnulacion = motivoAnulacion;
+	}
+
+	public String getUsuarioAnulacion() {
+		return usuarioAnulacion;
+	}
+
+	public void setUsuarioAnulacion(String usuarioAnulacion) {
+		this.usuarioAnulacion = usuarioAnulacion;
 	}
 
 	
