@@ -114,7 +114,7 @@
 									<button iconSclass="z-icon-print"
 										style="background-color:green"
 										onClick="@command('verComprobante', cobranza=each)"
-										tooltiptext="verComprobante" />
+										tooltiptext="Imprimir Comprobante" />
 
 									<button iconSclass="z-icon-unlink "
 										style="background-color:red;"

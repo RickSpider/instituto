@@ -293,7 +293,7 @@
 									<button iconSclass="z-icon-print" 
 									style="background-color:green"
 									onClick="@command('verComprobante', cobranza=each.cobranza)"
-									tooltiptext="verComprobante"/>
+									tooltiptext="Imprimir Comprobante"/>
 								
 								</listcell>
 								
