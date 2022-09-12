@@ -47,7 +47,7 @@ public class ReciboVM extends TemplateReportViewModel {
 		parameters.put("Total", new Double(cobranza.getTotalDetalle()));
 		PasarNumerosLetras pnl = new PasarNumerosLetras();
 		parameters.put("TotalLetras",pnl.Convertir(String.valueOf(cobranza.getTotalDetalle()), true));
-		
+		parameters.put("Anulado", cobranza.isAnulado());
 		return parameters;
 	}
 

@@ -66,6 +66,7 @@ public class FacturaVM extends TemplateReportViewModel {
 		parameters.put("Exenta",cobranza.getExento());
 		parameters.put("iva5",cobranza.getIva5());
 		parameters.put("iva10",cobranza.getIva10());
+		parameters.put("Anulado", cobranza.isAnulado());
 		
 		
 		return parameters;

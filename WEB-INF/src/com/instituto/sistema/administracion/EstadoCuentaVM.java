@@ -157,10 +157,7 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 			Executions.getCurrent().sendRedirect("/instituto/zul/administracion/facturaReporte.zul?id="+cobranza.getCobranzaid(),"_blank");
 			
 		}
-		
-		
-		
-		
+
 	}
 
 	public Alumno getAlumnoSelected() {

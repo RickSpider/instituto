@@ -253,7 +253,7 @@
 						<auxhead>
 						
 							<auxheader label="Detalles"
-								colspan="4" align="center"    />
+								colspan="5" align="center"    />
 						
 						</auxhead>
 						
@@ -262,6 +262,7 @@
 							<listheader label="Fecha" align="Center"/>
 							<listheader label="Comprobante" align="Center"/>
 							<listheader label="Comprobante #" align="Center"/>
+							<listheader label="Anulado" align="Center" />
 							<listheader align="Center" hflex="min"/>
 						
 						</listhead>
@@ -273,6 +274,20 @@
 								<listcell label="@load(each.cobranza.fecha) @converter('formatedDate', format='dd/MM/yyyy HH:mm')" />
 								<listcell label="@load(each.cobranza.comprobanteTipo.tipo)" />
 								<listcell label="@load(each.cobranza.comprobanteNum)" />
+								
+								<listcell>
+
+									<if test="@load(each.cobranza.anulado)">
+										<label value="Si" />
+									</if>
+	
+	
+									<if test="@load(!each.cobranza.anulado)">
+										<label value="No" />
+									</if>
+
+								</listcell>
+								
 								<listcell>
 								
 									<button iconSclass="z-icon-print" 
@@ -281,6 +296,9 @@
 									tooltiptext="verComprobante"/>
 								
 								</listcell>
+								
+								
+							
 							</listitem>
 						
 						</template>

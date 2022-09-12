@@ -157,4 +157,6 @@ public class ParamsLocal extends Params {
 	public static final String OP_ANULAR_COBRANZA = "AnularCobranza";
 	public static final String OP_DEFINIR_FECHA_COBRANZA = "DefinirFechaCobranza";
 	
+	//Cobro
+	public static final String OP_ANULAR_COBRO = "AnularCobro";
 }

@@ -1,0 +1,158 @@
+<?page title="Comprobantes" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Cobros" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.administracion.CobrosVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<hlayout vflex="1">
+
+			<vlayout hflex="1" vflex="1">
+
+				<listbox emptyMessage="lista vacía..." mold="paging"
+					vflex="1" model="@load(vm.lCobranzas)" checkmark="true">
+
+					<listhead>
+
+						<listheader hflex="min" align="center" />
+						<listheader label="ID" align="right"
+							hflex="min" />
+
+						<listheader label="Fecha" align="center" />
+						<listheader label="Comprobante" align="center" />
+						<listheader label="Timbrado" align="center" />
+						<listheader label="Comprobante #"
+							align="center" />
+						<listheader label="Anulado" align="center" />
+						<listheader label="Fecha Anulacion"
+							align="center" />
+
+						<listheader align="center" hflex="min" />
+
+
+					</listhead>
+
+
+					<auxhead>
+
+						<auxheader />
+						<auxheader />
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[0])"
+								instant="true" onChange="@command('filtrarComprobante')"
+								hflex="1" />
+						</auxheader>
+
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[1])"
+								instant="true" onChange="@command('filtrarComprobante')"
+								hflex="1" />
+						</auxheader>
+
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[2])"
+								instant="true" onChange="@command('filtrarComprobante')"
+								hflex="1" />
+						</auxheader>
+
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[3])"
+								instant="true" onChange="@command('filtrarComprobante')"
+								hflex="1" />
+						</auxheader>
+
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[4])"
+								instant="true" onChange="@command('filtrarComprobante')"
+								hflex="1" />
+						</auxheader>
+
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[5])"
+								instant="true" onChange="@command('filtrarComprobante')"
+								hflex="1" />
+						</auxheader>
+
+						<auxheader />
+
+					</auxhead>
+
+					<template name="model">
+
+						<listitem>
+							<listcell />
+							<listcell label="@load(each.cobranzaid)" />
+
+							<listcell
+								label="@load(each.fecha) @converter('formatedDate', format='dd/MM/yyyy')" />
+
+							<listcell
+								label="@load(each.comprobanteTipo.tipo)" />
+
+							<listcell label="@load(each.timbrado)" />
+							<listcell
+								label="@load(each.comprobanteNum)" />
+
+							<listcell>
+
+								<if test="@load(each.anulado)">
+									<label value="Si" />
+								</if>
+
+
+								<if test="@load(!each.anulado)">
+									<label value="No" />
+								</if>
+
+							</listcell>
+
+							<listcell
+								label="@load(each.fechaAnulacion) @converter('formatedDate', format='dd/MM/yyyy')" />
+
+							<listcell>
+								<hlayout>
+
+									<button iconSclass="z-icon-print"
+										style="background-color:green"
+										onClick="@command('verComprobante', cobranza=each)"
+										tooltiptext="verComprobante" />
+
+									<button iconSclass="z-icon-unlink "
+										style="background-color:red;"
+										onClick="@command('anularCobranzaConfirmacion', cobranza=each)"
+										tooltiptext="Anular" disabled="@load(!vm.opAnularCobro)" />
+
+
+
+
+								</hlayout>
+
+
+							</listcell>
+
+
+						</listitem>
+
+
+					</template>
+
+					<listfoot>
+						<listfooter span="4" align="left">
+							<hlayout>
+								<label
+									value="@load(vm.lCobranzas.size())" />
+								<label value="items" />
+							</hlayout>
+						</listfooter>
+					</listfoot>
+
+
+				</listbox>
+
+			</vlayout>
+
+
+
+		</hlayout>
+
+	</window>
+</zk>

@@ -71,7 +71,6 @@ public class Cobranza extends Modelo implements Serializable {
 	@ColumnDefault("false")
 	private boolean anulado=false;
 	private Date fechaAnulacion;
-	private String motivoAnulacion;
 	private String usuarioAnulacion;
 	
 	@Override
@@ -250,14 +249,6 @@ public class Cobranza extends Modelo implements Serializable {
 		this.fechaAnulacion = fechaAnulacion;
 	}
 
-	public String getMotivoAnulacion() {
-		return motivoAnulacion;
-	}
-
-	public void setMotivoAnulacion(String motivoAnulacion) {
-		this.motivoAnulacion = motivoAnulacion;
-	}
-
 	public String getUsuarioAnulacion() {
 		return usuarioAnulacion;
 	}
@@ -266,8 +257,5 @@ public class Cobranza extends Modelo implements Serializable {
 		this.usuarioAnulacion = usuarioAnulacion;
 	}
 
-	
-
-	
 
 }
