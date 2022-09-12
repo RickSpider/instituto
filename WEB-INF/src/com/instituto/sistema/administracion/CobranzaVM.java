@@ -923,6 +923,9 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			
 		}
 		
+		this.limpiar();
+		
+		BindUtils.postNotifyChange(null,null,this,"*");
 		
 
 	}
