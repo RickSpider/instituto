@@ -1,6 +1,7 @@
 package com.instituto.modelo;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -75,14 +76,46 @@ public class Cobranza extends Modelo implements Serializable {
 	
 	@Override
 	public Object[] getArrayObjectDatos() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		String timbrado = "";
+		if (this.timbrado != null) {
+			
+			timbrado = this.timbrado.toString();
+
+		}
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		
+		String fechaAnulacion = "";
+		if (this.fechaAnulacion != null) {
+			
+			fechaAnulacion = sdf.format(this.fechaAnulacion);
+			
+		}
+
+		Object[] o = {sdf.format(this.fecha), this.comprobanteTipo.getTipo(), timbrado, this.comprobanteNum, String.valueOf(this.anulado), fechaAnulacion };
+		return o;
 	}
 
 	@Override
 	public String getStringDatos() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		String timbrado = "";
+		if (this.timbrado != null) {
+			
+			timbrado = this.timbrado.toString();
+
+		}
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		String fechaAnulacion = "";
+		if (this.fechaAnulacion != null) {
+			
+			fechaAnulacion = sdf.format(this.fechaAnulacion);
+			
+		}
+
+		
+		return this.cobranzaid+" "+sdf.format(this.fecha)+" "+this.comprobanteTipo.getTipo()+" "+ timbrado+" "+ this.comprobanteNum+" "+ String.valueOf(this.anulado)+" "+ fechaAnulacion;
 	}
 
 	public static long getSerialversionuid() {

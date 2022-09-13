@@ -70,7 +70,7 @@ public class ComprobanteVM extends TemplateViewModelLocal {
 
 	private void inicializarFiltros() {
 
-		this.filtroColumns = new String[5]; // se debe de iniciar el filtro deacuerdo a la cantidad declarada en el
+		this.filtroColumns = new String[9]; // se debe de iniciar el filtro deacuerdo a la cantidad declarada en el
 											// modelo sin id
 
 		for (int i = 0; i < this.filtroColumns.length; i++) {

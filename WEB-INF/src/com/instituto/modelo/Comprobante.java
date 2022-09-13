@@ -1,6 +1,7 @@
 package com.instituto.modelo;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -59,14 +60,35 @@ public class Comprobante extends Modelo implements Serializable {
 
 	@Override
 	public Object[] getArrayObjectDatos() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		
+		String timbrado = "";
+		if (this.timbrado != null) {
+			
+			timbrado = this.timbrado.toString();
+
+		}
+
+		Object [] o = {this.sede.getSede(), this.comprobanteTipo.getTipo(), timbrado, this.puntoExpdicion, sdf.format(this.emision), sdf.format(this.vencimiento), this.inicio, this.fin, this.siguiente};
+		return o;
 	}
 
 	@Override
 	public String getStringDatos() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		
+		String timbrado = "";
+		if (this.timbrado != null) {
+			
+			timbrado = this.timbrado.toString();
+
+		}
+		
+		return this.sede.getSede()+" "+ this.comprobanteTipo.getTipo()+" "+ timbrado +" "+ this.puntoExpdicion+" "+ sdf.format(this.emision)+" "+ sdf.format(this.vencimiento)+" "+ 
+		this.inicio+" "+ this.fin+" "+ this.siguiente;
+		
 	}
 
 	public Long getComprobanteid() {

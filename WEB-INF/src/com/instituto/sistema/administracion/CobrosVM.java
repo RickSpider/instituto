@@ -8,6 +8,7 @@ import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
+import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -57,7 +58,7 @@ public class CobrosVM extends TemplateViewModelLocal{
 
 	private void inicializarFiltros() {
 
-		this.filtroColumns = new String[10]; // se debe de iniciar el filtro deacuerdo a la cantidad declarada en el
+		this.filtroColumns = new String[7]; // se debe de iniciar el filtro deacuerdo a la cantidad declarada en el
 											// modelo sin id
 
 		for (int i = 0; i < this.filtroColumns.length; i++) {
@@ -65,6 +66,14 @@ public class CobrosVM extends TemplateViewModelLocal{
 			this.filtroColumns[i] = "";
 
 		}
+
+	}
+	
+	@Command
+	@NotifyChange("lCobranzas")
+	public void filtrarCobranzas() {
+
+		this.lCobranzas = this.filtrarLT(this.filtroColumns, this.lCobranzasOri);
 
 	}
 	
