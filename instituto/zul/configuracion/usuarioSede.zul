@@ -182,7 +182,7 @@
 								hflex="min" />
 							<listheader label="Sede" align="left" />
 							<listheader label="Descripción" />
-							<listheader label="Sede Habilitada" align="center" />
+							<listheader label="Sede Actual" align="center" />
 							<listheader align="center" width="100px" />
 
 
@@ -199,15 +199,25 @@
 									label="@load(each.usuariosedepk.sede.sede)" />
 								<listcell
 									label="@load(each.usuariosedepk.sede.direccion)" />
-								<listcell>
+								<listcell >
 
 									<if test="@load(each.activo)">
-										<label value="Si" />
+									
+									<hbox pack="center" align="center" hflex="1">
+									
+										<image src="/doxacore/img/check.png" style=" width: 15px; height: 15px;" />
+										<label value="Sede Actual" style="font-weight: bold;"/>
+										
+									</hbox>
+										
+										
 									</if>
 
 
 									<if test="@load(!each.activo)">
-										<label value="No" />
+										<hbox pack="center" align="center" hflex="1">
+											<image src="/doxacore/img/un-check.png" style=" width: 15px; height: 15px;" />
+										</hbox>
 									</if>
 
 								</listcell>
@@ -215,9 +225,9 @@
 									<hlayout>
 									
 									<button
-											iconSclass="z-icon-check" style="background-color:green"
+											iconSclass="z-icon-exchange " style="background-color:orange"
 											onClick="@command('habilitarSede', usuariosede=each)"
-											tooltiptext="Habilitar" visible="@load(!each.activo)" disabled="@load(each.activo)"/>
+											tooltiptext="Cambiar a Sede." visible="@load(!each.activo)" disabled="@load(each.activo)"/>
 
 										<button
 											iconSclass="z-icon-trash-o" style="background-color:red"
