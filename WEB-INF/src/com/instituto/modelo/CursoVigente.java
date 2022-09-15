@@ -48,8 +48,6 @@ public class CursoVigente extends Modelo implements Serializable{
 	// do;lu;ma;mi;ju;vi;sa
 	private String dias = "false;false;false;false;false;false;false";
 
-	private final String datePattern = "dd/MM/yyyy";
-	
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -106,7 +104,7 @@ public class CursoVigente extends Modelo implements Serializable{
 	@Override
 	public Object[] getArrayObjectDatos() {
 		
-		SimpleDateFormat sdf = new SimpleDateFormat(this.datePattern);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
 		Object[] o = {this.curso.getCurso(), sdf.format(this.fechaInicio), sdf.format(this.fechaFin) };
 		
@@ -116,7 +114,7 @@ public class CursoVigente extends Modelo implements Serializable{
 	@Override
 	public String getStringDatos() {
 		
-		SimpleDateFormat sdf = new SimpleDateFormat(this.datePattern);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
 		return this.cursovigenteid + " " +this.curso.getCurso() + " " +sdf.format(this.fechaInicio)+" "+ sdf.format(this.fechaFin);
 		

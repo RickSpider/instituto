@@ -1,5 +1,6 @@
 package com.instituto.sistema.administracion;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -20,6 +21,7 @@ import org.zkoss.zul.Window;
 
 import com.doxacore.modelo.Tipo;
 import com.doxacore.modelo.Tipotipo;
+import com.doxacore.report.ReportExcel;
 import com.instituto.modelo.Alumno;
 import com.instituto.modelo.Concepto;
 import com.instituto.modelo.Convenio;
@@ -1228,6 +1230,115 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	}
 
 	// fin buscarEstado
+	
+	@Command
+	public void listaAlumnosExport(@BindingParam("cursoVigenteid") Long cursoVigenteid) {
+		
+		ReportExcel re = new ReportExcel("ListaAlumnos");
+		CursoVigente cv = this.reg.getObjectById(CursoVigente.class.getName(), cursoVigenteid);
+		
+		List<String[]> titulos = new ArrayList<String[]>();
+		
+		String[] t1 = {"INSTITUTO SANTO TOMAS"};
+		String[] t2 = {"LISTA DE ALUMNOS"};
+		String[] t3 = {"Sede:",this.getCurrentSede().getSede()};
+		String[] t4 = {"Curso:", cv.getCurso().getCurso()};
+		
+		
+		
+		titulos.add(t1);
+		titulos.add(t2);
+		titulos.add(t3);
+		titulos.add(t4);
+		
+		
+		List<String[]> headersDatos = new ArrayList<String[]>();
+		String [] hd1 =  {"Nro", "Apellidos", "Nombres", "C.I.", "Nro Telefono", "Nombre Completo"};
+		headersDatos.add(hd1);
+		
+		String sql = this.um.getSql("cursoVigenteListaAlumnos.sql").replace("?1", cursoVigenteid.toString());
+		List<Object[]> datos = this.reg.sqlNativo(sql);
+		
+		for (int i = 0 ; i<datos.size() ; i++) {
+			
+			datos.get(i)[0] = i+1;
+			
+		}
+		
+		re.descargar(titulos, headersDatos, datos);
+		
+		
+	}
+	
+	@Command
+	public void planillaCalificaciones(@BindingParam("cursoVigenteid") Long cursoVigenteid) {
+		
+		ReportExcel re = new ReportExcel("PlanillaCalificaciones");
+		CursoVigente cv = this.reg.getObjectById(CursoVigente.class.getName(), cursoVigenteid);
+		
+		List<String[]> titulos = new ArrayList<String[]>();
+		
+		String[] t1 = {"INSTITUTO SANTO TOMAS"};
+		String[] t2 = {"Resolucion M.E.C. Nº 841/98"};
+		String[] espacioBlanco = {""};
+		String[] t3 = {"Sede:",this.getCurrentSede().getSede()};
+		String[] t4 = {"Curso:", cv.getCurso().getCurso()};
+		String[] t5 = {"ASIGNATURA:"};
+		String[] t6 = {"FECHA:"};
+		String[] t7 = {"PROFESOR/A:"};
+		
+		titulos.add(t1);
+		titulos.add(t2);
+		titulos.add(espacioBlanco);
+		titulos.add(t3);
+		titulos.add(t4);
+		titulos.add(t5);
+		titulos.add(t6);
+		titulos.add(t7);
+		
+		List<String[]> headersDatos = new ArrayList<String[]>();
+		String [] hd1 =  {"Nro", "Apellidos", "Nombres", "C.I.", "EVALUACIONES", "","","", "TOTAL","Calificacion"};
+		String [] hd2=  {"", "", "", "", "Evaluacion 1","Evaluacion2","Evaluacion 3", "Evaluacion Final","","Nº","Letra"};
+		headersDatos.add(hd1);
+		headersDatos.add(hd2);
+		
+		String sql = this.um.getSql("cursoVigenteListaAlumnosPlanillaCalif.sql").replace("?1", cursoVigenteid.toString());
+		List<Object[]> datos = this.reg.sqlNativo(sql);
+		
+		for (int i = 0 ; i<datos.size() ; i++) {
+			
+			datos.get(i)[0] = i+1;
+			
+		}
+		List<Object[]> datos2 = new ArrayList<>();
+		
+		for (Object[] x:datos) {
+			
+			Object [] o = new Object[11];
+			
+			for(int i = 0 ; i<o.length ; i++) {
+				
+				if (i < x.length) {
+					
+					o[i] = x[i];
+					
+				}else {
+					
+					o[i]="";
+					
+				}
+				
+				
+				
+			}
+			
+			datos2.add(o);
+			
+		}
+		
+		re.descargar(titulos, headersDatos, datos2);
+		
+	}
 
 	public List<CursoVigente> getlCursosVigentes() {
 		return lCursosVigentes;
