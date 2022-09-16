@@ -190,8 +190,15 @@
 
 						<auxhead>
 
-							<auxheader label="Estados de Cuenta"
-								colspan="6" align="center" />
+							<auxheader colspan="6" align="center" >
+							
+								<button label="Estado de Cuenta"
+								iconSclass=" z-icon-plus"
+								onClick="@command('modalEstadoCuenta')"
+								style="background-color:green" 
+								disabled="@load(!vm.opCrearEstadoCuenta)"/>
+								
+							</auxheader>
 
 						</auxhead>
 

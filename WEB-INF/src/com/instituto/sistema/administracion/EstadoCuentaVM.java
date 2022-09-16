@@ -1,6 +1,5 @@
 package com.instituto.sistema.administracion;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.zkoss.bind.annotation.AfterCompose;
@@ -9,13 +8,19 @@ import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.select.Selectors;
+import org.zkoss.zk.ui.util.Notification;
+import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Window;
 
 import com.instituto.modelo.Alumno;
 import com.instituto.modelo.Cobranza;
 import com.instituto.modelo.CobranzaDetalle;
-import com.instituto.modelo.ConvenioAlumno;
+import com.instituto.modelo.Concepto;
 import com.instituto.modelo.CursoVigente;
-import com.instituto.modelo.CursoVigenteAlumno;
+import com.instituto.modelo.CursoVigenteMateria;
 import com.instituto.modelo.EstadoCuenta;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
@@ -26,6 +31,10 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 	private CursoVigente cursoVigenteSelected;
 	private List<EstadoCuenta> lEstadosCuentas;
 	private List<CobranzaDetalle> lCobranzasDetalles;
+	
+	private EstadoCuenta estadoCuentaSelected;
+	
+	private boolean opCrearEstadoCuenta;
 
 	@Init(superclass = true)
 	public void initEstadoCuentaVM() {
@@ -39,7 +48,8 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 
 	@Override
 	protected void inicializarOperaciones() {
-		// TODO Auto-generated method stub
+		
+		this.opCrearEstadoCuenta = this.operacionHabilitada(ParamsLocal.OP_CREAR_ESTADOCUENTA);
 
 	}
 
@@ -127,11 +137,18 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 		this.cursoVigenteSelected = this.reg.getObjectById(CursoVigente.class.getName(), id);
 		this.buscarCursoVigente = cursoVigenteSelected.getCurso().getCurso();
 
+		refrescarEstadosCuentas();
+
+	}
+	
+	@NotifyChange({"lEstadosCuentas"})
+	public void refrescarEstadosCuentas() {
+		
 		this.lEstadosCuentas = this.reg.getAllObjectsByCondicionOrder(EstadoCuenta.class.getName(),
 				"cursoVigenteid = " + this.cursoVigenteSelected.getCursovigenteid() + " AND alumnoid = "
 						+ this.alumnoSelected.getAlumnoid(),
 				"vencimiento asc");
-
+		
 	}
 	
 	@Command
@@ -160,6 +177,97 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 
 	}
 
+	//Agregar estado cuenta
+	
+	private Window modal;
+	
+	@Command
+	public void modalEstadoCuenta() {
+		
+		if (!this.opCrearEstadoCuenta) {
+			return;			
+		}
+		
+		if (this.alumnoSelected == null) {
+			this.mensajeInfo("Debes seleccionar un alumno.");
+			return;
+			
+		} 
+		
+		if (this.cursoVigenteSelected == null) {
+			
+			this.mensajeInfo("Debes seleccionar un curso.");
+			return;
+		}
+		
+		this.buscarConcepto = "";
+		
+		this.estadoCuentaSelected = new EstadoCuenta();
+		
+		this.estadoCuentaSelected.setAlumno(this.alumnoSelected);
+		this.estadoCuentaSelected.setCursoVigente(this.cursoVigenteSelected);
+		this.estadoCuentaSelected.setCargaManual(true);
+		
+
+		modal = (Window) Executions.createComponents("/instituto/zul/administracion/estadoCuentaModal.zul",
+				this.mainComponent, null);
+		Selectors.wireComponents(modal, this, false);
+		modal.doModal();
+
+	}
+	
+
+	@Command
+	@NotifyChange("lEstadosCuentas")
+	public void guardar() {
+		
+		this.save(this.estadoCuentaSelected);
+		
+		Notification.show("El Estado de cuenta fue actualizado.");
+		
+		this.modal.detach();
+		
+		refrescarEstadosCuentas();
+		
+		
+	}
+	
+	//Buscar concepto
+	private List<Object[]> lConceptosbuscarOri;
+	private List<Object[]> lConceptosBuscar;
+	private Concepto buscarSelectedConcepto;
+	private String buscarConcepto = "";
+
+	@Command
+	@NotifyChange("lConceptosBuscar")
+	public void filtrarConceptoBuscar() {
+
+		this.lConceptosBuscar = this.filtrarListaObject(buscarConcepto, this.lConceptosbuscarOri);
+
+	}
+
+	@Command
+	@NotifyChange("lConceptosBuscar")
+	public void generarListaBuscarConcepto() {
+
+		String sqlBuscarConcepto = this.um.getSql("buscarConcepto.sql");
+
+		this.lConceptosBuscar = this.reg.sqlNativo(sqlBuscarConcepto);
+		this.lConceptosbuscarOri = this.lConceptosBuscar;
+	}
+
+	@Command
+	@NotifyChange("buscarConcepto")
+	public void onSelectConcepto(@BindingParam("id") long id) {
+
+		this.buscarSelectedConcepto = this.reg.getObjectById(Concepto.class.getName(), id);
+		this.buscarConcepto = buscarSelectedConcepto.getConcepto();
+		this.estadoCuentaSelected.setConcepto(buscarSelectedConcepto);
+
+	}
+
+	//Fin agregar estado cuenta
+	
 	public Alumno getAlumnoSelected() {
 		return alumnoSelected;
 	}
@@ -222,5 +330,37 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 
 	public void setlCobranzasDetalles(List<CobranzaDetalle> lCobranzasDetalles) {
 		this.lCobranzasDetalles = lCobranzasDetalles;
+	}
+
+	public EstadoCuenta getEstadoCuentaSelected() {
+		return estadoCuentaSelected;
+	}
+
+	public void setEstadoCuentaSelected(EstadoCuenta estadoCuentaSelected) {
+		this.estadoCuentaSelected = estadoCuentaSelected;
+	}
+
+	public List<Object[]> getlConceptosBuscar() {
+		return lConceptosBuscar;
+	}
+
+	public void setlConceptosBuscar(List<Object[]> lConceptosBuscar) {
+		this.lConceptosBuscar = lConceptosBuscar;
+	}
+
+	public String getBuscarConcepto() {
+		return buscarConcepto;
+	}
+
+	public void setBuscarConcepto(String buscarConcepto) {
+		this.buscarConcepto = buscarConcepto;
+	}
+
+	public boolean isOpCrearEstadoCuenta() {
+		return opCrearEstadoCuenta;
+	}
+
+	public void setOpCrearEstadoCuenta(boolean opCrearEstadoCuenta) {
+		this.opCrearEstadoCuenta = opCrearEstadoCuenta;
 	}
 }

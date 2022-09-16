@@ -159,4 +159,7 @@ public class ParamsLocal extends Params {
 	
 	//Cobro
 	public static final String OP_ANULAR_COBRO = "AnularCobro";
+	
+	//Estado Cuenta
+	public static final String OP_CREAR_ESTADOCUENTA="CrearEstadoCuenta";
 }

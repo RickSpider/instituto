@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.doxacore.modelo.Modelo;
@@ -61,6 +62,8 @@ public class EstadoCuenta extends Modelo implements Serializable{
 	private Date fechaInactivacion;
 	private String motivoInactivacion; 
 	
+	@ColumnDefault("false")
+	private boolean cargaManual=false;
 	
 	public Alumno getAlumno() {
 		return alumno;
@@ -146,6 +149,12 @@ public class EstadoCuenta extends Modelo implements Serializable{
 	}
 	public void setEstadocuentaid(Long estadocuentaid) {
 		this.estadocuentaid = estadocuentaid;
+	}
+	public boolean isCargaManual() {
+		return cargaManual;
+	}
+	public void setCargaManual(boolean cargaManual) {
+		this.cargaManual = cargaManual;
 	}
 	
 	
