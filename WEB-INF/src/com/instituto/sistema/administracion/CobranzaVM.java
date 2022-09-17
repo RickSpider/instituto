@@ -1,5 +1,6 @@
 package com.instituto.sistema.administracion;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -288,7 +289,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	@Command
-	@NotifyChange({ "lDetalles", "totalDetalle", "totalesDifrencia", "iva10", "iva5", "exento" })
+	@NotifyChange({ "lDetalles", "totalDetalle", "totalesDiferencia", "iva10", "iva5", "exento","cssDiferencia" })
 	public void agregarCobranzaDetalle() {
 
 		for (EstadoCuenta x : this.lEstadosCuentasAux) {
@@ -420,7 +421,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	};
 
 	@Command
-	@NotifyChange({ "lDetallesCobros", "totalDetalleCobro", "totalesDiferencia" })
+	@NotifyChange({ "lDetallesCobros", "totalDetalleCobro", "totalesDiferencia","cssDiferencia" })
 	public void agregarCobranzaDetalleCobro() {
 
 		for (CobranzaDetalleCobro x : this.lDetallesCobros) {
@@ -793,8 +794,16 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			}
 
 		};
+		
+		String mensajeInfo = "";
+		
+		if (this.getTotalesDiferencia()>0) {
+			
+			mensajeInfo = "Hay una diferencia de vuelto con monto: "+new DecimalFormat("#,###").format(this.getTotalesDiferencia())+"\n";
+			
+		}
 
-		this.mensajeEliminar("Se empezara a procesar el cobro. \n Continuar?", event);
+		this.mensajeSiNo(mensajeInfo+"Se empezara a procesar el cobro. \n Continuar?", "Cobranza", event);
 
 	}
 
@@ -855,6 +864,23 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 		return getTotalDetalleCobro() - getTotalDetalle();
 
+	}
+	
+	public String getCssDiferencia() {
+		
+		if (getTotalesDiferencia() > 0) {
+			
+			return "font-weight: bold; text-align:right; background-color:yellow; ";
+			
+		}
+		
+		if (getTotalesDiferencia() < 0) {
+			
+			return "font-weight: bold; text-align:right; background-color:red; ";
+			
+		}
+		
+		return "font-weight: bold; text-align:right; ";
 	}
 
 	private void procesarCobranza() {

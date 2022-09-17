@@ -482,7 +482,7 @@
 					</tablechildren>
 					<tablechildren>
 						<doublebox value="@load(vm.totalDetalle)" format="#,###"
-						style="text-align:right" readonly="true" />
+						style="font-weight: bold; text-align:right;" readonly="true" />
 					</tablechildren>
 
 					<tablechildren>
@@ -490,7 +490,7 @@
 					</tablechildren>
 					<tablechildren>
 						<doublebox value="@load(vm.totalDetalleCobro)" format="#,###"
-						style="text-align:right" readonly="true"/>
+						style="font-weight: bold; text-align:right;" readonly="true"/>
 					</tablechildren>
 
 					<tablechildren>
@@ -498,7 +498,7 @@
 					</tablechildren>
 					<tablechildren>
 						<doublebox value="@load(vm.totalesDiferencia)" format="#,###"
-						style="text-align:right" readonly="true"/>
+						style="@load(vm.cssDiferencia)" readonly="true"/>
 					</tablechildren>
 					
 					<tablechildren colspan="2">
