@@ -1,7 +1,9 @@
 package com.instituto.sistema.administracion;
 
+import java.util.Date;
 import java.util.List;
 
+import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
@@ -35,6 +37,8 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 	private EstadoCuenta estadoCuentaSelected;
 	
 	private boolean opCrearEstadoCuenta;
+	private boolean opInactivarEstadoCuenta;
+	private boolean opBorrarEstadoCuenta;
 
 	@Init(superclass = true)
 	public void initEstadoCuentaVM() {
@@ -50,6 +54,8 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 	protected void inicializarOperaciones() {
 		
 		this.opCrearEstadoCuenta = this.operacionHabilitada(ParamsLocal.OP_CREAR_ESTADOCUENTA);
+		this.opInactivarEstadoCuenta = this.operacionHabilitada(ParamsLocal.OP_INACTIVAR_ESTADOCUENTA);
+		this.opBorrarEstadoCuenta = this.operacionHabilitada(ParamsLocal.OP_BORRAR_ESTADOCUENTA);
 
 	}
 
@@ -232,6 +238,106 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 		
 	}
 	
+	
+	@Command
+	public void modalInactivarEstadoCuenta(@BindingParam("estadocuenta") EstadoCuenta estadoCuenta) {
+		
+		if (!this.opInactivarEstadoCuenta) {
+			
+			this.mensajeInfo("No tienes permisos para realizar la operación.");
+			return;
+		}
+		
+		this.estadoCuentaSelected = estadoCuenta;
+		
+		if(this.estadoCuentaSelected.isInactivo()){
+			
+			this.mensajeInfo("El estado de cuenta ya se encuentra inactivo");
+			return;
+		}
+		
+		Double sum = this.estadoCuentaSelected.getPago() + this.estadoCuentaSelected.getMontoDescuento();
+		
+		if (sum > 0) {
+			
+			this.mensajeInfo("Ya posee pago, no se puede inactivar.");
+			
+			return;
+			
+		}
+		
+		modal = (Window) Executions.createComponents("/instituto/zul/administracion/EstadoCuentaInactivarModal.zul",
+				this.mainComponent, null);
+		Selectors.wireComponents(modal, this, false);
+		modal.doModal();
+		
+	}
+	
+	@Command()
+	@NotifyChange("lEstadosCuentas")
+	public void guardarInactivacion() {
+		
+		this.estadoCuentaSelected.setUsuarioInactivacion(this.getCurrentUser().getAccount());
+		this.estadoCuentaSelected.setFechaInactivacion(new Date());
+		this.estadoCuentaSelected.setInactivo(true);
+		
+		this.save(this.estadoCuentaSelected);
+		
+		this.modal.detach();
+		
+		refrescarEstadosCuentas();
+		
+	}
+	
+	@Command
+	public void borrarEstadoCuentaConfirmacion(@BindingParam("estadocuenta") final EstadoCuenta estadoCuenta) {
+
+		if (!this.opBorrarEstadoCuenta)
+			return;
+		
+		if (!estadoCuenta.isCargaManual()) {
+			
+			this.mensajeInfo("Solo puedes borrar las cargas manuales.");
+			return;
+		}
+		
+		List<CobranzaDetalle> detalles = this.reg.getAllObjectsByCondicionOrder(CobranzaDetalle.class.getName(),
+				"estadocuentaid = " + estadoCuenta.getEstadocuentaid(), null);
+		
+		if (detalles.size() > 0) {
+			
+			this.mensajeInfo("No se puede eliminar ya posee transacciones, solo puede inactivar.");
+			return;
+		}
+
+		EventListener event = new EventListener() {
+
+			@Override
+			public void onEvent(Event evt) throws Exception {
+
+				if (evt.getName().equals(Messagebox.ON_YES)) {
+
+					borrarEstadoCuentaManual(estadoCuenta);
+
+				}
+
+			}
+
+		};
+
+		this.mensajeEliminar("El estado de cuenta sera eliminado. \n Continuar?", event);
+	}
+
+	private void borrarEstadoCuentaManual(EstadoCuenta estadoCuenta) {
+
+		this.reg.deleteObject(estadoCuenta);
+
+		this.refrescarEstadosCuentas();
+
+		BindUtils.postNotifyChange(null, null, this, "lEstadosCuentas");
+
+	}
+	
 	//Buscar concepto
 	private List<Object[]> lConceptosbuscarOri;
 	private List<Object[]> lConceptosBuscar;
@@ -362,5 +468,21 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 
 	public void setOpCrearEstadoCuenta(boolean opCrearEstadoCuenta) {
 		this.opCrearEstadoCuenta = opCrearEstadoCuenta;
+	}
+
+	public boolean isOpInactivarEstadoCuenta() {
+		return opInactivarEstadoCuenta;
+	}
+
+	public void setOpInactivarEstadoCuenta(boolean opInactivarEstadoCuenta) {
+		this.opInactivarEstadoCuenta = opInactivarEstadoCuenta;
+	}
+
+	public boolean isOpBorrarEstadoCuenta() {
+		return opBorrarEstadoCuenta;
+	}
+
+	public void setOpBorrarEstadoCuenta(boolean opBorrarEstadoCuenta) {
+		this.opBorrarEstadoCuenta = opBorrarEstadoCuenta;
 	}
 }

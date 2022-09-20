@@ -170,27 +170,10 @@
 
 					<listbox emptyMessage="lista vacía..." mold="paging"
 						autopaging="true" vflex="1" model="@load(vm.lEstadosCuentas)">
-
-						<listhead visible="false">
-
-							<listheader label="Fecha Vencimiento"
-								align="center" />
-
-							<listheader label="Concepto" align="Center" />
-							<listheader label="Periodo" align="Center" />
-
-							<listheader label="Monto Total"
-								align="right" />
-							<listheader label="Pago" align="right" />
-							<listheader label="Descuento" align="right" />
-
-
-
-						</listhead>
-
+						
 						<auxhead>
 
-							<auxheader colspan="6" align="center" >
+							<auxheader colspan="8" align="center" >
 							
 								<button label="Estado de Cuenta"
 								iconSclass=" z-icon-plus"
@@ -202,19 +185,25 @@
 
 						</auxhead>
 
-						<auxhead>
+						<listhead>
 
-							<auxheader label="Fecha Vencimiento"
+							<listheader label="Fecha Vencimiento"
 								align="center" />
-							<auxheader label="Concepto" align="center" />
-							<auxheader label="Periodo/Cuota #"
-								align="center" />
-							<auxheader label="Monto Total"
-								align="center" />
-							<auxheader label="Pago" align="center" />
-							<auxheader label="Descuento" align="center" />
 
-						</auxhead>
+							<listheader label="Concepto" align="Center" />
+							<listheader label="Periodo" align="Center" />
+
+							<listheader label="Monto Total"
+								align="center" />
+							<listheader label="Pago" align="center" />
+							<listheader label="Descuento" align="center" />
+							<listheader label="Inactivo" align="center" hflex="min" />
+							<listheader hflex="min"  align="center"/>
+
+
+						</listhead>
+
+						
 
 						<template name="model">
 
@@ -232,7 +221,32 @@
 									label="@load(each.pago) @converter('formatedNumber', format='#,###')" />
 								<listcell
 									label="@load(each.montoDescuento)" />
+									
+								<listcell>
+								
+									<if test="@load(each.inactivo)">
+									
+										<image src="/doxacore/img/un-check.png" style=" width: 15px; height: 15px;"
+										tooltiptext="Inactivo" />
+									
+									</if>
+								
+								</listcell>
+									
 
+								<listcell >
+									<button iconSclass="z-icon-edit"
+										onClick="@command('modalInactivarEstadoCuenta', estadocuenta=each)"
+										tooltiptext="Inactivar"
+										disabled="@load(!vm.opInactivarEstadoCuenta)" />	
+										
+										<button
+											iconSclass="z-icon-trash-o" style="background-color:red"
+											onClick="@command('borrarEstadoCuentaConfirmacion', estadocuenta=each)"
+											tooltiptext="Borrar Estado de cuenta Modal" disabled="@load(!vm.opBorrarEstadoCuenta)" />
+										
+															
+								</listcell>
 							</listitem>
 
 						</template>

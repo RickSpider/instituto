@@ -56,11 +56,11 @@ public class EstadoCuenta extends Modelo implements Serializable{
 	
 	
 	private boolean inactivo = false;
-	
-    @Column(updatable = false)
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaInactivacion;
 	private String motivoInactivacion; 
+	private String usuarioInactivacion;
 	
 	@ColumnDefault("false")
 	private boolean cargaManual=false;
@@ -155,6 +155,12 @@ public class EstadoCuenta extends Modelo implements Serializable{
 	}
 	public void setCargaManual(boolean cargaManual) {
 		this.cargaManual = cargaManual;
+	}
+	public String getUsuarioInactivacion() {
+		return usuarioInactivacion;
+	}
+	public void setUsuarioInactivacion(String usuarioInactivacion) {
+		this.usuarioInactivacion = usuarioInactivacion;
 	}
 	
 	
