@@ -166,7 +166,7 @@
 
 			<hlayout vflex="1">
 
-				<vlayout vflex="1" hflex="2">
+				<vlayout vflex="1" hflex="1">
 
 					<listbox emptyMessage="lista vacía..." mold="paging"
 						autopaging="true" vflex="1" model="@load(vm.lEstadosCuentas)">
@@ -235,15 +235,15 @@
 									
 
 								<listcell >
-									<button iconSclass="z-icon-edit"
+									<button iconSclass="z-icon-times"  style="background-color:#FFD200"
 										onClick="@command('modalInactivarEstadoCuenta', estadocuenta=each)"
 										tooltiptext="Inactivar"
 										disabled="@load(!vm.opInactivarEstadoCuenta)" />	
 										
-										<button
-											iconSclass="z-icon-trash-o" style="background-color:red"
-											onClick="@command('borrarEstadoCuentaConfirmacion', estadocuenta=each)"
-											tooltiptext="Borrar Estado de cuenta Modal" disabled="@load(!vm.opBorrarEstadoCuenta)" />
+									<button
+										iconSclass="z-icon-trash-o" style="background-color:red"
+										onClick="@command('borrarEstadoCuentaConfirmacion', estadocuenta=each)"
+										tooltiptext="Borrar Estado de cuenta Modal" disabled="@load(!vm.opBorrarEstadoCuenta)" />
 										
 															
 								</listcell>
@@ -269,7 +269,7 @@
 				<vlayout vflex="1" hflex="1">
 
 					<listbox emptyMessage="lista vacía..." mold="paging"
-						autopaging="true" vflex="1" model="@load(vm.lCobranzasDetalles)">
+						 	autopaging="true" vflex="1" model="@load(vm.lCobranzasDetalles)">
 						
 						<auxhead>
 						
@@ -280,10 +280,10 @@
 						
 						<listhead>
 						
-							<listheader label="Fecha" align="Center"/>
-							<listheader label="Comprobante" align="Center"/>
-							<listheader label="Comprobante #" align="Center"/>
-							<listheader label="Anulado" align="Center" />
+							<listheader label="Fecha"  align="Center"/>
+							<listheader label="Comprobante"  align="Center"/>
+							<listheader label="Comprobante #"  align="Center"/>
+							<listheader label="Anulado"  hflex="min" align="Center" />
 							<listheader align="Center" hflex="min"/>
 						
 						</listhead>
