@@ -16,8 +16,14 @@
 		badgeText="@load(vm.pageMap[self.label].values().size() )"
 		children="@load(vm.pageMap[self.label].values()) @template('navitem')"
 		visible="@load(vm.menuVisible( vm.pageMap[self.label].values().size() ))" />
+		
 	
 	<nav label="Gestion Sede" iconSclass="z-icon-home"
+		badgeText="@load(vm.pageMap[self.label].values().size() )"
+		children="@load(vm.pageMap[self.label].values()) @template('navitem')"
+		visible="@load(vm.menuVisible( vm.pageMap[self.label].values().size() ))" />
+		
+	<nav label="Reportes" iconSclass=" z-icon-file-text-o "
 		badgeText="@load(vm.pageMap[self.label].values().size() )"
 		children="@load(vm.pageMap[self.label].values()) @template('navitem')"
 		visible="@load(vm.menuVisible( vm.pageMap[self.label].values().size() ))" />
