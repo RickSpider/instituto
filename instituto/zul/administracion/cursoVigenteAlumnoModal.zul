@@ -81,8 +81,7 @@
 					</hbox>
 					<datebox
 						value="@bind(vm.cursoVigenteAlumnoSelected.fechaInscripcion)"
-						format="short " width="150px"
-						constraint="no empty: Es campo obligatorio." />
+						format="short " width="150px"/>
 				</hlayout>
 			
 			</hlayout>
