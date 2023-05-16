@@ -80,7 +80,7 @@
 							style="font-weight:bold" />
 					</hbox>
 					<datebox
-						value="@load(vm.cursoVigenteAlumnoSelected.fechaInscripcion) @save(vm.cursoVigenteAlumnoSelected.fechaInscripcion, before='guardar')"
+						value="@bind(vm.cursoVigenteAlumnoSelected.fechaInscripcion)"
 						format="short " width="150px"
 						constraint="no empty: Es campo obligatorio." />
 				</hlayout>
