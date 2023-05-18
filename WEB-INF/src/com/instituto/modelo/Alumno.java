@@ -11,6 +11,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.doxacore.modelo.Modelo;
+import com.sun.istack.NotNull;
 
 
 @Entity
@@ -27,6 +28,7 @@ public class Alumno extends Modelo implements Serializable{
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="alumnoid")
+	@NotNull
 	private Persona persona;
 	
 	@ManyToOne

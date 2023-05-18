@@ -26,6 +26,7 @@ import com.doxacore.modelo.Ciudad;
 import com.doxacore.modelo.Pais;
 import com.doxacore.modelo.Tipo;
 import com.doxacore.modelo.Tipotipo;
+import com.instituto.modelo.Alumno;
 import com.instituto.modelo.Entidad;
 import com.instituto.modelo.GradoAcademico;
 import com.instituto.modelo.Institucion;
@@ -316,6 +317,22 @@ public class PersonaVM extends TemplateViewModel {
 
 	private void borrarPersona(Persona persona) {
 
+		Alumno alu = this.reg.getObjectById(Alumno.class.getName(), persona.getPersonaid());
+		
+		if (alu != null) {
+			
+			this.mensajeError("Los datos estan siendo utilizados con un Alumno.");
+			return;
+		}
+		
+		alu = this.reg.getObjectByCondicion(Alumno.class.getName(), "personafacturacionid = "+persona.getPersonaid());
+		
+		if (alu != null) {
+			
+			this.mensajeError("Los datos estan siendo para facturacion de un Alumno.");
+			return;
+		}
+		
 		this.reg.deleteObject(persona);
 
 		this.cargarPersonas();
