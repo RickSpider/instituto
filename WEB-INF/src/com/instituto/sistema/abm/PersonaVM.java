@@ -329,7 +329,7 @@ public class PersonaVM extends TemplateViewModel {
 		
 		if (alu != null) {
 			
-			this.mensajeError("Los datos estan siendo para facturacion de un Alumno.");
+			this.mensajeError("Los datos estan siendo para facturación de un Alumno.");
 			return;
 		}
 		
