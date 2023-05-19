@@ -21,12 +21,13 @@ public class Alumno extends Modelo implements Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -3897754450329909812L;
+	//private static final long serialVersionUID = -3897754450329909812L;
+	private static final long serialVersionUID = -3897754450329909813L;
 
 	@Id
 	private Long alumnoid;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	@JoinColumn(name="alumnoid")
 	@NotNull
 	private Persona persona;
