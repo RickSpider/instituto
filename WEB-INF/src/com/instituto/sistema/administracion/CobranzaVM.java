@@ -354,7 +354,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 							double porcentajeCalculo = importe / 100;
 
-							double descuento = cobranzaDetalle.getEstadoCuenta().getMonto() / porcentajeCalculo;
+							double descuento = cobranzaDetalle.getEstadoCuenta().getMonto() * porcentajeCalculo;
 
 							cobranzaDetalle.setMontoDescuento(descuento);
 

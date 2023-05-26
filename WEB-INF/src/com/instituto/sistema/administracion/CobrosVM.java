@@ -48,7 +48,7 @@ public class CobrosVM extends TemplateViewModelLocal{
 	
 	private void cargarCobros() {
 
-		this.lCobranzas = this.reg.getAllObjectsByCondicionOrder(Cobranza.class.getName(), null, "cobranzaid asc");
+		this.lCobranzas = this.reg.getAllObjectsByCondicionOrder(Cobranza.class.getName(), null, "cobranzaid desc");
 		this.lCobranzasOri = this.lCobranzas;
 
 	}
