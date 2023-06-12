@@ -168,4 +168,7 @@ public class ParamsLocal extends Params {
 	//EstadoCuenta
 	public static final String OP_CREAR_ESTADOCUENTAREPORTE="CrearEstadoCuentaReporte";
 	
+	//FacturacionReporte
+	public static final String OP_CREAR_FACTURACIONREPORTE="CrearFacturacionReporte";
+	
 }

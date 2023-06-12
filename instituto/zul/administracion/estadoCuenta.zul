@@ -120,9 +120,9 @@
 												hflex="min" />
 											<listheader label="Curso" />
 											<listheader
-												label="Fecha Inicio" />
+												label="Fecha Inicio" hflex="min" />
 											<listheader
-												label="Fecha Fin" />
+												label="Fecha Fin" hflex="min"/>
 										</listhead>
 
 										<template name="model">
@@ -131,11 +131,11 @@
 												value="@load(each[1])"
 												onClick="@command('onSelectCursoVigente', id = each[0])">
 
+												<listcell>
+													<label value="@load(each[0])" />
+												</listcell>
 												<listcell
-													label="@load(each[0])" />
-
-												<listcell
-													label="@load(each[1])" />
+													label="@load(each[1])" tooltiptext="@load(each[1])"/>
 
 												<listcell
 													label="@load(each[2]) @converter('formatedDate', format='dd/MM/yyyy')" />

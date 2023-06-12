@@ -1,0 +1,73 @@
+<?page title="EstadoCuentaReporte" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Facturacion Reporte" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.reporte.FacturacionReporteVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<tablelayout columns="2">
+
+			<tablechildren>
+				<label value="FechaInicio:" />
+			</tablechildren>
+			<tablechildren>
+				<datebox value="@bind(vm.fechaInicio)"
+				format="short " width="150px" readonly="true" instant="true"/>
+			</tablechildren>
+
+			<tablechildren>
+				<label value="Fecha Fin: " />
+			</tablechildren>
+			<tablechildren>
+				<datebox  value="@bind(vm.fechaFin)" 
+				format="short " width="150px" readonly="true" instant="true"/>
+			</tablechildren>
+			
+			<tablechildren>
+			
+				<label value="Comprobantes" />
+
+			</tablechildren>
+			
+			<tablechildren>
+			
+				 <combobox width="150px"
+                    model="@load(vm.listaComprobantes)" selectedItem="@bind(vm.tipoComprobanteSelected)">
+                    <template name="model">
+                        <comboitem label="@load(each)" />
+                    </template>
+                </combobox>
+
+			</tablechildren>
+			
+			<tablechildren>
+			
+				<label value="Registros:" />
+
+			</tablechildren>
+			
+			<tablechildren>
+			
+				 <combobox id="cmbColor" width="150px"
+                    model="@load(vm.listaRegistros)" selectedItem="@bind(vm.tipoRegistroSelected)">
+                    <template name="model">
+                        <comboitem label="@load(each)" />
+                    </template>
+                </combobox>
+
+			</tablechildren>
+			
+
+			<tablechildren>
+			
+				<button label="Estado de Cuenta"
+					onClick="@command('generarReporte')"
+					disabled="@load(!vm.opCrearFacturacionReporte)"/>
+
+			</tablechildren>
+
+
+
+		</tablelayout>
+
+	</window>
+</zk>

@@ -74,7 +74,6 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	@Command
-	@NotifyChange("*")
 	public void limpiar() {
 
 		cobranzaSelected = new Cobranza();
@@ -90,6 +89,11 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		this.buscarCondicionVenta = "";
 
 		defaultCobranza();
+		
+		double totalDetalle = 0;
+		this.iva10 = 0;
+		this.iva5 = 0;
+		this.exento = 0;
 
 	}
 
@@ -111,6 +115,8 @@ public class CobranzaVM extends TemplateViewModelLocal {
 				ParamsLocal.SIGLA_CONDICION_VENTA_CONTADO);
 		this.cobranzaSelected.setCondicionVentaTipo(condicionVenta);
 		this.buscarCondicionVenta = condicionVenta.getTipo();
+		
+	
 
 	}
 
@@ -268,7 +274,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	@Command
-	@NotifyChange("lDetalles")
+	@NotifyChange({ "totalDetalle", "iva10", "iva5", "exento","lDetalles"})
 	public void borrarDetalle(@BindingParam("dato") CobranzaDetalle dato) {
 
 		if (this.verCobranza) {
@@ -278,6 +284,8 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		}
 
 		this.lDetalles.remove(dato);
+		
+		this.getTotalDetalle();
 
 	}
 
@@ -299,7 +307,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			cobranzaDetalle = buscarDescuento(cobranzaDetalle);
 			cobranzaDetalle.setMonto(cobranzaDetalle.getSaldo()-cobranzaDetalle.getMontoDescuento());
 			
-			if (x.getConcepto().getImpuestoTipo().getSigla().compareTo(ParamsLocal.SIGLA_IMPUESTO_IVA_EXENTO)==0) {
+			/*if (x.getConcepto().getImpuestoTipo().getSigla().compareTo(ParamsLocal.SIGLA_IMPUESTO_IVA_EXENTO)==0) {
 				
 				cobranzaDetalle.setExento(cobranzaDetalle.getSaldo()-cobranzaDetalle.getMontoDescuento());
 				
@@ -315,7 +323,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 				
 				cobranzaDetalle.setIva5((cobranzaDetalle.getSaldo()-cobranzaDetalle.getMontoDescuento())/21);
 				
-			}
+			}*/
 			
 			this.lDetalles.add(cobranzaDetalle);
 
@@ -448,7 +456,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	@Command
-	@NotifyChange("lDetallesCobros")
+	@NotifyChange({"lDetallesCobros", "lDetalles", "totalDetalle", "totalesDiferencia", "iva10", "iva5", "exento","cssDiferencia" })
 	public void borrarCobranzaDetalleCobro(@BindingParam("dato") CobranzaDetalleCobro dato) {
 
 		if (this.verCobranza) {
@@ -458,6 +466,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		}
 
 		this.lDetallesCobros.remove(dato);
+		this.getTotalDetalle();
 
 	}
 
@@ -726,7 +735,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	// fin buscarTipo
 
 	@Command
-	public void guaradarCobranza() {
+	public void guardarCobranza() {
 
 		if (this.verCobranza) {
 
@@ -816,28 +825,33 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		this.iva5 = 0;
 		this.exento = 0;
 
-		for (CobranzaDetalle x : lDetalles) {
+		for (int i = 0; i< lDetalles.size() ; i++) {
 
-			totalDetalle += x.getMonto();
+			totalDetalle += lDetalles.get(i).getMonto();
 
-			if (x.getEstadoCuenta().getConcepto().getImpuestoTipo().getSigla()
+			if (lDetalles.get(i).getEstadoCuenta().getConcepto().getImpuestoTipo().getSigla()
 					.compareTo(ParamsLocal.SIGLA_IMPUESTO_IVA_EXENTO) == 0) {
 
-				this.exento += x.getExento();
+				lDetalles.get(i).setExento(lDetalles.get(i).getMonto());
+				this.exento += lDetalles.get(i).getExento();
+								
 
 			}
 
-			if (x.getEstadoCuenta().getConcepto().getImpuestoTipo().getSigla()
+			if (lDetalles.get(i).getEstadoCuenta().getConcepto().getImpuestoTipo().getSigla()
 					.compareTo(ParamsLocal.SIGLA_IMPUESTO_IVA_10) == 0) {
 
-				this.iva10 = +x.getIva10();
+				lDetalles.get(i).setIva10(lDetalles.get(i).getMonto()/11);
+				this.iva10 = +lDetalles.get(i).getIva10();
+				
 
 			}
 
-			if (x.getEstadoCuenta().getConcepto().getImpuestoTipo().getSigla()
+			if (lDetalles.get(i).getEstadoCuenta().getConcepto().getImpuestoTipo().getSigla()
 					.compareTo(ParamsLocal.SIGLA_IMPUESTO_IVA_5) == 0) {
 
-				this.iva5 += x.getIva5();
+				lDetalles.get(i).setIva5(lDetalles.get(i).getMonto()/21);
+				this.iva5 += lDetalles.get(i).getIva5();
 
 			}
 

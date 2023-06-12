@@ -235,7 +235,7 @@
 				<tablechildren style="padding-left: 5px">
 					<datebox
 						value="@bind(vm.cobranzaSelected.fecha)"
-						format="short " width="150px"
+						format="dd/MM/yy HH:mm:ss" width="150px"
 						readonly="@load(!vm.opDefinirFecha)"
 						buttonVisible="@load(vm.opDefinirFecha)"
 						disabled="@load(vm.verCobranza)"/>
@@ -534,7 +534,7 @@
 				<hlayout>
 
 					<button label="COBRAR"
-						onClick="@command('guaradarCobranza')"
+						onClick="@command('guardarCobranza')"
 						style="background-color:green" disabled="@load(vm.verCobranza)" />
 					<button label="LIMPIAR"
 						onClick="@command('limpiar')" />
