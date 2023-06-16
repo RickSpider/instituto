@@ -5,4 +5,4 @@ SELECT cobranzaid, TO_CHAR(c.fecha, 'DD-MM-YYYY HH24:MI:SS') as fecha,t.tipo,c.c
 	where c.fecha between '?1' and '?2'
 	--1 and c.anulado = ?3
 	--2 and c.comprobantetipoid = ?4
-	order by fecha asc, cobranzaid asc;
+	order by c.fecha asc, c.cobranzaid asc;

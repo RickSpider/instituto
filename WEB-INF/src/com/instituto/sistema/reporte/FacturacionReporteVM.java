@@ -69,7 +69,7 @@ public class FacturacionReporteVM extends TemplateViewModelLocal {
 		}
 		
 		ReportExcel re = new ReportExcel("Facturacion");
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		//CursoVigente cv = this.reg.getObjectById(CursoVigente.class.getName(), cursoVigenteid);
 		
 		List<String[]> titulos = new ArrayList<String[]>();
@@ -133,7 +133,7 @@ public class FacturacionReporteVM extends TemplateViewModelLocal {
 		Double totalMes = 0.0 ;
 		Double totalGeneral = 0.0 ;
 		SimpleDateFormat sdfMes = new SimpleDateFormat("MMMM", new Locale("es", "ES"));
-		DecimalFormatSymbols dfs = new DecimalFormatSymbols(new Locale("es", "PY"));
+		DecimalFormatSymbols dfs = new DecimalFormatSymbols(new Locale("es", "ES"));
 		dfs.setDecimalSeparator('.');
 		DecimalFormat df = new DecimalFormat("#,##0.##",dfs);
 		df.setGroupingUsed(true);
