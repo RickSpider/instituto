@@ -51,10 +51,10 @@
 											label="@load(each[0])" />
 
 										<listcell
-											label="@load(each[1])" />
+											label="@load(each[1])" tooltiptext="@load(each[1])"/>
 
 										<listcell
-											label="@load(each[2])" />
+											label="@load(each[2])" tooltiptext="@load(each[2])"/>
 
 
 

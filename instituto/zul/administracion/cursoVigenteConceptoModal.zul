@@ -37,8 +37,6 @@
 								<listhead>
 									<listheader label="ID" hflex="min" />
 									<listheader label="Concepto" />
-									<listheader label="Departamento" />
-									<listheader label="Pais" />
 								</listhead>
 
 								<template name="model">
@@ -50,13 +48,8 @@
 											label="@load(each[0])" />
 
 										<listcell
-											label="@load(each[1])" />
+											label="@load(each[1])" tooltiptext="@load(each[1])"/>
 
-										<listcell
-											label="@load(each[2])" />
-										
-										<listcell
-											label="@load(each[3])" />
 
 									</listitem>
 

@@ -74,6 +74,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	@Command
+	@NotifyChange("*")
 	public void limpiar() {
 
 		cobranzaSelected = new Cobranza();
