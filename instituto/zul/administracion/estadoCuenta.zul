@@ -6,7 +6,7 @@
 
 		<vlayout vflex="1">
 
-			<tablelayout columns="4">
+			<tablelayout columns="3">
 
 				<tablechildren>
 					<label value="Alumno:" style="font-weight:bold" />
@@ -161,7 +161,26 @@
 					<label
 						value="@load(vm.cursoVigenteSelected.curso.curso)" />
 				</tablechildren>
+				
+				
+				<tablechildren >
+					<label value="Saldo Vencido:" style="font-weight:bold"/>
+				</tablechildren>
+				<tablechildren colspan="2">
+					<doublebox width="120px"
+						value="@load(vm.saldoVencido)" format="#,###"
+						style="text-align:right" readonly="true" />
+				</tablechildren>
 
+				<tablechildren >
+					<label value="Saldo Total:" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren colspan="2">
+					<doublebox width="120px"
+						value="@load(vm.saldoTotal)" format="#,###"
+						style="text-align:right" readonly="true" />
+				</tablechildren>
+				
 			</tablelayout>
 
 			<hlayout vflex="1">
@@ -197,6 +216,7 @@
 								align="center" />
 							<listheader label="Pago" align="center" />
 							<listheader label="Descuento" align="center" />
+							<listheader label="Saldo" align="center" hflex="min" />
 							<listheader label="Inactivo" align="center" hflex="min" />
 							<listheader hflex="min"  align="center"/>
 
@@ -220,14 +240,17 @@
 								<listcell
 									label="@load(each.pago) @converter('formatedNumber', format='#,###')" />
 								<listcell
-									label="@load(each.montoDescuento)" />
+									label="@load(each.montoDescuento)  @converter('formatedNumber', format='#,###')"   />
+								
+								<listcell
+									label="@load(each.saldo)  @converter('formatedNumber', format='#,###')" />
 									
 								<listcell>
 								
 									<if test="@load(each.inactivo)">
 									
 										<image src="/doxacore/img/un-check.png" style=" width: 15px; height: 15px;"
-										tooltiptext="Inactivo" />
+										tooltiptext="@load(each.motivoInactivacion)"/>
 									
 									</if>
 								

@@ -39,6 +39,9 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 	private boolean opCrearEstadoCuenta;
 	private boolean opInactivarEstadoCuenta;
 	private boolean opBorrarEstadoCuenta;
+	
+	private double saldoTotal = 0;
+	private double saldoVencido = 0;
 
 	@Init(superclass = true)
 	public void initEstadoCuentaVM() {
@@ -98,6 +101,9 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 		this.cursoVigenteSelected = null;
 		this.buscarCursoVigente = "";
 		this.lEstadosCuentas = null;
+		this.lCobranzasDetalles = null;
+		this.saldoVencido = 0;
+		this.saldoTotal = 0;
 
 	}
 
@@ -137,14 +143,37 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 	}
 
 	@Command
-	@NotifyChange({ "buscarCursoVigente", "lEstadosCuentas", "cursoVigenteSelected" })
+	@NotifyChange({ "buscarCursoVigente", "lEstadosCuentas", "cursoVigenteSelected","saldoVencido", "saldoTotal" })
 	public void onSelectCursoVigente(@BindingParam("id") long id) {
 
 		this.cursoVigenteSelected = this.reg.getObjectById(CursoVigente.class.getName(), id);
 		this.buscarCursoVigente = cursoVigenteSelected.getCurso().getCurso();
+		this.lCobranzasDetalles = null;
+
 
 		refrescarEstadosCuentas();
+		calcularSaldos();
 
+	}
+	
+	public void calcularSaldos() {
+		
+		String sqlSaldoTotal = this.um.getSql("saldoTotalPorAlumnoCursoVigente.sql").replace("?1",
+				this.alumnoSelected.getAlumnoid() + "").replace("?2", this.cursoVigenteSelected.getCursovigenteid()+"");;
+		List<Object[]> resultSaldoTotal = this.reg.sqlNativo(sqlSaldoTotal);
+		this.saldoTotal = 0;
+		if (resultSaldoTotal.size() > 0) {
+			this.saldoTotal = Double.parseDouble(resultSaldoTotal.get(0)[1].toString());
+		}
+
+		String sqlSaldoVencido = this.um.getSql("saldoVencidoPorAlumnoCursoVigente.sql").replace("?1",
+				this.alumnoSelected.getAlumnoid() + "").replace("?2", this.cursoVigenteSelected.getCursovigenteid()+"");
+		List<Object[]> resultSaldoVencido = this.reg.sqlNativo(sqlSaldoVencido);
+		this.saldoVencido = 0;
+		if (resultSaldoVencido.size() > 0) {
+			this.saldoVencido = Double.parseDouble(resultSaldoVencido.get(0)[1].toString());
+		}
+		
 	}
 	
 	@NotifyChange({"lEstadosCuentas"})
@@ -484,5 +513,21 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 
 	public void setOpBorrarEstadoCuenta(boolean opBorrarEstadoCuenta) {
 		this.opBorrarEstadoCuenta = opBorrarEstadoCuenta;
+	}
+
+	public double getSaldoTotal() {
+		return saldoTotal;
+	}
+
+	public void setSaldoTotal(double saldoTotal) {
+		this.saldoTotal = saldoTotal;
+	}
+
+	public double getSaldoVencido() {
+		return saldoVencido;
+	}
+
+	public void setSaldoVencido(double saldoVencido) {
+		this.saldoVencido = saldoVencido;
 	}
 }
