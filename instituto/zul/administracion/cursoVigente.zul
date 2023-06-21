@@ -476,8 +476,14 @@
 											align="left" />
 										<listheader label="Tipo"
 											align="center" hflex="min" />
+										
+										<listheader label="Inicio"
+											align="center" hflex="min" />
+										<listheader label="Fin"
+											align="center" hflex="min" />
 										<listheader label="Estado"
 											align="center" hflex="min" />
+											
 										<listheader align="center"
 											hflex="min" />
 
@@ -503,6 +509,8 @@
 												value="@bind(vm.filtroColumnsMaterias[2])" instant="true"
 												onChange="@command('filtrarCursoVigenteMateria')" hflex="1" />
 										</auxheader>
+										<auxheader/>
+										<auxheader />
 										<auxheader>
 											<textbox
 												value="@bind(vm.filtroColumnsMaterias[3])" instant="true"
@@ -526,6 +534,14 @@
 											<listcell
 												label="@load(each.materia.materiaTipo.tipo)"
 												tooltiptext="@load(each.materia.materiaTipo.tipo)" />
+												
+											<listcell
+												label="@load(each.fechaInicio)  @converter('formatedDate', format='dd/MM/yyyy')"
+												tooltiptext="@load(each.fechaInicio)  @converter('formatedDate', format='dd/MM/yyyy')" />
+												
+											<listcell
+												label="@load(each.fechaFin)  @converter('formatedDate', format='dd/MM/yyyy')"
+												tooltiptext="@load(each.fechaFin)  @converter('formatedDate', format='dd/MM/yyyy')" />
 												
 											<listcell
 												label="@load(each.estado.tipo)"

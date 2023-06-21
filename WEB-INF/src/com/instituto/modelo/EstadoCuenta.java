@@ -65,6 +65,12 @@ public class EstadoCuenta extends Modelo implements Serializable{
 	@ColumnDefault("false")
 	private boolean cargaManual=false;
 	
+	public double getSaldo() {
+		
+		return (this.monto - (this.pago + this.montoDescuento));
+		
+	}
+	
 	public Alumno getAlumno() {
 		return alumno;
 	}

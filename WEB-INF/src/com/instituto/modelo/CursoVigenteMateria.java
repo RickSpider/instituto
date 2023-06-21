@@ -1,12 +1,15 @@
 package com.instituto.modelo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.doxacore.modelo.Modelo;
 import com.doxacore.modelo.Tipo;
@@ -34,6 +37,13 @@ public class CursoVigenteMateria extends Modelo implements Serializable {
 		Object [] o = {this.getOrden(), this.getMateria().getMateria(), getMateria().getMateriaTipo().getTipo(),this.estado.getTipo()}; 
 		return o;
 	}
+	
+	@Temporal(TemporalType.DATE)
+	private Date fechaInicio;
+	
+	@Temporal(TemporalType.DATE)
+	private Date fechaFin;
+
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -83,6 +93,22 @@ public class CursoVigenteMateria extends Modelo implements Serializable {
 	public String getStringDatos() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public Date getFechaInicio() {
+		return fechaInicio;
+	}
+
+	public void setFechaInicio(Date fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
+	public Date getFechaFin() {
+		return fechaFin;
+	}
+
+	public void setFechaFin(Date fechaFin) {
+		this.fechaFin = fechaFin;
 	}
 	
 

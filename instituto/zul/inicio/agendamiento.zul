@@ -1,0 +1,34 @@
+<?page title="Agendamiento" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Agendamientos" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.inicio.AgendamientoVM')"
+				vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<div apply="com.instituto.sistema.inicio.calendar.CalendarController"
+			  vflex="1">
+			<hlayout valign="middle">
+				<button id="today" label="Hoy" />
+				<button id="prev" iconSclass="z-icon-arrow-left" />
+				<button id="next" iconSclass="z-icon-arrow-right" />
+				<!-- <separator width="50px" />
+				<button id="pageDay" label="Dia"  width="60px" />
+				<button id="pageWeek" label="Semana" width="100px" />
+				<button id="pageMonth" label="Mes" width="60px" /> -->
+				<!-- <separator width="50px" />
+				Filter :
+				<textbox id="filter" />
+				<button id="applyFilter" label="Apply" />
+				<button id="resetFilter" label="Reset" />-->
+				
+			</hlayout> 
+
+			<separator bar="true" height="20px" />
+
+			<calendars id="calendars" firstDayOfWeek="Sunday"
+				 timeZone="Main=GMT-4" mold="month" model="@load(vm.calendarModel)"
+				 beginTime="5" endTime="20" timeslots="2"/>
+		
+		</div>
+			
+	</window>
+</zk>

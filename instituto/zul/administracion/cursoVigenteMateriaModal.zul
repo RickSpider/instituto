@@ -133,6 +133,28 @@
 
 			</hlayout>
 
+			
+			
+				<hlayout>
+				<hbox width="130px">
+					<label value="Fecha Incio: " style="font-weight:bold" />
+				</hbox>
+					<datebox
+						value="@load(vm.cursoVigenteMateriaSelected.fechaInicio) @save(vm.cursoVigenteMateriaSelected.fechaInicio, before='guardarMateria')"
+						format="short " width="150px"
+						constraint="no empty: Es campo obligatorio." />
+			</hlayout>
+			
+				<hlayout>
+				<hbox width="130px">
+					<label value="Fecha Fin: " style="font-weight:bold" />
+				</hbox>
+					<datebox
+						value="@load(vm.cursoVigenteMateriaSelected.fechaFin) @save(vm.cursoVigenteMateriaSelected.fechaFin, before='guardarMateria')"
+						format="short " width="150px"
+						constraint="no empty: Es campo obligatorio." />
+			</hlayout>
+			
 			<hlayout>
 				<hbox width="130px">
 					<label value="Orden: " style="font-weight:bold" />
@@ -141,6 +163,9 @@
 					value="@load(vm.cursoVigenteMateriaSelected.orden) @save(vm.cursoVigenteMateriaSelected.orden, before='guardarMateria')"
 					constraint="no empty: Es campo obligatorio." />
 			</hlayout>
+			
+			
+		
 
 			<space height="10px" />
 
