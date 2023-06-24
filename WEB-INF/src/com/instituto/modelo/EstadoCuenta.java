@@ -27,7 +27,12 @@ public class EstadoCuenta extends Modelo implements Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 2438628348177674128L;
+	private static final long serialVersionUID = -6895842395561742660L;
+
+	/**
+	 * 
+	 */
+	//private static final long serialVersionUID = 2438628348177674128L;
 
 	@Id
 	@Column(name ="estadocuentaid")
@@ -35,15 +40,15 @@ public class EstadoCuenta extends Modelo implements Serializable{
 	private Long estadocuentaid;
 	
 	@ManyToOne
-	@JoinColumn(name = "alumnoid")
+	@JoinColumn(name = "alumnoid", nullable=false)
 	private Alumno alumno;
 	
 	@ManyToOne
-	@JoinColumn(name = "cursovigenteid")
+	@JoinColumn(name = "cursovigenteid", nullable=false)
 	private CursoVigente cursoVigente;
 	
 	@ManyToOne
-	@JoinColumn(name = "conceptoid")
+	@JoinColumn(name = "conceptoid", nullable=false)
 	private Concepto Concepto;
 	
 	@Temporal(TemporalType.DATE)

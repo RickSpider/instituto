@@ -625,10 +625,14 @@
 											align="left" />
 										<listheader label="Documento"
 											align="left" />
-										<listheader label="Fecha Inscripcion"
+										<listheader label="Fecha Inscripción"
 											align="center" hflex="min" />
+											
+										<listheader label="Inscripción Anulada"
+											align="center" hflex="min" />
+											
 										<listheader align="center"
-											width="50px" />
+											width="100px" />
 
 
 									</listhead>
@@ -649,6 +653,8 @@
 												value="@bind(vm.filtroColumnsAlumnos[1])" instant="true"
 												onChange="@command('filtrarCursoVigenteAlumno')" hflex="1" />
 										</auxheader>
+										
+										<auxheader />
 										
 										<auxheader />
 
@@ -672,12 +678,23 @@
 											<listcell
 												label="@load(each.fechaInscripcion) @converter('formatedDate', format='dd/MM/yyy')"
 												tooltiptext="@load(each.fechaInscripcion) @converter('formatedDate', format='dd/MM/yyy')" />
+											<listcell
+												label="@load(each.inscripcionAnulada)"
+												tooltiptext="@load(each.inscripcionAnulada)" />
+											
 
 											<listcell>
 												<hlayout>
-
-													<button
-														iconSclass="z-icon-trash-o" style="background-color:red"
+												
+												<button
+														iconSclass="z-icon-unlink " style="background-color:red"
+														onClick="@command('anularInscripcionAlumnoConfirmacion', cursoVigenteAlumno=each)"
+														tooltiptext="Anular Inscripcion"
+														disabled="@load(!vm.opAnularCursoVigenteAlumno)" />
+												
+												
+												<button
+														iconSclass= "z-icon-trash-o" style="background-color:red"
 														onClick="@command('borrarAlumnoConfirmacion', cursoVigenteAlumno=each)"
 														tooltiptext="Borrar"
 														disabled="@load(!vm.opQuitarCursoVigenteAlumno)" />

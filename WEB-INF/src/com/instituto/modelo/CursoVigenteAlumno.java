@@ -9,6 +9,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import com.doxacore.modelo.Modelo;
 
 @Entity
@@ -25,6 +27,9 @@ public class CursoVigenteAlumno extends Modelo implements Serializable {
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaInscripcion = new Date();
+	
+	@ColumnDefault("false")
+	private boolean inscripcionAnulada;
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -82,6 +87,14 @@ public class CursoVigenteAlumno extends Modelo implements Serializable {
 
 	public void setFechaInscripcion(Date fechaInscripcion) {
 		this.fechaInscripcion = fechaInscripcion;
+	}
+
+	public boolean isInscripcionAnulada() {
+		return inscripcionAnulada;
+	}
+
+	public void setInscripcionAnulada(boolean inscripcionAnulada) {
+		this.inscripcionAnulada = inscripcionAnulada;
 	}
 
 	

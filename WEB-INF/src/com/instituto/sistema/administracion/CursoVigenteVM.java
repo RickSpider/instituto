@@ -1,8 +1,6 @@
 package com.instituto.sistema.administracion;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.zkoss.bind.BindUtils;
@@ -23,6 +21,7 @@ import com.doxacore.modelo.Tipo;
 import com.doxacore.modelo.Tipotipo;
 import com.doxacore.report.ReportExcel;
 import com.instituto.modelo.Alumno;
+import com.instituto.modelo.CobranzaDetalle;
 import com.instituto.modelo.Concepto;
 import com.instituto.modelo.Convenio;
 import com.instituto.modelo.CursoVigente;
@@ -64,6 +63,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	private boolean opAgregarCursoVigenteAlumno;
 	private boolean opQuitarCursoVigenteAlumno;
 	private boolean opEditarCursoVigenteAlumno;
+	private boolean opAnularCursoVigenteAlumno;
 
 	private boolean opAgregarCursoVigenteConcepto;
 	private boolean opQuitarCursoVigenteConcepto;
@@ -99,7 +99,8 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		this.opAgregarCursoVigenteAlumno = this.operacionHabilitada(ParamsLocal.OP_AGREGAR_CURSOVIGENTE_ALUMNO);
 		this.opQuitarCursoVigenteAlumno = this.operacionHabilitada(ParamsLocal.OP_QUITAR_CURSOVIGENTE_ALUMNO);
 		this.opEditarCursoVigenteAlumno = this.operacionHabilitada(ParamsLocal.OP_EDITAR_CURSOVIGENTE_ALUMNO);
-
+		this.opAnularCursoVigenteAlumno = this.operacionHabilitada(ParamsLocal.OP_ANULAR_CURSOVIGENTE_ALUMNO);
+		
 		this.opAgregarCursoVigenteConcepto = this.operacionHabilitada(ParamsLocal.OP_AGREGAR_CURSOVIGENTE_CONCEPTO);
 		this.opQuitarCursoVigenteConcepto = this.operacionHabilitada(ParamsLocal.OP_QUITAR_CURSOVIGENTE_CONCEPTO);
 		this.opEditarCursoVigenteConcepto = this.operacionHabilitada(ParamsLocal.OP_EDITAR_CURSOVIGENTE_CONCEPTO);
@@ -111,6 +112,8 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		this.opAgregarCursoVigenteConvenio = this.operacionHabilitada(ParamsLocal.OP_AGREGAR_CURSOVIGENTE_CONVENIO);
 		this.opQuitarCursoVigenteConvenio = this.operacionHabilitada(ParamsLocal.OP_QUITAR_CURSOVIGENTE_CONVENIO);
 		this.opEditarCursoVigenteConvenio = this.operacionHabilitada(ParamsLocal.OP_EDITAR_CURSOVIGENTE_CONVENIO);
+		
+		
 
 	}
 
@@ -594,6 +597,54 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	}
 
 	private void borrarCursoVigenteAlumno(CursoVigenteAlumno ca) {
+		
+		
+		List<EstadoCuenta> lEstadoCuenta = this.reg.getAllObjectsByCondicionOrder(EstadoCuenta.class.getName(),
+				"cursovigenteid = "+ca.getCursoVigente().getCursovigenteid()+" AND alumnoid = "+ca.getAlumno().getAlumnoid() , "estadocuentaid asc");
+		
+		boolean hayMovimiento = false;
+		
+		for (EstadoCuenta x : lEstadoCuenta) {
+			
+			if (x.getPago()> 0) {
+				
+				hayMovimiento = true;
+				break;
+				
+			}
+			
+			if (x.isInactivo()) {
+				
+				hayMovimiento = true;
+				break;
+				
+			}
+			
+			List<CobranzaDetalle> lCobranzasDetalles = this.reg.getAllObjectsByCondicionOrder(CobranzaDetalle.class.getName(),
+					"estadocuentaid = " + x.getEstadocuentaid(), null);
+			
+			if (lCobranzasDetalles.size() > 0) {
+				
+				hayMovimiento = true;
+				break;
+				
+			}
+						
+		}
+		
+		if (hayMovimiento) {
+			
+			this.mensajeError("El Alumno Posee Movimientos, intente desinscribir al alumno.");			
+			return;
+			
+		}
+		
+		for (EstadoCuenta x : lEstadoCuenta) {
+			
+			this.reg.deleteObject(x);
+			
+		}
+		
 
 		this.reg.deleteObject(ca);
 
@@ -782,6 +833,63 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 		BindUtils.postNotifyChange(null, null, this, "lConceptosCursosVigentes");
 
+	}
+	
+	@Command
+	public void anularInscripcionAlumnoConfirmacion(@BindingParam("cursoVigenteAlumno") final CursoVigenteAlumno ca) {
+
+		if (!this.opAnularCursoVigenteAlumno) {
+
+			this.mensajeError("No tienes permisos para Borrar Alumnos a un CursoVigente.");
+
+			return;
+
+		}
+
+		this.mensajeEliminar("Se anulara la inscripcion del Alumno " + ca.getAlumno().getFullNombre() + " al Curso Vigente"
+				+ ca.getCursoVigente().getCurso().getCurso() + " \n Continuar?", new EventListener() {
+
+					@Override
+					public void onEvent(Event evt) throws Exception {
+
+						if (evt.getName().equals(Messagebox.ON_YES)) {
+
+							anularInscriptionAlumnoCursoVigente(ca);
+
+						}
+
+					}
+
+				});
+
+	}
+	
+	private void anularInscriptionAlumnoCursoVigente(CursoVigenteAlumno cva) {
+		
+
+		List<EstadoCuenta> lEstadoCuenta = this.reg.getAllObjectsByCondicionOrder(EstadoCuenta.class.getName(),
+				"cursovigenteid = "+cva.getCursoVigente().getCursovigenteid()+" AND alumnoid = "+cva.getAlumno().getAlumnoid() , "estadocuentaid asc");
+		
+		for (EstadoCuenta x : lEstadoCuenta) {
+			
+			if (x.getPago() == 0) {
+				
+				x.setInactivo(true);
+				x.setMotivoInactivacion("Anulacion de Inscripcion al Curso");
+				this.save(x);
+				
+			}
+			
+		}
+		
+		cva.setInscripcionAnulada(true);
+		
+		this.save(cva);
+		
+		this.refrescarAlumnos(this.cursoVigenteSelectedAlumnoConceptoMateriaConvenio);
+
+		BindUtils.postNotifyChange(null, null, this, "lAlumnosCursosVigentes");
+		
 	}
 
 	private List<Object[]> lConceptosbuscarOri;
@@ -1674,6 +1782,14 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 	public void setCursoVigenteAlumnoSelected(CursoVigenteAlumno cursoVigenteAlumnoSelected) {
 		this.cursoVigenteAlumnoSelected = cursoVigenteAlumnoSelected;
+	}
+
+	public boolean isOpAnularCursoVigenteAlumno() {
+		return opAnularCursoVigenteAlumno;
+	}
+
+	public void setOpAnularCursoVigenteAlumno(boolean opAnularCursoVigenteAlumno) {
+		this.opAnularCursoVigenteAlumno = opAnularCursoVigenteAlumno;
 	}
 
 }
