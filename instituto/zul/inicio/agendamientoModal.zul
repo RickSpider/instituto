@@ -14,7 +14,7 @@
 				</tablechildren>
 				
 				<tablechildren >
-					<textbox value="@load(vm.recordatorioItemSelected.title)" readonly="true"/>
+					<textbox value="@bind(vm.recordatorioItemSelected.title)" readonly="@load(!vm.recordatorioItemSelected.recordatorioManual)"/>
 				</tablechildren>
 				
 				<tablechildren >
@@ -22,7 +22,7 @@
 				</tablechildren>
 				
 				<tablechildren >
-					<textbox value="@load(vm.recordatorioItemSelected.content)" readonly="true"
+					<textbox value="@bind(vm.recordatorioItemSelected.content)" readonly="@load(!vm.recordatorioItemSelected.recordatorioManual)"
 					rows="2" cols="50"/>
 				</tablechildren>
 				
@@ -31,7 +31,14 @@
 			</tablelayout>
 
 
-			
+				<space height="10px" />
+
+			<hlayout>
+
+				<button label="Guardar" onClick="@command('guardar')" disabled="@load(!vm.recordatorioItemSelected.recordatorioManual)"
+				visible ="@load(vm.recordatorioItemSelected.recordatorioManual)"/>
+
+			</hlayout>
 
 		</vlayout>
 

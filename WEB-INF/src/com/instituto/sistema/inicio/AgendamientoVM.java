@@ -9,6 +9,7 @@ import java.util.List;
 
 
 import org.zkoss.bind.annotation.AfterCompose;
+import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.ContextParam;
 import org.zkoss.bind.annotation.ContextType;
 import org.zkoss.bind.annotation.Init;
@@ -28,14 +29,13 @@ import com.instituto.util.TemplateViewModelLocal;
 public class AgendamientoVM extends TemplateViewModelLocal {
 
 	private SimpleCalendarModel calendarModel;
-	private Recordatorio recordatorioSelected;
 
 	@Init(superclass = true)
 	public void initAgendamientoVM() throws ParseException {
 		this.calendarModel = new SimpleCalendarModel();
 		this.cargarMaterias();
 		this.cargarCumpleaños();
-		//this.cargarAgendamiento();
+		this.cargarAgendamiento();
 		
 	}
 
@@ -92,7 +92,7 @@ public class AgendamientoVM extends TemplateViewModelLocal {
 	}
 	
 	@NotifyChange("calendarModel")
-	public void cargarCumpleaños() throws ParseException {
+	public void cargarCumpleaños() {
 		
 		String sql = "select \r\n" + 
 				"cva.cursovigenteid, \r\n" + 
@@ -114,7 +114,8 @@ public class AgendamientoVM extends TemplateViewModelLocal {
 			for (Object[] x : lcumpleaños) {
 				
 				RecordatorioCalendarItem sce = new RecordatorioCalendarItem();
-				Date date = new SimpleDateFormat("yyyy-MM-dd").parse(x[4].toString());
+			//	Date date = new SimpleDateFormat("yyyy-MM-dd").parse(x[4].toString());
+				Date date = (Date) x[4];
 				Calendar calendar = Calendar.getInstance();
 				int currentYear = calendar.get(Calendar.YEAR);
 				calendar.setTime(date);
@@ -140,11 +141,31 @@ public class AgendamientoVM extends TemplateViewModelLocal {
 	@NotifyChange("calendarModel")
 	public void cargarAgendamiento() {
 		
-		//List<Recordatorio> lRecordatorio = this.reg.getAllObjects(Recordatorio.class.getName());
+		List<Recordatorio> lRecordatorio = this.reg.getAllObjects(Recordatorio.class.getName());
 
 		
+		if (lRecordatorio != null && lRecordatorio.size() > 0) {
+			
+			for (Recordatorio x : lRecordatorio) {
+				
+				RecordatorioCalendarItem sce = new RecordatorioCalendarItem();
+				
+				sce.setRecordatorioManual(true);
+				sce.setBeginDate(x.getFechaIni());
+				sce.setEndDate(x.getFechaFin());
+				sce.setRecordatorioid(x.getRecordatorioid());
+				sce.setContent(x.getRecordatorio());
+				sce.setTitle(x.getTitulo());
+				sce.setStyle("background-color: #0000FF; color: #FFFFFF");
+
+				this.calendarModel.add(sce);
+			}
+			
+		}
 		
-		RecordatorioCalendarItem sce = new RecordatorioCalendarItem();
+		
+		
+	/*	RecordatorioCalendarItem sce = new RecordatorioCalendarItem();
 		Date fecha = new Date();
 		sce.setBeginDate(fecha);
 		
@@ -162,7 +183,7 @@ public class AgendamientoVM extends TemplateViewModelLocal {
 		sce.setStyle("background-color: #F44336; color: #FFFFFF");
 		sce.setHeaderStyle("background-color: #F44336; color: #FFFFFF");
 		
-		this.calendarModel.add(sce);
+		this.calendarModel.add(sce);*/
 		
 	}
 	
@@ -173,28 +194,50 @@ public class AgendamientoVM extends TemplateViewModelLocal {
 	public void agendamientoModal(CalendarsEvent event) {
 
 		event.stopClearGhost();
-		recordatorioItemSelected = (RecordatorioCalendarItem) event.getCalendarItem();
-	
-		if (recordatorioItemSelected !=  null) {
+		this.recordatorioItemSelected = (RecordatorioCalendarItem) event.getCalendarItem();
+		
+		if (recordatorioItemSelected == null) {
 			
-			if (recordatorioItemSelected.getRecordatorioid() != null) {
-				
-				
-			}
-						
-		}else {
-			
-			
+			this.recordatorioItemSelected = new RecordatorioCalendarItem();
+			this.recordatorioItemSelected.setRecordatorioManual(true);
+			this.recordatorioItemSelected.setBegin(event.getBeginDate());
+			this.recordatorioItemSelected.setEnd(event.getEndDate());
 			
 		}
-		
-		
+	
 		modal = (Window) Executions.createComponents("/instituto/zul/inicio/agendamientoModal.zul", this.mainComponent,
 				null);
 		Selectors.wireComponents(modal, this, false);
 		modal.doModal();
 	}
 	
+	@Command
+	@NotifyChange("*")
+	public void guardar() {
+		
+		Recordatorio r = new Recordatorio();
+		
+		if (this.recordatorioItemSelected.isRecordatorioManual() && this.recordatorioItemSelected.getRecordatorioid() != null) {
+			
+			 r = this.reg.getObjectById(Recordatorio.class.getName(), this.recordatorioItemSelected.getRecordatorioid());
+			
+		}		
+		
+		r.setFechaIni(this.recordatorioItemSelected.getBeginDate());
+		r.setFechaFin(this.recordatorioItemSelected.getEndDate());
+		r.setRecordatorio(this.recordatorioItemSelected.getContent());
+		r.setTitulo(this.recordatorioItemSelected.getTitle());
+		
+		this.save(r);
+		
+		this.calendarModel = new SimpleCalendarModel();
+		this.cargarMaterias();
+		this.cargarCumpleaños();
+		this.cargarAgendamiento();
+		
+		this.modal.detach();
+		
+	}
 
 	public SimpleCalendarModel getCalendarModel() {
 		return calendarModel;
@@ -202,14 +245,6 @@ public class AgendamientoVM extends TemplateViewModelLocal {
 
 	public void setCalendarModel(SimpleCalendarModel calendarModel) {
 		this.calendarModel = calendarModel;
-	}
-
-	public Recordatorio getRecordatorioSelected() {
-		return recordatorioSelected;
-	}
-
-	public void setRecordatorioSelected(Recordatorio recordatorioSelected) {
-		this.recordatorioSelected = recordatorioSelected;
 	}
 
 	public RecordatorioCalendarItem getRecordatorioItemSelected() {

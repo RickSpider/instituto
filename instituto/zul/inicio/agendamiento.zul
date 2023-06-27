@@ -23,10 +23,10 @@
 			</hlayout> 
 
 			<separator bar="true" height="20px" />
-
+			
 			<calendars id="calendars" firstDayOfWeek="Sunday"
 				 timeZone="Main=GMT-4" mold="month" model="@load(vm.calendarModel)"
-				 beginTime="5" endTime="20" timeslots="2"/>
+				 beginTime="5" endTime="20" timeslots="2" />
 		
 		</div>
 			

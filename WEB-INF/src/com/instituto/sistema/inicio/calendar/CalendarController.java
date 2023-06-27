@@ -8,6 +8,7 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.select.SelectorComposer;
 import org.zkoss.zk.ui.select.annotation.Listen;
 import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zul.Label;
 
  
 
@@ -22,25 +23,31 @@ public class CalendarController extends SelectorComposer<Component> {
 	@Wire
 	private Calendars calendars;
 	
+	@Wire
+	private Label mes;
+	
 	@Override
     public void doAfterCompose(Component comp) throws Exception {
         super.doAfterCompose(comp);
-    }
+        
+     }
 	
 
     //control the calendar position
     @Listen("onClick = #today")
     public void gotoToday(){
         TimeZone timeZone = calendars.getDefaultTimeZone();
-        calendars.setCurrentDate(Calendar.getInstance(timeZone).getTime());
+      
     }
     @Listen("onClick = #next")
     public void gotoNext(){
         calendars.nextPage();
+       
     }
     @Listen("onClick = #prev")
     public void gotoPrev(){
         calendars.previousPage();
+       
     }
      
     //control page display

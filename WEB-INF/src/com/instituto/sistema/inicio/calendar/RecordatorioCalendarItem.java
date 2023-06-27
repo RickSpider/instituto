@@ -11,7 +11,7 @@ public class RecordatorioCalendarItem extends SimpleCalendarItem{
 	
 	private Long recordatorioid;
 	private Long cursovigenteid;
-	
+	private boolean recordatorioManual = false;
 
 	public Long getRecordatorioid() {
 		return recordatorioid;
@@ -29,6 +29,13 @@ public class RecordatorioCalendarItem extends SimpleCalendarItem{
 		this.cursovigenteid = cursovigenteid;
 	}
 
+	public boolean isRecordatorioManual() {
+		return recordatorioManual;
+	}
+
+	public void setRecordatorioManual(boolean recordatorioManual) {
+		this.recordatorioManual = recordatorioManual;
+	}
 	
 
 }
