@@ -1,10 +1,12 @@
 package com.instituto.sistema.reporte;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import java.util.Locale;
 
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.BindingParam;
@@ -145,7 +147,7 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 	
 	public void generarReporte() {
 		
-		if (!this.opCrearEstadoCuentaReporte) {
+		/*if (!this.opCrearEstadoCuentaReporte) {
 			
 			this.mensajeError("No tines Permiso para generar este reporte.");
 			
@@ -157,7 +159,7 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 			
 			return;
 			
-		}
+		}*/
 		
 		ReportExcel re = new ReportExcel("EstadoDeCuenta");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -170,7 +172,7 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 		String[] t3 = {"Sede:",this.getCurrentSede().getSede()};
 		String[] t4 = {"REPORTE DE ESTADO DE CUENTA"};
 		String[] t5 = {"Fecha Inicio:", sdf.format(fechaInicio)};
-		String[] t6 = {"Fecha Fin:", sdf.format(fechaInicio)};
+		String[] t6 = {"Fecha Fin:", sdf.format(fechaFin)};
 		String[] espacioBlanco = {""};
 		
 		titulos.add(t1);
@@ -183,7 +185,7 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 		titulos.add(espacioBlanco);
 		
 		List<String[]> headersDatos = new ArrayList<String[]>();
-		String [] hd1 =  {"Curso","Alumno","Fecha Vencimiento", "Fecha Pago", "Descripcion", "Importe Debito", "Credito", "Salgo"};
+		String [] hd1 =  {"Curso","Alumno","Fecha Vencimiento", "Fecha Pago", "Descripcion", "Importe Debito", "Credito", "Saldo"};
 		headersDatos.add(hd1);
 		
 		
@@ -237,7 +239,10 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 		double totalGralCredito = 0;
 		double totalGralDebito = 0;
 		
-		String doubleFormato = "%,.2f";
+		//String doubleFormato = "%,.2f";
+		DecimalFormatSymbols dfs = new DecimalFormatSymbols(new Locale("es", "ES"));
+		dfs.setDecimalSeparator('.');
+		DecimalFormat df = new DecimalFormat("#,##0.##",dfs);
 		
 		for (Object[] x : datos) {
 
@@ -249,7 +254,7 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 				Object[] c = {curso};
 				
 				if (totalDebito > 0) {
-					Object[] total = {"Total:","","","","",totalDebito,totalCredito,(totalDebito - totalCredito)};			
+					Object[] total = {"Total:","","","","",df.format(totalDebito),df.format(totalCredito),df.format((totalDebito - totalCredito))};			
 					datos3.add(total);
 					datos3.add(espacioBlanco);
 				}
@@ -271,7 +276,7 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 				Object[] a = {"",alumno};
 				
 				if (totalDebito > 0) {
-					Object[] total = {"Total:","","","","",String.format(doubleFormato,totalDebito),String.format(doubleFormato,totalCredito),String.format(doubleFormato,(totalDebito - totalCredito))};			
+					Object[] total = {"Total:","","","","",df.format(totalDebito),df.format(totalCredito),df.format((totalDebito - totalCredito))};			
 					datos3.add(total);
 					datos3.add(espacioBlanco);
 				}
@@ -296,7 +301,7 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 			o[2] = x[0];
 			o[3] = "";
 			o[4] = x[1];
-			o[5] = String.format(doubleFormato,Double.parseDouble(x[2].toString()));
+			o[5] = df.format(Double.parseDouble(x[2].toString()));
 			o[6] = "";
 			o[7] = "";
 			
@@ -321,8 +326,8 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 					
 					saldo -= Double.parseDouble(x2[2].toString());
 					
-					o2[6] = String.format(doubleFormato,Double.parseDouble(x2[2].toString()));
-					o2[7] = String.format(doubleFormato,saldo);
+					o2[6] = df.format(Double.parseDouble(x2[2].toString()));
+					o2[7] = df.format(saldo);
 					
 					datos3.add(o2);
 					
@@ -342,11 +347,11 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 			
 		}
 		
-		Object[] total = {"Total:","","","","",totalDebito,totalCredito,(totalDebito - totalCredito)};			
+		Object[] total = {"Total:","","","","",df.format(totalDebito),df.format(totalCredito),df.format((totalDebito - totalCredito))};			
 		datos3.add(total);
 		datos3.add(espacioBlanco);
 		
-		Object[] totales = {"Total General:","","","","",String.format(doubleFormato, totalGralDebito),String.format(doubleFormato,totalGralCredito),String.format(doubleFormato,(totalGralDebito - totalGralCredito))};
+		Object[] totales = {"Total General:","","","","",df.format(totalGralDebito),df.format(totalGralCredito),df.format((totalGralDebito - totalGralCredito))};
 				
 		datos3.add(totales);
 		
