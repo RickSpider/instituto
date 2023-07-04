@@ -275,7 +275,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	@Command
-	@NotifyChange({ "totalDetalle", "iva10", "iva5", "exento","lDetalles"})
+	@NotifyChange({ "totalDetalle", "iva10", "iva5", "exento","lDetalles","totalesDiferencia"})
 	public void borrarDetalle(@BindingParam("dato") CobranzaDetalle dato) {
 
 		if (this.verCobranza) {
