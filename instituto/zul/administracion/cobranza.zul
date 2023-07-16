@@ -6,7 +6,7 @@
 
 		<vlayout>
 
-			<tablelayout columns="6">
+			<tablelayout columns="8">
 
 				<tablechildren style="padding-left: 5px">
 					<label value="Alumno:" />
@@ -71,6 +71,15 @@
 							</vbox>
 						</bandpopup>
 					</bandbox>
+				</tablechildren>
+				
+				<tablechildren style="padding-left: 5px">
+					<label value="Documento #:" />
+				</tablechildren>
+				<tablechildren style="padding-left: 5px">
+					<doublebox width="120px"
+						value="@load(vm.cobranzaSelected.alumno.persona.documentoNum)" format="#,###"
+						style="text-align:right" readonly="true" />
 				</tablechildren>
 
 				<tablechildren style="padding-left: 5px">

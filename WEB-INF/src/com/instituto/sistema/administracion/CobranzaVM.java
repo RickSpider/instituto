@@ -146,7 +146,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	@Command
-	@NotifyChange({ "buscarAlumno", "saldoTotal", "saldoVencido" })
+	@NotifyChange({ "cobranzaSelected","buscarAlumno", "saldoTotal", "saldoVencido" })
 	public void onSelectAlumno(@BindingParam("id") long id) {
 
 		this.buscarSelectedAlumno = this.reg.getObjectById(Alumno.class.getName(), id);

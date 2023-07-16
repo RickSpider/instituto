@@ -1,7 +1,7 @@
 <?page title="sedeModal" contentType="text/html;charset=UTF-8"?>
 <zk>
-	<window title="Cuentas Crear/Ver/Editar" border="normal"
-		height="500px" width="600px" position="center,center" closable="true"
+	<window title="Cuentas Ver" border="normal"
+		height="500px" width="650px" position="center,center" closable="true"
 		mode="modal" action="show: slideDown;hide: slideUp">
 
 		<vlayout vflex="1">
@@ -10,39 +10,44 @@
 				multiple="true" checkmark="true"
 				selectedItems="@bind(vm.lEstadosCuentasAux)">
 
-				<auxhead>
-					
-					<auxheader label="Vencimiento" align="center" />
-					<auxheader label="Curso" align="center" />
-					<auxheader label="Concepto" align="center" />
-					<auxheader label="Periodo/Cuota #" align="center" />
-					<auxheader label="Monto Total" align="center" />
-
-				</auxhead>
+				
 
 
 				<listhead visible="false">
-					
+					<listheader width="30px"/>
 					<listheader label="Vencimiento" align="center" />
 					<listheader label="Curso" align="Center" />
 					<listheader label="Concepto" align="Center" />
 					<listheader label="Periodo" align="Center" />
+					<listheader label="Saldo" align="right" />
 					<listheader label="Monto Total" align="right" />
 
 				</listhead>
+				
+				<auxhead>
+					<auxheader />
+					<auxheader label="Vencimiento" align="center" />
+					<auxheader label="Curso" align="center" />
+					<auxheader label="Concepto" align="center" />
+					<auxheader label="Periodo/Cuota #" align="center" />
+					<auxheader label="Saldo" align="center" />
+					<auxheader label="Monto Total" align="center" />
+
+				</auxhead>
 
 
 
 				<template name="model">
 
 					<listitem >
-						
+						<listcell/>
 						<listcell
 							label="@load(each.vencimiento) @converter('formatedDate', format='dd/MM/yyyy')" />
 						<listcell
 							label="@load(each.cursoVigente.curso.curso)" />
 						<listcell label="@load(each.concepto.concepto)" />
 						<listcell label="@load(each.periodo)" />
+						<listcell label="@load(each.saldo) @converter('formatedNumber', format='#,###')"  />
 						<listcell
 							label="@load(each.monto) @converter('formatedNumber', format='#,###')" />
 
