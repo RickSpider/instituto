@@ -66,9 +66,7 @@ public class GenerarEstadoCuenta {
 
 				}
 
-			}
-
-			if (x.getConcepto().getConcepto().compareTo("MODULO") == 0) {
+			} else if (x.getConcepto().getConcepto().compareTo("MODULO") == 0) {
 
 				esIgual = true;
 
@@ -98,9 +96,7 @@ public class GenerarEstadoCuenta {
 
 				}
 
-			}
-
-			if (x.getConcepto().getConcepto().compareTo("TALLER") == 0) {
+			} else if (x.getConcepto().getConcepto().compareTo("TALLER") == 0) {
 
 				esIgual = true;
 				Calendar calendar = Calendar.getInstance();
@@ -150,9 +146,7 @@ public class GenerarEstadoCuenta {
 
 				}
 
-			}
-
-			if (x.getConcepto().getConcepto().compareTo("TITULO") == 0) {
+			} else {
 				
 				esIgual = true;
 				Calendar calendar = Calendar.getInstance();
@@ -193,31 +187,6 @@ public class GenerarEstadoCuenta {
 				out.add(ec);
 
 			}
-
-			/*
-			 * if (!esIgual) {
-			 * 
-			 * Calendar calendar = Calendar.getInstance();
-			 * calendar.setTime(cva.getCursoVigente().getFechaInicio()); int diaVencimiento
-			 * = calendar.get(Calendar.DAY_OF_MONTH);
-			 * 
-			 * 
-			 * EstadoCuenta ec = new EstadoCuenta();
-			 * ec.setCursoVigente(cva.getCursoVigente()); ec.setAlumno(cva.getAlumno());
-			 * ec.setConcepto(x.getConcepto()); ec.setPeriodo(1);
-			 * ec.setMonto(x.getImporte());
-			 * 
-			 * calendar.set(Calendar.DAY_OF_MONTH, diaVencimiento); calendar =
-			 * calculoVencimiento(calendar, lFeriados);
-			 * 
-			 * ec.setVencimiento(calendar.getTime());
-			 * 
-			 * out.add(ec);
-			 * 
-			 * calendar.add(Calendar.MONTH, 1);
-			 * 
-			 * }
-			 */
 
 		}
 
