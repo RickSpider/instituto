@@ -279,6 +279,8 @@ public class AlumnoVM extends TemplateViewModelLocal {
 	public void generarListaBuscarPersona() {
 
 		String sqlPersona = this.um.getSql("buscarPersonaNotAlumno.sql");
+		
+		sqlPersona = sqlPersona.replace("##SEDEID##", this.getCurrentSede().getSedeid()+"");
 
 		this.lPersonasBuscar = this.reg.sqlNativo(sqlPersona);
 
