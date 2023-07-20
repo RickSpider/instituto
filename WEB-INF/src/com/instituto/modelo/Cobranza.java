@@ -28,7 +28,8 @@ public class Cobranza extends Modelo implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 9175243805383056607L;
+	//private static final long serialVersionUID = 9175243805383056607L;
+	private static final long serialVersionUID = 9175243805383056608L;
 	
 	@Id
 	@Column(name ="cobranzaid")
@@ -71,6 +72,8 @@ public class Cobranza extends Modelo implements Serializable {
 	
 	@ColumnDefault("false")
 	private boolean anulado=false;
+	
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaAnulacion;
 	private String usuarioAnulacion;
 	

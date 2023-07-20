@@ -519,12 +519,17 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		}
 
 		if (this.cobranzaDetalleCobroSelected.getFormaPago().getSigla()
-				.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_GIRO) == 0) {
+				.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_GIRO) == 0
+				|| this.cobranzaDetalleCobroSelected.getFormaPago().getSigla()
+				.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_BILLETERA) == 0
+				|| this.cobranzaDetalleCobroSelected.getFormaPago().getSigla()
+				.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_BOCA_COBRANZA) == 0) {
 
 			camposCobroModal[0] = false;
 			camposCobroModal[1] = false;
 			camposCobroModal[2] = false;
-			camposCobroModal[4] = false;
+			//camposCobroModal[4] = false;
+			camposCobroModal[5] = false;
 
 		}
 
@@ -533,9 +538,28 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 			camposCobroModal[0] = false;
 			camposCobroModal[1] = false;
+			camposCobroModal[2] = false;
 			camposCobroModal[4] = false;
+			camposCobroModal[5] = false;
+			
 
 		}
+		
+		if (this.cobranzaDetalleCobroSelected.getFormaPago().getSigla()
+				.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_DEPOSITO_BANCARIO) == 0
+				|| this.cobranzaDetalleCobroSelected.getFormaPago().getSigla()
+				.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_DEPOSITO_ATM) == 0 
+				|| this.cobranzaDetalleCobroSelected.getFormaPago().getSigla()
+				.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_DEPOSITO_EXTERIOR) == 0) {
+			
+			
+				camposCobroModal[0] = false;
+				camposCobroModal[2] = false;
+				camposCobroModal[5] = false;
+			
+		}
+		
+		
 
 	}
 

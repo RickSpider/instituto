@@ -25,6 +25,8 @@
 						<listheader label="Anulado" align="center" />
 						<listheader label="Fecha Anulacion"
 							align="center" />
+							
+						<listheader label="Usuario Anulación" align="center" />
 
 						<listheader align="center" hflex="min" />
 
@@ -36,11 +38,6 @@
 
 						<auxheader />
 						<auxheader />
-						<auxheader>
-							<textbox value="@bind(vm.filtroColumns[0])"
-								instant="true" onChange="@command('filtrarCobranzas')"
-								hflex="1" />
-						</auxheader>
 
 						<auxheader>
 							<textbox value="@bind(vm.filtroColumns[1])"
@@ -71,6 +68,18 @@
 								instant="true" onChange="@command('filtrarCobranzas')"
 								hflex="1" />
 						</auxheader>
+						
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[6])"
+								instant="true" onChange="@command('filtrarCobranzas')"
+								hflex="1" />
+						</auxheader>
+						
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[7])"
+								instant="true" onChange="@command('filtrarCobranzas')"
+								hflex="1" />
+						</auxheader>
 
 						<auxheader />
 
@@ -80,48 +89,37 @@
 
 						<listitem>
 							<listcell />
-							<listcell label="@load(each.cobranzaid)" />
+							<listcell label="@load(each[0])" />
 
 							<listcell
-								label="@load(each.fecha) @converter('formatedDate', format='dd/MM/yyyy')" />
+								label="@load(each[1]) @converter('formatedDate', format='dd/MM/yyyy HH:mm:ss')" />
 
 							<listcell
-								label="@load(each.comprobanteTipo.tipo)" />
+								label="@load(each[2])" />
 
-							<listcell label="@load(each.timbrado)" />
+							<listcell label="@load(each[3])" />
 							<listcell
-								label="@load(each.comprobanteNum)" />
+								label="@load(each[4])" />
 
-							<listcell>
-
-								<if test="@load(each.anulado)">
-									<label value="Si" />
-								</if>
-
-
-								<if test="@load(!each.anulado)">
-									<label value="No" />
-								</if>
-
-							</listcell>
+							<listcell label="@load(each[5])"/>
 
 							<listcell
-								label="@load(each.fechaAnulacion) @converter('formatedDate', format='dd/MM/yyyy')" />
+								label="@load(each[6]) @converter('formatedDate', format='dd/MM/yyyy')" />
+							<listcell
+								label="@load(each[7])" />
 
 							<listcell>
 								<hlayout>
 
 									<button iconSclass="z-icon-print"
-										style="background-color:green"
-										onClick="@command('verComprobante', cobranza=each)"
+										class="doxa-button-green"
+										onClick="@command('verComprobante', cobranzaid=each[0])"
 										tooltiptext="Imprimir Comprobante" />
 
 									<button iconSclass="z-icon-unlink "
-										style="background-color:red;"
-										onClick="@command('anularCobranzaConfirmacion', cobranza=each)"
+										class="doxa-button-red"
+										onClick="@command('anularCobranzaConfirmacion', cobranzaid=each[0])"
 										tooltiptext="Anular" disabled="@load(!vm.opAnularCobro)" />
-
-
 
 
 								</hlayout>

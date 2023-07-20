@@ -124,6 +124,14 @@
 				</bandbox>
 
 			</tablechildren>
+			
+			<tablechildren>
+				<label value="Monto:" />
+			</tablechildren>
+			<tablechildren>
+				<doublebox value="@load(vm.cobranzaDetalleCobroSelected.monto) @save(vm.cobranzaDetalleCobroSelected.monto, before='agregarCobranzaDetalleCobro')" 
+				constraint="no empty: Es campo obligatorio." style="text-align:right" hflex="1"/>
+			</tablechildren>
 
 			<tablechildren>
 				<label value="Entidad:" />
@@ -191,13 +199,7 @@
 
 			</tablechildren>
 
-			<tablechildren>
-				<label value="Monto:" />
-			</tablechildren>
-			<tablechildren>
-				<doublebox value="@load(vm.cobranzaDetalleCobroSelected.monto) @save(vm.cobranzaDetalleCobroSelected.monto, before='agregarCobranzaDetalleCobro')" 
-				constraint="no empty: Es campo obligatorio." style="text-align:right" hflex="1"/>
-			</tablechildren>
+			
 
 			<tablechildren>
 				<label value="Cuenta #:" />

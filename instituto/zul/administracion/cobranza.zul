@@ -250,6 +250,27 @@
 						disabled="@load(vm.verCobranza)"/>
 				</tablechildren>
 
+				<tablechildren style="padding-left: 5px">
+					<label value="Razon Social:" />
+				</tablechildren>
+				
+				<tablechildren style="padding-left: 5px">
+					<textbox
+						value="@load(vm.cobranzaSelected.razonSocial)" width="250px"
+						readonly="true" />
+				</tablechildren>
+
+				<tablechildren style="padding-left: 5px">
+					<label value="Ruc:" />
+				</tablechildren>
+				
+				<tablechildren style="padding-left: 5px">
+					<textbox
+						value="@load(vm.cobranzaSelected.ruc)" width="120px"
+						readonly="true" />
+				</tablechildren>
+				
+				
 
 			</tablelayout>
 		</vlayout>

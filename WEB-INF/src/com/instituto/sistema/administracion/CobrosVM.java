@@ -22,8 +22,8 @@ import com.instituto.util.TemplateViewModelLocal;
 
 public class CobrosVM extends TemplateViewModelLocal{
 
-	private List<Cobranza> lCobranzas;
-	private List<Cobranza> lCobranzasOri;
+	private List<Object[]> lCobranzas;
+	private List<Object[]> lCobranzasOri;
 	private boolean opAnularCobro;
 	
 	@Init(superclass = true)
@@ -48,7 +48,10 @@ public class CobrosVM extends TemplateViewModelLocal{
 	
 	private void cargarCobros() {
 
-		this.lCobranzas = this.reg.getAllObjectsByCondicionOrder(Cobranza.class.getName(), null, "cobranzaid desc");
+		String sql = this.um.getSql("cobros.sql");
+		
+		this.lCobranzas = this.reg.sqlNativo(sql);
+		//this.lCobranzas = this.reg.getAllObjectsByCondicionOrder(Cobranza.class.getName(), null, "cobranzaid desc");
 		this.lCobranzasOri = this.lCobranzas;
 
 	}
@@ -58,8 +61,7 @@ public class CobrosVM extends TemplateViewModelLocal{
 
 	private void inicializarFiltros() {
 
-		this.filtroColumns = new String[7]; // se debe de iniciar el filtro deacuerdo a la cantidad declarada en el
-											// modelo sin id
+		this.filtroColumns = new String[8]; 
 
 		for (int i = 0; i < this.filtroColumns.length; i++) {
 
@@ -73,15 +75,17 @@ public class CobrosVM extends TemplateViewModelLocal{
 	@NotifyChange("lCobranzas")
 	public void filtrarCobranzas() {
 
-		this.lCobranzas = this.filtrarLT(this.filtroColumns, this.lCobranzasOri);
+		this.lCobranzas = this.filtrarListaObject(this.filtroColumns, this.lCobranzasOri);
 
 	}
 	
 	@Command
-	public void anularCobranzaConfirmacion(@BindingParam("cobranza") Cobranza cobranza) {
+	public void anularCobranzaConfirmacion(@BindingParam("cobranzaid") Long cobranzaid) {
 		
 		if (!this.opAnularCobro)
 			return;
+		
+		Cobranza cobranza = this.reg.getObjectById(Cobranza.class.getName(), cobranzaid);
 		
 		if(cobranza.isAnulado()) {
 			
@@ -134,7 +138,9 @@ public class CobrosVM extends TemplateViewModelLocal{
 	}
 	
 	@Command
-	public void verComprobante(@BindingParam("cobranza") Cobranza cobranza) {
+	public void verComprobante(@BindingParam("cobranzaid") Long cobranzaid) {
+		
+		Cobranza cobranza = this.reg.getObjectById(Cobranza.class.getName(), cobranzaid);
 		
 		if (cobranza.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_RECIBO) == 0) {
 			
@@ -150,21 +156,7 @@ public class CobrosVM extends TemplateViewModelLocal{
 
 	}
 
-	public List<Cobranza> getlCobranzas() {
-		return lCobranzas;
-	}
-
-	public void setlCobranzas(List<Cobranza> lCobranzas) {
-		this.lCobranzas = lCobranzas;
-	}
-
-	public List<Cobranza> getlCobranzasOri() {
-		return lCobranzasOri;
-	}
-
-	public void setlCobranzasOri(List<Cobranza> lCobranzasOri) {
-		this.lCobranzasOri = lCobranzasOri;
-	}
+	
 
 	public boolean isOpAnularCobro() {
 		return opAnularCobro;
@@ -180,6 +172,14 @@ public class CobrosVM extends TemplateViewModelLocal{
 
 	public void setFiltroColumns(String[] filtroColumns) {
 		this.filtroColumns = filtroColumns;
+	}
+
+	public List<Object[]> getlCobranzas() {
+		return lCobranzas;
+	}
+
+	public void setlCobranzas(List<Object[]> lCobranzas) {
+		this.lCobranzas = lCobranzas;
 	}
 
 
