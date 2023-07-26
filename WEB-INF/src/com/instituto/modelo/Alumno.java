@@ -3,7 +3,10 @@ package com.instituto.modelo;
 import java.io.Serializable;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,9 +25,11 @@ public class Alumno extends Modelo implements Serializable{
 	 * 
 	 */
 	//private static final long serialVersionUID = -3897754450329909812L;
-	private static final long serialVersionUID = -3897754450329909815L;
+	private static final long serialVersionUID = -3897754450329909817L;
 
 	@Id
+	@Column(name ="alumnoid")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long alumnoid;
 	
 	@ManyToOne

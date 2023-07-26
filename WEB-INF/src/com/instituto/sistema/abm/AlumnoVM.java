@@ -293,7 +293,7 @@ public class AlumnoVM extends TemplateViewModelLocal {
 
 		this.buscarSelectedPersona = this.reg.getObjectById(Persona.class.getName(), id);
 		this.buscarPersona = this.buscarSelectedPersona.getNombreCompleto();
-		this.alumnoSelected.setAlumnoid(buscarSelectedPersona.getPersonaid());
+		//this.alumnoSelected.setAlumnoid(buscarSelectedPersona.getPersonaid());
 		this.alumnoSelected.setPersona(buscarSelectedPersona);
 
 	}

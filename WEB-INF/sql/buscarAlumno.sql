@@ -5,7 +5,7 @@ p.apellido,
 p.documentonum
 FROM
 alumnos a 
-left join personas p on p.personaid = a.alumnoid
+left join personas p on p.personaid = a.personaid
 where a.activo = true
 and a.sedeid=?1
 order by a.alumnoid asc;
