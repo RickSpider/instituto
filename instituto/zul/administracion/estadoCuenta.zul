@@ -46,6 +46,7 @@
 												label="Apellido" />
 											<listheader
 												label="Documento Num" />
+										
 										</listhead>
 
 										<template name="model">
@@ -64,7 +65,7 @@
 													label="@load(each[2])" tooltiptext="@load(each[2])"/>
 												<listcell
 													label="@load(each[3])" tooltiptext="@load(each[3])"/>
-
+												
 											</listitem>
 
 										</template>
