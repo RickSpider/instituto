@@ -17,7 +17,7 @@
 						constraint="no empty: Es campo obligatorio." mold="rounded"
 						autodrop="true" width="250px"
 						onOpen="@command('generarListaBuscarAlumno')" readonly="true"
-						disabled="@load(vm.verCobranza)">
+						disabled="@load(vm.disableCobranza)">
 						<bandpopup>
 
 							<vbox>
@@ -110,7 +110,7 @@
 						constraint="no empty: Es campo obligatorio." mold="rounded"
 						autodrop="true" width="250px"
 						onOpen="@command('generarListaBuscarComprobante')" readonly="true"
-						disabled="@load(vm.verCobranza)">
+						disabled="@load(vm.disableCobranza)">
 						<bandpopup>
 
 							<vbox>
@@ -183,7 +183,7 @@
 						mold="rounded"
 						autodrop="true" width="150px"
 						onOpen="@command('generarListaBuscarCondicionVenta')"
-						readonly="true" disabled="@load(vm.verCobranza)">
+						readonly="true" disabled="@load(vm.disableCobranza)">
 
 						<bandpopup>
 
@@ -247,7 +247,7 @@
 						format="dd/MM/yyyy" width="150px"
 						readonly="@load(!vm.opDefinirFecha)"
 						buttonVisible="@load(vm.opDefinirFecha)"
-						disabled="@load(vm.verCobranza)"/>
+						disabled="@load(vm.disableCobranza)"/>
 				</tablechildren>
 
 				<tablechildren style="padding-left: 5px">
@@ -300,7 +300,7 @@
 						<listheader label="Descuento" align="right" />
 
 						
-						<listheader visible="@load(!vm.verCobranza)" hflex="min" />
+						<listheader visible="@load(!vm.disableCobranza)" hflex="min" />
 
 
 					</listhead>
@@ -311,7 +311,7 @@
 							<button label="Agregar Detalle"
 								iconSclass=" z-icon-plus"
 								onClick="@command('modalCobranzaDetalle')"
-								disabled="@load(vm.verCobranza)" style="background-color:green" />
+								disabled="@load(vm.disableCobranza)" style="background-color:green" />
 						</auxheader>
 
 					</auxhead>
@@ -355,7 +355,7 @@
 
 							<listcell>
 								<doublebox value="@bind(each.monto)"
-									readonly="@load(vm.verCobranza)" style="text-align:right"
+									readonly="@load(vm.disableCobranza)" style="text-align:right"
 									onChange="@command('getTotalDetalle')" hflex="1" />
 							</listcell>
 							
@@ -366,7 +366,7 @@
 								<button iconSclass="z-icon-trash-o"
 									style="background-color:red"
 									onClick="@command('borrarDetalle', dato=each)"
-									tooltiptext="Borrar" disabled="@load(vm.verCobranza)" />
+									tooltiptext="Borrar" disabled="@load(vm.disableCobranza)" />
 
 							</listcell>
 
@@ -413,7 +413,7 @@
 						<listheader label="Vendicimiento"
 							align="Center" />
 
-						<listheader visible="@load(!vm.verCobranza)"
+						<listheader visible="@load(!vm.disableCobranza)"
 							hflex="min" />
 
 
@@ -425,7 +425,7 @@
 							<button label="Agregar Tipo Pago"
 								iconSclass=" z-icon-plus"
 								onClick="@command('modalCobranzaDetalleCobro')"
-								disabled="@load(vm.verCobranza)" style="background-color:green" />
+								disabled="@load(vm.disableCobranza)" style="background-color:green" />
 						</auxheader>
 
 					</auxhead>
@@ -477,7 +477,7 @@
 								<button iconSclass="z-icon-trash-o"
 									style="background-color:red"
 									onClick="@command('borrarCobranzaDetalleCobro', dato=each)"
-									tooltiptext="Borrar" disabled="@load(vm.verCobranza)" />
+									tooltiptext="Borrar" disabled="@load(vm.disableCobranza)" />
 
 							</listcell>
 
@@ -565,7 +565,7 @@
 
 					<button label="COBRAR"
 						onClick="@command('guardarCobranza')"
-						style="background-color:green" disabled="@load(vm.verCobranza)" />
+						style="background-color:green" disabled="@load(vm.disableCobranza)" />
 					<button label="LIMPIAR"
 						onClick="@command('limpiar')" />
 

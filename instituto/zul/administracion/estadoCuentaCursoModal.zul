@@ -1,0 +1,84 @@
+<?page title="estadoCuentaCursoModal" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Delles de Cuenta" border="normal"
+		position="center,center" closable="true" mode="modal"
+		action="show: slideDown;hide: slideUp">
+
+
+		<hlayout width="500px" height="400px">
+
+			<listbox emptyMessage="lista vacía..." mold="paging"
+				autopaging="true" vflex="1" model="@load(vm.lCobranzasDetalles)">
+
+				<auxhead>
+
+					<auxheader label="Detalles" colspan="5"
+						align="center" />
+
+				</auxhead>
+
+				<listhead>
+
+					<listheader label="Fecha" align="Center" />
+					<listheader label="Comprobante" align="Center" />
+					<listheader label="Comprobante #" align="Center" />
+					<listheader label="Anulado" hflex="min"
+						align="Center" />
+					<listheader align="Center" hflex="min" />
+
+				</listhead>
+
+				<template name="model">
+
+					<listitem>
+
+						<listcell
+							label="@load(each.cobranza.fecha) @converter('formatedDate', format='dd/MM/yyyy HH:mm')" />
+						<listcell
+							label="@load(each.cobranza.comprobanteTipo.tipo)" />
+						<listcell
+							label="@load(each.cobranza.comprobanteNum)" />
+
+						<listcell>
+
+							<if test="@load(each.cobranza.anulado)">
+								<label value="Si" />
+							</if>
+
+
+							<if test="@load(!each.cobranza.anulado)">
+								<label value="No" />
+							</if>
+
+						</listcell>
+
+						<listcell>
+
+							<button iconSclass="z-icon-print"
+								style="background-color:green"
+								onClick="@command('verComprobante', cobranza=each.cobranza)"
+								tooltiptext="Imprimir Comprobante" />
+
+						</listcell>
+
+
+
+					</listitem>
+
+				</template>
+
+				<listfoot>
+					<listfooter span="6" align="left">
+						<hlayout>
+							<label
+								value="@load(vm.lCobranzasDetalles.size())" />
+							<label value="items" />
+						</hlayout>
+					</listfooter>
+				</listfoot>
+
+			</listbox>
+
+		</hlayout>
+	</window>
+</zk>

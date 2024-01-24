@@ -77,6 +77,10 @@ public class Cobranza extends Modelo implements Serializable {
 	private Date fechaAnulacion;
 	private String usuarioAnulacion;
 	
+	@ManyToOne
+	@JoinColumn(name = "cajaid")
+	private Caja caja;
+	
 	@Override
 	public Object[] getArrayObjectDatos() {
 		
@@ -291,6 +295,14 @@ public class Cobranza extends Modelo implements Serializable {
 
 	public void setUsuarioAnulacion(String usuarioAnulacion) {
 		this.usuarioAnulacion = usuarioAnulacion;
+	}
+
+	public Caja getCaja() {
+		return caja;
+	}
+
+	public void setCaja(Caja caja) {
+		this.caja = caja;
 	}
 
 

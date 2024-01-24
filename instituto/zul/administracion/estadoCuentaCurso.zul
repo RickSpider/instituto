@@ -1,0 +1,231 @@
+<?page title="Estado de Cuenta" contentType="text/html;charset=UTF-8"?>
+
+<?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
+
+
+<zk>
+	<window title="Estado de Cuenta" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.administracion.EstadoCuentaCursoVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<vlayout vflex="1">
+
+			<tablelayout columns="3">
+
+				<tablechildren>
+					<label value="Curso:" style="font-weight:bold" />
+				</tablechildren>
+
+				<tablechildren>
+
+					<finder
+						finderValue="@load(vm.cursoVigenteSelected.curso.curso)"
+						finderModel="@init(vm.cursoVigenteFinder)" />
+
+				</tablechildren>
+
+				<tablechildren colspan="2">
+					<label
+						value="@load(vm.cursoVigenteSelected.curso.curso)" />
+				</tablechildren>
+
+
+				<tablechildren>
+					<label value="Saldo Vencido:"
+						style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren colspan="2">
+					<doublebox width="120px"
+						value="@load(vm.saldoVencido)" format="#,###"
+						style="text-align:right" readonly="true" />
+				</tablechildren>
+
+				<tablechildren>
+					<label value="Saldo Total:"
+						style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren colspan="2">
+					<doublebox width="120px"
+						value="@load(vm.saldoTotal)" format="#,###"
+						style="text-align:right" readonly="true" />
+				</tablechildren>
+
+			</tablelayout>
+
+			<hlayout vflex="1">
+
+				<vlayout vflex="1" hflex="1">
+
+					<listbox emptyMessage="lista vacía..." mold="paging"
+						autopaging="true" vflex="1"
+						model="@load(vm.lEstadosCuentasSumaGeneral)"
+						checkmark="true">
+						
+						<auxhead>
+
+							<auxheader label="Total General" colspan="7"
+								align="center" />
+
+						</auxhead>
+						
+
+
+						<listhead>
+						
+							<listheader hflex="min" align="center" />
+
+							<listheader label="Fecha Vencimiento"
+								align="center" />
+
+							<listheader label="Concepto" align="Center" />
+							<listheader label="Periodo" align="Center" />
+
+							<listheader label="Monto Total"
+								align="center" />
+							<listheader label="Pago" align="center" />
+
+							<listheader label="Saldo" align="center" />
+
+
+
+						</listhead>
+
+
+
+						<template name="model">
+
+							<listitem
+								onClick="@command('refrescarCobranzaDetallada', conceptoid = each[6], periodo= each[2] )">
+								
+								<listcell />
+
+								<listcell
+									label="@load(each[0]) @converter('formatedDate', format='dd/MM/yyyy')" />
+
+
+								<listcell label="@load(each[1])" />
+
+
+								<listcell
+									label="@load(each[2])" />
+
+
+								<listcell
+									label="@load(each[3]) @converter('formatedNumber', format='#,###')" />
+
+
+								<listcell
+									label="@load(each[4]) @converter('formatedNumber', format='#,###')" />
+
+
+								<listcell
+									label="@load(each[5]) @converter('formatedNumber', format='#,###')" />
+
+
+							</listitem>
+
+						</template>
+
+						<listfoot>
+							<listfooter span="6" align="left">
+								<hlayout>
+									<label
+										value="@load(vm.lEstadosCuentasSumaGeneral.size())" />
+									<label value="items" />
+								</hlayout>
+							</listfooter>
+						</listfoot>
+
+					</listbox>
+
+
+				</vlayout>
+
+				<vlayout vflex="1" hflex="1">
+
+					<listbox emptyMessage="lista vacía..." mold="paging"
+						autopaging="true" vflex="1"
+						model="@load(vm.lEstadosCuentas)"
+						checkmark="true">
+
+						<auxhead>
+
+							<auxheader label="Detalles" colspan="7"
+								align="center" />
+
+						</auxhead>
+
+						<listhead>
+						
+							<listheader hflex="min"/>
+
+							<listheader label="Id" align="Center" hflex="min"/>
+							<listheader label="Alumno"
+								align="Center" />
+							<listheader label="monto"
+								align="Center" />
+							<listheader label="pago" 
+								align="Center" />
+							<listheader label="saldo" align="Center" />
+							<listheader hflex="min"/>
+
+						</listhead>
+
+						<template name="model">
+
+							<listitem>
+
+								<listcell/>
+
+								<listcell
+									label="@load(each[0])" />
+									
+								<listcell
+									label="@load(each[1])"  />
+									
+								<listcell
+									label="@load(each[2])  @converter('formatedNumber', format='#,###')" />
+									
+								<listcell
+									label="@load(each[3])  @converter('formatedNumber', format='#,###')" />
+									
+								<listcell
+									label="@load(each[4])  @converter('formatedNumber', format='#,###')" />
+								
+								<listcell>
+								
+									<button iconSclass="z-icon-print" 
+									style="background-color:green"
+									onClick="@command('modalEstadoCuentaCurso', estadocuentaid=each[0])"
+									tooltiptext="Ver Detalles"/>								
+								</listcell>
+
+
+							</listitem>
+
+						</template>
+
+						<listfoot>
+							<listfooter span="6" align="left">
+								<hlayout>
+									<label
+										value="@load(vm.lEstadosCuentas.size())" />
+									<label value="items" />
+								</hlayout>
+							</listfooter>
+						</listfoot>
+
+					</listbox>
+
+
+
+				</vlayout>
+
+			</hlayout>
+
+
+
+		</vlayout>
+
+	</window>
+</zk>

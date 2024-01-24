@@ -1,6 +1,7 @@
 package com.instituto.sistema.administracion;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +21,7 @@ import org.zkoss.zul.Window;
 
 import com.doxacore.modelo.Tipo;
 import com.instituto.modelo.Alumno;
+import com.instituto.modelo.Caja;
 import com.instituto.modelo.Cobranza;
 import com.instituto.modelo.CobranzaDetalle;
 import com.instituto.modelo.CobranzaDetalleCobro;
@@ -27,13 +29,15 @@ import com.instituto.modelo.Comprobante;
 import com.instituto.modelo.Cotizacion;
 import com.instituto.modelo.Entidad;
 import com.instituto.modelo.EstadoCuenta;
+import com.instituto.modelo.UsuarioSede;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
 
 public class CobranzaVM extends TemplateViewModelLocal {
 
 	private Cobranza cobranzaSelected;
-	private boolean verCobranza = false;
+	private Caja cajaSelected;
+	private boolean disableCobranza = false;
 	private List<CobranzaDetalleCobro> lDetallesCobros = new ArrayList<CobranzaDetalleCobro>();
 	private List<CobranzaDetalle> lDetalles = new ArrayList<CobranzaDetalle>();
 	private double saldoTotal = 0;
@@ -50,16 +54,17 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	private boolean opAnularCobranza;
 
 	@Init(superclass = true)
-	public void initConvenioVM() {
+	public void initCobranzaVM() {
 
 		cobranzaSelected = new Cobranza();
 		defaultCobranza();
+		
 
 	}
 
 	@AfterCompose(superclass = true)
-	public void afterComposeConvenioVM() {
-
+	public void afterComposeCobranzaVM() {
+		
 	}
 
 	@Override
@@ -71,6 +76,20 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		this.opAnularCobranza = this.operacionHabilitada(ParamsLocal.OP_ANULAR_COBRANZA);
 		this.opDefinirFecha = this.operacionHabilitada(ParamsLocal.OP_DEFINIR_FECHA_COBRANZA);
 		
+	}
+	
+	private void verificarCaja() {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		
+		cajaSelected = this.reg.getObjectByCondicion(Caja.class.getName(), 
+				"sedeid = "+this.getCurrentSede().getSedeid()+"\n"+
+				"and usuariocajaid = "+this.getCurrentUser().getUsuarioid()+"\n"+
+				"and Date(apertura) = '"+sdf.format(new Date())+"'\n"+
+				"and cierre is null");
+		
+				
 	}
 
 	@Command
@@ -95,17 +114,28 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		this.iva10 = 0;
 		this.iva5 = 0;
 		this.exento = 0;
-
+		
+		
 	}
 
 	private void defaultCobranza() {
 
 		if (!this.opCrearCobranza) {
 
-			this.verCobranza = true;
+			this.disableCobranza = true;
 
 		} else {
-			this.verCobranza = false;
+			
+			this.disableCobranza = false;
+			
+		}
+		
+		this.verificarCaja();
+		
+		if (this.cajaSelected == null) {
+			
+			this.disableCobranza = true;
+			
 		}
 
 		Tipo comprobanteTipo = this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_COMPROBANTE_FACTURA);
@@ -278,7 +308,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	@NotifyChange({ "totalDetalle", "iva10", "iva5", "exento","lDetalles","totalesDiferencia"})
 	public void borrarDetalle(@BindingParam("dato") CobranzaDetalle dato) {
 
-		if (this.verCobranza) {
+		if (this.disableCobranza) {
 
 			return;
 
@@ -460,7 +490,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	@NotifyChange({"lDetallesCobros", "lDetalles", "totalDetalle", "totalesDiferencia", "iva10", "iva5", "exento","cssDiferencia" })
 	public void borrarCobranzaDetalleCobro(@BindingParam("dato") CobranzaDetalleCobro dato) {
 
-		if (this.verCobranza) {
+		if (this.disableCobranza) {
 
 			return;
 
@@ -762,7 +792,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	@Command
 	public void guardarCobranza() {
 
-		if (this.verCobranza) {
+		if (this.disableCobranza) {
 
 			return;
 
@@ -923,6 +953,15 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	private void procesarCobranza() {
+		
+		if (this.cajaSelected == null) {
+			
+			this.mensajeError("No existe caja habilitada para el usurio");
+			
+			return;
+		}
+		
+		this.cobranzaSelected.setCaja(this.cajaSelected);
 
 		Object[] comprobante = this.getNumeroComprobante();
 		
@@ -972,7 +1011,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 		}
 
-		this.verCobranza = true;
+		this.disableCobranza = true;
 
 		BindUtils.postNotifyChange(null, null, this, "*");
 		
@@ -996,10 +1035,13 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	private boolean existeComprobante() {
+		
+		UsuarioSede us = this.getCurrentUsuarioSede();
 
 		Comprobante comprobante = this.reg.getObjectByCondicion(Comprobante.class.getName(),
-				"activo = true " + "AND sedeid = " + this.getCurrentSede().getSedeid() + " "
+				"activo = true " + "AND sedeid = " + us.getSede().getSedeid() + " "
 						+ "AND comprobantetipoid = " + this.cobranzaSelected.getComprobanteTipo().getTipoid() + " "
+						+ "AND puntoExpdicion = '"+us.getPuntoExpedicion()+"' "
 						+ "AND emision <= current_date " + "AND vencimiento >= current_date "
 						+ "AND siguiente <= fin ");
 
@@ -1015,13 +1057,22 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	private synchronized Object[] getNumeroComprobante() {
+		
+		UsuarioSede us = this.getCurrentUsuarioSede();
 
 		StringBuffer numero = new StringBuffer();
 		Object [] out = new Object[4];
 
-		Comprobante comprobante = this.reg.getObjectByCondicion(Comprobante.class.getName(),
+		/*Comprobante comprobante = this.reg.getObjectByCondicion(Comprobante.class.getName(),
 				"activo = true " + "AND sedeid = " + this.getCurrentSede().getSedeid() + " "
 						+ "AND comprobantetipoid = " + this.cobranzaSelected.getComprobanteTipo().getTipoid() + " "
+						+ "AND emision <= current_date " + "AND vencimiento >= current_date "
+						+ "AND siguiente <= fin ");*/
+		
+		Comprobante comprobante = this.reg.getObjectByCondicion(Comprobante.class.getName(),
+				"activo = true " + "AND sedeid = " + us.getSede().getSedeid() + " "
+						+ "AND comprobantetipoid = " + this.cobranzaSelected.getComprobanteTipo().getTipoid() + " "
+						+ "AND puntoExpdicion = '"+us.getPuntoExpedicion()+"' "
 						+ "AND emision <= current_date " + "AND vencimiento >= current_date "
 						+ "AND siguiente <= fin ");
 
@@ -1228,12 +1279,12 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		this.condicionHabilitada = condicionHabilitada;
 	}
 
-	public boolean isVerCobranza() {
-		return verCobranza;
+	public boolean isDisableCobranza() {
+		return this.disableCobranza;
 	}
 
-	public void setVerCobranza(boolean verCobranza) {
-		this.verCobranza = verCobranza;
+	public void setDisableCobranza(boolean disableCobranza) {
+		this.disableCobranza = disableCobranza;
 	}
 
 	public double getIva10() {

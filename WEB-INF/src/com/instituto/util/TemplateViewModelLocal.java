@@ -20,12 +20,23 @@ public abstract class TemplateViewModelLocal extends TemplateViewModel{
 		
 	}
 	
+	protected UsuarioSede getCurrentUsuarioSede() {
+		
+		return this.reg.getObjectByCondicion(UsuarioSede.class.getName(), 
+				"usuarioid = "+this.getCurrentUser().getUsuarioid()+" AND activo = true");
+		
+		
+	}
+	
 	protected Sede getCurrentSede() {
 		
+		/*
 		List<UsuarioSede> result = this.reg.getAllObjectsByCondicionOrder(UsuarioSede.class.getName(), 
 				"usuarioid = "+this.getCurrentUser().getUsuarioid()+" AND activo = true", null);
 		
 		return result.get(0).getSede();
+		*/
+		return getCurrentUsuarioSede().getSede();
 	}
 	
 

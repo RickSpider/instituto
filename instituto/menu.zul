@@ -22,7 +22,12 @@
 		children="@load(vm.pageMap[self.label].values()) @template('navitem')"
 		visible="@load(vm.menuVisible( vm.pageMap[self.label].values().size() ))" />
 		
+	<nav label="Tesoreria" iconSclass=" z-icon-money"
+		badgeText="@load(vm.pageMap[self.label].values().size() )"
+		children="@load(vm.pageMap[self.label].values()) @template('navitem')"
+		visible="@load(vm.menuVisible( vm.pageMap[self.label].values().size() ))" />
 	
+		
 	<nav label="Gestion Sede" iconSclass="z-icon-home"
 		badgeText="@load(vm.pageMap[self.label].values().size() )"
 		children="@load(vm.pageMap[self.label].values()) @template('navitem')"

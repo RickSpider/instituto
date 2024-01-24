@@ -26,3 +26,4 @@
 <mapping class="com.instituto.modelo.CobranzaDetalleCobro" />
 <mapping class="com.instituto.modelo.PersonaEntidad" />
 <mapping class="com.instituto.modelo.Recordatorio" />
+<mapping class="com.instituto.modelo.Caja" />

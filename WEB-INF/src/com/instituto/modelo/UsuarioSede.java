@@ -19,6 +19,7 @@ public class UsuarioSede extends Modelo implements Serializable{
 	private UsuarioSedePK usuariosedepk = new UsuarioSedePK();
 
 	private boolean activo = false;
+	private String puntoExpedicion;
 
 	@Override
 	public Object[] getArrayObjectDatos() {
@@ -74,6 +75,14 @@ public class UsuarioSede extends Modelo implements Serializable{
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public String getPuntoExpedicion() {
+		return puntoExpedicion;
+	}
+
+	public void setPuntoExpedicion(String puntoExpedicion) {
+		this.puntoExpedicion = puntoExpedicion;
 	}
 
 }

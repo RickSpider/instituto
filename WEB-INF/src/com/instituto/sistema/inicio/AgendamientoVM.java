@@ -102,7 +102,7 @@ public class AgendamientoVM extends TemplateViewModelLocal {
 				"p.fechanacimiento \r\n" + 
 				"from cursosvigentesalumnos cva\r\n" + 
 				"left join alumnos a on a.alumnoid = cva.alumnoid \r\n" + 
-				"left join personas p on p.personaid = a.alumnoid\r\n" + 
+				"left join personas p on p.personaid = a.personaid\r\n" + 
 				"left join cursosvigentes cv on cv.cursovigenteid = cva.cursovigenteid\r\n" + 
 				"where fechafin <= current_date\r\n" + 
 				"order by cursovigenteid asc, alumnoid asc;";

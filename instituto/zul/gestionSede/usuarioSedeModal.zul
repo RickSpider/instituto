@@ -1,0 +1,33 @@
+<?page title="usuarioSedeModal" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Usuario Sede Ver/Editar" border="normal"
+		position="center,center" closable="true" mode="modal"
+		action="show: slideDown;hide: slideUp">
+
+		<vlayout>
+
+			<tablelayout>
+			
+				<tablechildren>
+					<label value="Punto Expedicion" />
+				</tablechildren>
+			
+				<tablechildren>
+					<textbox value="@bind(vm.usuarioSedeSelected.puntoExpedicion)" />
+				</tablechildren>
+			
+			</tablelayout>
+
+			<space height="10px" />
+
+			<hlayout>
+
+				<button label="Aceptar" onClick="@command('guardar')"/>
+
+			</hlayout>
+
+		</vlayout>
+
+
+	</window>
+</zk>

@@ -1,7 +1,7 @@
 <?page title="Usuarios Sedes" contentType="text/html;charset=UTF-8"?>
 <zk>
 	<window title="Usuario Sede" border="normal"
-		viewModel="@id('vm') @init('com.instituto.sistema.configuracion.UsuarioSedeVM')"
+		viewModel="@id('vm') @init('com.instituto.sistema.gestionSede.UsuarioSedeVM')"
 		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
 
 		<hlayout vflex="1" hflex="1">
@@ -183,6 +183,7 @@
 							<listheader label="Sede" align="left" />
 							<listheader label="Descripción" />
 							<listheader label="Sede Actual" align="center" />
+							<listheader label="Punto Expedicion" align="center" />
 							<listheader align="center" width="100px" />
 
 
@@ -221,6 +222,8 @@
 									</if>
 
 								</listcell>
+								<listcell
+									label="@load(each.puntoExpedicion)" />
 								<listcell>
 									<hlayout>
 									
@@ -228,6 +231,11 @@
 											iconSclass="z-icon-exchange " style="background-color:orange"
 											onClick="@command('habilitarSede', usuariosede=each)"
 											tooltiptext="Cambiar a Sede." visible="@load(!each.activo)" disabled="@load(each.activo)"/>
+											
+									<button
+											iconSclass="z-icon-edit "
+											onClick="@command('modalUsuarioSede', usuariosede=each)"
+											tooltiptext="Asignar Punto de Expedicion" />
 
 										<button
 											iconSclass="z-icon-trash-o" style="background-color:red"

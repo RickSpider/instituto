@@ -120,7 +120,7 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 
 		if (this.alumnoSelected == null) {
 
-			sqlBuscarCursoVigente = this.um.getSql("buscarCursoVigente.sql");
+			sqlBuscarCursoVigente = this.um.getSql("buscarCursoVigente.sql").replace("?1", this.getCurrentSede().getSedeid()+"");
 
 		} else {
 

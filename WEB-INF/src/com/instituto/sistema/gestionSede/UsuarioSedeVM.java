@@ -1,4 +1,4 @@
-package com.instituto.sistema.configuracion;
+package com.instituto.sistema.gestionSede;
 
 import java.util.List;
 
@@ -8,9 +8,12 @@ import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
+import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
+import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Window;
 
 import com.doxacore.TemplateViewModel;
 import com.doxacore.modelo.Usuario;
@@ -25,6 +28,7 @@ public class UsuarioSedeVM extends TemplateViewModel{
 	private List<UsuarioSede> lSedesUsuarios;	
 	private Usuario usuarioSelectedSede;
 	private String filtroColumnsUsuario[];
+	private UsuarioSede usuarioSedeSelected;
 	
 	private boolean opAgregarSede;
 	private boolean opQuitarSede;
@@ -241,6 +245,30 @@ public class UsuarioSedeVM extends TemplateViewModel{
 		}
 		
 		// fin seccion sede
+		
+		private Window modal;
+		
+		@Command
+		public void modalUsuarioSede(@BindingParam("usuariosede") UsuarioSede usuariosede) {
+			
+			this.usuarioSedeSelected = usuariosede;
+
+			modal = (Window) Executions.createComponents("/instituto/zul/gestionSede/usuarioSedeModal.zul", this.mainComponent,
+					null);
+			Selectors.wireComponents(modal, this, false);
+			modal.doModal();
+
+		}
+		
+		@Command
+		public void guardar() {
+			
+			this.save(this.usuarioSedeSelected);
+			modal.detach();
+			
+			this.refrescarSedes(this.usuarioSelectedSede);
+			
+		}
 
 		public List<Usuario> getlUsuarios() {
 			return lUsuarios;
@@ -312,6 +340,14 @@ public class UsuarioSedeVM extends TemplateViewModel{
 
 		public void setFiltroColumnsUsuario(String[] filtroColumnsUsuario) {
 			this.filtroColumnsUsuario = filtroColumnsUsuario;
+		}
+
+		public UsuarioSede getUsuarioSedeSelected() {
+			return usuarioSedeSelected;
+		}
+
+		public void setUsuarioSedeSelected(UsuarioSede usuarioSedeSelected) {
+			this.usuarioSedeSelected = usuarioSedeSelected;
 		}
 		
 		

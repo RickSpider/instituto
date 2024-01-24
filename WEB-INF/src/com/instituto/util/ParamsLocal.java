@@ -179,4 +179,9 @@ public class ParamsLocal extends Params {
 	//FacturacionReporte
 	public static final String OP_CREAR_FACTURACIONREPORTE="CrearFacturacionReporte";
 	
+	//Caja
+	public static final String OP_CREAR_CAJA = "CrearCaja";
+	public static final String OP_EDITAR_CAJA = "EditarCaja";
+	public static final String OP_BORRAR_CAJA = "BorrarCaja";
+	
 }

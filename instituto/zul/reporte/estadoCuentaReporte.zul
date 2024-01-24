@@ -143,10 +143,10 @@
 												label="@load(each[1])" />
 
 											<listcell
-												label="@load(each[2]) @converter('formatedDate', format='dd/MM/yyyy')" />
+												label="@load(each[2])" />
 
 											<listcell
-												label="@load(each[3]) @converter('formatedDate', format='dd/MM/yyyy')" />
+												label="@load(each[3])" />
 
 										</listitem>
 
