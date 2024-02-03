@@ -1,147 +1,142 @@
 <?page title="Cajas" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window title="Caja" border="normal"
+	<window title="Caja" border="normal"
 		viewModel="@id('vm') @init('com.instituto.sistema.tesoreria.CajaVM')"
 		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
 
 		<hlayout vflex="1">
-			
-				<vlayout hflex="1" vflex="1">
 
-					<hbox pack="end" hflex="1" >
+			<vlayout hflex="1" vflex="1">
 
-						<button label="Agregar"
-							iconSclass=" z-icon-plus" onClick="@command('modalCajaAgregar')" disabled="@load(!vm.opCrearCaja)" />
+				<hbox pack="end" hflex="1">
 
-					</hbox>
+					<button label="Agregar" iconSclass=" z-icon-plus"
+						onClick="@command('modalCajaAgregar')"
+						disabled="@load(!vm.opCrearCaja)" />
 
-					<listbox emptyMessage="lista vacía..." mold="paging"
-						vflex="1" model="@load(vm.lCajas)" checkmark="true">
+				</hbox>
 
-						<listhead>
+				<listbox emptyMessage="lista vacía..." mold="paging"
+					vflex="1" model="@load(vm.lCajas)" checkmark="true">
 
-							<listheader hflex="min" align="center" />
-							<listheader label="ID" align="right"
-								hflex="min" />
-							<listheader label="Usuario" align="left"
-								 />
-							<listheader label="F. Apertura" align="left"
-								/>
-							<listheader label="Monto Apertura" align="left"
-								 />
-							<listheader label="Usuario Cierre" align="left"
-								 />
-							<listheader label="F. Cierre" align="left"
-								 />
-							<listheader label="Monto Cierre" align="left"
-								 />
-							<listheader hflex="min"/>
+					<listhead>
+
+						<listheader hflex="min" align="center" />
+						<listheader label="ID" align="right"
+							hflex="min" />
+						<listheader label="Usuario" align="left" />
+						<listheader label="F. Apertura" align="left" />
+						<listheader label="Monto Apertura" align="left" />
+						<listheader label="Usuario Cierre" align="left" />
+						<listheader label="F. Cierre" align="left" />
+						<listheader label="Monto Cierre" align="left" />
+						<listheader hflex="min" />
 
 
-						</listhead>
+					</listhead>
 
 
-						<auxhead>
+					<auxhead>
 
-							<auxheader />
-							<auxheader />
-							<auxheader>
-								<textbox
-									value="@bind(vm.filtroColumns[0])" instant="true"
-									onChange="@command('filtrarCaja')" hflex="1" />
-							</auxheader>
+						<auxheader />
+						<auxheader />
 
-							<auxheader>
-								<textbox
-									value="@bind(vm.filtroColumns[1])" instant="true"
-									onChange="@command('filtrarCaja')" hflex="1" />
-							</auxheader>
-							
-							<auxheader>
-								<textbox
-									value="@bind(vm.filtroColumns[2])" instant="true"
-									onChange="@command('filtrarCaja')" hflex="1" />
-							</auxheader>
-							
-							<auxheader>
-								<textbox
-									value="@bind(vm.filtroColumns[3])" instant="true"
-									onChange="@command('filtrarCaja')" hflex="1" />
-							</auxheader>
-							
-							<auxheader>
-								<textbox
-									value="@bind(vm.filtroColumns[4])" instant="true"
-									onChange="@command('filtrarCaja')" hflex="1" />
-							</auxheader>
-							
-							<auxheader>
-								<textbox
-									value="@bind(vm.filtroColumns[5])" instant="true"
-									onChange="@command('filtrarCaja')" hflex="1" />
-							</auxheader>
-							<auxheader/>
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[1])"
+								instant="true" onChange="@command('filtrarCajas')" hflex="1" />
+						</auxheader>
 
-					
-						</auxhead>
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[2])"
+								instant="true" onChange="@command('filtrarCajas')" hflex="1" />
+						</auxheader>
 
-						<template name="model">
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[3])"
+								instant="true" onChange="@command('filtrarCajas')" hflex="1" />
+						</auxheader>
 
-							<listitem>
-								<listcell />
-								<listcell label="@load(each[0])" />
-								<listcell label="@load(each[1])" />
-								<listcell label="@load(each[2])" />
-								<listcell label="@load(each[3])" />
-								<listcell label="@load(each[4])" />
-								<listcell label="@load(each[5])" />
-								<listcell label="@load(each[6])" />
-								
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[4])"
+								instant="true" onChange="@command('filtrarCajas')" hflex="1" />
+						</auxheader>
 
-								<listcell>
-									<hlayout>
-									
-										<button iconSclass="z-icon-lock" style="background-color:orange"
-											onClick="@command('modalCerrar', cajaid=each[0])"
-											tooltiptext="Cerrar Caja" disabled="@load(!vm.opEditarCaja)"/>
-											
-										<button iconSclass="z-icon-edit"
-											onClick="@command('modalCaja', cajaid=each[0])"
-											tooltiptext="Editar" disabled="@load(!vm.opEditarCaja)"/>
-										<button
-											iconSclass="z-icon-trash-o" style="background-color:red"
-											onClick="@command('borrarCajaConfirmacion', caja=each)"
-											tooltiptext="Borrar" disabled="@load(!vm.opBorrarCaja)"/>
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[5])"
+								instant="true" onChange="@command('filtrarCajas')" hflex="1" />
+						</auxheader>
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[6])"
+								instant="true" onChange="@command('filtrarCajas')" hflex="1" />
+						</auxheader>
+						<auxheader />
 
 
-									</hlayout>
+					</auxhead>
+
+					<template name="model">
+
+						<listitem>
+							<listcell />
+							<listcell label="@load(each[0])" />
+							<listcell label="@load(each[1])" />
+							<listcell label="@load(each[2])" />
+							<listcell label="@load(each[3]) @converter('formatedNumber', format='#,###')" />
+							<listcell label="@load(each[4])" />
+							<listcell label="@load(each[5])" />
+							<listcell label="@load(each[6])  @converter('formatedNumber', format='#,###')" />
 
 
-								</listcell>
-
-
-							</listitem>
-
-
-						</template>
-
-						<listfoot>
-							<listfooter span="4" align="left">
+							<listcell>
 								<hlayout>
-									<label
-										value="@load(vm.lCajas.size())" />
-									<label value="items" />
+
+									<button iconSclass=" z-icon-print "
+										style="background-color:green"
+										onClick="@command('generarReporteCaja', cajaid=each[0])"
+										tooltiptext="Cerrar Caja" disabled="@load(!vm.opEditarCaja)" />
+
+
+									<button iconSclass="z-icon-lock"
+										style="background-color:orange"
+										onClick="@command('modalCerrar', cajaid=each[0])"
+										tooltiptext="Cerrar Caja" disabled="@load(!vm.opEditarCaja)" />
+
+									<button iconSclass="z-icon-edit"
+										onClick="@command('modalCaja', cajaid=each[0])"
+										tooltiptext="Editar" disabled="@load(!vm.opEditarCaja)" />
+									<button iconSclass="z-icon-trash-o"
+										style="background-color:red"
+										onClick="@command('borrarCajaConfirmacion', caja=each)"
+										tooltiptext="Borrar" disabled="@load(!vm.opBorrarCaja)" />
+
+
 								</hlayout>
-							</listfooter>
-						</listfoot>
 
 
-					</listbox>
+							</listcell>
 
-				</vlayout>
 
-		
-			
+						</listitem>
+
+
+					</template>
+
+					<listfoot>
+						<listfooter span="4" align="left">
+							<hlayout>
+								<label value="@load(vm.lCajas.size())" />
+								<label value="items" />
+							</hlayout>
+						</listfooter>
+					</listfoot>
+
+
+				</listbox>
+
+			</vlayout>
+
+
+
 		</hlayout>
 
 	</window>

@@ -47,13 +47,15 @@ public class CobranzaDetalleCobro  extends Modelo implements Serializable{
 	private String Titular;
 	private Long autorizacionNum;
 	
-	
 	@Temporal(TemporalType.DATE)
 	private Date emision;
 	
 	@Temporal(TemporalType.DATE)
 	private Date vencimiento;
 
+	@Column(columnDefinition = "boolean default false")
+	private boolean depositado = false;
+	
 	@Override
 	public Object[] getArrayObjectDatos() {
 		// TODO Auto-generated method stub
@@ -182,6 +184,14 @@ public class CobranzaDetalleCobro  extends Modelo implements Serializable{
 
 	public void setAutorizacionNum(Long autorizacionNum) {
 		this.autorizacionNum = autorizacionNum;
+	}
+
+	public boolean isDepositado() {
+		return depositado;
+	}
+
+	public void setDepositado(boolean depositado) {
+		this.depositado = depositado;
 	}
 	
 }

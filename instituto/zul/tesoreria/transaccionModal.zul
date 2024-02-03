@@ -1,0 +1,94 @@
+<?page title="transaccionModal" contentType="text/html;charset=UTF-8"?>
+
+<?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
+
+<zk>
+	<window title="Transaccion Crear/Ver/Editar" border="normal"
+		position="center,center" closable="true" mode="modal"
+		action="show: slideDown;hide: slideUp">
+
+		<vlayout>
+
+			<tablelayout columns="2">
+
+				<tablechildren>
+
+					<label value="ID:" />
+
+				</tablechildren>
+				<tablechildren>
+
+					<textbox value="@load(vm.transaccionSelected.transaccionid)"
+						width="75px" readonly="true" />
+
+				</tablechildren>
+
+
+
+				<tablechildren>
+
+					<label value="Fecha:" />
+
+				</tablechildren>
+				<tablechildren>
+
+					<datebox value="@bind(vm.transaccionSelected.fecha)"
+						format="dd/MM/yyyy HH:mm:ss"
+						width="150px" />
+
+				</tablechildren>
+				
+				<tablechildren>
+
+					<label value="Tipo: " />
+
+				</tablechildren>
+				<tablechildren>
+
+					<finder
+						finderValue="@load(vm.transaccionSelected.transaccionTipo.tipo)"
+						finderModel="@init(vm.transaccionTipoFinder)" />
+
+				</tablechildren>
+
+				<tablechildren>
+
+					<label value="Cuenta #: " />
+
+				</tablechildren>
+				<tablechildren>
+
+					<finder
+						finderValue="@load(vm.transaccionSelected.cuenta.numero)"
+						finderModel="@init(vm.cuentaFinder)" />
+
+				</tablechildren>
+				
+				<tablechildren>
+
+					<label value="Monto: " />
+
+				</tablechildren>
+				<tablechildren>
+
+					<doublebox value="@bind(vm.transaccionSelected.monto)" />
+					
+				</tablechildren>
+
+			</tablelayout>
+
+
+
+			<space height="10px" />
+
+			<hlayout>
+
+				<button label="Aceptar" onClick="@command('guardar')" />
+
+			</hlayout>
+
+		</vlayout>
+
+
+	</window>
+</zk>

@@ -1,0 +1,90 @@
+<?page title="Transaccion Panel" contentType="text/html;charset=UTF-8"?>
+
+<?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
+
+<zk>
+	<window title="TransaccionPanel" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.tesoreria.TransaccionPanelVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<vlayout vflex="1">
+
+
+			<tablelayout columns="2">
+
+				<tablechildren>
+
+					<label value="Caja: " />
+
+				</tablechildren>
+
+				<tablechildren>
+
+					<finder finderValue="@load(vm.cajaSelected.cajaid)"
+						finderModel="@init(vm.cajaFinder)" />
+
+				</tablechildren>
+
+				<tablechildren>
+
+					<label value="Cuenta: " />
+
+				</tablechildren>
+
+				<tablechildren>
+
+					<finder
+						finderValue="@load(vm.cuentaSelected.numero)"
+						finderModel="@init(vm.cuentaFinder)" />
+
+				</tablechildren>
+				
+				<tablechildren>
+				
+					<button label="Confirmar" onClick="@command('confirmar')" />
+				
+				</tablechildren>
+
+
+			</tablelayout>
+
+			<listbox emptyMessage="lista vacía..." mold="paging"
+				vflex="1" model="@load(vm.lCobranzasDetallescobros)"
+				checkmark="true" multiple="true"
+				selectedItems="@bind(vm.lCobranzasDetallescobrosAux)">
+
+				<listhead>
+
+					<listheader hflex="min" />
+					<listheader label="fecha" />
+					<listheader label="Comprobante" />
+					<listheader label="Comprobante #" />
+					<listheader label="Forma Pago" />
+					<listheader label="Monto" align="left" />
+
+
+				</listhead>
+
+				<template name="model">
+
+					<listitem>
+
+						<listcell />
+						<listcell label="@load(each.cobranza.fecha)" />
+						<listcell
+							label="@load(each.cobranza.comprobanteTipo.tipo)" />
+						<listcell
+							label="@load(each.cobranza.comprobanteNum)" />
+						<listcell label="@load(each.formaPago.tipo)" />
+						<listcell label="@load(each.monto)  @converter('formatedNumber', format='#,###')"  />
+
+					</listitem>
+				</template>
+
+			</listbox>
+
+
+		</vlayout>
+
+	</window>
+</zk>

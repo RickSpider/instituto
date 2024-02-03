@@ -1,0 +1,128 @@
+<?page title="Transacciones" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="Transaccion" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.tesoreria.TransaccionVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<hlayout vflex="1">
+			
+				<vlayout hflex="1" vflex="1">
+
+					<hbox pack="end" hflex="1" >
+
+						<button label="Agregar"
+							iconSclass=" z-icon-plus" onClick="@command('modalTransaccionAgregar')" disabled="@load(!vm.opCrearTransaccion)" />
+
+					</hbox>
+
+					<listbox emptyMessage="lista vacía..." mold="paging"
+						vflex="1" model="@load(vm.lTransacciones)" checkmark="true">
+
+						<listhead>
+
+							<listheader hflex="min" align="center" />
+							<listheader label="ID" align="right"
+								hflex="min" />
+							<listheader label="Fecha" align="left"
+								/>
+							<listheader label="Cuenta #" align="left"
+								 />
+							<listheader label="Tipo Transaccion" align="left"
+								/>
+							<listheader label="Monto" align="left"
+								/>
+							<listheader hflex="min"/>
+
+
+						</listhead>
+
+
+						<auxhead>
+
+							<auxheader />
+							<auxheader />
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[1])" instant="true"
+									onChange="@command('filtrarTransaccion')" hflex="1" />
+							</auxheader>
+
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[2])" instant="true"
+									onChange="@command('filtrarTransaccion')" hflex="1" />
+							</auxheader>
+							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[3])" instant="true"
+									onChange="@command('filtrarTransaccion')" hflex="1" />
+							</auxheader>
+							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[4])" instant="true"
+									onChange="@command('filtrarTransaccion')" hflex="1" />
+							</auxheader>
+					
+							
+							<auxheader/>
+
+					
+						</auxhead>
+
+						<template name="model">
+
+							<listitem>
+								<listcell />
+								<listcell label="@load(each[0])" />
+								<listcell label="@load(each[1])" />
+								<listcell label="@load(each[2])" />
+								<listcell label="@load(each[3])" />
+								<listcell label="@load(each[4])  @converter('formatedNumber', format='#,###')" />
+							
+								
+								<listcell>
+									<hlayout>
+									
+										<button iconSclass="z-icon-edit"
+											onClick="@command('modalTransaccion', transaccionid=each[0])"
+											tooltiptext="Editar" disabled="@load(!vm.opEditarTransaccion)"/>
+										
+										<button	iconSclass="z-icon-trash-o" style="background-color:red"
+											onClick="@command('borrarTransaccionConfirmar', id=each[0])"
+											tooltiptext="Borrar" disabled="@load(!vm.opBorrarTransaccion)"/>
+
+
+									</hlayout>
+
+
+								</listcell>
+
+
+							</listitem>
+
+
+						</template>
+
+						<listfoot>
+							<listfooter span="4" align="left">
+								<hlayout>
+									<label
+										value="@load(vm.lTransacciones.size())" />
+									<label value="items" />
+								</hlayout>
+							</listfooter>
+						</listfoot>
+
+
+					</listbox>
+
+				</vlayout>
+
+		
+			
+		</hlayout>
+
+	</window>
+</zk>

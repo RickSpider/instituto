@@ -3,7 +3,7 @@
 <?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
 
 <zk>
-	<window title="Cerrar Caja" border="normal"
+	<window title="Cuenta Crear/Ver/Editar" border="normal"
 		position="center,center" closable="true" mode="modal"
 		action="show: slideDown;hide: slideUp">
 
@@ -18,43 +18,48 @@
 				</tablechildren>
 				<tablechildren>
 
-					<textbox value="@load(vm.cajaSelected.cajaid)"
+					<textbox value="@load(vm.cuentaSelected.cuentaid)"
 						width="75px" readonly="true" />
 
 				</tablechildren>
 
-				<tablechildren>
 
-					<label value="Usuario:" />
-
-				</tablechildren>
-				<tablechildren>
-				
-					<textbox value="@load(vm.cajaSelected.usuarioCaja.account)" readonly="true"/>
-				
-					
-				</tablechildren>
 
 				<tablechildren>
 
-					<label value="Monto Cierre:" />
+					<label value="Cuenta #:" />
 
 				</tablechildren>
 				<tablechildren>
 
+					<textbox value="@bind(vm.cuentaSelected.numero)"
+						width="150px" />
 
-					<doublebox
-						value="@load(vm.cajaSelected.montoCierre) @save(vm.cajaSelected.montoCierre, before='cerrarCaja')"
-						constraint="no empty: Es campo obligatorio." />
+				</tablechildren>
+
+
+				<tablechildren>
+
+					<label value="Entidad: " />
+
+				</tablechildren>
+				<tablechildren>
+
+					<finder
+						finderValue="@load(vm.cuentaSelected.entidad.entidad)"
+						finderModel="@init(vm.entidadFinder)" />
+
 				</tablechildren>
 
 			</tablelayout>
-			
+
+
+
 			<space height="10px" />
 
 			<hlayout>
 
-				<button label="Aceptar" onClick="@command('cerrarCaja')" />
+				<button label="Aceptar" onClick="@command('guardar')" />
 
 			</hlayout>
 

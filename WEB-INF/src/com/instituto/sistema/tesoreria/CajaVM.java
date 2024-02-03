@@ -1,9 +1,13 @@
 package com.instituto.sistema.tesoreria;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
@@ -19,7 +23,10 @@ import org.zkoss.zul.Window;
 
 import com.doxacore.components.finder.FinderInterface;
 import com.doxacore.components.finder.FinderModel;
+import com.doxacore.modelo.Tipo;
+import com.doxacore.modelo.Tipotipo;
 import com.doxacore.modelo.Usuario;
+import com.doxacore.report.ReportExcel;
 import com.instituto.modelo.Caja;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
@@ -85,8 +92,8 @@ public class CajaVM extends TemplateViewModelLocal implements FinderInterface{
 	}
 	
 	@Command
-	@NotifyChange("lComprobantesElectronicos")
-	public void filtrarComprobanteElectronico() {
+	@NotifyChange("lCajas")
+	public void filtrarCajas() {
 
 		this.lCajas = filtrarListaObject(this.filtroColumns, this.lCajasOri);
 
@@ -216,6 +223,14 @@ public class CajaVM extends TemplateViewModelLocal implements FinderInterface{
 		
 		this.cajaSelected = this.reg.getObjectById(Caja.class.getName(), cajaid);
 		
+		if(this.cajaSelected.getCierre() != null) {
+			
+			
+			this.mensajeInfo("La caja ya esta cerrada.");
+			return;
+			
+		}
+		
 				
 		modal = (Window) Executions.createComponents("/instituto/zul/tesoreria/cajaCerrarModal.zul", this.mainComponent,
 				null);
@@ -226,6 +241,20 @@ public class CajaVM extends TemplateViewModelLocal implements FinderInterface{
 	@Command
 	@NotifyChange("*")
 	public void cerrarCaja() {
+		
+		if (!this.opCrearCaja) {
+			
+			this.mensajeInfo("No tienes privilegios para cerrar la caja");
+			return;
+		}
+		
+		if(this.cajaSelected.getCierre() != null) {
+			
+			
+			this.mensajeInfo("La caja ya esta cerrada.");
+			return;
+			
+		}
 		
 		this.cajaSelected.setCierre(new Date());
 		this.cajaSelected.setUsuarioCierre(this.getCurrentUser());
@@ -303,6 +332,186 @@ public class CajaVM extends TemplateViewModelLocal implements FinderInterface{
 		
 
 	}
+	
+	@Command
+	@NotifyChange("*")
+	public void generarReporteCaja(@BindingParam("cajaid") long id) {
+		
+		DecimalFormatSymbols dfs = new DecimalFormatSymbols(new Locale("es", "ES"));
+		DecimalFormat df = new DecimalFormat("#,##0.##",dfs);
+		
+		Caja caja = this.reg.getObjectById(Caja.class.getName(), id);
+		
+	/*	if(caja.getCierre() == null) {
+			
+			this.mensajeError("El reporte de caja solo puede ser generado cuando la caja esta cerrada.");
+			return;
+			
+		}*/
+		
+		ReportExcel re = new ReportExcel("Caja_"+caja.getCajaid());
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		
+		List<String[]> titulos = new ArrayList<String[]>();
+		
+		String[] t1 = {"INSTITUTO SANTO TOMAS"};
+		String[] t2 = {"Resolucion M.E.C. Nº 841/98"};
+		String[] t3 = {"SEDE:",this.getCurrentSede().getSede()};
+		
+		String[] t4 = {"REPORTE DE CAJA"};
+		
+		String[] t5 = {"USUARIO CAJA: ", caja.getUsuarioCaja().getAccount()};
+		String[] t6 = {"CAJA ID:", caja.getCajaid()+""};
+		String[] t7 = {"APERTURA:", sdf.format(caja.getApertura())};
+		String[] t8 = {"APERTURA MONTO:", df.format(caja.getMontoApertura())};
+		
+	
+		String[] espacioBlanco = {""};
+		
+		titulos.add(t1);
+		titulos.add(t2);
+		titulos.add(espacioBlanco);
+		titulos.add(t3);
+		titulos.add(t4);
+		titulos.add(t5);
+		titulos.add(t6);
+		titulos.add(t7);
+		titulos.add(t8);
+		
+		if(caja.getCierre() != null) {
+				
+				String[] t9 = {"CIERRE:", sdf.format(caja.getCierre())}; 
+				String[] t10 = {"CIERRE MONTO:", df.format(caja.getMontoCierre())};
+				titulos.add(t9);
+				titulos.add(t10);
+		
+		}
+				
+		titulos.add(espacioBlanco);
+
+		List<String[]> headersDatos = new ArrayList<String[]>();
+		
+		String [] hd1 =  {"Tipo Comprobante", "Tipo Pago", "Comprobante #","Fecha","Razon social","Ruc" ,"Alumno", "Importe","Estado"};
+		
+		headersDatos.add(hd1);		
+		
+		List<Object[]> datos = new ArrayList<>();
+		
+		String sql = this.um.getSql("caja/reporteCaja.sql").replace("?1", caja.getCajaid() + "");
+		
+		List<Object[]> result = this.reg.sqlNativo(sql);
+		
+		if (result.size() == 0) {
+			
+			this.mensajeInfo("La caja no tiene ningun movimiento");
+			return;
+			
+		}
+
+		long tipoComprobante = Long.parseLong(result.get(0)[2].toString());
+		long formaPago = Long.parseLong(result.get(0)[9].toString());
+		
+		String[] tipoComprobanteV= {result.get(0)[7].toString()};
+		datos.add(tipoComprobanteV);
+		
+		String[] formaPagoV= {"",result.get(0)[10].toString()};
+		datos.add(formaPagoV);
+
+		double totalTP = 0;
+		double totalC = 0;
+		double totalGral = 0;
+
+		
+		for (Object[] x : result) {
+			
+			if (tipoComprobante != Long.parseLong(x[2].toString())) {
+			
+				Object[] totalTPDat= {"","TOTAL ","","","","","",df.format(totalTP)};
+				datos.add(totalTPDat);
+				
+				Object[] totalCDat= {"TOTAL ","","","","","","",df.format(totalC)};
+				datos.add(totalCDat);
+				
+				totalTP = 0;
+				totalC=0;
+			
+				tipoComprobante = Long.parseLong(x[2].toString());
+						
+				datos.add(espacioBlanco);
+				
+				formaPago = Long.parseLong(result.get(0)[9].toString());
+				
+				String[] tipoComprobanteName= {x[7].toString()};
+				datos.add(tipoComprobanteName);
+				
+				String[] formaPagoName= {"",x[10].toString()};
+				datos.add(formaPagoName);
+				
+				
+				
+								
+			}
+			
+			if (formaPago != Long.parseLong(x[9].toString())  ) {
+			
+				Object[] totalTPDat= {"TOTAL","","","","","","",df.format(totalTP)};
+				datos.add(totalTPDat);
+				totalTP = 0;
+				
+				formaPago = Long.parseLong(x[9].toString());
+				datos.add(espacioBlanco);
+				
+				String[] formaPagoName= {"",x[10].toString()};
+				datos.add(formaPagoName);
+				
+				
+
+				
+			}
+			
+			
+			Object[] dat = new Object[9];
+
+			dat[0] = "";
+			dat[1] = "";
+			
+			dat[2] = x[3];
+			dat[3] = x[1];
+			dat[4] = x[4];
+			dat[5] = x[5];
+			dat[6] = x[6];
+			dat[7] = df.format(x[8]);
+			
+			if (Boolean.parseBoolean(x[11].toString()) == true) {
+				
+				dat[8] = "Anulado";
+				
+			}else {
+			
+				dat[8] = "";
+				
+			}
+			
+			totalTP += Double.parseDouble(x[8].toString());
+			totalC += Double.parseDouble(x[8].toString());
+			totalGral += Double.parseDouble(x[8].toString());
+			datos.add(dat);
+		}
+		
+		Object[] totalTPDat= {"","TOTAL","","","","","",df.format(totalTP)};
+		datos.add(totalTPDat);
+		
+		Object[] totalCDat= {"TOTAL ","","","","","","",df.format(totalC)};
+		datos.add(totalCDat);
+		
+		titulos.add(espacioBlanco);
+		
+		Object[] totalGraldat= {"TOTAL GENERAL ","","","","","","",df.format(totalGral)};
+		datos.add(totalGraldat);
+				
+		re.descargar(titulos, headersDatos, datos);
+		
+	}
 
 
 	public List<Object[]> getlCajas() {
@@ -369,11 +578,5 @@ public class CajaVM extends TemplateViewModelLocal implements FinderInterface{
 		this.usuarioFinder = usuarioFinder;
 	}
 
-	
-	
-	
-
-	
-		
 
 }

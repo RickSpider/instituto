@@ -9,7 +9,7 @@
 
 		<vlayout>
 
-			<tablelayout>
+			<tablelayout columns="2">
 
 				<tablechildren>
 

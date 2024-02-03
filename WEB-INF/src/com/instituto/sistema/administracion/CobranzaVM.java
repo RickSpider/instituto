@@ -91,6 +91,39 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		
 				
 	}
+	
+	@Command
+	@NotifyChange("*")
+	public void verificarFechaCaja() {
+		
+		if (!this.opDefinirFecha) {
+			
+			this.mensajeError("No tienes privilegios para hacer el cambio de fecha.");
+			
+			return;
+			
+		}
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		
+		cajaSelected = this.reg.getObjectByCondicion(Caja.class.getName(), 
+				"sedeid = "+this.getCurrentSede().getSedeid()+"\n"+
+				"and usuariocajaid = "+this.getCurrentUser().getUsuarioid()+"\n"+
+				"and Date(apertura) = '"+sdf.format(this.cobranzaSelected.getFecha())+"'\n"+
+				"and cierre is null");
+		
+		if (this.cajaSelected == null) {
+			
+			this.mensajeInfo("No hay caja habilitada para la fecha");
+			
+		}else {
+						
+			this.disableCobranza = false;
+			
+		}
+		
+	}
 
 	@Command
 	@NotifyChange("*")

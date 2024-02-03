@@ -1,0 +1,81 @@
+<?page title="Cuenta Saldos" contentType="text/html;charset=UTF-8"?>
+
+<?component name="statBox" templateURI="/doxacore/zul/component/statbox.zul"?>
+<?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
+
+<zk xmlns:h="http://www.w3.org/1999/xhtml">
+	<window title="Cuenta Saldos" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.tesoreria.CuentaSaldoVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+
+		<vlayout>
+
+			<tablelayout columns="3">
+
+				<tablechildren>
+					<label value="Cuenta: " />
+				</tablechildren>
+				<tablechildren>
+
+					<finder
+						finderValue="@load(vm.cuentaSelected.numero)"
+						finderModel="@init(vm.cuentaFinder)" />
+
+				</tablechildren>
+
+				<tablechildren>
+					
+					<textbox value="@load(vm.cuentaSelected.entidad.entidad)" readonly="true" />
+
+				</tablechildren>
+
+			</tablelayout>
+
+			<statBox statBlock="@load(vm.statboxSelected)" />
+
+		</vlayout>
+
+		<listbox emptyMessage="lista vacía..." mold="paging" vflex="1"
+			model="@load(vm.lTransacciones)" checkmark="true">
+
+			<listhead>
+
+				<listheader hflex="min" />
+				<listheader label="ID" hflex="min" />
+				<listheader label="Tipo" />
+				<listheader label="Fecha" />
+				<listheader label="Comprobante" />
+				<listheader label="Comprobante #" />
+				<listheader label="Forma Pago" />
+				<listheader label="Monto" align="left" />
+
+
+			</listhead>
+
+			<template name="model">
+
+				<listitem>
+
+					<listcell />
+					<listcell label="@load(each.transaccionid)" />
+					<listcell label="@load(each.transaccionTipo.tipo)" />
+					<listcell label="@load(each.fecha)" />
+					<listcell
+						label="@load(each.cobranzadetallecobro.cobranza.comprobanteTipo.tipo)" />
+					<listcell
+						label="@load(each.cobranzadetallecobro.cobranza.comprobanteNum)" />
+					<listcell
+						label="@load(each.cobranzadetallecobro.formaPago.tipo)" />
+					<listcell label="@load(each.monto)  @converter('formatedNumber', format='#,###')" />
+
+
+				</listitem>
+			</template>
+
+		</listbox>
+
+
+
+	</window>
+</zk>
