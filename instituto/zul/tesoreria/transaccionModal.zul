@@ -74,6 +74,19 @@
 					<doublebox value="@bind(vm.transaccionSelected.monto)" />
 					
 				</tablechildren>
+				
+				
+				<tablechildren>
+
+					<label value="Comentario: " />
+
+				</tablechildren>
+				<tablechildren>
+
+					<textbox value="@bind(vm.transaccionSelected.comentario)" rows="2"/>
+					
+				</tablechildren>
+				
 
 			</tablelayout>
 

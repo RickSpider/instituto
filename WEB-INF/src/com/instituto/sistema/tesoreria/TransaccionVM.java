@@ -247,6 +247,26 @@ public class TransaccionVM extends TemplateViewModelLocal {
 	@NotifyChange("*")
 	public void guardar() {
 		
+		if (this.transaccionSelected.getTransaccionTipo().getSigla().compareTo(ParamsLocal.SIGLA_TRANSACCION_EGRESO) == 0) {
+			
+			if (this.transaccionSelected.getMonto() > 0) {
+				
+				this.transaccionSelected.setMonto(this.transaccionSelected.getMonto()*-1);
+				
+			} 
+			
+		}
+		
+		if (this.transaccionSelected.getTransaccionTipo().getSigla().compareTo(ParamsLocal.SIGLA_TRANSACCION_INGRESO) == 0) {
+			
+			if (this.transaccionSelected.getMonto() < 0) {
+				
+				this.transaccionSelected.setMonto(this.transaccionSelected.getMonto()*-1);
+				
+			} 
+			
+		}
+		
 		this.save(this.transaccionSelected);
 		this.modal.detach();
 		

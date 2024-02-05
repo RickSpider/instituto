@@ -56,12 +56,20 @@ public class TransaccionPanelVM extends TemplateViewModelLocal {
 	public void cargarCobranzasDetallesCobros() {
 		
 		String sql1 = "select string_agg(cast(cobranzaid as text), ',') as ids, 'ids' as col from cobranzas \n" + 
-				"where cajaid = "+this.cajaSelected.getCajaid()+";";
+				"where cajaid = "+this.cajaSelected.getCajaid()+"\n"
+				+ "and anulado = false;";
+		
+		//System.out.println("===========\n"+sql1+"\n=============");
 		
 		
 		List<Object[]> result1 = this.reg.sqlNativo(sql1);
 		
 		if (result1.size() > 0) {
+			
+			if (result1.get(0)[0] == null) {
+				this.lCobranzasDetallescobros = null;
+				return;
+			}
 		
 			String ids = result1.get(0)[0].toString();
 			this.lCobranzasDetallescobros = this.reg.getAllObjectsByCondicionOrder(CobranzaDetalleCobro.class.getName(), "cobranzaid in ("+ids+") and depositado = false", null );
