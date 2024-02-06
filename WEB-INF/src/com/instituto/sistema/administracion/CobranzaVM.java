@@ -534,7 +534,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	}
 
-	private boolean[] camposCobroModal = new boolean[8];
+	private boolean[] camposCobroModal = new boolean[9];
 
 	private void desabilitarCampos() {
 
@@ -568,6 +568,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			camposCobroModal[5] = false;
 			camposCobroModal[7] = false;
 
+
 		}
 
 		if (this.cobranzaDetalleCobroSelected.getFormaPago().getSigla()
@@ -578,6 +579,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			camposCobroModal[4] = false;
 			camposCobroModal[5] = false;
 			camposCobroModal[6] = false;
+
 
 		}
 
@@ -593,6 +595,8 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			camposCobroModal[2] = false;
 			//camposCobroModal[4] = false;
 			camposCobroModal[5] = false;
+			camposCobroModal[8] = false;
+
 
 		}
 
@@ -604,6 +608,8 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			camposCobroModal[2] = false;
 			camposCobroModal[4] = false;
 			camposCobroModal[5] = false;
+			camposCobroModal[8] = false;
+
 			
 
 		}

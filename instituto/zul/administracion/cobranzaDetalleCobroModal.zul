@@ -199,7 +199,12 @@
 
 			</tablechildren>
 
-			
+			<tablechildren>
+				<label value="Comprobante #:" />
+			</tablechildren>
+			<tablechildren>
+				<textbox value="@bind(vm.cobranzaDetalleCobroSelected.comprobanteNum)" disabled="@load(vm.camposCobroModal[8])"/>
+			</tablechildren>
 
 			<tablechildren>
 				<label value="Cuenta #:" />
@@ -242,7 +247,7 @@
 			<tablechildren>
 				<datebox
 					value="@bind(vm.cobranzaDetalleCobroSelected.emision)"
-					format="dd/MM/yyyy" hflex="1" disabled="@load(vm.camposCobroModal[5])"/>
+					format="dd/MM/yyyy KK:mm:ss" hflex="1" disabled="@load(vm.camposCobroModal[5])"/>
 			</tablechildren>
 
 			<tablechildren>

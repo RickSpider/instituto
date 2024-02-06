@@ -47,7 +47,7 @@ public class CobranzaDetalleCobro  extends Modelo implements Serializable{
 	private String Titular;
 	private Long autorizacionNum;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date emision;
 	
 	@Temporal(TemporalType.DATE)
@@ -55,6 +55,8 @@ public class CobranzaDetalleCobro  extends Modelo implements Serializable{
 
 	@Column(columnDefinition = "boolean default false")
 	private boolean depositado = false;
+	
+	private String comprobanteNum;
 	
 	@Override
 	public Object[] getArrayObjectDatos() {
@@ -192,6 +194,14 @@ public class CobranzaDetalleCobro  extends Modelo implements Serializable{
 
 	public void setDepositado(boolean depositado) {
 		this.depositado = depositado;
+	}
+
+	public String getComprobanteNum() {
+		return comprobanteNum;
+	}
+
+	public void setComprobanteNum(String comprobanteNum) {
+		this.comprobanteNum = comprobanteNum;
 	}
 	
 }
