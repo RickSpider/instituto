@@ -164,10 +164,8 @@
 
 								<listhead>
 									<listheader label="ID" hflex="min" />
-									<listheader label="" />
-									<listheader label="Apellido" />
-									<listheader label="Documento #" />
-
+									<listheader label="Entidad" />
+									
 								</listhead>
 
 								<template name="model">
@@ -181,12 +179,7 @@
 										<listcell
 											label="@load(each[1])" />
 
-										<listcell
-											label="@load(each[2])" />
-
-										<listcell
-											label="@load(each[3])" />
-
+										
 									</listitem>
 
 								</template>

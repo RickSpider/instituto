@@ -491,11 +491,41 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		this.buscarMoneda = this.cobranzaDetalleCobroSelected.getMonedaTipo().getTipo();
 
 	};
+	
+	private boolean verficarNumeroComprobante() {
+		
+		
+		if (this.cobranzaDetalleCobroSelected.getComprobanteNum() != null) {
+			
+			List<CobranzaDetalleCobro> lcdc = 	this.reg.getAllObjectsByCondicionOrder(CobranzaDetalleCobro.class.getName(), "comprobanteNum = '"+this.cobranzaDetalleCobroSelected.getComprobanteNum()
+			+"' and entidadid = "+this.cobranzaDetalleCobroSelected.getEntidad().getEntidadid()
+			+" and formapagoid = "+this.cobranzaDetalleCobroSelected.getFormaPago().getTipoid(), null);
+			
+			if (lcdc != null && lcdc.size() > 0) {
+				
+				return true;
+				
+			}
+			
+		}
+		
+		return false;
+		
+		
+	}
 
 	@Command
 	@NotifyChange({ "lDetallesCobros", "totalDetalleCobro", "totalesDiferencia","cssDiferencia" })
 	public void agregarCobranzaDetalleCobro() {
 
+		if (this.verficarNumeroComprobante()) {
+			
+			this.mensajeInfo("El comprobante ya fue utilizado para pagar anteriormente.");
+			
+			return;
+			
+		}
+		
 		for (CobranzaDetalleCobro x : this.lDetallesCobros) {
 
 			if (x.getFormaPago().getSigla().compareTo(cobranzaDetalleCobroSelected.getFormaPago().getSigla()) == 0) {
@@ -504,7 +534,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 				return;
 			}
-
+			
 		}
 
 		if (cobranzaDetalleCobroSelected.getMonto() <= 0) {
@@ -625,6 +655,8 @@ public class CobranzaVM extends TemplateViewModelLocal {
 				camposCobroModal[0] = false;
 				camposCobroModal[2] = false;
 				camposCobroModal[5] = false;
+				camposCobroModal[8] = false;
+
 			
 		}
 		
