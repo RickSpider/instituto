@@ -89,9 +89,13 @@ public class TransaccionPanelVM extends TemplateViewModelLocal {
 	public void inicializarFinders() {
 
 		String sqlCaja = "select c.cajaid as id, u1.account as usuario ,c.apertura, c.cierre from cajas c\n" + 
-				"left join usuarios u1 on u1.usuarioid = c.usuariocajaid\n" + 
-				"where cierre is not null\n" + 
-				"order by c.cajaid desc;";
+				"				join usuarios u1 on u1.usuarioid = c.usuariocajaid \n" + 
+				"				join cobranzas co on co.cajaid = c.cajaid\n" + 
+				"				join cobranzasdetallescobros cdc on cdc.cobranzaid = co.cobranzaid\n" + 
+				"				where cierre is not null and cdc.depositado = false\n" + 
+				"				group by c.cajaid, u1.account, c.apertura, c.cierre\n" + 
+				"				having count(c.cajaid) > 0\n" + 
+				"				order by c.cajaid desc;";
 
 		cajaFinder = new FinderModel("Caja", sqlCaja);
 		

@@ -61,6 +61,14 @@
 					<listheader label="Comprobante #" />
 					<listheader label="Forma Pago" />
 					<listheader label="Monto" align="left" />
+					
+					<listheader label="Entidad" align="left" />
+					<listheader label="Cuenta #" align="left" />
+					<listheader label="Transaccion #" align="left" />
+					<listheader label="Cheque #" align="left" />
+					<listheader label="Emision" align="left" />
+					<listheader label="Vencimiento" align="left" />
+					
 
 
 				</listhead>
@@ -77,6 +85,13 @@
 							label="@load(each.cobranza.comprobanteNum)" />
 						<listcell label="@load(each.formaPago.tipo)" />
 						<listcell label="@load(each.monto)  @converter('formatedNumber', format='#,###')"  />
+						
+						<listcell label="@load(each.entidad.entidad)" />
+						<listcell label="@load(each.cuentaNum)" />
+						<listcell label="@load(each.transaccionNum)" />
+						<listcell label="@load(each.chequeNum)" />
+						<listcell label="@load(each.emision)" />
+						<listcell label="@load(each.vencimiento)" />
 
 					</listitem>
 				</template>
