@@ -200,10 +200,17 @@
 			</tablechildren>
 
 			<tablechildren>
-				<label value="Cuenta #:" />
+				<label value="Cuenta DB #:" />
 			</tablechildren>
 			<tablechildren>
 				<textbox value="@bind(vm.cobranzaDetalleCobroSelected.cuentaNum)" disabled="@load(vm.camposCobroModal[1])"/>
+			</tablechildren>
+			
+			<tablechildren>
+				<label value="Cuenta CR #:" />
+			</tablechildren>
+			<tablechildren>
+				<textbox value="@bind(vm.cobranzaDetalleCobroSelected.cuentaNumCR)"/>
 			</tablechildren>
 
 			<tablechildren>

@@ -63,7 +63,8 @@
 					<listheader label="Monto" align="left" />
 					
 					<listheader label="Entidad" align="left" />
-					<listheader label="Cuenta #" align="left" />
+					<listheader label="Cuenta DB #" align="left" />
+					<listheader label="Cuenta CR #" align="left" />
 					<listheader label="Transaccion #" align="left" />
 					<listheader label="Cheque #" align="left" />
 					<listheader label="Emision" align="left" />
@@ -88,6 +89,7 @@
 						
 						<listcell label="@load(each.entidad.entidad)" />
 						<listcell label="@load(each.cuentaNum)" />
+						<listcell label="@load(each.cuentaNumCR)" />
 						<listcell label="@load(each.transaccionNum)" />
 						<listcell label="@load(each.chequeNum)" />
 						<listcell label="@load(each.emision)" />

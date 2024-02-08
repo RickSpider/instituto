@@ -411,10 +411,13 @@ public class CajaVM extends TemplateViewModelLocal implements FinderInterface{
 		long tipoComprobante = Long.parseLong(result.get(0)[2].toString());
 		long formaPago = Long.parseLong(result.get(0)[9].toString());
 		
-		String[] tipoComprobanteV= {result.get(0)[7].toString()};
-		datos.add(tipoComprobanteV);
+		String tipoComprobanteName= result.get(0)[7].toString();
+		String[] tipoComprobanteNameV= {result.get(0)[7].toString()};
+		datos.add(tipoComprobanteNameV);
 		
-		String[] formaPagoV= {"",result.get(0)[10].toString()};
+		String formaPagoName= result.get(0)[10].toString();
+		
+		String [] formaPagoV = {"",result.get(0)[10].toString()};
 		datos.add(formaPagoV);
 
 		double totalTP = 0;
@@ -424,12 +427,16 @@ public class CajaVM extends TemplateViewModelLocal implements FinderInterface{
 		
 		for (Object[] x : result) {
 			
-			if (tipoComprobante != Long.parseLong(x[2].toString())) {
 			
-				Object[] totalTPDat= {"","TOTAL ","","","","","",df.format(totalTP)};
+			
+			if (tipoComprobante != (long) x[2]) {
+			
+				Object[] totalTPDat= {"","TOTAL "+formaPagoName,"","","","","",df.format(totalTP)};
 				datos.add(totalTPDat);
 				
-				Object[] totalCDat= {"TOTAL ","","","","","","",df.format(totalC)};
+				datos.add(espacioBlanco);
+				
+				Object[] totalCDat= {"TOTAL "+tipoComprobanteName,"","","","","","",df.format(totalC)};
 				datos.add(totalCDat);
 				
 				totalTP = 0;
@@ -441,28 +448,33 @@ public class CajaVM extends TemplateViewModelLocal implements FinderInterface{
 				
 				formaPago = Long.parseLong(result.get(0)[9].toString());
 				
-				String[] tipoComprobanteName= {x[7].toString()};
-				datos.add(tipoComprobanteName);
+				tipoComprobanteName= x[7].toString();
 				
-				String[] formaPagoName= {"",x[10].toString()};
-				datos.add(formaPagoName);
+				String [] tituloComprobanteName = {x[7].toString()} ;
+				datos.add(tituloComprobanteName);
+				
+				formaPagoName= x[10].toString();
+				
+				String[] tituloFormaPagoName = {"",x[10].toString()};
+				datos.add(tituloFormaPagoName);
 				
 				
 				
 								
 			}
 			
-			if (formaPago != Long.parseLong(x[9].toString())  ) {
+			if (formaPago != (long) x[9]) {
 			
-				Object[] totalTPDat= {"TOTAL","","","","","","",df.format(totalTP)};
+				Object[] totalTPDat= {"","TOTAL "+formaPagoName,"","","","","",df.format(totalTP)};
 				datos.add(totalTPDat);
 				totalTP = 0;
 				
 				formaPago = Long.parseLong(x[9].toString());
 				datos.add(espacioBlanco);
 				
-				String[] formaPagoName= {"",x[10].toString()};
-				datos.add(formaPagoName);
+				formaPagoName= x[10].toString();
+				String[] tituloFormaPagoName = {"",x[10].toString()};
+				datos.add(tituloFormaPagoName);
 				
 				
 
@@ -498,10 +510,12 @@ public class CajaVM extends TemplateViewModelLocal implements FinderInterface{
 			datos.add(dat);
 		}
 		
-		Object[] totalTPDat= {"","TOTAL","","","","","",df.format(totalTP)};
+		Object[] totalTPDat= {"","TOTAL "+formaPagoName,"","","","","",df.format(totalTP)};
 		datos.add(totalTPDat);
 		
-		Object[] totalCDat= {"TOTAL ","","","","","","",df.format(totalC)};
+		datos.add(espacioBlanco);
+		
+		Object[] totalCDat= {"TOTAL "+tipoComprobanteName,"","","","","","",df.format(totalC)};
 		datos.add(totalCDat);
 		
 		titulos.add(espacioBlanco);

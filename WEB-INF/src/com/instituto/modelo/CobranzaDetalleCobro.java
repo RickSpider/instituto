@@ -58,6 +58,8 @@ public class CobranzaDetalleCobro  extends Modelo implements Serializable{
 	
 	private String comprobanteNum;
 	
+	private String cuentaNumCR;
+	
 	@Override
 	public Object[] getArrayObjectDatos() {
 		// TODO Auto-generated method stub
@@ -202,6 +204,14 @@ public class CobranzaDetalleCobro  extends Modelo implements Serializable{
 
 	public void setComprobanteNum(String comprobanteNum) {
 		this.comprobanteNum = comprobanteNum;
+	}
+
+	public String getCuentaNumCR() {
+		return cuentaNumCR;
+	}
+
+	public void setCuentaNumCR(String cuentaNumCR) {
+		this.cuentaNumCR = cuentaNumCR;
 	}
 	
 }

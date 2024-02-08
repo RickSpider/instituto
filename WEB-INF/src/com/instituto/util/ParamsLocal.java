@@ -42,7 +42,7 @@ public class ParamsLocal extends Params {
 	public static final String SIGLA_FORMA_PAGO_DEPOSITO_BANCARIO = "FORMA_PAGO_DEPOSITO_BANCARIO";
 	public static final String SIGLA_FORMA_PAGO_DEPOSITO_ATM = "FORMA_PAGO_DEPOSITO_ATM";
 	public static final String SIGLA_FORMA_PAGO_DEPOSITO_EXTERIOR = "FORMA_PAGO_DEPOSITO_EXTERIOR";
-	public static final String SIGLA_FORMA_PAGO_BOCA_COBRANZA = "FORMA_BOCA_COBRANZA";
+	public static final String SIGLA_FORMA_PAGO_BOCA_COBRANZA = "FORMA_PAGO_BOCA_COBRANZA";
 	public static final String SIGLA_FORMA_PAGO_BILLETERA = "FORMA_PAGO_BILLETERA";
 
 	public static final String SIGLA_CONDICION_VENTA = "CONDICION_VENTA";
