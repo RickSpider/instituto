@@ -37,6 +37,10 @@ public class Cobranza extends Modelo implements Serializable {
 	private Long cobranzaid;
 	
 	@ManyToOne
+	@JoinColumn(name = "personaid")
+	private Persona persona;
+	
+	@ManyToOne
 	@JoinColumn(name = "alumnoid")
 	private Alumno alumno;
 	
@@ -305,5 +309,14 @@ public class Cobranza extends Modelo implements Serializable {
 		this.caja = caja;
 	}
 
+	public Persona getPersona() {
+		return persona;
+	}
+
+	public void setPersona(Persona persona) {
+		this.persona = persona;
+	}
+
+	
 
 }

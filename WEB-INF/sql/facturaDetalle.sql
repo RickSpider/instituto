@@ -1,16 +1,17 @@
-SELECT co.concepto,
-	es.periodo,
+SELECT 
+	case when cd.servicioid is null then co.concepto ||' '|| es.periodo else s.servicio end as descripcion, 
 	cd.monto,
 	cd.exento,
 	cd.iva5,
 	cd.iva10
 	
-	FROM cobranzasdetalles cd
-	left join cobranzas c ON 
+FROM cobranzasdetalles cd
+	join cobranzas c ON 
 	 c.cobranzaid = cd.cobranzaid 
-	left join estadoscuentas es ON 
+	join estadoscuentas es ON 
 	 es.estadocuentaid = cd.estadocuentaid 
-	left join conceptos co ON 
+	join conceptos co ON 
 	 co.conceptoid = es.conceptoid 
+	left join servicios s on s.servicioid = cd.servicioid	 
 WHERE 
 	 cd.cobranzaid = ?1

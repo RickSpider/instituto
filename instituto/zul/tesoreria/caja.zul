@@ -106,7 +106,7 @@
 										tooltiptext="Editar" disabled="@load(!vm.opEditarCaja)" />
 									<button iconSclass="z-icon-trash-o"
 										style="background-color:red"
-										onClick="@command('borrarCajaConfirmacion', caja=each)"
+										onClick="@command('borrarCajaConfirmacion', cajaid=each[0])"
 										tooltiptext="Borrar" disabled="@load(!vm.opBorrarCaja)" />
 
 

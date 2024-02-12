@@ -1,0 +1,108 @@
+<?page title="Servicios" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="Servicio" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.abm.ServicioVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<hlayout vflex="1">
+			
+				<vlayout hflex="1" vflex="1">
+
+					<hbox pack="end" hflex="1" >
+
+						<button label="Agregar"
+							iconSclass=" z-icon-plus" onClick="@command('modalServicioAgregar')" disabled="@load(!vm.opCrearServicio)" />
+
+					</hbox>
+
+					<listbox emptyMessage="lista vacía..." mold="paging"
+						vflex="1" model="@load(vm.lServicios)" checkmark="true">
+
+						<listhead>
+
+							<listheader hflex="min" align="center" />
+							<listheader label="ID" align="right"
+								hflex="min" />
+							<listheader label="Servicio" align="left"
+								 />
+							<listheader label="Concepto" align="left"
+								/>
+							<listheader hflex="min"/>
+
+
+						</listhead>
+
+
+						<auxhead>
+
+							<auxheader />
+							<auxheader />
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[1])" instant="true"
+									onChange="@command('filtrarServicio')" hflex="1" />
+							</auxheader>
+
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[2])" instant="true"
+									onChange="@command('filtrarServicio')" hflex="1" />
+							</auxheader>
+							
+							<auxheader/>
+
+					
+						</auxhead>
+
+						<template name="model">
+
+							<listitem>
+								<listcell />
+								<listcell label="@load(each[0])" />
+								<listcell label="@load(each[1])" />
+								<listcell label="@load(each[2])" />
+								
+								<listcell>
+									<hlayout>
+									
+										<button iconSclass="z-icon-edit"
+											onClick="@command('modalServicio', servicioid=each[0])"
+											tooltiptext="Editar" disabled="@load(!vm.opEditarServicio)"/>
+										
+										<button	iconSclass="z-icon-trash-o" style="background-color:red"
+											onClick="@command('borrarServicioConfirmacion', servicioid=each[0])"
+											tooltiptext="Borrar" disabled="@load(!vm.opBorrarServicio)"/>
+
+
+									</hlayout>
+
+
+								</listcell>
+
+
+							</listitem>
+
+
+						</template>
+
+						<listfoot>
+							<listfooter span="4" align="left">
+								<hlayout>
+									<label
+										value="@load(vm.lServicios.size())" />
+									<label value="items" />
+								</hlayout>
+							</listfooter>
+						</listfoot>
+
+
+					</listbox>
+
+				</vlayout>
+
+		
+			
+		</hlayout>
+
+	</window>
+</zk>

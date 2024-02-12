@@ -28,7 +28,7 @@ public class ReciboVM extends TemplateReportViewModel {
 	
 	@Override
 	protected String[] cargarColumas() {
-		String[] columns = {"concepto", "periodo", "monto"};
+		String[] columns = {"descripcion", "monto"};
 		
 		 return columns;
 	}

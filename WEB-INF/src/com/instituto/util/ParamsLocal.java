@@ -192,5 +192,16 @@ public class ParamsLocal extends Params {
 	public static final String OP_CREAR_TRANSACCION = "CrearTransaccion";
 	public static final String OP_EDITAR_TRANSACCION = "EditarTransaccion";
 	public static final String OP_BORRAR_TRANSACCION = "BorrarTransaccion";
+	
+	// Transaccion
+	public static final String OP_CREAR_SERVICIO = "CrearServicio";
+	public static final String OP_EDITAR_SERVICIO = "EditarServicio";
+	public static final String OP_BORRAR_SERVICIO = "BorrarServicio";
+	
+	// CobranzaServicio
+	public static final String OP_CREAR_COBRANZASERVICIO = "CrearCobranzaServicio";
+	public static final String OP_DEFINIR_FECHA_COBRANZASERVICIO = "DefinirFechaCobranzaServicio";
+
+
 
 }

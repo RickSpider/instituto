@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.ColumnDefault;
@@ -27,6 +29,10 @@ public class CobranzaDetalle extends Modelo implements Serializable {
 	
 	private double monto = 0.0;
 	private double montoDescuento = 0.0;
+	
+	@ManyToOne
+	@JoinColumn(name = "servicioid")
+	private Servicio servicio;
 	
 	@ColumnDefault("0.0")
 	private double exento = 0;
@@ -122,6 +128,14 @@ public class CobranzaDetalle extends Modelo implements Serializable {
 
 	public void setExento(double exento) {
 		this.exento = exento;
+	}
+
+	public Servicio getServicio() {
+		return servicio;
+	}
+
+	public void setServicio(Servicio servicio) {
+		this.servicio = servicio;
 	}
 	
 }

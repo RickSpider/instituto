@@ -133,10 +133,10 @@
 				constraint="no empty: Es campo obligatorio." style="text-align:right" hflex="1"/>
 			</tablechildren>
 
-			<tablechildren>
+			<tablechildren visible="@load(!vm.camposCobroModal[0])">
 				<label value="Entidad:" />
 			</tablechildren>
-			<tablechildren>
+			<tablechildren visible="@load(!vm.camposCobroModal[0])">
 
 				<bandbox id="bd"
 					value="@load(vm.buscarEntidad) @save(vm.buscarEntidad, before='guardarEntidad')"
@@ -192,17 +192,17 @@
 
 			</tablechildren>
 
-			<tablechildren>
+			<tablechildren visible="@load(!vm.camposCobroModal[8])">
 				<label value="Comprobante #:" />
 			</tablechildren>
-			<tablechildren>
+			<tablechildren visible="@load(!vm.camposCobroModal[8])">
 				<textbox value="@bind(vm.cobranzaDetalleCobroSelected.comprobanteNum)" disabled="@load(vm.camposCobroModal[8])"/>
 			</tablechildren>
 
-			<tablechildren>
+			<tablechildren visible="@load(!vm.camposCobroModal[1])">
 				<label value="Cuenta DB #:" />
 			</tablechildren>
-			<tablechildren>
+			<tablechildren visible="@load(!vm.camposCobroModal[1])">
 				<textbox value="@bind(vm.cobranzaDetalleCobroSelected.cuentaNum)" disabled="@load(vm.camposCobroModal[1])"/>
 			</tablechildren>
 			
@@ -213,47 +213,47 @@
 				<textbox value="@bind(vm.cobranzaDetalleCobroSelected.cuentaNumCR)"/>
 			</tablechildren>
 
-			<tablechildren>
+			<tablechildren visible="@load(!vm.camposCobroModal[2])">
 				<label value="Transaccion #:" />
 			</tablechildren>
-			<tablechildren>
+			<tablechildren visible="@load(!vm.camposCobroModal[2])">
 				<textbox value="@bind(vm.cobranzaDetalleCobroSelected.transaccionNum)" disabled="@load(vm.camposCobroModal[2])"/>
 			</tablechildren>
 			
-			<tablechildren>
+			<tablechildren visible="@load(!vm.camposCobroModal[7])">
 				<label value="Autorizacion #:" />
 			</tablechildren>
-			<tablechildren>
+			<tablechildren visible="@load(!vm.camposCobroModal[7])">
 				<longbox value="@bind(vm.cobranzaDetalleCobroSelected.autorizacionNum)" disabled="@load(vm.camposCobroModal[7])"/>
 			</tablechildren>
 
-			<tablechildren>
+			<tablechildren visible="@load(!vm.camposCobroModal[3])">
 				<label value="Cheque #:" />
 			</tablechildren>
-			<tablechildren>
+			<tablechildren visible="@load(!vm.camposCobroModal[3])">
 				<textbox value="@bind(vm.cobranzaDetalleCobroSelected.chequeNum)" disabled="@load(vm.camposCobroModal[3])" />
 			</tablechildren>
 
-			<tablechildren>
+			<tablechildren visible="@load(!vm.camposCobroModal[4])">
 				<label value="Titular:" />
 			</tablechildren>
-			<tablechildren>
+			<tablechildren visible="@load(!vm.camposCobroModal[4])">
 				<textbox value="@bind(vm.cobranzaDetalleCobroSelected.titular)" disabled="@load(vm.camposCobroModal[4])" />
 			</tablechildren>
 
-			<tablechildren>
+			<tablechildren visible="@load(!vm.camposCobroModal[5])">
 				<label value="Fecha Emision:" />
 			</tablechildren>
-			<tablechildren>
+			<tablechildren visible="@load(!vm.camposCobroModal[5])">
 				<datebox
 					value="@bind(vm.cobranzaDetalleCobroSelected.emision)"
 					format="dd/MM/yyyy KK:mm:ss" hflex="1" disabled="@load(vm.camposCobroModal[5])"/>
 			</tablechildren>
 
-			<tablechildren>
+			<tablechildren visible="@load(!vm.camposCobroModal[6])">
 				<label value="Fecha Vencimiento:" />
 			</tablechildren>
-			<tablechildren>
+			<tablechildren visible="@load(!vm.camposCobroModal[6])">
 				<datebox
 					value="@bind(vm.cobranzaDetalleCobroSelected.vencimiento)"
 					format="dd/MM/yyyy" hflex="1" disabled="@load(vm.camposCobroModal[6])"/>

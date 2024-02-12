@@ -13,7 +13,7 @@
 				</tablechildren>
 				<tablechildren>
 					<textbox value="@load(vm.entidadSelected.entidad) @save(vm.entidadSelected.entidad, before='guardar')"
-					readonly="@load(vm.editar)" width="150px" 
+					width="150px" 
 					constraint="no empty: Es campo obligatorio."/>
 				</tablechildren>
 			

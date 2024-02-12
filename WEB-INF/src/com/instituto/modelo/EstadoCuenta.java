@@ -40,11 +40,15 @@ public class EstadoCuenta extends Modelo implements Serializable{
 	private Long estadocuentaid;
 	
 	@ManyToOne
-	@JoinColumn(name = "alumnoid", nullable=false)
+	@JoinColumn(name = "alumnoid")
 	private Alumno alumno;
 	
 	@ManyToOne
-	@JoinColumn(name = "cursovigenteid", nullable=false)
+	@JoinColumn(name = "personaid")
+	private Persona persona;
+	
+	@ManyToOne
+	@JoinColumn(name = "cursovigenteid")
 	private CursoVigente cursoVigente;
 	
 	@ManyToOne

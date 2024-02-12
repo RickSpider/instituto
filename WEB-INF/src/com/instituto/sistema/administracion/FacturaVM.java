@@ -29,7 +29,7 @@ public class FacturaVM extends TemplateReportViewModel {
 	
 	@Override
 	protected String[] cargarColumas() {
-		String[] columns = {"concepto", "periodo", "monto", "exento", "iva5", "iva10"};
+		String[] columns = {"descripcion", "monto", "exento", "iva5", "iva10"};
 		
 		 return columns;
 	}
@@ -66,6 +66,10 @@ public class FacturaVM extends TemplateReportViewModel {
 		parameters.put("Exenta",cobranza.getExento());
 		parameters.put("iva5",cobranza.getIva5());
 		parameters.put("iva10",cobranza.getIva10());
+		
+		parameters.put("iva5liq",cobranza.getIva5()/21);
+		parameters.put("iva10liq",cobranza.getIva10()/11);
+		
 		parameters.put("Anulado", cobranza.isAnulado());
 		
 		

@@ -1,4 +1,4 @@
-<?page title="Convenios" contentType="text/html;charset=UTF-8"?>
+<?page title="Cobranza" contentType="text/html;charset=UTF-8"?>
 <zk>
 	<window title="Cobranzas" border="normal"
 		viewModel="@id('vm') @init('com.instituto.sistema.administracion.CobranzaVM')"
@@ -174,7 +174,7 @@
 
 				<tablechildren style="padding-left: 5px"
 					visible="@load(vm.condicionHabilitada)">
-					<label value="Condicion Venta" />
+					<label value="Condicion Venta:" />
 				</tablechildren>
 				<tablechildren visible="@load(vm.condicionHabilitada)"
 					style="padding-left: 5px">

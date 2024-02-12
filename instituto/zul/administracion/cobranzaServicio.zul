@@ -1,0 +1,377 @@
+<?page title="CobranzaServicio" contentType="text/html;charset=UTF-8"?>
+
+<?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
+
+<zk>
+	<window title="Cobranzas Servicios" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.administracion.CobranzaServicioVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<vlayout>
+
+			<tablelayout columns="8">
+
+				<tablechildren style="padding-left: 5px">
+					<label value="Persona:" />
+				</tablechildren>
+				<tablechildren style="padding-left: 5px">
+					<finder
+						finderValue="@load(vm.cobranzaSelected.persona.nombreCompleto)"
+						finderModel="@init(vm.personaFinder)" disabled="@load(vm.disableCobranza)"/>
+				</tablechildren>
+
+
+				<tablechildren style="padding-left: 5px">
+					<label value="Comprobante:" />
+				</tablechildren>
+
+				<tablechildren style="padding-left: 5px">
+
+					<finder
+						finderValue="@load(vm.cobranzaSelected.comprobanteTipo.tipo)"
+						finderModel="@init(vm.comprobanteFinder)" disabled="@load(vm.disableCobranza)"/>
+
+
+				</tablechildren>
+
+				<tablechildren style="padding-left: 5px">
+					<label value="Comprobante #:" />
+				</tablechildren>
+				<tablechildren style="padding-left: 5px">
+					<textbox
+						value="@load(vm.cobranzaSelected.comprobanteNum)" width="120px"
+						readonly="true" />
+
+				</tablechildren>
+
+				<tablechildren style="padding-left: 5px"
+					visible="@load(vm.condicionHabilitada)">
+					<label value="Condicion Venta:" />
+				</tablechildren>
+				<tablechildren
+					visible="@load(vm.condicionHabilitada)">
+					<finder
+						finderValue="@load(vm.cobranzaSelected.condicionVentaTipo.tipo)"
+						finderModel="@init(vm.condicionFinder)" disabled="@load(vm.disableCobranza)"/>
+				</tablechildren>
+
+				<tablechildren style="padding-left: 5px">
+					<label value="Fecha:" />
+				</tablechildren>
+
+				<tablechildren style="padding-left: 5px">
+					<datebox value="@bind(vm.cobranzaSelected.fecha)"
+						format="dd/MM/yyyy" width="150px"
+						readonly="@load(!vm.opDefinirFecha)"
+						buttonVisible="@load(vm.opDefinirFecha)"
+						onChange="@command('verificarFechaCaja')" />
+				</tablechildren>
+
+				<tablechildren style="padding-left: 5px">
+					<label value="Razon Social:" />
+				</tablechildren>
+
+				<tablechildren style="padding-left: 5px">
+					<textbox
+						value="@load(vm.cobranzaSelected.razonSocial)" width="250px"
+						readonly="true" />
+				</tablechildren>
+
+				<tablechildren style="padding-left: 5px">
+					<label value="Ruc:" />
+				</tablechildren>
+
+				<tablechildren style="padding-left: 5px">
+					<textbox value="@load(vm.cobranzaSelected.ruc)"
+						width="120px" readonly="true" />
+				</tablechildren>
+
+
+
+			</tablelayout>
+		</vlayout>
+
+		<hlayout vflex="1">
+
+
+			<vlayout vflex="1" hflex="1">
+
+
+
+				<listbox emptyMessage="lista vacía..." mold="paging"
+					autopaging="true" vflex="1" model="@load(vm.lDetalles)">
+
+					<listhead visible="false">
+
+
+						<listheader label="Servicio" align="Center" />
+						
+
+						<listheader label="Concepto" align="Center" />
+
+						<listheader label="Monto Total" align="right" />
+						<listheader label="Pago" align="right" />
+
+
+
+						<listheader visible="@load(!vm.disableCobranza)"
+							hflex="min" />
+
+
+					</listhead>
+
+					<auxhead>
+
+						<auxheader colspan="5" align="center">
+							<button label="Agregar Detalle"
+								iconSclass=" z-icon-plus"
+								onClick="@command('modalCobranzaDetalleServicio')"
+								disabled="@load(vm.disableCobranza)"
+								style="background-color:green" />
+						</auxheader>
+
+					</auxhead>
+
+					<auxhead>
+
+						<auxheader label="Servicio" align="center" />
+
+						<auxheader label="Concepto" align="center" />
+
+						<auxheader label="Monto Total" align="center" />
+						<auxheader label="Pago" align="center" />
+
+						<auxheader />
+
+					</auxhead>
+
+					<template name="model">
+
+						<listitem>
+
+							<listcell
+								label="@load(each.servicio.servicio)" />
+
+							<listcell
+								label="@load(each.estadoCuenta.concepto.concepto)" />
+
+							<listcell
+								label="@load(each.estadoCuenta.monto) @converter('formatedNumber', format='#,###')" />
+
+							<listcell>
+								<doublebox value="@bind(each.monto)"
+									readonly="@load(vm.disableCobranza)" style="text-align:right"
+									onChange="@command('getTotalDetalle')" hflex="1" />
+							</listcell>
+
+							<listcell>
+
+								<button iconSclass="z-icon-trash-o"
+									style="background-color:red"
+									onClick="@command('borrarDetalle', dato=each)"
+									tooltiptext="Borrar" disabled="@load(vm.disableCobranza)" />
+
+							</listcell>
+
+						</listitem>
+
+					</template>
+
+				</listbox>
+
+				<listbox emptyMessage="lista vacía..." mold="paging"
+					autopaging="true" vflex="1" model="@load(vm.lDetallesCobros)">
+
+					<listhead visible="false">
+
+						<listheader label="Tipo Pago" align="Center" />
+						<listheader label="Moneda" align="Center" />
+						<listheader label="Cambio Compra"
+							align="Center" />
+						<listheader label="Entidad" align="Center" />
+						<listheader label="Monto" align="right" />
+
+						<listheader label="Cuenta #" align="Center" />
+						<listheader label="Transaccion #"
+							align="Center" />
+						<listheader label="Cheque #" align="Center" />
+
+						<listheader label="Titular" align="Center" />
+
+						<listheader label="Fecha Emisión"
+							align="Center" />
+
+						<listheader label="Vendicimiento"
+							align="Center" />
+
+						<listheader visible="@load(!vm.disableCobranza)"
+							hflex="min" />
+
+
+					</listhead>
+
+					<auxhead>
+
+						<auxheader colspan="12" align="center">
+							<button label="Agregar Tipo Pago"
+								iconSclass=" z-icon-plus"
+								onClick="@command('modalCobranzaDetalleCobro')"
+								disabled="@load(vm.disableCobranza)"
+								style="background-color:green" />
+						</auxheader>
+
+					</auxhead>
+
+					<auxhead>
+
+
+						<auxheader label="Forma Pago" align="center" />
+						<auxheader label="Moneda" align="center" />
+						<auxheader label="Cambio Compra" align="center" />
+						<auxheader label="Entidad" align="center" />
+						<auxheader label="Monto" align="center" />
+						<auxheader label="Cuenta #" align="center" />
+						<auxheader label="Transaccion #" align="center" />
+						<auxheader label="Cheque #" align="center" />
+						<auxheader label="Titular" align="center" />
+						<auxheader label="Fecha Emisión" align="center" />
+						<auxheader label="Vencimiento" align="center" />
+						<auxheader />
+
+					</auxhead>
+
+					<template name="model">
+
+						<listitem>
+
+							<listcell
+								label="@load(each.formaPago.tipo)" />
+							<listcell
+								label="@load(each.monedaTipo.tipo)" />
+							<listcell
+								label="@load(each.monedaCambio) @converter('formatedNumber', format='#,###')" />
+							<listcell
+								label="@load(each.entidad.entidad)" />
+							<listcell
+								label="@load(each.monto) @converter('formatedNumber', format='#,###')" />
+							<listcell label="@load(each.cuentaNum)" />
+							<listcell
+								label="@load(each.transaccionNum)" />
+							<listcell label="@load(each.chequeNum)" />
+							<listcell label="@load(each.titular)" />
+							<listcell
+								label="@load(each.emision)  @converter('formatedDate', format='dd/MM/yyyy')" />
+							<listcell
+								label="@load(each.vencimiento)  @converter('formatedDate', format='dd/MM/yyyy')" />
+
+							<listcell>
+
+								<button iconSclass="z-icon-trash-o"
+									style="background-color:red"
+									onClick="@command('borrarCobranzaDetalleCobro', dato=each)"
+									tooltiptext="Borrar" disabled="@load(vm.disableCobranza)" />
+
+							</listcell>
+
+						</listitem>
+
+					</template>
+
+					<!-- 	<listfoot>
+						<listfooter span="12" align="left">
+						<hlayout>
+						<label value="Total en Guaranies" />
+						<space width="100px" />
+						<label
+						value="@load(vm.totalDetalleCobro) @converter('formatedNumber', format='#,###')"
+						style="font-weight: bold;" />
+						</hlayout>
+						</listfooter>
+						</listfoot> -->
+
+				</listbox>
+
+			</vlayout>
+
+			<vlayout vflex="2">
+
+
+
+				<tablelayout columns="2">
+
+					<tablechildren>
+						<label value="Total:" />
+					</tablechildren>
+					<tablechildren>
+						<doublebox value="@load(vm.totalDetalle)"
+							format="#,###" style="font-weight: bold; text-align:right;"
+							readonly="true" />
+					</tablechildren>
+
+					<tablechildren>
+						<label value="Pago:" />
+					</tablechildren>
+					<tablechildren>
+						<doublebox value="@load(vm.totalDetalleCobro)"
+							format="#,###" style="font-weight: bold; text-align:right;"
+							readonly="true" />
+					</tablechildren>
+
+					<tablechildren>
+						<label value="Vuelto:" />
+					</tablechildren>
+					<tablechildren>
+						<doublebox value="@load(vm.totalesDiferencia)"
+							format="#,###" style="@load(vm.cssDiferencia)" readonly="true" />
+					</tablechildren>
+
+					<tablechildren colspan="2">
+						<label value="Impuestos"
+							style="font-weight: bold;" />
+					</tablechildren>
+
+					<tablechildren>
+						<label value="EXENTA" />
+					</tablechildren>
+					<tablechildren>
+						<doublebox value="@load(vm.exento)"
+							format="#,###" style="text-align:right" readonly="true" />
+					</tablechildren>
+
+					<tablechildren>
+						<label value="IVA5" />
+					</tablechildren>
+					<tablechildren>
+						<doublebox value="@load(vm.iva5)" format="#,###"
+							style="text-align:right" readonly="true" />
+					</tablechildren>
+
+					<tablechildren>
+						<label value="IVA10" />
+					</tablechildren>
+					<tablechildren>
+						<doublebox value="@load(vm.iva10)"
+							format="#,###" style="text-align:right" readonly="true" />
+					</tablechildren>
+
+				</tablelayout>
+
+				<hlayout>
+
+					<button label="COBRAR"
+						onClick="@command('guardarCobranza')"
+						style="background-color:green"
+						disabled="@load(vm.disableCobranza)" />
+					<button label="LIMPIAR"
+						onClick="@command('limpiar')" />
+
+				</hlayout>
+
+			</vlayout>
+
+
+
+		</hlayout>
+
+	</window>
+</zk>
