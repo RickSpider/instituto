@@ -1,4 +1,4 @@
-package com.instituto.sistema.administracion;
+package com.instituto.sistema.estadoCuenta;
 
 import java.util.Date;
 import java.util.List;
@@ -244,7 +244,7 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 		this.estadoCuentaSelected.setCargaManual(true);
 		
 
-		modal = (Window) Executions.createComponents("/instituto/zul/administracion/estadoCuentaModal.zul",
+		modal = (Window) Executions.createComponents("/instituto/zul/esatdoCuenta/estadoCuentaModal.zul",
 				this.mainComponent, null);
 		Selectors.wireComponents(modal, this, false);
 		modal.doModal();
@@ -295,7 +295,7 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 			
 		}
 		
-		modal = (Window) Executions.createComponents("/instituto/zul/administracion/EstadoCuentaInactivarModal.zul",
+		modal = (Window) Executions.createComponents("/instituto/zul/estadoCuenta/EstadoCuentaInactivarModal.zul",
 				this.mainComponent, null);
 		Selectors.wireComponents(modal, this, false);
 		modal.doModal();

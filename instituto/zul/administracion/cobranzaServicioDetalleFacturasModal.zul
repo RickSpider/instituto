@@ -1,0 +1,68 @@
+<?page title="sedeModal" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Cuentas Ver" border="normal"
+		height="500px" width="650px" position="center,center" closable="true"
+		mode="modal" action="show: slideDown;hide: slideUp">
+
+		<vlayout vflex="1">
+			<listbox emptyMessage="lista vacía..." mold="paging"
+				autopaging="true" vflex="1" model="@load(vm.lFacturas)"
+				multiple="true" checkmark="true"
+				selectedItems="@bind(vm.lFacturasAux)">
+
+				
+
+
+				<listhead visible="false">
+					<listheader width="30px"/>
+					<listheader label="Cobranza ID" align="center" />
+					<listheader label="Comprobante #" align="Center" />
+					<listheader label="Condicion" align="center" />
+					<listheader label="Saldo" align="right" />
+					<listheader label="Vencimiento" align="center" />
+					
+				</listhead>
+				
+				<auxhead>
+					<auxheader />
+					<auxheader label="CobranzaID" align="center" />
+					<auxheader label="Comprobante #" align="center" />
+					<auxheader label="Condicion" align="center" />
+					<auxheader label="Saldo" align="center" />
+					<auxheader label="Vencimiento" align="center" />
+					
+				</auxhead>
+
+
+
+				<template name="model">
+
+					<listitem >
+						<listcell/>
+						
+						<listcell label="@load(each[0]) "  />
+						<listcell label="@load(each[1]) "  />
+						<listcell label="@load(each[3]) "  />
+						
+						<listcell label="@load(each[4]) @converter('formatedNumber', format='#,###')"  />
+						<listcell label="@load(each[6])" />
+						
+					</listitem>
+
+				</template>
+
+			</listbox>
+
+
+		</vlayout>
+
+		<space height="10px" />
+
+		<hlayout>
+
+			<button label="Aceptar" onClick="@command('agregarCobranzaDetalle')" />
+
+		</hlayout>
+
+	</window>
+</zk>

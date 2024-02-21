@@ -5,7 +5,7 @@
 
 <zk>
 	<window title="Estado de Cuenta" border="normal"
-		viewModel="@id('vm') @init('com.instituto.sistema.administracion.EstadoCuentaCursoVM')"
+		viewModel="@id('vm') @init('com.instituto.sistema.estadoCuenta.EstadoCuentaCursoVM')"
 		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
 
 		<vlayout vflex="1">

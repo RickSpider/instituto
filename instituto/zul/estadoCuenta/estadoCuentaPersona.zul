@@ -1,0 +1,240 @@
+<?page title="Estado de Cuenta" contentType="text/html;charset=UTF-8"?>
+
+<?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
+
+<zk>
+	<window title="Estado de Cuenta" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.estadoCuenta.EstadoCuentaPersonaVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<vlayout vflex="1">
+
+			<tablelayout columns="2">
+
+				<tablechildren>
+					<label value="Persona:" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+
+					
+					<finder
+						finderValue="@load(vm.personaSelected.nombreCompleto)"
+						finderModel="@init(vm.personaFinder)" />
+					
+
+				</tablechildren>
+
+
+				
+				
+				
+				<tablechildren >
+					<label value="Saldo Vencido:" style="font-weight:bold"/>
+				</tablechildren>
+				<tablechildren colspan="2">
+					<doublebox width="120px"
+						value="@load(vm.saldoVencido)" format="#,###"
+						style="text-align:right" readonly="true" />
+				</tablechildren>
+
+				<tablechildren >
+					<label value="Saldo Total:" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren colspan="2">
+					<doublebox width="120px"
+						value="@load(vm.saldoTotal)" format="#,###"
+						style="text-align:right" readonly="true" />
+				</tablechildren>
+				
+			</tablelayout>
+
+			<hlayout vflex="1">
+
+				<vlayout vflex="1" hflex="1">
+
+					<listbox emptyMessage="lista vacía..." mold="paging"
+						autopaging="true" vflex="1" model="@load(vm.lEstadosCuentas)">
+						
+						<auxhead>
+
+							<auxheader colspan="8" align="center" >
+							
+								<button label="Estado de Cuenta"
+								iconSclass=" z-icon-plus"
+								onClick="@command('modalEstadoCuenta')"
+								style="background-color:green" 
+								disabled="@load(!vm.opCrearEstadoCuentaPersona)"/>
+								
+							</auxheader>
+
+						</auxhead>
+
+						<listhead>
+
+							<listheader label="Fecha Vencimiento"
+								align="center" />
+
+							<listheader label="Concepto" align="Center" />
+							<listheader label="Periodo" align="Center" />
+
+							<listheader label="Monto Total"
+								align="center" />
+							<listheader label="Pago" align="center" />
+							<listheader label="Descuento" align="center" />
+							<listheader label="Saldo" align="center" hflex="min" />
+							<listheader label="Inactivo" align="center" hflex="min" />
+							<listheader hflex="min"  align="center"/>
+
+
+						</listhead>
+
+						
+
+						<template name="model">
+
+							<listitem
+								onClick="@command('refrescarCobranzaDetalle', estadoCuenta = each )">
+
+								<listcell
+									label="@load(each.vencimiento) @converter('formatedDate', format='dd/MM/yyyy')" />
+								<listcell
+									label="@load(each.concepto.concepto)" />
+								<listcell label="@load(each.periodo)" />
+								<listcell
+									label="@load(each.monto) @converter('formatedNumber', format='#,###')" />
+								<listcell
+									label="@load(each.pago) @converter('formatedNumber', format='#,###')" />
+								<listcell
+									label="@load(each.montoDescuento)  @converter('formatedNumber', format='#,###')"   />
+								
+								<listcell
+									label="@load(each.saldo)  @converter('formatedNumber', format='#,###')" />
+									
+								<listcell>
+								
+									<if test="@load(each.inactivo)">
+									
+										<image src="/doxacore/img/un-check.png" style=" width: 15px; height: 15px;"
+										tooltiptext="@load(each.motivoInactivacion)"/>
+									
+									</if>
+								
+								</listcell>
+									
+
+								<listcell >
+									<button iconSclass="z-icon-times"  style="background-color:#FFD200"
+										onClick="@command('modalInactivarEstadoCuenta', estadocuenta=each)"
+										tooltiptext="Inactivar"
+										disabled="@load(!vm.opInactivarEstadoCuentaPersona)" />	
+										
+									<button
+										iconSclass="z-icon-trash-o" style="background-color:red"
+										onClick="@command('borrarEstadoCuentaConfirmacion', estadocuenta=each)"
+										tooltiptext="Borrar Estado de cuenta Modal" disabled="@load(!vm.opBorrarEstadoCuentaPersona)" />
+										
+															
+								</listcell>
+							</listitem>
+
+						</template>
+
+						<listfoot>
+							<listfooter span="6" align="left">
+								<hlayout>
+									<label
+										value="@load(vm.lEstadosCuentas.size())" />
+									<label value="items" />
+								</hlayout>
+							</listfooter>
+						</listfoot>
+
+					</listbox>
+
+
+				</vlayout>
+
+				<vlayout vflex="1" hflex="1">
+
+					<listbox emptyMessage="lista vacía..." mold="paging"
+						 	autopaging="true" vflex="1" model="@load(vm.lCobranzasDetalles)">
+						
+						<auxhead>
+						
+							<auxheader label="Detalles"
+								colspan="5" align="center"    />
+						
+						</auxhead>
+						
+						<listhead>
+						
+							<listheader label="Fecha"  align="Center"/>
+							<listheader label="Comprobante"  align="Center"/>
+							<listheader label="Condicion" align="center" />
+							<listheader label="Comprobante #"  align="Center"/>
+							<listheader label="Anulado"  hflex="min" align="Center" />
+							<listheader align="Center" hflex="min"/>
+						
+						</listhead>
+						
+						<template name="model">
+						
+							<listitem>
+							
+								<listcell label="@load(each.cobranza.fecha) @converter('formatedDate', format='dd/MM/yyyy HH:mm')" />
+								<listcell label="@load(each.cobranza.comprobanteTipo.tipo)" />
+								<listcell label="@load(each.cobranza.condicionVentaTipo.tipo)" />
+								<listcell label="@load(each.cobranza.comprobanteNum)" />
+								
+								<listcell>
+
+									<if test="@load(each.cobranza.anulado)">
+										<label value="Si" />
+									</if>
+	
+	
+									<if test="@load(!each.cobranza.anulado)">
+										<label value="No" />
+									</if>
+
+								</listcell>
+								
+								<listcell>
+								
+									<button iconSclass="z-icon-print" 
+									style="background-color:green"
+									onClick="@command('verComprobante', cobranza=each.cobranza)"
+									tooltiptext="Imprimir Comprobante"/>
+								
+								</listcell>
+								
+								
+							
+							</listitem>
+						
+						</template>
+						
+						<listfoot>
+							<listfooter span="6" align="left">
+								<hlayout>
+									<label
+										value="@load(vm.lCobranzasDetalles.size())" />
+									<label value="items" />
+								</hlayout>
+							</listfooter>
+						</listfoot>
+
+					</listbox>
+
+
+
+				</vlayout>
+
+			</hlayout>
+
+
+
+		</vlayout>
+
+	</window>
+</zk>

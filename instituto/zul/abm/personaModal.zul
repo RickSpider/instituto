@@ -23,8 +23,8 @@
 							style="font-weight:bold" />
 					</hbox>
 					<textbox
-						value="@load(vm.personaSelected.apellido) @save(vm.personaSelected.apellido, before='guardar')"
-						constraint="no empty: Es campo obligatorio." width="150px" />
+						value="@bind(vm.personaSelected.apellido)"
+						width="150px" />
 
 				</hlayout>
 
@@ -41,7 +41,7 @@
 					</hbox>
 
 					<bandbox id="bdDocumento"
-						value="@load(vm.buscarDocumento) @save(vm.buscarDocumento, before='guardar')"
+						value="@bind(vm.buscarDocumento)"
 						constraint="no empty: Es campo obligatorio." mold="rounded"
 						autodrop="true" width="150px"
 						onOpen="@command('generarListaBuscarDocumento')"
@@ -108,9 +108,9 @@
 							style="font-weight:bold" />
 					</hbox>
 					<textbox
-						value="@load(vm.personaSelected.documentoNum) @save(vm.personaSelected.documentoNum, before='guardar')"
+						value="@bind(vm.personaSelected.documentoNum)"
 						width="150px" onBlur="@command('onBlurDocumentoNum', comp = self)"
-						constraint="no empty: Es campo obligatorio." />
+						/>
 				</hlayout>
 
 			</hlayout>
@@ -123,9 +123,9 @@
 							style="font-weight:bold" />
 					</hbox>
 					<datebox
-						value="@load(vm.personaSelected.fechaNacimiento) @save(vm.personaSelected.fechaNacimiento, before='guardar')"
+						value="@bind(vm.personaSelected.fechaNacimiento)"
 						format="short " width="150px"
-						constraint="no empty: Es campo obligatorio." />
+						/>
 				</hlayout>
 
 				<hlayout>
@@ -231,7 +231,7 @@
 					</hbox>
 
 					<bandbox id="bdECivil"
-						value="@load(vm.buscarEstadoCivil) @save(vm.buscarEstadoCivil, before='guardar')"
+						value="@bind(vm.buscarEstadoCivil)"
 						constraint="no empty: Es campo obligatorio." mold="rounded"
 						autodrop="true" width="150px"
 						onOpen="@command('generarListaBuscarEstadoCivil')"
@@ -488,7 +488,7 @@
 					</hbox>
 
 					<bandbox id="bdGradoAcademico"
-						value="@load(vm.buscarGradoAcademico) @save(vm.buscarGradoAcademico, before='guardar')"
+						value="@bind(vm.buscarGradoAcademico)"
 						constraint="no empty: Es campo obligatorio." mold="rounded"
 						autodrop="true" width="150px"
 						onOpen="@command('generarListaBuscarGradoAcademico')"
@@ -555,7 +555,7 @@
 							style="font-weight:bold" />
 					</hbox>
 					<intbox
-						value="@load(vm.personaSelected.egresoAno) @save(vm.personaSelected.egresoAno, before='guardar')"
+						value="@bind(vm.personaSelected.egresoAno)"
 						constraint="no empty: Es campo obligatorio." width="150px" />
 
 				</hlayout>
@@ -573,7 +573,7 @@
 					</hbox>
 
 					<bandbox id="bdInstitucion"
-						value="@load(vm.buscarInstitucion) @save(vm.buscarInstitucion, before='guardar')"
+						value="@bind(vm.buscarInstitucion)"
 						mold="rounded" autodrop="true" width="150px"
 						onOpen="@command('generarListaBuscarInstitucion')" readonly="true"
 						tooltiptext="@load(vm.buscarInstitucion)">

@@ -177,23 +177,6 @@ public class PersonaVM extends TemplateViewModel {
 
 		}
 
-		if (personaSelected.getApellido() == null || this.personaSelected.getApellido().length() <= 0) {
-
-			return false;
-
-		}
-
-		if (personaSelected.getEmail() == null || this.personaSelected.getEmail().length() <= 0) {
-
-			return false;
-
-		}
-
-		if (personaSelected.getTelefono() == null || this.personaSelected.getTelefono().length() <= 0) {
-
-			return false;
-
-		}
 
 		if (personaSelected.getDireccion() == null || this.personaSelected.getDireccion().length() <= 0) {
 
@@ -208,36 +191,6 @@ public class PersonaVM extends TemplateViewModel {
 		}
 
 		if (personaSelected.getDocumentoTipo() == null) {
-
-			return false;
-
-		}
-
-		if (personaSelected.getEstadoCivil() == null) {
-
-			return false;
-
-		}
-
-		if (personaSelected.getNacionalidad() == null) {
-
-			return false;
-
-		}
-
-		if (personaSelected.getCiudad() == null) {
-
-			return false;
-
-		}
-
-		if (personaSelected.getGradoAcademico() == null) {
-
-			return false;
-
-		}
-
-		if (personaSelected.getEgresoAno() <= 0) {
 
 			return false;
 

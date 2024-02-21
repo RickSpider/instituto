@@ -528,6 +528,52 @@ public class CajaVM extends TemplateViewModelLocal implements FinderInterface {
 
 		Object[] totalGraldat = { "TOTAL GENERAL ", "", "", "", "", "", "", df.format(totalGral) };
 		datos.add(totalGraldat);
+		
+	
+		//seccion credito
+		
+		String sqlCredito = this.um.getSql("caja/reporteCajaCredito.sql").replace("?1", caja.getCajaid() + "");
+		
+		System.out.println(sqlCredito);
+		List<Object[]> resultCredito = this.reg.sqlNativo(sqlCredito);
+		
+		if (resultCredito != null && resultCredito.size() > 0) {
+			
+			datos.add(espacioBlanco);
+			datos.add(espacioBlanco);
+			
+			double totalCredito = 0;
+			
+			Object[] headerCredito =  {"Tipo Comprobante", "Comprobante #", "Fecha", "Razon social", "Ruc", "Importe", "Estado" };
+			datos.add(headerCredito);
+			Object[] head2 = {"Factura Credito"};
+			datos.add(head2);
+			
+			for (Object[] x : resultCredito) {
+				
+				
+				Object[] dat = new Object[7];
+
+				dat[0] = "";
+				dat[1] = x[3];
+
+				dat[2] = x[2];
+				dat[3] = x[4];
+				dat[4] = x[5];
+				dat[5] = df.format(x[8]);
+				dat[6] = x[9];
+				
+				datos.add(dat);
+				
+				totalCredito += Double.parseDouble(x[8].toString());
+			}
+			
+			Object[] totalGraldatCredito = { "TOTAL CREDITO ", "", "", "", "",df.format(totalCredito) };
+			
+			datos.add(totalGraldatCredito);
+			
+			
+		}		
 
 		re.descargar(titulos, headersDatos, datos);
 

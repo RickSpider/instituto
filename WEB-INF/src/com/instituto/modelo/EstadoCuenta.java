@@ -76,6 +76,12 @@ public class EstadoCuenta extends Modelo implements Serializable{
 	
 	public double getSaldo() {
 		
+		if (this.monto == 0 ){
+			
+			return 0;
+			
+		} 
+		
 		return (this.monto - (this.pago + this.montoDescuento));
 		
 	}
@@ -176,6 +182,14 @@ public class EstadoCuenta extends Modelo implements Serializable{
 	}
 	public void setUsuarioInactivacion(String usuarioInactivacion) {
 		this.usuarioInactivacion = usuarioInactivacion;
+	}
+
+	public Persona getPersona() {
+		return persona;
+	}
+
+	public void setPersona(Persona persona) {
+		this.persona = persona;
 	}
 	
 	

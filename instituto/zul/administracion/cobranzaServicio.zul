@@ -64,8 +64,22 @@
 						format="dd/MM/yyyy" width="150px"
 						readonly="@load(!vm.opDefinirFecha)"
 						buttonVisible="@load(vm.opDefinirFecha)"
-						onChange="@command('verificarFechaCaja')" />
+						onChange="@command('verificarFechaCaja')"
+						onKey="@command('verificarFechaCaja')" />
 				</tablechildren>
+				
+				<tablechildren visible="@load(vm.habilitarVencimiento)"  style="padding-left: 5px">
+					<label value="Vencimiento: " />
+				</tablechildren>
+
+				<tablechildren visible="@load(vm.habilitarVencimiento)" style="padding-left: 5px">
+					<datebox value="@bind(vm.vencimientoFacturaCredito)"
+						format="dd/MM/yyyy" width="150px"
+						readonly="@load(!vm.habilitarVencimiento)"
+						
+						/>
+				</tablechildren>
+				
 
 				<tablechildren style="padding-left: 5px">
 					<label value="Razon Social:" />
@@ -103,13 +117,23 @@
 
 					<listhead visible="false">
 
-
+<!-- 
 						<listheader label="Servicio" align="Center" />
 						
 
 						<listheader label="Concepto" align="Center" />
-
-						<listheader label="Monto Total" align="right" />
+-->
+						
+						 
+						 
+						 						
+						<listheader label="Descripcion" align="left" />
+						
+						<listheader label="Monto Total" align="right" visible="@load(!vm.condicionHabilitada)"/> 
+						
+						<listheader label="Saldo" align="right" visible="@load(!vm.condicionHabilitada)"/> 
+						
+						 
 						<listheader label="Pago" align="right" />
 
 
@@ -122,23 +146,39 @@
 
 					<auxhead>
 
-						<auxheader colspan="5" align="center">
-							<button label="Agregar Detalle"
+						<auxheader colspan="4" align="center">
+							<button label="Agregar Detalle Servicio"
 								iconSclass=" z-icon-plus"
 								onClick="@command('modalCobranzaDetalleServicio')"
 								disabled="@load(vm.disableCobranza)"
-								style="background-color:green" />
+								style="background-color:green" 
+								visible="@load(vm.condicionHabilitada)"/>
+							
+							<button label="Agregar Detalle Factura"
+								iconSclass=" z-icon-plus"
+								onClick="@command('modalCobranzaDetalleFacturasCredito')"
+								style="background-color:green" 
+								disabled="@load(vm.condicionHabilitada)"
+								visible="@load(!vm.condicionHabilitada)"/>
 						</auxheader>
 
 					</auxhead>
 
 					<auxhead>
 
+<!-- 
 						<auxheader label="Servicio" align="center" />
 
 						<auxheader label="Concepto" align="center" />
-
-						<auxheader label="Monto Total" align="center" />
+-->
+					
+	
+	 					<auxheader label="Descripcion" align="left" />
+	 					
+	 					<auxheader label="Monto Total" align="center" />  
+	 					
+	 					<auxheader label="Saldo" align="center" />  
+	 
 						<auxheader label="Pago" align="center" />
 
 						<auxheader />
@@ -149,19 +189,28 @@
 
 						<listitem>
 
-							<listcell
+							<listcell label="@load(each.descripcion)" />
+
+							<!-- <listcell
 								label="@load(each.servicio.servicio)" />
 
 							<listcell
 								label="@load(each.estadoCuenta.concepto.concepto)" />
-
+--> 							
+						 	<listcell
+								label="@load(each.estadoCuenta.monto) @converter('formatedNumber', format='#,###')" />   
+								
 							<listcell
-								label="@load(each.estadoCuenta.monto) @converter('formatedNumber', format='#,###')" />
+								label="@load(each.estadoCuenta.saldo) @converter('formatedNumber', format='#,###')" />   
 
 							<listcell>
-								<doublebox value="@bind(each.monto)"
+						
+								<label value="@load(each.monto) @converter('formatedNumber', format='#,###')" visible="@load(vm.condicionHabilitada)"/>
+						
+						 		<doublebox value="@bind(each.monto)"
 									readonly="@load(vm.disableCobranza)" style="text-align:right"
-									onChange="@command('getTotalDetalle')" hflex="1" />
+									onChange="@command('getTotalDetalle')" hflex="1" visible="@load(!vm.condicionHabilitada)"/>
+									
 							</listcell>
 
 							<listcell>

@@ -33,6 +33,8 @@ public class CobranzaDetalle extends Modelo implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "servicioid")
 	private Servicio servicio;
+
+	private String descripcion;
 	
 	@ColumnDefault("0.0")
 	private double exento = 0;
@@ -136,6 +138,14 @@ public class CobranzaDetalle extends Modelo implements Serializable {
 
 	public void setServicio(Servicio servicio) {
 		this.servicio = servicio;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 	
 }

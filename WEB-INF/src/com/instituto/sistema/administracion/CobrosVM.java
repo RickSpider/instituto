@@ -120,10 +120,32 @@ public class CobrosVM extends TemplateViewModelLocal{
 			
 			EstadoCuenta ec = x.getEstadoCuenta();
 			
-			ec.setPago(ec.getPago() - x.getMonto());
-			ec.setMontoDescuento(ec.getMontoDescuento() - x.getMontoDescuento());
+			if (cobranza.getCondicionVentaTipo() == null  || cobranza.getCondicionVentaTipo().getSigla().compareTo(ParamsLocal.SIGLA_CONDICION_VENTA_CREDITO) != 0 ) {
+				
+				ec.setPago(ec.getPago() - x.getMonto());
+				ec.setMontoDescuento(ec.getMontoDescuento() - x.getMontoDescuento());
+				
+				
+				
+			}else {
+				
+				if (ec.getPago() == 0) {
+					
+					ec.setMonto(0);
+					
+				}else {
+					
+
+					this.mensajeError("No se puede anular, ya existen pagos realizados.");					
+					return;
+					
+					
+				}
+				
+			}
 			
 			this.save(ec);
+			
 			
 		}
 		

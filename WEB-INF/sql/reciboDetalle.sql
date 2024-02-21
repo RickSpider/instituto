@@ -1,4 +1,7 @@
-SELECT case when cd.servicioid is null then co.concepto ||' '|| es.periodo else s.servicio end as descripcion,
+SELECT case 
+	when cd.descripcion is not null then cd.descripcion
+	when cd.servicioid is null then co.concepto ||' '|| es.periodo 	
+	else s.servicio end as descripcion,
 	cd.monto
 FROM cobranzasdetalles cd
 	join estadoscuentas es on es.estadocuentaid = cd.estadocuentaid

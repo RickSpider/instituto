@@ -1,4 +1,4 @@
-package com.instituto.sistema.administracion;
+package com.instituto.sistema.estadoCuenta;
 
 import java.util.List;
 
@@ -17,7 +17,6 @@ import com.doxacore.components.finder.FinderModel;
 import com.instituto.modelo.Cobranza;
 import com.instituto.modelo.CobranzaDetalle;
 import com.instituto.modelo.CursoVigente;
-import com.instituto.modelo.EstadoCuenta;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
 
@@ -158,7 +157,7 @@ public class EstadoCuentaCursoVM extends TemplateViewModelLocal implements Finde
 				"estadocuentaid = " + estadocuentaid, null);
 
 
-		modal = (Window) Executions.createComponents("/instituto/zul/administracion/estadoCuentaCursoModal.zul",
+		modal = (Window) Executions.createComponents("/instituto/zul/estadoCuenta/estadoCuentaCursoModal.zul",
 				this.mainComponent, null);
 		Selectors.wireComponents(modal, this, false);
 		modal.doModal();

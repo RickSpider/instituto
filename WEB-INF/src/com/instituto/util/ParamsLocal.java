@@ -171,6 +171,11 @@ public class ParamsLocal extends Params {
 	public static final String OP_CREAR_ESTADOCUENTA = "CrearEstadoCuenta";
 	public static final String OP_INACTIVAR_ESTADOCUENTA = "InactivarEstadoCuenta";
 	public static final String OP_BORRAR_ESTADOCUENTA = "BorrarEstadoCuenta";
+	
+	// Estado Cuenta
+	public static final String OP_CREAR_ESTADOCUENTAPERSONA = "CrearEstadoCuentaPersona";
+	public static final String OP_INACTIVAR_ESTADOCUENTAPERSONA = "InactivarEstadoCuentaPersona";
+	public static final String OP_BORRAR_ESTADOCUENTAPERSONA = "BorrarEstadoCuentaPersona";
 
 	// EstadoCuenta
 	public static final String OP_CREAR_ESTADOCUENTAREPORTE = "CrearEstadoCuentaReporte";

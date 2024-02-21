@@ -1,0 +1,72 @@
+<?page title="sedeModal" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Cuentas Ver" border="normal"
+		height="500px" width="650px" position="center,center" closable="true"
+		mode="modal" action="show: slideDown;hide: slideUp">
+
+		<vlayout vflex="1">
+			<listbox emptyMessage="lista vacía..." mold="paging"
+				autopaging="true" vflex="1" model="@load(vm.lEstadosCuentas)"
+				multiple="true" checkmark="true"
+				selectedItems="@bind(vm.lEstadosCuentasAux)">
+
+				
+
+
+				<listhead visible="false">
+					<listheader width="30px"/>
+					<listheader label="Vencimiento" align="center" />
+					<listheader label="Curso" align="Center" />
+					<listheader label="Concepto" align="Center" />
+					<listheader label="Periodo" align="Center" />
+					<listheader label="Saldo" align="right" />
+					<listheader label="Monto Total" align="right" />
+
+				</listhead>
+				
+				<auxhead>
+					<auxheader />
+					<auxheader label="Vencimiento" align="center" />
+					<auxheader label="Curso" align="center" />
+					<auxheader label="Concepto" align="center" />
+					<auxheader label="Periodo/Cuota #" align="center" />
+					<auxheader label="Saldo" align="center" />
+					<auxheader label="Monto Total" align="center" />
+
+				</auxhead>
+
+
+
+				<template name="model">
+
+					<listitem >
+						<listcell/>
+						<listcell
+							label="@load(each.vencimiento) @converter('formatedDate', format='dd/MM/yyyy')" />
+						<listcell
+							label="@load(each.cursoVigente.curso.curso)" />
+						<listcell label="@load(each.concepto.concepto)" />
+						<listcell label="@load(each.periodo)" />
+						<listcell label="@load(each.saldo) @converter('formatedNumber', format='#,###')"  />
+						<listcell
+							label="@load(each.monto) @converter('formatedNumber', format='#,###')" />
+
+					</listitem>
+
+				</template>
+
+			</listbox>
+
+
+		</vlayout>
+
+		<space height="10px" />
+
+		<hlayout>
+
+			<button label="Aceptar" onClick="@command('agregarCobranzaDetalle')" />
+
+		</hlayout>
+
+	</window>
+</zk>

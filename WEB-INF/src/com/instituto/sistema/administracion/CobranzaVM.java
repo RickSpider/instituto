@@ -32,6 +32,7 @@ import com.instituto.modelo.Cotizacion;
 import com.instituto.modelo.Entidad;
 import com.instituto.modelo.EstadoCuenta;
 import com.instituto.modelo.Persona;
+import com.instituto.modelo.Servicio;
 import com.instituto.modelo.UsuarioSede;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
@@ -61,6 +62,8 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 		cobranzaSelected = new Cobranza();
 		defaultCobranza();
+		
+		inicializarFinders();
 
 	}
 
@@ -102,6 +105,12 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			return;
 
 		}
+		
+		if (this.cobranzaSelected.getFecha() == null) {
+			
+			return;
+			
+		}
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -135,8 +144,8 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		saldoVencido = 0;
 		condicionHabilitada = true;
 		this.buscarAlumno = "";
-		this.buscarComprobante = "";
-		this.buscarCondicionVenta = "";
+	/*	this.buscarComprobante = "";
+		this.buscarCondicionVenta = "";*/
 
 		defaultCobranza();
 
@@ -169,12 +178,12 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 		Tipo comprobanteTipo = this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_COMPROBANTE_FACTURA);
 		this.cobranzaSelected.setComprobanteTipo(comprobanteTipo);
-		this.buscarComprobante = comprobanteTipo.getTipo();
+		//this.buscarComprobante = comprobanteTipo.getTipo();
 
 		Tipo condicionVenta = this.reg.getObjectBySigla(Tipo.class.getName(),
 				ParamsLocal.SIGLA_CONDICION_VENTA_CONTADO);
 		this.cobranzaSelected.setCondicionVentaTipo(condicionVenta);
-		this.buscarCondicionVenta = condicionVenta.getTipo();
+		//this.buscarCondicionVenta = condicionVenta.getTipo();
 
 	}	
 
@@ -921,6 +930,105 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	// fin Buscar Entidad
+	
+	private FinderModel comprobanteFinder;
+	private FinderModel condicionFinder;
+	
+	@NotifyChange("*")
+	public void inicializarFinders() {
+
+		
+		
+		String sqlTipo = "Select t.tipoid as id, t.tipo as comprobante, t.descripcion as descripcion from tipos t\n"
+						+ "join tipotipos tt on tt.tipotipoid = t.tipotipoid \n"
+						+ "where tt.sigla like '?1' \n"
+						+ "order by t.tipoid asc;";
+		
+		comprobanteFinder = new FinderModel("Comprobante", sqlTipo.replace("?1", ParamsLocal.SIGLA_COMPROBANTE));
+		condicionFinder = new FinderModel("Condicion", sqlTipo.replace("?1", ParamsLocal.SIGLA_CONDICION_VENTA));
+		
+
+	}
+
+	public void generarFinders(@BindingParam("finder") String finder) {
+
+				
+		if (finder.compareTo(this.comprobanteFinder.getNameFinder()) == 0) {
+
+			this.comprobanteFinder.generarListFinder();
+			BindUtils.postNotifyChange(null, null, this.comprobanteFinder, "listFinder");
+
+		}
+		
+		if (finder.compareTo(this.condicionFinder.getNameFinder()) == 0) {
+
+			this.condicionFinder.generarListFinder();
+			BindUtils.postNotifyChange(null, null, this.condicionFinder, "listFinder");
+
+		}
+		
+
+	}
+
+	@Command
+	public void finderFilter(@BindingParam("filter") String filter, @BindingParam("finder") String finder) {
+
+		
+		if (finder.compareTo(this.comprobanteFinder.getNameFinder()) == 0) {
+
+			this.comprobanteFinder.setListFinder(this.filtrarListaObject(filter, this.comprobanteFinder.getListFinderOri()));
+			BindUtils.postNotifyChange(null, null, this.comprobanteFinder, "listFinder");
+
+		}
+		
+		if (finder.compareTo(this.condicionFinder.getNameFinder()) == 0) {
+
+			this.condicionFinder.setListFinder(this.filtrarListaObject(filter, this.condicionFinder.getListFinderOri()));
+			BindUtils.postNotifyChange(null, null, this.condicionFinder, "listFinder");
+
+		}
+		
+
+	
+
+
+
+	}
+
+	@Command
+	@NotifyChange("*")
+	public void onSelectetItemFinder(@BindingParam("id") Long id, @BindingParam("finder") String finder) {
+
+		
+		if (finder.compareTo(this.comprobanteFinder.getNameFinder()) == 0) {
+
+			this.cobranzaSelected.setComprobanteTipo(this.reg.getObjectById(Tipo.class.getName(), id));
+			
+			if (this.cobranzaSelected.getComprobanteTipo().getSigla()
+					.compareTo(ParamsLocal.SIGLA_COMPROBANTE_FACTURA) == 0) {
+
+				this.condicionHabilitada = true;
+				this.cobranzaSelected.setCondicionVentaTipo(this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_CONDICION_VENTA_CONTADO));
+				
+			} else if (this.cobranzaSelected.getComprobanteTipo().getSigla()
+					.compareTo(ParamsLocal.SIGLA_COMPROBANTE_RECIBO) == 0) {
+
+				this.condicionHabilitada = false;
+				this.cobranzaSelected.setCondicionVentaTipo(null);
+				
+			}
+		}
+		
+		if (finder.compareTo(this.condicionFinder.getNameFinder()) == 0) {
+
+			this.cobranzaSelected.setCondicionVentaTipo(this.reg.getObjectById(Tipo.class.getName(), id));
+		}
+		
+		
+
+	}
+
+	// fin seccion finder
 
 	// buscarTipo
 
@@ -931,8 +1039,8 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	private String buscarMoneda = "";
 	private String buscarFormaPago = "";
-	private String buscarComprobante = "";
-	private String buscarCondicionVenta = "";
+//	private String buscarComprobante = "";
+//	private String buscarCondicionVenta = "";
 
 	@Command
 	@NotifyChange("lTiposBuscar")
@@ -968,7 +1076,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	}
 
-	@Command
+/*	@Command
 	@NotifyChange("lTiposBuscar")
 	public void generarListaBuscarComprobante() {
 
@@ -990,7 +1098,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 		generarListaBuscarTipo(ParamsLocal.SIGLA_CONDICION_VENTA);
 
-	}
+	}*/
 
 	@Command
 	@NotifyChange("buscarMoneda")
@@ -1038,7 +1146,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		desabilitarCampos();
 	}
 
-	@Command
+	/*@Command
 	@NotifyChange({ "buscarComprobante", "condicionHabilitada", "buscarCondicionVenta" })
 	public void onSelectComprobante(@BindingParam("id") long id) {
 
@@ -1076,7 +1184,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		this.buscarCondicionVenta = condicionVenta.getTipo();
 		this.filtroBuscarTipo = "";
 
-	}
+	}*/
 
 	// fin buscarTipo
 
@@ -1288,10 +1396,15 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 			x.setCobranza(this.cobranzaSelected);
 			this.save(x);
+			
+			if (this.cobranzaSelected.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_RECIBO) ==0 
+					|| this.cobranzaSelected.getCondicionVentaTipo().getSigla().compareTo(ParamsLocal.SIGLA_CONDICION_VENTA_CONTADO) == 0) {
 
-			x.getEstadoCuenta().setPago(x.getEstadoCuenta().getPago() + x.getMonto());
-			x.getEstadoCuenta().setMontoDescuento(x.getMontoDescuento());
+				x.getEstadoCuenta().setPago(x.getEstadoCuenta().getPago() + x.getMonto());
+				x.getEstadoCuenta().setMontoDescuento(x.getMontoDescuento());
 
+			}
+			
 			this.save(x.getEstadoCuenta());
 
 		}
@@ -1454,14 +1567,6 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		this.lDetalles = lDetalles;
 	}
 
-	public String getBuscarComprobante() {
-		return buscarComprobante;
-	}
-
-	public void setBuscarComprobante(String buscarComprobante) {
-		this.buscarComprobante = buscarComprobante;
-	}
-
 	public List<EstadoCuenta> getlEstadosCuentas() {
 		return lEstadosCuentas;
 	}
@@ -1558,14 +1663,6 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		this.saldoVencido = saldoVencido;
 	}
 
-	public String getBuscarCondicionVenta() {
-		return buscarCondicionVenta;
-	}
-
-	public void setBuscarCondicionVenta(String buscarCondicionVenta) {
-		this.buscarCondicionVenta = buscarCondicionVenta;
-	}
-
 	public boolean isCondicionHabilitada() {
 		return condicionHabilitada;
 	}
@@ -1644,6 +1741,22 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	public void setOpDefinirFecha(boolean opDefinirFecha) {
 		this.opDefinirFecha = opDefinirFecha;
+	}
+
+	public FinderModel getComprobanteFinder() {
+		return comprobanteFinder;
+	}
+
+	public void setComprobanteFinder(FinderModel comprobanteFinder) {
+		this.comprobanteFinder = comprobanteFinder;
+	}
+
+	public FinderModel getCondicionFinder() {
+		return condicionFinder;
+	}
+
+	public void setCondicionFinder(FinderModel condicionFinder) {
+		this.condicionFinder = condicionFinder;
 	}
 
 }
