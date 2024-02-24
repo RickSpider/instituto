@@ -209,7 +209,7 @@
 						
 						 		<doublebox value="@bind(each.monto)"
 									readonly="@load(vm.disableCobranza)" style="text-align:right"
-									onChange="@command('getTotalDetalle')" hflex="1" visible="@load(!vm.condicionHabilitada)"/>
+									onChange="@command('onChangePago', detalle=each)" hflex="1" visible="@load(!vm.condicionHabilitada)"/>
 									
 							</listcell>
 

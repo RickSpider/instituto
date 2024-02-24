@@ -561,7 +561,17 @@ public class CajaVM extends TemplateViewModelLocal implements FinderInterface {
 				dat[3] = x[4];
 				dat[4] = x[5];
 				dat[5] = df.format(x[8]);
-				dat[6] = x[9];
+				
+				
+				if (Boolean.parseBoolean(x[9].toString()) == true) {
+
+					dat[6] = "Anulado";
+
+				} else {
+
+					dat[6] = "";
+
+				}
 				
 				datos.add(dat);
 				

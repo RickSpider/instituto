@@ -244,7 +244,7 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 		this.estadoCuentaSelected.setCargaManual(true);
 		
 
-		modal = (Window) Executions.createComponents("/instituto/zul/esatdoCuenta/estadoCuentaModal.zul",
+		modal = (Window) Executions.createComponents("/instituto/zul/estadoCuenta/estadoCuentaModal.zul",
 				this.mainComponent, null);
 		Selectors.wireComponents(modal, this, false);
 		modal.doModal();

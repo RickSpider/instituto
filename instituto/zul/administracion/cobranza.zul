@@ -257,7 +257,7 @@
 							<listcell>
 								<doublebox value="@bind(each.monto)"
 									readonly="@load(vm.disableCobranza)" style="text-align:right"
-									onChange="@command('getTotalDetalle')" hflex="1" />
+									onChange="@command('onChangePago', detalle=each)" hflex="1" />
 							</listcell>
 							
 							<listcell label="@load(each.montoDescuento) @converter('formatedNumber', format='#,###')" />

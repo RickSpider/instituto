@@ -538,6 +538,21 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 		this.modal.detach();
 
 	}
+	
+	@Command
+	@NotifyChange("*")
+	public void onChangePago(@BindingParam("detalle") CobranzaDetalle detalle ) {
+		
+		if (detalle.getSaldo() < detalle.getMonto()) {
+			
+			this.mensajeInfo("El Pago no puede ser mayor al saldo");
+			detalle.setMonto(detalle.getSaldo());
+			return;
+		}
+		
+		this.getTotalDetalle();
+		
+	} 
 
 	private CobranzaDetalle buscarDescuento(CobranzaDetalle cobranzaDetalle) {
 
