@@ -146,7 +146,7 @@
 
 					<auxhead>
 
-						<auxheader colspan="4" align="center">
+						<auxheader colspan="5" align="center">
 							<button label="Agregar Detalle Servicio"
 								iconSclass=" z-icon-plus"
 								onClick="@command('modalCobranzaDetalleServicio')"
@@ -208,6 +208,7 @@
 								<label value="@load(each.monto) @converter('formatedNumber', format='#,###')" visible="@load(vm.condicionHabilitada)"/>
 						
 						 		<doublebox value="@bind(each.monto)"
+						 			format="#,###"
 									readonly="@load(vm.disableCobranza)" style="text-align:right"
 									onChange="@command('onChangePago', detalle=each)" hflex="1" visible="@load(!vm.condicionHabilitada)"/>
 									

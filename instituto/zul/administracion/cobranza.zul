@@ -256,6 +256,7 @@
 
 							<listcell>
 								<doublebox value="@bind(each.monto)"
+									format="#,###"
 									readonly="@load(vm.disableCobranza)" style="text-align:right"
 									onChange="@command('onChangePago', detalle=each)" hflex="1" />
 							</listcell>

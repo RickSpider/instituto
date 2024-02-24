@@ -24,7 +24,7 @@
 				</tablechildren>
 				
 				<tablechildren>
-					<doublebox value="@bind(vm.cobranzaDetalleSelected.monto)" />
+					<doublebox value="@bind(vm.cobranzaDetalleSelected.monto)" format="#,###"/>
 				</tablechildren>
 			
 			</tablelayout>

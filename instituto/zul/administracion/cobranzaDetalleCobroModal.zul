@@ -130,7 +130,8 @@
 			</tablechildren>
 			<tablechildren>
 				<doublebox value="@load(vm.cobranzaDetalleCobroSelected.monto) @save(vm.cobranzaDetalleCobroSelected.monto, before='agregarCobranzaDetalleCobro')" 
-				constraint="no empty: Es campo obligatorio." style="text-align:right" hflex="1"/>
+				constraint="no empty: Es campo obligatorio." style="text-align:right" hflex="1"
+				format="#,###"/>
 			</tablechildren>
 
 			<tablechildren visible="@load(!vm.camposCobroModal[0])">
