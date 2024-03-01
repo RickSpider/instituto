@@ -86,7 +86,11 @@ public class Persona extends Modelo implements Serializable {
 		if (this.institucion!=null)
 			institucion = this.institucion.getInstitucion();
 		
-		Object[] o = {this.nombre, this.apellido, this.documentoNum, this.direccion, this.ciudad.getCiudad(), this.gradoAcademico.getGradoacademico(), institucion};
+		String gradoAcademico = "";
+		if(this.gradoAcademico != null)
+			gradoAcademico = this.gradoAcademico.getGradoacademico();
+		
+		Object[] o = {this.nombre, this.apellido, this.documentoNum, this.direccion, this.ciudad.getCiudad(), gradoAcademico, institucion};
 		
 		return o;
 	}

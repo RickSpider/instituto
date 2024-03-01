@@ -1,7 +1,7 @@
 <?page title="sedeModal" contentType="text/html;charset=UTF-8"?>
 <zk>
 	<window title="Cuentas Ver" border="normal"
-		height="500px" width="650px" position="center,center" closable="true"
+		height="500px" width="850px" position="center,center" closable="true"
 		mode="modal" action="show: slideDown;hide: slideUp">
 
 		<vlayout vflex="1">
@@ -16,7 +16,7 @@
 				<listhead visible="false">
 					<listheader width="30px"/>
 					<listheader label="Vencimiento" align="center" />
-					<listheader label="Curso" align="Center" />
+					<listheader label="Curso" width="300px" align="left" />
 					<listheader label="Concepto" align="Center" />
 					<listheader label="Periodo" align="Center" />
 					<listheader label="Saldo" align="right" />
@@ -44,8 +44,8 @@
 						<listcell
 							label="@load(each.vencimiento) @converter('formatedDate', format='dd/MM/yyyy')" />
 						<listcell
-							label="@load(each.cursoVigente.curso.curso)" />
-						<listcell label="@load(each.concepto.concepto)" />
+							label="@load(each.cursoVigente.curso.curso)" tooltiptext="@load(each.cursoVigente.curso.curso)"/>
+						<listcell label="@load(each.concepto.concepto)" tooltiptext="@load(each.concepto.concepto)"/>
 						<listcell label="@load(each.periodo)" />
 						<listcell label="@load(each.saldo) @converter('formatedNumber', format='#,###')"  />
 						<listcell
