@@ -22,6 +22,7 @@ import org.zkoss.zul.Window;
 import com.doxacore.components.finder.FinderModel;
 import com.doxacore.modelo.Tipo;
 import com.doxacore.modelo.Usuario;
+import com.instituto.fe.util.MetodosCE;
 import com.instituto.modelo.Alumno;
 import com.instituto.modelo.Caja;
 import com.instituto.modelo.Cobranza;
@@ -33,6 +34,7 @@ import com.instituto.modelo.Entidad;
 import com.instituto.modelo.EstadoCuenta;
 import com.instituto.modelo.Persona;
 import com.instituto.modelo.Servicio;
+import com.instituto.modelo.SifenDocumento;
 import com.instituto.modelo.UsuarioSede;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
@@ -373,6 +375,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			cobranzaDetalle.setEstadoCuenta(x);
 			cobranzaDetalle = buscarDescuento(cobranzaDetalle);
 			cobranzaDetalle.setMonto(cobranzaDetalle.getSaldo() - cobranzaDetalle.getMontoDescuento());
+			cobranzaDetalle.setDescripcion(x.getConcepto().getConcepto()+" "+x.getPeriodo()+" - "+x.getCursoVigente().getCurso().getDescripcion());
 
 			/*
 			 * if (x.getConcepto().getImpuestoTipo().getSigla().compareTo(ParamsLocal.
@@ -1404,6 +1407,14 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			this.cobranzaSelected.setFecha(new Date());
 
 		}
+		
+		boolean comprobanteElectronico = (boolean) comprobante[4];
+		
+		if (comprobanteElectronico) {
+			
+			this.cobranzaSelected.setComprobanteElectronico(true);
+			
+		}
 
 		this.cobranzaSelected = this.save(this.cobranzaSelected);
 
@@ -1419,7 +1430,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 				x.getEstadoCuenta().setMontoDescuento(x.getMontoDescuento());
 
 			}
-			
+
 			this.save(x.getEstadoCuenta());
 
 		}
@@ -1433,22 +1444,47 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 		this.disableCobranza = true;
 
-		BindUtils.postNotifyChange(null, null, this, "*");
+		//BindUtils.postNotifyChange(null, null, this, "*");
 
-		if (this.cobranzaSelected.getComprobanteTipo().getSigla()
-				.compareTo(ParamsLocal.SIGLA_COMPROBANTE_RECIBO) == 0) {
-
-			this.generarRecibo();
-
+		if (this.cobranzaSelected.isComprobanteElectronico()) {
+			
+			if (this.cobranzaSelected.getComprobanteTipo().getSigla()
+					.compareTo(ParamsLocal.SIGLA_COMPROBANTE_FACTURA) == 0) {
+	
+				//this.generarComprobanteElectronico();
+	
+				MetodosCE ctce = new MetodosCE();
+	
+				SifenDocumento sd = ctce.convertAndSend(this.cobranzaSelected.getCobranzaid(), this.getCurrentSede().getSedeid());
+				
+				if (sd != null) {
+					
+					this.generarKude();
+					
+				}else {
+					
+					this.mensajeError("Hubo un error al envio del documento al servidor, intente luego");
+					
+				}
+				
+			}
+			
+		}else {
+		
+			if (this.cobranzaSelected.getComprobanteTipo().getSigla()
+					.compareTo(ParamsLocal.SIGLA_COMPROBANTE_RECIBO) == 0) {
+	
+				this.generarRecibo();
+	
+			}
+	
+			if (this.cobranzaSelected.getComprobanteTipo().getSigla()
+					.compareTo(ParamsLocal.SIGLA_COMPROBANTE_FACTURA) == 0) {
+	
+				this.generarFactura();
+	
+			}
 		}
-
-		if (this.cobranzaSelected.getComprobanteTipo().getSigla()
-				.compareTo(ParamsLocal.SIGLA_COMPROBANTE_FACTURA) == 0) {
-
-			this.generarFactura();
-
-		}
-
 		this.limpiar();
 
 		BindUtils.postNotifyChange(null, null, this, "*");
@@ -1479,7 +1515,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		UsuarioSede us = this.getCurrentUsuarioSede();
 
 		StringBuffer numero = new StringBuffer();
-		Object[] out = new Object[4];
+		Object[] out = new Object[5];
 
 		/*
 		 * Comprobante comprobante =
@@ -1514,6 +1550,9 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		out[1] = comprobante.getEmision();
 		out[2] = comprobante.getVencimiento();
 		out[3] = numero;
+		
+		//envia campo si es electronico
+		out[4] = comprobante.isElectronico();
 
 		comprobante.setSiguiente(comprobante.getSiguiente() + 1);
 
@@ -1536,6 +1575,14 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 		Executions.getCurrent().sendRedirect(
 				"/instituto/zul/administracion/facturaReporte.zul?id=" + this.cobranzaSelected.getCobranzaid(),
+				"_blank");
+
+	}
+	
+	public void generarKude() {
+
+		Executions.getCurrent().sendRedirect(
+				"/instituto/zul/administracion/kudeReporte.zul?id=" + this.cobranzaSelected.getCobranzaid(),
 				"_blank");
 
 	}

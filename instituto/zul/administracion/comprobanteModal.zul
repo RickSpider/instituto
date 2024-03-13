@@ -131,6 +131,13 @@
 			</tablechildren>
 			
 			<tablechildren>
+				<label value="Electronico:" />
+			</tablechildren>
+			<tablechildren>
+				<checkbox checked="@bind(vm.comprobanteSelected.electronico)" />
+			</tablechildren>	
+			
+			<tablechildren>
 				<label value="Activo:" />
 			</tablechildren>
 			<tablechildren>

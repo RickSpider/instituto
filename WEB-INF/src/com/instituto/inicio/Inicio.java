@@ -12,12 +12,17 @@ import com.doxacore.util.SystemInfo;
 import com.instituto.modelo.UsuarioSede;
 
 public class Inicio {
-	
+		
 	public void beforeLogin() {
+		
+		
 		
 	}
 
 	public void afterLogin() {
+		
+		System.out.println("=============Sistema Instituto===============");
+		
 		
 		Register reg = new Register();
 		

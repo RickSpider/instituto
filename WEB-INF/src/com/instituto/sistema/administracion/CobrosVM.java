@@ -14,9 +14,17 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Messagebox;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.instituto.fe.model.Contribuyente;
+import com.instituto.fe.model.EventoCancelar;
+import com.instituto.fe.model.Timbrado;
+import com.instituto.fe.util.MetodosCE;
 import com.instituto.modelo.Cobranza;
 import com.instituto.modelo.CobranzaDetalle;
+import com.instituto.modelo.Comprobante;
 import com.instituto.modelo.EstadoCuenta;
+import com.instituto.modelo.SifenDocumento;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
 
@@ -114,6 +122,25 @@ public class CobrosVM extends TemplateViewModelLocal{
 	
 	private void anularCobranza(Cobranza cobranza) {
 		
+		SifenDocumento sd = null ;
+		
+		if (cobranza.isComprobanteElectronico()) {
+			
+			sd = this.reg.getObjectByCondicion(SifenDocumento.class.getName(), "cobranzaid = "+cobranza.getCobranzaid());
+			
+			if (sd != null) {
+				
+				if (sd.getCdc() == null || sd.getCdc().length() == 0) {
+					
+					this.mensajeError("El comprobante electronico no posee CDC, no se puede anular.");
+					return;
+					
+				}
+				
+			}
+			
+		}
+		
 		List<CobranzaDetalle> lDetalles = this.reg.getAllObjectsByCondicionOrder(CobranzaDetalle.class.getName(), "cobranzaid = "+cobranza.getCobranzaid(), null);
 		
 		for (CobranzaDetalle x : lDetalles) {
@@ -157,6 +184,42 @@ public class CobrosVM extends TemplateViewModelLocal{
 		
 		this.cargarCobros();
 		BindUtils.postNotifyChange(null,null,this,"lCobranzas");
+		
+		if (cobranza.isComprobanteElectronico()) {
+			
+			//SifenDocumento sd = this.reg.getObjectByCondicion(SifenDocumento.class.getName(), "cobranzaid = "+cobranza.getCobranzaid());
+			
+			if (sd != null) {
+				
+				Contribuyente c = new Contribuyente();
+				c.setContribuyenteid(Long.parseLong(this.getSistemaPropiedad("FE_ID").getValor()));
+				c.setPass(this.getSistemaPropiedad("FE_PASS").getValor());
+				
+				EventoCancelar eventoC = new EventoCancelar();
+				eventoC.setContribuyente(c);
+				eventoC.setFecha(new Date());
+				eventoC.setCdc(sd.getCdc());
+				
+				MetodosCE mce = new MetodosCE();
+				Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
+				
+				sd.setCanceladoFecha(eventoC.getFecha());
+				sd.setCanceladoJson(gson.toJson(eventoC));
+				
+				this.save(sd);
+				
+				String link = this.getSistemaPropiedad("FE_HOST").getValor()+MetodosCE.EVENTO_CANCELAR_FACTURA;
+				
+				mce.enviarJson(link, sd.getCanceladoJson());
+				
+			}else {
+				
+				this.mensajeError("No se encontro el Documento Sifen.");
+				
+			}
+			
+		}
+		
 	}
 	
 	@Command
@@ -164,16 +227,28 @@ public class CobrosVM extends TemplateViewModelLocal{
 		
 		Cobranza cobranza = this.reg.getObjectById(Cobranza.class.getName(), cobranzaid);
 		
-		if (cobranza.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_RECIBO) == 0) {
+		if (cobranza.isComprobanteElectronico()) {
 			
-			Executions.getCurrent().sendRedirect("/instituto/zul/administracion/reciboReporte.zul?id="+cobranza.getCobranzaid(),"_blank");
+			if (cobranza.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_FACTURA) == 0) {
+				
+				Executions.getCurrent().sendRedirect("/instituto/zul/administracion/kudeReporte.zul?id="+cobranza.getCobranzaid(),"_blank");
+				
+			}
 			
-		}
+		}else {
 		
-		if (cobranza.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_FACTURA) == 0) {
+		
+			if (cobranza.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_RECIBO) == 0) {
+				
+				Executions.getCurrent().sendRedirect("/instituto/zul/administracion/reciboReporte.zul?id="+cobranza.getCobranzaid(),"_blank");
+				
+			}
 			
-			Executions.getCurrent().sendRedirect("/instituto/zul/administracion/facturaReporte.zul?id="+cobranza.getCobranzaid(),"_blank");
-			
+			if (cobranza.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_FACTURA) == 0) {
+				
+				Executions.getCurrent().sendRedirect("/instituto/zul/administracion/facturaReporte.zul?id="+cobranza.getCobranzaid(),"_blank");
+				
+			}
 		}
 
 	}

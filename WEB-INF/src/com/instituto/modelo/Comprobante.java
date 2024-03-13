@@ -15,6 +15,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import com.doxacore.modelo.Modelo;
 import com.doxacore.modelo.Tipo;
 
@@ -57,6 +59,9 @@ public class Comprobante extends Modelo implements Serializable {
 	private Long siguiente;
 	
 	private boolean activo;
+	
+	@ColumnDefault("false")
+	private boolean electronico;
 
 	@Override
 	public Object[] getArrayObjectDatos() {
@@ -181,6 +186,14 @@ public class Comprobante extends Modelo implements Serializable {
 
 	public static long getSerialVersionUID() {
 		return serialVersionUID;
+	}
+
+	public boolean isElectronico() {
+		return electronico;
+	}
+
+	public void setElectronico(boolean electronico) {
+		this.electronico = electronico;
 	}
 
 

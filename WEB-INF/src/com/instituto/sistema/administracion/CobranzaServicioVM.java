@@ -1,11 +1,13 @@
 package com.instituto.sistema.administracion;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
@@ -22,6 +24,21 @@ import org.zkoss.zul.Window;
 
 import com.doxacore.components.finder.FinderModel;
 import com.doxacore.modelo.Tipo;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.instituto.fe.model.Cheque;
+import com.instituto.fe.model.ComprobanteElectronicoDetalle;
+import com.instituto.fe.model.ComprobanteElectronico;
+import com.instituto.fe.model.CondicionOperacion;
+import com.instituto.fe.model.Contribuyente;
+import com.instituto.fe.model.Kude;
+import com.instituto.fe.model.Receptor;
+import com.instituto.fe.model.Tarjeta;
+import com.instituto.fe.model.Timbrado;
+import com.instituto.fe.model.TipoPago;
+import com.instituto.fe.util.MetodosCE;
+import com.instituto.fe.util.conexionRest.HttpConexion;
+import com.instituto.fe.util.conexionRest.ResultRest;
 import com.instituto.modelo.Caja;
 import com.instituto.modelo.Cobranza;
 import com.instituto.modelo.CobranzaDetalle;
@@ -33,6 +50,7 @@ import com.instituto.modelo.Entidad;
 import com.instituto.modelo.EstadoCuenta;
 import com.instituto.modelo.Persona;
 import com.instituto.modelo.Servicio;
+import com.instituto.modelo.SifenDocumento;
 import com.instituto.modelo.UsuarioSede;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
@@ -1359,11 +1377,16 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 
 					if (this.vencimientoFacturaCredito == null) {
 
-						Calendar calendar = Calendar.getInstance();
-						calendar.setTime(new Date());
-						calendar.add(Calendar.MONTH, 1);
+						/*Calendar calendar = Calendar.getInstance();
+						calendar.setTime(this.cobranzaSelected.getFecha());
+						calendar.add(Calendar.MONTH, 1);*/
+						
+						this.vencimientoFacturaCredito = this.um.calcularFecha(this.cobranzaSelected.getFecha(), Calendar.MONTH, 1);
 
-						x.getEstadoCuenta().setVencimiento(calendar.getTime());
+						x.getEstadoCuenta().setVencimiento(this.vencimientoFacturaCredito);
+						
+						
+						
 					} else {
 
 						x.getEstadoCuenta().setVencimiento(this.vencimientoFacturaCredito);
@@ -1396,7 +1419,19 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 
 		this.cobranzaSelected.setCaja(this.cajaSelected);
 
+		if (this.cobranzaSelected.getFecha() == null) {
+
+			this.cobranzaSelected.setFecha(new Date());
+
+		}
+		
 		this.guardarEstadoCuenta();
+		
+		if (this.vencimientoFacturaCredito != null 
+				&& this.cobranzaSelected.getCondicionVentaTipo().getSigla().compareTo(ParamsLocal.SIGLA_CONDICION_VENTA_CREDITO) == 0) {
+			
+			this.cobranzaSelected.setFechaCreditoVencimiento(this.vencimientoFacturaCredito);
+		}
 
 		Object[] comprobante = this.getNumeroComprobante();
 
@@ -1419,11 +1454,13 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 		this.cobranzaSelected.setExento(this.exento);
 		this.cobranzaSelected.setIva10(this.iva10);
 		this.cobranzaSelected.setIva5(this.iva5);
-
-		if (this.cobranzaSelected.getFecha() == null) {
-
-			this.cobranzaSelected.setFecha(new Date());
-
+		
+		boolean comprobanteElectronico = (boolean) comprobante[4];
+		
+		if (comprobanteElectronico) {
+			
+			this.cobranzaSelected.setComprobanteElectronico(true);
+			
 		}
 
 		this.cobranzaSelected = this.save(this.cobranzaSelected);
@@ -1462,20 +1499,49 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 
 		this.disableCobranza = true;
 
-		BindUtils.postNotifyChange(null, null, this, "*");
+		//BindUtils.postNotifyChange(null, null, this, "*");
+		
 
-		if (this.cobranzaSelected.getComprobanteTipo().getSigla()
-				.compareTo(ParamsLocal.SIGLA_COMPROBANTE_RECIBO) == 0) {
-
-			this.generarRecibo();
-
-		}
-
-		if (this.cobranzaSelected.getComprobanteTipo().getSigla()
-				.compareTo(ParamsLocal.SIGLA_COMPROBANTE_FACTURA) == 0) {
-
-			this.generarFactura();
-
+		if (this.cobranzaSelected.isComprobanteElectronico()) {
+			
+			if (this.cobranzaSelected.getComprobanteTipo().getSigla()
+					.compareTo(ParamsLocal.SIGLA_COMPROBANTE_FACTURA) == 0) {
+	
+				//this.generarComprobanteElectronico();
+	
+				MetodosCE ctce = new MetodosCE();
+	
+				SifenDocumento sd = ctce.convertAndSend(this.cobranzaSelected.getCobranzaid(), this.getCurrentSede().getSedeid());
+				
+				if (sd != null) {
+					
+					this.generarKude();
+					
+				}else {
+					
+					this.mensajeError("Hubo un error al envio del documento al servidor, intente luego");
+					
+				}
+				
+				
+				
+			}
+			
+		}else {
+		
+			if (this.cobranzaSelected.getComprobanteTipo().getSigla()
+					.compareTo(ParamsLocal.SIGLA_COMPROBANTE_RECIBO) == 0) {
+	
+				this.generarRecibo();
+	
+			}
+	
+			if (this.cobranzaSelected.getComprobanteTipo().getSigla()
+					.compareTo(ParamsLocal.SIGLA_COMPROBANTE_FACTURA) == 0) {
+	
+				this.generarFactura();
+	
+			}
 		}
 
 		this.limpiar();
@@ -1483,6 +1549,208 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 		BindUtils.postNotifyChange(null, null, this, "*");
 
 	}
+	
+	/*private void generarComprobanteElectronico() {
+		
+		
+		ComprobanteElectronico ce = new ComprobanteElectronico();
+		
+		Contribuyente c = new Contribuyente();
+		c.setContribuyenteid(Long.parseLong(this.getSistemaPropiedad("FE_ID").getValor()));
+		c.setPass(this.getSistemaPropiedad("FE_PASS").getValor());
+		
+		ce.setContribuyente(c);
+		
+		Timbrado t = new Timbrado();
+		t.setTimbrado(this.cobranzaSelected.getTimbrado().toString());
+		
+		// comp = this.reg.getObjectByCondicion(Comprobante.class.getName(), "timbrado = "+this.cobranzaSelected.getTimbrado());
+		
+		String[] comprobanteNum = this.cobranzaSelected.getComprobanteNum().split("-");	
+		t.setEstablecimiento(comprobanteNum[0]);
+		t.setPuntoExpedicion(comprobanteNum[1]);
+		t.setDocumentoNro(comprobanteNum[2]);
+		t.setFecIni(this.cobranzaSelected.getComprobanteEmision());
+		
+		ce.setTimbrado(t);
+		ce.setSucursal(this.getCurrentSede().getSede());
+		
+		Receptor r = new Receptor();
+		r.setRazonSocial(this.cobranzaSelected.getRazonSocial());
+		
+		if (this.cobranzaSelected.getRuc().contains("-")) {
+			
+			String [] ruc = this.cobranzaSelected.getRuc().split("-");
+			
+			r.setDocNro(ruc[0]);
+			r.setDv(ruc[1]);
+			
+		}else {
+			
+			
+			
+			r.setTipoDocumento(1L);
+			r.setDocNro(this.cobranzaSelected.getRuc());
+			
+		}
+		
+		ce.setReceptor(r);
+		ce.setFecha(this.cobranzaSelected.getFecha());
+		
+		CondicionOperacion co = new CondicionOperacion();
+		
+		if (this.cobranzaSelected.getCondicionVentaTipo().getSigla().compareTo(ParamsLocal.SIGLA_CONDICION_VENTA_CONTADO)==0) {
+			
+			co.setCondicion(1l);
+			co.setTiposPagos(new ArrayList<TipoPago>());
+			
+			
+			
+			for (CobranzaDetalleCobro x : this.lDetallesCobros) {
+				
+				TipoPago tp = new TipoPago();
+				
+				if (x.getCobranzacobrodetallepk().getFormaPago().getSigla().compareTo(ParamsLocal.SIGLA_FORMA_PAGO_EFECTIVO) == 0) {
+					
+					tp.setTipoPagoCodigo(1L);
+					tp.setMonto(x.getMonto());
+					
+				}else if (x.getCobranzacobrodetallepk().getFormaPago().getSigla().compareTo(ParamsLocal.SIGLA_FORMA_PAGO_CHEQUE) == 0) {
+					
+					tp.setTipoPagoCodigo(2L);
+					tp.setMonto(x.getMonto());
+					Cheque che = new Cheque(x.getEntidad().getEntidad(),x.getChequeNum());
+					tp.setCheque(che);
+				}else if (x.getCobranzacobrodetallepk().getFormaPago().getSigla().compareTo(ParamsLocal.SIGLA_FORMA_PAGO_TARJETA_CREDITO) == 0) {
+					
+					tp.setTipoPagoCodigo(3L);
+					tp.setMonto(x.getMonto());
+					Tarjeta tar = new Tarjeta(1l,1l);
+					tp.setTarjeta(tar);
+					
+				}else if (x.getCobranzacobrodetallepk().getFormaPago().getSigla().compareTo(ParamsLocal.SIGLA_FORMA_PAGO_TARJETA_DEBITO) == 0) {
+					
+					tp.setTipoPagoCodigo(4L);
+					tp.setMonto(x.getMonto());
+					Tarjeta tar = new Tarjeta(1l,1l);
+					tp.setTarjeta(tar);
+					
+				}else if (x.getCobranzacobrodetallepk().getFormaPago().getSigla().compareTo(ParamsLocal.SIGLA_FORMA_PAGO_TRANSFERENCIA) == 0) {
+					
+					tp.setTipoPagoCodigo(5L);
+					tp.setMonto(x.getMonto());
+										
+				}else if (x.getCobranzacobrodetallepk().getFormaPago().getSigla().compareTo(ParamsLocal.SIGLA_FORMA_PAGO_GIRO) == 0) {
+					
+					tp.setTipoPagoCodigo(6L);
+					tp.setMonto(x.getMonto());
+										
+				}else if (x.getCobranzacobrodetallepk().getFormaPago().getSigla().compareTo(ParamsLocal.SIGLA_FORMA_PAGO_BILLETERA) == 0) {
+					
+					tp.setTipoPagoCodigo(7L);
+					tp.setMonto(x.getMonto());
+										
+				}else if (x.getCobranzacobrodetallepk().getFormaPago().getSigla().compareTo(ParamsLocal.SIGLA_FORMA_PAGO_QR) == 0
+						|| x.getCobranzacobrodetallepk().getFormaPago().getSigla().compareTo(ParamsLocal.SIGLA_FORMA_PAGO_BOCA_COBRANZA) == 0
+						|| x.getCobranzacobrodetallepk().getFormaPago().getSigla().compareTo(ParamsLocal.SIGLA_FORMA_PAGO_DEPOSITO_ATM)==0
+						|| x.getCobranzacobrodetallepk().getFormaPago().getSigla().compareTo(ParamsLocal.SIGLA_FORMA_PAGO_DEPOSITO_BANCARIO) == 0
+						|| x.getCobranzacobrodetallepk().getFormaPago().getSigla().compareTo(ParamsLocal.SIGLA_FORMA_PAGO_DEPOSITO_EXTERIOR) == 0) {
+					
+					tp.setTipoPagoCodigo(21L);
+					tp.setMonto(x.getMonto());
+										
+				}
+				
+				co.getTiposPagos().add(tp);
+				
+			}
+			
+		}else if (this.cobranzaSelected.getCondicionVentaTipo().getSigla().compareTo(ParamsLocal.SIGLA_CONDICION_VENTA_CREDITO)==0) {
+			
+			co.setCondicion(2l);
+			co.setOperacionTipo(1l);
+			
+			long diff = this.cobranzaSelected.getFechaCreditoVencimiento().getTime() - this.cobranzaSelected.getFecha().getTime();
+	        long diferenciaEnDias = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+	        
+	        co.setPlazoCredito(diferenciaEnDias+" dias");
+			
+		}
+		
+		ce.setCondicionOperacion(co);
+		
+		for (CobranzaDetalle cdx : this.lDetalles) {
+			
+			ComprobanteElectronicoDetalle det = new ComprobanteElectronicoDetalle();
+			
+			det.setItemCodigo(cdx.getEstadoCuenta().getEstadocuentaid()+"");
+			det.setItemDescripcion(cdx.getDescripcion());
+			det.setCantidad(1);
+			det.setPrecioUnitario(cdx.getMonto());
+			
+			if (cdx.getExento() > 0) {
+				
+				det.setAfectacionTributaria(3l);
+				det.setProporcionIVA(0);
+				det.setTasaIVA(0);
+				
+			}else if (cdx.getIva5() > 0) {
+				
+				det.setAfectacionTributaria(1l);
+				det.setProporcionIVA(100);
+				det.setTasaIVA(5);
+				
+			}else if (cdx.getIva10() > 0) {
+				
+				det.setAfectacionTributaria(1l);
+				det.setProporcionIVA(100);
+				det.setTasaIVA(10);
+			}
+			
+			
+			ce.getDetalles().add(det);
+			
+		}
+		
+		ce.setTotalComprobante(this.cobranzaSelected.getTotalDetalleCobro());
+		
+		
+		SifenDocumento sd = new SifenDocumento();
+		sd.setCobranza(this.cobranzaSelected);
+		//this.cobranzaSelected.setComprobanteElectronico(true);
+		
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();		
+		sd.setJson(gson.toJson(ce));
+			
+		this.save(sd);
+		
+		HttpConexion con = new HttpConexion();
+		
+		String link = this.getSistemaPropiedad("FE_HOST").getValor() + "/factura";
+		
+		try {
+			ResultRest rr = con.consumirREST(link, HttpConexion.POST, sd.getJson());
+			
+			Kude k = gson.fromJson(rr.getMensaje(), Kude.class);
+			
+			sd.setCdc(k.getCdc());
+			sd.setQr(k.getQr());
+			sd.setEnviado(true);
+			
+			this.save(sd);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+			System.out.println(e.toString());
+			
+		}
+		
+		
+		
+		
+	}*/
 
 	private boolean existeComprobante() {
 
@@ -1508,7 +1776,7 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 		UsuarioSede us = this.getCurrentUsuarioSede();
 
 		StringBuffer numero = new StringBuffer();
-		Object[] out = new Object[4];
+		Object[] out = new Object[5];
 
 		/*
 		 * Comprobante comprobante =
@@ -1543,6 +1811,9 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 		out[1] = comprobante.getEmision();
 		out[2] = comprobante.getVencimiento();
 		out[3] = numero;
+		
+		//envia campo si es electronico
+		out[4] = comprobante.isElectronico();
 
 		comprobante.setSiguiente(comprobante.getSiguiente() + 1);
 
@@ -1565,6 +1836,14 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 
 		Executions.getCurrent().sendRedirect(
 				"/instituto/zul/administracion/facturaReporte.zul?id=" + this.cobranzaSelected.getCobranzaid(),
+				"_blank");
+
+	}
+	
+	public void generarKude() {
+
+		Executions.getCurrent().sendRedirect(
+				"/instituto/zul/administracion/kudeReporte.zul?id=" + this.cobranzaSelected.getCobranzaid(),
 				"_blank");
 
 	}

@@ -1,5 +1,7 @@
 SELECT 
-	case when cd.servicioid is null then co.concepto ||' '|| es.periodo else s.servicio end as descripcion, 
+	case
+	when cd.descripcion is not null then cd.descripcion 
+	when cd.servicioid is null then co.concepto ||' '|| es.periodo else s.servicio end as descripcion, 
 	cd.monto,
 	cd.exento,
 	cd.iva5,
@@ -14,4 +16,4 @@ FROM cobranzasdetalles cd
 	 co.conceptoid = es.conceptoid 
 	left join servicios s on s.servicioid = cd.servicioid	 
 WHERE 
-	 cd.cobranzaid = ?1
+	 cd.cobranzaid = ?1;

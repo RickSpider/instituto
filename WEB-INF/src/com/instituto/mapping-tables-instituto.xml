@@ -30,3 +30,5 @@
 <mapping class="com.instituto.modelo.Cuenta" />
 <mapping class="com.instituto.modelo.Transaccion" />
 <mapping class="com.instituto.modelo.Servicio" />
+<mapping class="com.instituto.modelo.SifenDocumento" />
+

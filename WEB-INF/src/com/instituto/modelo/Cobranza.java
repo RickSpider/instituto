@@ -57,6 +57,9 @@ public class Cobranza extends Modelo implements Serializable {
     @Column(updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fecha;
+    
+	@Temporal(TemporalType.TIMESTAMP)
+    private Date fechaCreditoVencimiento;
 	
 	private String ruc;
 	private String razonSocial;
@@ -84,6 +87,26 @@ public class Cobranza extends Modelo implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "cajaid")
 	private Caja caja;
+	
+	@ColumnDefault("false")
+	private boolean comprobanteElectronico;
+	
+	//seccion facturacion electronica
+	
+	/*@Column(columnDefinition="text")
+	private String json;
+	private String cdc;
+	
+	@Column(columnDefinition="text")
+	private String qr;
+	private String estado;
+	
+	@ColumnDefault("false")
+	private boolean enviado = false;
+	
+	@Column(columnDefinition="text")
+	private String respuesta;*/
+	
 	
 	@Override
 	public Object[] getArrayObjectDatos() {
@@ -315,6 +338,22 @@ public class Cobranza extends Modelo implements Serializable {
 
 	public void setPersona(Persona persona) {
 		this.persona = persona;
+	}
+
+	public Date getFechaCreditoVencimiento() {
+		return fechaCreditoVencimiento;
+	}
+
+	public void setFechaCreditoVencimiento(Date fechaCreditoVencimiento) {
+		this.fechaCreditoVencimiento = fechaCreditoVencimiento;
+	}
+
+	public boolean isComprobanteElectronico() {
+		return comprobanteElectronico;
+	}
+
+	public void setComprobanteElectronico(boolean comprobanteElectronico) {
+		this.comprobanteElectronico = comprobanteElectronico;
 	}
 
 	

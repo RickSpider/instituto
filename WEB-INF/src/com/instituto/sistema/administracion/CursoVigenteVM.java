@@ -1381,7 +1381,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	@Command
 	public void planillaCalificaciones(@BindingParam("cursoVigenteid") Long cursoVigenteid) {
 		
-		ReportExcel re = new ReportExcel("PlanillaCalificaciones");
+		ReportExcel re = new ReportExcel("PlanillaCalificacionesCurso"+"cursoVigenteid");
 		CursoVigente cv = this.reg.getObjectById(CursoVigente.class.getName(), cursoVigenteid);
 		
 		List<String[]> titulos = new ArrayList<String[]>();

@@ -129,13 +129,20 @@ public class PersonaVM extends TemplateViewModel {
 
 			this.personaSelected = this.reg.getObjectById(Persona.class.getName(), personaid);
 			this.buscarDocumento = this.personaSelected.getDocumentoTipo().getTipo();
-			this.buscarEstadoCivil = this.personaSelected.getEstadoCivil().getTipo();
+			this.buscarEstadoCivil = "";
 			this.buscarPais = this.personaSelected.getNacionalidad().getGentilicio();
-			this.buscarCiudad = this.personaSelected.getCiudad().getCiudad();
-			this.buscarGradoAcademico = this.personaSelected.getGradoAcademico().getGradoacademico();
+			this.buscarCiudad = this.personaSelected.getCiudad().getCiudad();			
+			this.buscarGradoAcademico = "";
 			this.buscarInstitucion = "";
 			this.buscarPersonaTipo = "";
 
+			if (this.personaSelected.getEstadoCivil() != null) {
+				
+				this.buscarEstadoCivil = this.personaSelected.getEstadoCivil().getTipo();
+				
+			}
+			
+			
 			if (this.personaSelected.getInstitucion() != null) {
 
 				this.buscarInstitucion = this.personaSelected.getInstitucion().getInstitucion();
@@ -147,6 +154,14 @@ public class PersonaVM extends TemplateViewModel {
 				this.buscarPersonaTipo = this.personaSelected.getPersonaTipo().getTipo();
 
 			}
+			
+			if (this.personaSelected.getGradoAcademico() != null) {
+				
+				this.buscarGradoAcademico = this.personaSelected.getGradoAcademico().getGradoacademico();
+				
+			}
+			
+			
 
 			this.editar = true;
 

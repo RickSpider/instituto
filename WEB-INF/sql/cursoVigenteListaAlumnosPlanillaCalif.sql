@@ -5,7 +5,7 @@ p.nombre,
 p.documentonum
 from cursosvigentesalumnos cva
 left join alumnos a on a.alumnoid = cva.alumnoid
-left join personas p on p.personaid = a.alumnoid
+left join personas p on p.personaid = a.personaid
 where cursovigenteid = ?1 and cva.inscripcionAnulada = false
 order by p.apellido asc;
 
