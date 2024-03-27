@@ -14,6 +14,7 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Messagebox;
 
+import com.doxacore.util.EmailService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.instituto.fe.model.Contribuyente;
@@ -253,7 +254,14 @@ public class CobrosVM extends TemplateViewModelLocal{
 
 	}
 
-	
+	public void enviarEmailFE() {
+		
+		/*EmailService es = new EmailService();
+		
+		es.setParametros(host, port, username, password, starttls, auth, ssl);
+		"%644K3T=bZdu3rZ=!"*/
+		
+	}
 
 	public boolean isOpAnularCobro() {
 		return opAnularCobro;

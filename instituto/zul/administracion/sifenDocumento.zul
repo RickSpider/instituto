@@ -1,7 +1,7 @@
-<?page title="Comprobantes" contentType="text/html;charset=UTF-8"?>
+<?page title="SifenDocumentos" contentType="text/html;charset=UTF-8"?>
 <zk>
-	<window title="Cobros" border="normal"
-		viewModel="@id('vm') @init('com.instituto.sistema.administracion.CobrosVM')"
+	<window title="SifenDocumentos" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.administracion.SifenDocumentoVM')"
 		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
 
 		<hlayout vflex="1">
@@ -9,7 +9,7 @@
 			<vlayout hflex="1" vflex="1">
 
 				<listbox emptyMessage="lista vacía..." mold="paging" autopaging="true"
-					vflex="1" model="@load(vm.lCobranzas)" checkmark="true">
+					vflex="1" model="@load(vm.lSifenDocumentos)" checkmark="true">
 
 					<listhead>
 
@@ -18,19 +18,16 @@
 							hflex="min" />
 
 						<listheader label="Fecha" align="center" />
-						<listheader label="Comprobante" align="center" />
-						<listheader label="Timbrado" align="center" />
+						<listheader label="CDC" align="center" width="350px" />
+						
 						<listheader label="Comprobante #"
 							align="center" />
 							
-						<listheader label="Persona" width="250px" align="center" />
-						<listheader label="Anulado" align="center" />
-						<listheader label="Fecha Anulacion"
-							align="center" />
+						<listheader label="Enviado" align="center" />
 							
-						<listheader label="Usuario Anulación" align="center" />
-
-						<listheader align="center" hflex="min" />
+						<listheader label="Estado" width="250px" align="center" />
+						<listheader label="Tipo Comprobante" align="center" />
+						<listheader hflex="min"/>
 
 
 					</listhead>
@@ -77,18 +74,6 @@
 								hflex="1" />
 						</auxheader>
 						
-						<auxheader>
-							<textbox value="@bind(vm.filtroColumns[7])"
-								instant="true" onChange="@command('filtrarCobranzas')"
-								hflex="1" />
-						</auxheader>
-						
-						<auxheader>
-							<textbox value="@bind(vm.filtroColumns[8])"
-								instant="true" onChange="@command('filtrarCobranzas')"
-								hflex="1" />
-						</auxheader>
-
 						<auxheader />
 
 					</auxhead>
@@ -98,41 +83,48 @@
 						<listitem>
 							<listcell />
 							<listcell label="@load(each[0])" />
-
-							<listcell
-								label="@load(each[1]) @converter('formatedDate', format='dd/MM/yyyy HH:mm:ss')" />
-
-							<listcell
-								label="@load(each[2])" />
-
+							<listcell label="@load(each[1])" />
+							<listcell >
+								<textbox value="@load(each[2])" readonly="true" hflex="1" />
+							</listcell>
 							<listcell label="@load(each[3])" />
-							<listcell
-								label="@load(each[4])" />
-
-					
-							<listcell label="@load(each[5])"/>
-							
-							<listcell
-								label="@load(each[6])" />		
-
-							<listcell
-								label="@load(each[7]) @converter('formatedDate', format='dd/MM/yyyy')" />
-							<listcell
-								label="@load(each[8])" />
+							<listcell label="@load(each[4])" />
+							<listcell label="@load(each[5])" />
+							<listcell label="@load(each[6])" />
 
 							<listcell>
 								<hlayout>
-
-									<button iconSclass="z-icon-print"
+								
+									<button iconSclass="z-icon-qrcode"
 										class="doxa-button-green"
-										onClick="@command('verComprobante', cobranzaid=each[0])"
+										onClick="@command('openQrSifen', sifenDocumentoid=each[0])"
+										tooltiptext="Abrir Sifen Ekuatia" />
+									
+									<button iconSclass="z-icon-cloud-upload "
+										class="doxa-button-violet"
+										onClick="@command('enviarComprobante', sifenDocumentoid=each[0])"
+										tooltiptext="Enviar Comprobante" />
+										
+									<button iconSclass="z-icon-refresh "
+										
+										onClick="@command('consultarComprobante', sifenDocumentoid=each[0])"
+										tooltiptext="Enviar Comprobante" />
+									
+									<button iconSclass="z-icon-print"
+										class="doxa-button-orange"
+										onClick="@command('generarKude', sifenDocumentoid=each[0])"
 										tooltiptext="Imprimir Comprobante" />
-
-									<button iconSclass="z-icon-unlink "
-										class="doxa-button-red"
-										onClick="@command('anularCobranzaConfirmacion', cobranzaid=each[0])"
-										tooltiptext="Anular" disabled="@load(!vm.opAnularCobro)" />
-
+										
+									<!-- <button iconSclass="z-icon-edit"
+										onClick="@command('', sifenDocumentoid=each[0])"
+										tooltiptext="Enviar Comprobante" 
+										disabled="@load(vm.opEditarSifenDocumento)"/> -->
+								
+									<!-- <button iconSclass="z-icon-trash-o"
+										style="background-color:red"
+										onClick="@command('', sifenDocumentoid=each[0])"
+										tooltiptext="Borrar" disabled="@load(vm.opBorrarSifenDocumento)" /> -->
+									
 
 								</hlayout>
 
@@ -149,7 +141,7 @@
 						<listfooter span="4" align="left">
 							<hlayout>
 								<label
-									value="@load(vm.lCobranzas.size())" />
+									value="@load(vm.lSifenDocumentos.size())" />
 								<label value="items" />
 							</hlayout>
 						</listfooter>

@@ -1,6 +1,5 @@
 package com.instituto.sistema.abm;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.zkoss.bind.BindUtils;
@@ -17,22 +16,17 @@ import org.zkoss.zk.ui.util.Notification;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
-import com.doxacore.TemplateViewModel;
-import com.doxacore.modelo.Ciudad;
 import com.instituto.modelo.Alumno;
-import com.instituto.modelo.PersonaEntidad;
-import com.instituto.modelo.CursoVigente;
 import com.instituto.modelo.CursoVigenteAlumno;
-import com.instituto.modelo.Entidad;
 import com.instituto.modelo.Persona;
-import com.instituto.modelo.Sede;
+
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
 
 public class AlumnoVM extends TemplateViewModelLocal {
 
-	private List<Alumno> lAlumnos;
-	private List<Alumno> lAlumnosOri;
+	private List<Object[]> lAlumnos;
+	private List<Object[]> lAlumnosOri;
 	private Alumno alumnoSelected;
 
 	private boolean opCrearAlumno;
@@ -63,9 +57,13 @@ public class AlumnoVM extends TemplateViewModelLocal {
 	}
 
 	private void cargarAlumnos() {
+		
+		String sql = this.um.getSql("alumno/alumnos.sql").replace("?1", this.getCurrentSede().getSedeid()+"");
+		
+		this.lAlumnos = this.reg.sqlNativo(sql);
 
-		this.lAlumnos = this.reg.getAllObjectsByCondicionOrder(Alumno.class.getName(),
-				"sedeid = " + this.getCurrentSede().getSedeid(), "Alumnoid asc");
+		/*this.lAlumnos = this.reg.getAllObjectsByCondicionOrder(Alumno.class.getName(),
+				"sedeid = " + this.getCurrentSede().getSedeid(), "Alumnoid asc");*/
 		this.lAlumnosOri = this.lAlumnos;
 	}
 
@@ -75,7 +73,7 @@ public class AlumnoVM extends TemplateViewModelLocal {
 
 	private void inicializarFiltros() {
 
-		this.filtroColumns = new String[6]; // se debe de iniciar el filtro deacuerdo a la cantidad declarada en el
+		this.filtroColumns = new String[8]; // se debe de iniciar el filtro deacuerdo a la cantidad declarada en el
 											// modelo sin id
 
 		for (int i = 0; i < this.filtroColumns.length; i++) {
@@ -90,7 +88,8 @@ public class AlumnoVM extends TemplateViewModelLocal {
 	@NotifyChange("lAlumnos")
 	public void filtrarAlumno() {
 
-		this.lAlumnos = this.filtrarLT(this.filtroColumns, this.lAlumnosOri);
+	//	this.lAlumnos = this.filtrarLT(this.filtroColumns, this.lAlumnosOri);
+		this.lAlumnos = this.filtrarListaObject(this.filtroColumns, this.lAlumnosOri);
 
 	}
 
@@ -194,12 +193,41 @@ public class AlumnoVM extends TemplateViewModelLocal {
 		return true;
 	}
 
+	private boolean inactivar() {
+		
+		String sql ="select coalesce( sum(monto),0 )as monto,coalesce( sum(pago),0 )as pago,coalesce( sum(monto -pago),0 ) as diff from estadoscuentas\r\n" + 
+				"where alumnoid = "+this.alumnoSelected.getAlumnoid()+";";
+		
+		
+		List<Object[]> totalEstadoCuenta = this.reg.sqlNativo(sql);
+		
+		
+		if (Double.parseDouble(totalEstadoCuenta.get(0)[2].toString()) > 0) {
+			
+			return false;
+			
+		}
+		
+		return true;
+	}
+	
 	@Command
 	@NotifyChange("lAlumnos")
 	public void guardar() {
 
 		if (!verificarCampos()) {
 			return;
+		}
+		
+		if (this.alumnoSelected.getAlumnoid() != null && !this.alumnoSelected.isActivo() ) {
+			
+			if (!this.inactivar()) {
+				
+				this.mensajeError("No se puede inactivar al alumno posee estados de cuentas.");
+				return;
+				
+			}
+			
 		}
 
 		this.alumnoSelected.setSede(this.getCurrentSede());
@@ -226,7 +254,7 @@ public class AlumnoVM extends TemplateViewModelLocal {
 	// fin modal
 
 	@Command
-	public void borrarAlumnoConfirmacion(@BindingParam("alumno") final Alumno alumno) {
+	public void borrarAlumnoConfirmacion(@BindingParam("alumnoid") final long alumnoid) {
 
 		if (!this.opBorrarAlumno)
 			return;
@@ -238,7 +266,7 @@ public class AlumnoVM extends TemplateViewModelLocal {
 
 				if (evt.getName().equals(Messagebox.ON_YES)) {
 
-					borrarAlumno(alumno);
+					borrarAlumno(reg.getObjectById(Alumno.class.getName(), alumnoid));
 
 				}
 
@@ -340,13 +368,7 @@ public class AlumnoVM extends TemplateViewModelLocal {
 	// fin buscador de PersonaFacturacion
 	
 
-	public List<Alumno> getlAlumnos() {
-		return lAlumnos;
-	}
-
-	public void setlAlumnos(List<Alumno> lAlumnos) {
-		this.lAlumnos = lAlumnos;
-	}
+	
 
 	public Alumno getAlumnoSelected() {
 		return alumnoSelected;
@@ -434,5 +456,13 @@ public class AlumnoVM extends TemplateViewModelLocal {
 
 	public void setBuscarPersonaFacturacion(String buscarPersonaFacturacion) {
 		this.buscarPersonaFacturacion = buscarPersonaFacturacion;
+	}
+
+	public List<Object[]> getlAlumnos() {
+		return lAlumnos;
+	}
+
+	public void setlAlumnos(List<Object[]> lAlumnos) {
+		this.lAlumnos = lAlumnos;
 	}
 }

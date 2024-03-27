@@ -13,6 +13,7 @@ import com.instituto.fe.model.Cheque;
 import com.instituto.fe.model.ComprobanteElectronico;
 import com.instituto.fe.model.ComprobanteElectronicoDetalle;
 import com.instituto.fe.model.CondicionOperacion;
+import com.instituto.fe.model.ConsultaCDC;
 import com.instituto.fe.model.Contribuyente;
 import com.instituto.fe.model.Kude;
 import com.instituto.fe.model.Receptor;
@@ -32,6 +33,7 @@ public class MetodosCE extends Control {
 	
 	public static String FACTURA = "/factura";
 	public static String EVENTO_CANCELAR_FACTURA = "/evento/cancelarfactura";
+	public static String CONSULTA_CDC = "/consultar/comprobante/";
 
 	public SifenDocumento convertAndSend(Long cobranzaid, Long sedeid) {
 
@@ -273,6 +275,33 @@ public class MetodosCE extends Control {
 		}
 		
 		return null;
+		
+	}
+	
+	public ConsultaCDC consultarCDC(String cdc) {
+		
+		String link = this.getSistemaPropiedad("FE_HOST").getValor()+MetodosCE.CONSULTA_CDC+cdc;
+		
+		System.out.println(link);
+		
+		HttpConexion con = new HttpConexion();
+		
+		try {
+			ResultRest rr = con.consumirREST(link, HttpConexion.GET, null);
+			
+			Gson gson = new GsonBuilder().create();
+			
+			ConsultaCDC ccdc = gson.fromJson(rr.getMensaje(), ConsultaCDC.class);
+			
+			return ccdc;
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+		
 		
 	}
 

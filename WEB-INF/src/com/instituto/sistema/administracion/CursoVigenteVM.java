@@ -557,7 +557,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 		this.cursoVigenteSelectedAlumnoConceptoMateriaConvenio = cursoVigente;
 		this.lAlumnosCursosVigentes = this.reg.getAllObjectsByCondicionOrder(CursoVigenteAlumno.class.getName(),
-				"cursoVigenteid = " + cursoVigente.getCursovigenteid(), "alumnoid asc");
+				"cursoVigenteid = " + cursoVigente.getCursovigenteid()+" AND inscripcionAnulada = false", "alumnoid asc");
 
 		this.lAlumnosCursosVigentesOri = this.lAlumnosCursosVigentes;
 

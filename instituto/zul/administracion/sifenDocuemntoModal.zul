@@ -1,0 +1,55 @@
+<?page title="sifenDocumentoModal" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Sifen Documento Ver/Editar" border="normal"
+		position="center,center" closable="true" mode="modal"
+		action="show: slideDown;hide: slideUp">
+
+		<tablelayout columns="2">
+		
+			<tablechildren>
+				<lable value="Id:"/>
+			</tablechildren>
+			<tablechildren>
+				<textbox value="@bind(vm.sifenDocumentoSelected.sifenDocumentoid)" />
+			</tablechildren>
+			
+			<tablechildren>
+				<lable value="CDC:"/>
+			</tablechildren>
+			<tablechildren>
+				<textbox value="@bind(vm.sifenDocumentoSelected.cdc)" />
+			</tablechildren>
+			
+			<tablechildren>
+				<lable value="Enviado:"/>
+			</tablechildren>
+			<tablechildren>
+				<textbox value="@bind(vm.sifenDocumentoSelected.enviado)" />
+			</tablechildren>
+			
+			<tablechildren>
+				<lable value="Estado:"/>
+			</tablechildren>
+			<tablechildren>
+				<textbox value="@bind(vm.sifenDocumentoSelected.estado)" />
+			</tablechildren>
+			
+			<tablechildren>
+				<lable value="Respuesta:"/>
+			</tablechildren>
+			<tablechildren>
+				<textbox value="@bind(vm.sifenDocumentoSelected.respuesta)" />
+			</tablechildren>
+			
+			<tablechildren>
+				<lable value="Json:"/>
+			</tablechildren>
+			<tablechildren>
+				<textbox value="@bind(vm.sifenDocumentoSelected.json)" />
+			</tablechildren>
+		
+		</tablelayout>
+
+
+	</window>
+</zk>

@@ -207,6 +207,9 @@ public class ParamsLocal extends Params {
 	public static final String OP_CREAR_COBRANZASERVICIO = "CrearCobranzaServicio";
 	public static final String OP_DEFINIR_FECHA_COBRANZASERVICIO = "DefinirFechaCobranzaServicio";
 
-
+	// SifenDocumentos
+	public static final String OP_CREAR_SIFENDOCUMENTO = "CrearSifenDocumento";
+	public static final String OP_EDITAR_SIFENDOCUMENTO = "EditarSifenDocumento";
+	public static final String OP_BORRAR_SIFENDOCUMENTO = "BorrarSifenDocumento";
 
 }

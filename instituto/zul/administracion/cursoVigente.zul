@@ -601,6 +601,7 @@
 								<!--  	<button label="Generar"
 										iconSclass=" z-icon-plus"
 										onClick="@command('generarEstadoCuentaCursoVigente')" />   -->
+										
 
 									<button label="Agregar"
 										iconSclass=" z-icon-plus"
@@ -629,7 +630,7 @@
 											align="center" hflex="min" />
 											
 										<listheader label="Inscripción Anulada"
-											align="center" hflex="min" />
+											align="center" hflex="min" visible = "false"/>
 											
 										<listheader align="center"
 											width="100px" />
