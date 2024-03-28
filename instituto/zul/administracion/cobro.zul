@@ -23,7 +23,7 @@
 						<listheader label="Comprobante #"
 							align="center" />
 							
-						<listheader label="Persona" width="250px" align="center" />
+						<listheader label="Persona" width="250px" align="left" />
 						<listheader label="Anulado" align="center" />
 						<listheader label="Fecha Anulacion"
 							align="center" />

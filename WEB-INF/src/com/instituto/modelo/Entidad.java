@@ -28,14 +28,14 @@ public class Entidad extends Modelo implements Serializable{
 
 	@Override
 	public Object[] getArrayObjectDatos() {
-		// TODO Auto-generated method stub
-		return null;
+		Object[] o = {this.entidad};
+		return o;
 	}
 
 	@Override
 	public String getStringDatos() {
 		// TODO Auto-generated method stub
-		return null;
+		return this.entidadid+" "+this.entidad;
 	}
 
 	public String getEntidad() {
