@@ -1,43 +1,24 @@
-package com.instituto.sistema.administracion;
+package com.instituto.sistema.reporte;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.zkoss.bind.annotation.AfterCompose;
-import org.zkoss.bind.annotation.Init;
-
+import com.doxacore.report.ReportPDF;
 import com.doxacore.util.PasarNumerosLetras;
-import com.doxacore.report.TemplateReportViewModel;
 import com.instituto.fe.util.GenerarQR;
 import com.instituto.modelo.Cobranza;
 import com.instituto.modelo.SifenDocumento;
 import com.instituto.util.ParamsLocal;
 
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRLoader;
-
-
-public class KudeReporteVM extends TemplateReportViewModel {
+public class ReporteKudePDF extends ReportPDF {
 	
-	@Init(superclass = true)
-	public void initFacturaVM() {
-
+	
+	public ReporteKudePDF(Long id, String fileName) {
+		super(id, fileName);
+		
 		this.source += "kude.jasper";
-
-	}
-
-	@AfterCompose(superclass = true)
-	public void afterComposeFacturaVM() {
-
+		
 	}
 	
 	@Override

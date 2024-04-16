@@ -122,11 +122,18 @@
 
 							<listcell>
 								<hlayout>
+								
+									
 
 									<button iconSclass="z-icon-print"
 										class="doxa-button-green"
 										onClick="@command('verComprobante', cobranzaid=each[0])"
 										tooltiptext="Imprimir Comprobante" />
+										
+									<button iconSclass="z-icon-envelope "
+										class="doxa-button-orange"
+										onClick="@command('enviaremailFEConfirmacion', cobranzaid=each[0])"
+										tooltiptext="Enviar comprobante por mail" />
 
 									<button iconSclass="z-icon-unlink "
 										class="doxa-button-red"

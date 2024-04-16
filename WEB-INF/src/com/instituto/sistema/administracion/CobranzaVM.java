@@ -1,10 +1,15 @@
 package com.instituto.sistema.administracion;
 
+import java.io.File;
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
@@ -36,8 +41,13 @@ import com.instituto.modelo.Persona;
 import com.instituto.modelo.Servicio;
 import com.instituto.modelo.SifenDocumento;
 import com.instituto.modelo.UsuarioSede;
+import com.instituto.sistema.reporte.ReporteKudePDF;
+import com.instituto.util.EmailServiceModoboa;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
+import com.instituto.util.UtilLocalMetodo;
+
+import net.sf.jasperreports.engine.JRException;
 
 public class CobranzaVM extends TemplateViewModelLocal {
 
@@ -1369,7 +1379,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		return "font-weight: bold; text-align:right; ";
 	}
 
-	private void procesarCobranza() {
+	private void procesarCobranza() throws KeyManagementException, NoSuchAlgorithmException, IOException, JRException {
 
 		if (this.cajaSelected == null) {
 
@@ -1568,6 +1578,8 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		Executions.getCurrent().sendRedirect(
 				"/instituto/zul/administracion/reciboReporte.zul?id=" + this.cobranzaSelected.getCobranzaid(),
 				"_blank");
+		
+	
 
 	}
 
@@ -1579,15 +1591,63 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	}
 	
-	public void generarKude() {
+	public void generarKude() throws KeyManagementException, NoSuchAlgorithmException, IOException, JRException {
 
 		Executions.getCurrent().sendRedirect(
 				"/instituto/zul/administracion/kudeReporte.zul?id=" + this.cobranzaSelected.getCobranzaid(),
 				"_blank");
+		
+		System.out.println("Inicio de envio de correo");
+		
+		UtilLocalMetodo ulm = new UtilLocalMetodo();
+		
+		String email = ulm.getEmailCobranza(this.cobranzaSelected.getCobranzaid());
+				
+		
+		if (email != null) {
+			
+			String host = getSistemaPropiedad("EMAIL_HOST").getValor();
+			String user = getSistemaPropiedad("EMAIL_USER").getValor();
+			String pass = getSistemaPropiedad("EMAIL_PASS").getValor();
+			
+			ReporteKudePDF rk = new ReporteKudePDF(this.cobranzaSelected.getCobranzaid(), "kude"+this.cobranzaSelected.getCobranzaid());
+			
+			System.out.println("Inicio de envio de correo");
+			new Thread(() -> {
+		        // Coloca aquí el código de tu tarea asíncrona
+		        try {
+		        	System.out.println("dentro de la tarea y tray asincrono");
+		        	enviarEmailFE(email, host, user, pass, rk.getPDF());
+		    				} catch (Exception e) {
+					
+					System.out.println(e.getCause());
+				}
+		    }).start();		
+		}	
 
+	}
+	
+	public void enviarEmailFE(String email, String host, String user, String pass, File pdf) throws KeyManagementException, NoSuchAlgorithmException, IOException, JRException {
+		
+		System.out.println("==================DENTRO DEL MEDOTO DE ENVIO================");
+				
+		//email="rrgi89@hotmail.com";
+		System.out.println("ENVIANDO CORREO A: "+email);
+		
+		System.out.println("host: "+host);
+
+		EmailServiceModoboa esm = new EmailServiceModoboa(host,user,pass);
+		
+		System.out.println("enviando mensaje");
+		
+		esm.sent(email, "Facturacion Electronica", "El archivo adjunto es una representacion grafica del Documento Electronico.", pdf);
+		
+		System.out.println("mensaje enviado");
+		
 	}
 
 	// =====================================================================
+	
 
 	public Cobranza getCobranzaSelected() {
 		return cobranzaSelected;

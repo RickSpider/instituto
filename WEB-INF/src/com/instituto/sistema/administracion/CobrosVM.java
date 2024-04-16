@@ -1,7 +1,12 @@
 package com.instituto.sistema.administracion;
 
+import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
@@ -26,8 +31,13 @@ import com.instituto.modelo.CobranzaDetalle;
 import com.instituto.modelo.Comprobante;
 import com.instituto.modelo.EstadoCuenta;
 import com.instituto.modelo.SifenDocumento;
+import com.instituto.sistema.reporte.ReporteKudePDF;
+import com.instituto.util.EmailServiceModoboa;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
+import com.instituto.util.UtilLocalMetodo;
+
+import net.sf.jasperreports.engine.JRException;
 
 public class CobrosVM extends TemplateViewModelLocal{
 
@@ -253,13 +263,50 @@ public class CobrosVM extends TemplateViewModelLocal{
 		}
 
 	}
+	
+	
+	public void enviaremailFEConfirmacion(@BindingParam("cobranzaid") long id) {
+		
+		EventListener event = new EventListener () {
 
-	public void enviarEmailFE() {
+			@Override
+			public void onEvent(Event evt) throws Exception {
+				
+				if (evt.getName().equals(Messagebox.ON_YES)) {
+					
+					enviarEmailFE(id);
+					
+				}
+				
+			}
+
+		};
 		
-		/*EmailService es = new EmailService();
+		this.mensajeSiNo("Se enviara nuevamente el correo electronico.\nContinuar?", "Enviar Correo", event);
 		
-		es.setParametros(host, port, username, password, starttls, auth, ssl);
-		"%644K3T=bZdu3rZ=!"*/
+	}
+	
+
+	public void enviarEmailFE(@BindingParam("cobranzaid") long id) throws KeyManagementException, NoSuchAlgorithmException, IOException, JRException {
+				
+		UtilLocalMetodo ulm = new UtilLocalMetodo();
+		
+		String email = ulm.getEmailCobranza(id);
+		
+		if (email == null) {
+						
+			this.mensajeError("No hay correo cargado para el envio.");
+			return;
+			
+		}
+		
+		//email="rrgi89@hotmail.com";
+		
+		EmailServiceModoboa esm = new EmailServiceModoboa(this.getSistemaPropiedad("EMAIL_HOST").getValor(),this.getSistemaPropiedad("EMAIL_USER").getValor(),this.getSistemaPropiedad("EMAIL_PASS").getValor());
+		
+		ReporteKudePDF rk = new ReporteKudePDF(id, "kude"+id);
+		
+		esm.sent(email, "Facturacion Electronica", "El archivo adjunto es una representacion grafica del Documento Electronico.", rk.getPDF());
 		
 	}
 
