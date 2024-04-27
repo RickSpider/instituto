@@ -69,17 +69,19 @@ public class FacturacionReporteVM extends TemplateViewModelLocal {
 		}
 		
 		ReportExcel re = new ReportExcel("Facturacion");
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		//CursoVigente cv = this.reg.getObjectById(CursoVigente.class.getName(), cursoVigenteid);
 		
 		List<String[]> titulos = new ArrayList<String[]>();
+		
+		SimpleDateFormat sdfRango = new SimpleDateFormat("dd-MM-yyyy");
 		
 		String[] t1 = {"INSTITUTO SANTO TOMAS"};
 		String[] t2 = {"Resolucion M.E.C. Nº 841/98"};
 		String[] t3 = {"Sede:",this.getCurrentSede().getSede()};
 		String[] t4 = {"REPORTE DE FACTURACION"};
-		String[] t5 = {"Fecha Inicio:", sdf.format(fechaInicio)};
-		String[] t6 = {"Fecha Fin:", sdf.format(fechaFin)};
+		String[] t5 = {"Fecha Inicio:", sdfRango.format(fechaInicio)};
+		String[] t6 = {"Fecha Fin:", sdfRango.format(fechaFin)};
 		String[] espacioBlanco = {""};
 		
 		titulos.add(t1);
@@ -97,6 +99,8 @@ public class FacturacionReporteVM extends TemplateViewModelLocal {
 		
 		
 		String sql1 =  this.um.getSql("facturacionReporte/facturasReporte.sql").replace("?1", sdf.format(fechaInicio) ).replace("?2", sdf.format(fechaFin));
+		
+		System.out.println(sql1);
 		
 		if (this.tipoRegistroSelected.compareTo("Activos") == 0) {
 			

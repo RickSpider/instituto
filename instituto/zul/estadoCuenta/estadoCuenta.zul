@@ -1,86 +1,28 @@
 <?page title="Estado de Cuenta" contentType="text/html;charset=UTF-8"?>
+
+<?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
+
 <zk>
-	<window title="Estado de Cuenta" border="normal"
+	<window title="Estado de Cuenta Alumno" border="normal"
 		viewModel="@id('vm') @init('com.instituto.sistema.estadoCuenta.EstadoCuentaVM')"
 		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
 
 		<vlayout vflex="1">
 
-			<tablelayout columns="3">
+			<tablelayout columns="4">
 
 				<tablechildren>
 					<label value="Alumno:" style="font-weight:bold" />
 				</tablechildren>
 				<tablechildren>
-
-					<hbox pack="end" hflex="1">
-
-						<bandbox id="bdAlumno"
-							value="@load(vm.buscarAlumno)" mold="rounded" autodrop="true"
-							width="250px" onOpen="@command('generarListaBuscarAlumno')"
-							readonly="true">
-							<bandpopup>
-
-								<vbox>
-
-									<hbox>
-
-										<label value="Buscar:" />
-
-										<textbox instant="true"
-											value="@bind(vm.buscarAlumno)"
-											onChange="@command('filtrarAlumnoBuscar')" />
-
-									</hbox>
-
-									<listbox id="lbAlumno"
-										height="250px" emptyMessage="lista vacía..." width="450px"
-										mold="paging" autopaging="true" onSelect="bdAlumno.close()"
-										model="@load(vm.lAlumnosBuscar)">
-
-										<listhead>
-											<listheader label="ID"
-												hflex="min" />
-											<listheader label="Nombre" />
-											<listheader
-												label="Apellido" />
-											<listheader
-												label="Documento Num" />
-										
-										</listhead>
-
-										<template name="model">
-
-											<listitem
-												value="@load(each[1])"
-												onClick="@command('onSelectAlumno', id = each[0])">
-
-												<listcell
-													label="@load(each[0])" />
-
-												<listcell
-													label="@load(each[1])" tooltiptext="@load(each[1])"/>
-
-												<listcell
-													label="@load(each[2])" tooltiptext="@load(each[2])"/>
-												<listcell
-													label="@load(each[3])" tooltiptext="@load(each[3])"/>
-												
-											</listitem>
-
-										</template>
-										<listitem />
-									</listbox>
-
-								</vbox>
-							</bandpopup>
-						</bandbox>
-
-					</hbox>
+				
+					<finder
+						finderValue="@load(vm.alumnoSelected.persona.documentoNum)"
+						finderModel="@init(vm.alumnoFinder)" />
 
 				</tablechildren>
 
-				<tablechildren colspan="2">
+				<tablechildren colspan="3">
 					<label value="@load(vm.alumnoSelected.fullNombre)" />
 				</tablechildren>
 
@@ -89,98 +31,57 @@
 				</tablechildren>
 				<tablechildren>
 
-					<hbox pack="end" hflex="1">
-
-						<bandbox id="bdCursoVigente"
-							value="@load(vm.buscarCursoVigente)" mold="rounded"
-							autodrop="true" width="250px"
-							onOpen="@command('generarListaBuscarCursoVigente')"
-							readonly="true">
-							<bandpopup>
-
-								<vbox>
-
-									<hbox>
-
-										<label value="Buscar:" />
-
-										<textbox instant="true"
-											value="@bind(vm.buscarCursoVigente)"
-											onChange="@command('filtrarCursoVigenteBuscar')" />
-
-									</hbox>
-
-									<listbox id="lbCursoVigente"
-										height="250px" emptyMessage="lista vacía..." width="450px"
-										mold="paging" autopaging="true"
-										onSelect="bdCursoVigente.close()"
-										model="@load(vm.lCursosVigentesBuscar)">
-
-										<listhead>
-											<listheader label="ID"
-												hflex="min" />
-											<listheader label="Curso" />
-											<listheader
-												label="Fecha Inicio" hflex="min" />
-											<listheader
-												label="Fecha Fin" hflex="min"/>
-										</listhead>
-
-										<template name="model">
-
-											<listitem
-												value="@load(each[1])"
-												onClick="@command('onSelectCursoVigente', id = each[0])">
-
-												<listcell>
-													<label value="@load(each[0])" />
-												</listcell>
-												<listcell
-													label="@load(each[1])" tooltiptext="@load(each[1])"/>
-
-												<listcell
-													label="@load(each[2]) @converter('formatedDate', format='dd/MM/yyyy')" />
-
-												<listcell
-													label="@load(each[3]) @converter('formatedDate', format='dd/MM/yyyy')" />
-
-											</listitem>
-
-										</template>
-										<listitem />
-									</listbox>
-
-								</vbox>
-							</bandpopup>
-						</bandbox>
-
-					</hbox>
+					<finder
+						finderValue="@load(vm.cursoVigenteSelected.curso.curso)"
+						finderModel="@load(vm.cursoFinder)" />
+					
 
 				</tablechildren>
 
-				<tablechildren colspan="2">
+				<tablechildren colspan="3">
 					<label
 						value="@load(vm.cursoVigenteSelected.curso.curso)" />
 				</tablechildren>
 				
 				
 				<tablechildren >
+					<label value="Importe Total:" style="font-weight:bold"/>
+				</tablechildren>
+				<tablechildren>
+					<doublebox width="120px"
+						value="@load(vm.importeTotalCurso)" format="#,###"
+						style="text-align:right" readonly="true" />
+				</tablechildren>
+				
+				<tablechildren >
+					<label value="Saldo Total:" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren >
+					<doublebox width="120px"
+						value="@load(vm.saldoTotal)" format="#,###"
+						style="text-align:right" readonly="true" />
+				</tablechildren>
+
+				<tablechildren >
+					<label value="Importe Abonado:" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren >
+					<doublebox width="120px"
+						value="@load(vm.importeAbonado)" format="#,###"
+						style="text-align:right" readonly="true" />
+				</tablechildren>
+				
+				
+				<tablechildren >
 					<label value="Saldo Vencido:" style="font-weight:bold"/>
 				</tablechildren>
-				<tablechildren colspan="2">
+				<tablechildren >
 					<doublebox width="120px"
 						value="@load(vm.saldoVencido)" format="#,###"
 						style="text-align:right" readonly="true" />
 				</tablechildren>
 
-				<tablechildren >
-					<label value="Saldo Total:" style="font-weight:bold" />
-				</tablechildren>
-				<tablechildren colspan="2">
-					<doublebox width="120px"
-						value="@load(vm.saldoTotal)" format="#,###"
-						style="text-align:right" readonly="true" />
-				</tablechildren>
+				
 				
 			</tablelayout>
 

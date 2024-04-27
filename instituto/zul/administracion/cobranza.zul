@@ -14,7 +14,14 @@
 				<tablechildren style="padding-left: 5px">
 					<label value="Alumno:" />
 				</tablechildren>
+				
 				<tablechildren style="padding-left: 5px">
+					<finder
+						finderValue="@load(vm.cobranzaSelected.alumno.fullNombre)"
+						finderModel="@load(vm.alumnoFinder)" disabled="@load(vm.disableCobranza)"/>
+					
+				
+				<!-- 
 					<bandbox id="bd"
 						value="@load(vm.buscarAlumno) @save(vm.buscarAlumno, before='guaradarCobranza')"
 						constraint="no empty: Es campo obligatorio." mold="rounded"
@@ -73,7 +80,7 @@
 
 							</vbox>
 						</bandpopup>
-					</bandbox>
+					</bandbox> -->
 				</tablechildren>
 				
 				<tablechildren style="padding-left: 5px">

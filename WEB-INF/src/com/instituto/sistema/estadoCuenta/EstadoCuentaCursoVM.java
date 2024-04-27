@@ -25,6 +25,7 @@ public class EstadoCuentaCursoVM extends TemplateViewModelLocal implements Finde
 	private CursoVigente cursoVigenteSelected;
 	private List<Object[]> lEstadosCuentasSumaGeneral;
 	private List<Object[]> lEstadosCuentas;
+	private boolean[] dias = {false,false,false,false,false,false,false};
 
 	private double saldoTotal = 0;
 	private double saldoVencido = 0;
@@ -93,6 +94,14 @@ public class EstadoCuentaCursoVM extends TemplateViewModelLocal implements Finde
 		if (finder.compareTo(this.cursoVigenteFinder.getNameFinder()) == 0) {
 
 			this.cursoVigenteSelected = this.reg.getObjectById(CursoVigente.class.getName(), id);
+			
+			String[] diasCV = this.cursoVigenteSelected.getDias().split(";");
+			
+			for (int i = 0; i<dias.length ; i++) {
+				
+				this.dias[i] = Boolean.parseBoolean(diasCV[i]);
+				
+			}
 
 		}
 
@@ -142,6 +151,8 @@ public class EstadoCuentaCursoVM extends TemplateViewModelLocal implements Finde
 		String sqlEstadoCuenta = this.um.getSql("estadoCuentaCurso/estadoCuentaGeneral.sql").replace("?1",
 				this.cursoVigenteSelected.getCursovigenteid() + "").replace("?2", String.valueOf(conceptoid)).replace("?3", periodo+"");
 
+	//	System.out.println(sqlEstadoCuenta);
+		
 		this.lEstadosCuentas = this.reg.sqlNativo(sqlEstadoCuenta);
 		
 	}
@@ -236,6 +247,14 @@ public class EstadoCuentaCursoVM extends TemplateViewModelLocal implements Finde
 
 	public void setlCobranzasDetalles(List<CobranzaDetalle> lCobranzasDetalles) {
 		this.lCobranzasDetalles = lCobranzasDetalles;
+	}
+
+	public boolean[] getDias() {
+		return dias;
+	}
+
+	public void setDias(boolean[] dias) {
+		this.dias = dias;
 	}
 
 }

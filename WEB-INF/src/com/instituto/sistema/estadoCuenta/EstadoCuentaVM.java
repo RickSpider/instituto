@@ -17,6 +17,7 @@ import org.zkoss.zk.ui.util.Notification;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
+import com.doxacore.components.finder.FinderModel;
 import com.instituto.modelo.Alumno;
 import com.instituto.modelo.Cobranza;
 import com.instituto.modelo.CobranzaDetalle;
@@ -24,6 +25,7 @@ import com.instituto.modelo.Concepto;
 import com.instituto.modelo.CursoVigente;
 import com.instituto.modelo.CursoVigenteMateria;
 import com.instituto.modelo.EstadoCuenta;
+import com.instituto.modelo.Persona;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
 
@@ -42,9 +44,13 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 	
 	private double saldoTotal = 0;
 	private double saldoVencido = 0;
+	private double importeTotalCurso = 0;
+	private double importeAbonado = 0;
 
 	@Init(superclass = true)
 	public void initEstadoCuentaVM() {
+		
+		this.inicializarFinders();
 
 	}
 
@@ -62,101 +68,133 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 
 	}
 
-	// Seccion Buscar alumno
-
-	// seccion buscador
-
-	private List<Object[]> lAlumnosbuscarOri;
-	private List<Object[]> lAlumnosBuscar;
-	private String buscarAlumno = "";
-
-	@Command
-	@NotifyChange("lAlumnosBuscar")
-	public void filtrarAlumnoBuscar() {
-
-		this.lAlumnosBuscar = this.filtrarListaObject(buscarAlumno, this.lAlumnosbuscarOri);
-
-	}
-
-	@Command
+	//Seccion Finder
+	
+	private FinderModel alumnoFinder;
+	private FinderModel cursoFinder;
+	
 	@NotifyChange("*")
-	public void generarListaBuscarAlumno() {
-		
-		this.buscarAlumno="";
-		this.buscarCursoVigente="";
+	public void inicializarFinders() {
 
-		String sqlBuscarAlumno = this.um.getSql("buscarAlumno.sql").replace("?1",
+		String sqlAlumno = this.um.getSql("buscarAlumno.sql").replace("?1",
 				this.getCurrentSede().getSedeid() + "");
 
-		this.lAlumnosBuscar = this.reg.sqlNativo(sqlBuscarAlumno);
-		this.lAlumnosbuscarOri = this.lAlumnosBuscar;
-	}
-
-	@Command
-	@NotifyChange("*")
-	public void onSelectAlumno(@BindingParam("id") long id) {
-
-		this.alumnoSelected = this.reg.getObjectById(Alumno.class.getName(), id);
-		this.buscarAlumno = alumnoSelected.getFullNombre();
-		this.cursoVigenteSelected = null;
-		this.buscarCursoVigente = "";
-		this.lEstadosCuentas = null;
-		this.lCobranzasDetalles = null;
-		this.saldoVencido = 0;
-		this.saldoTotal = 0;
+		this.alumnoFinder = new FinderModel("Alumno", sqlAlumno);
+		
 
 	}
+	
+	
+	public void generarFinders(@BindingParam("finder") String finder) {
 
-	// fin alumno buscador
+		if (this.cursoFinder != null && finder == null) {
 
-	// buscar curso vigente
+			this.mensajeInfo("finder es null "+this.cursoFinder.getNameFinder());
+			
+			return;
+		}
+		
+		if (finder.compareTo(this.alumnoFinder.getNameFinder()) == 0) {
 
-	private List<Object[]> lCursosVigentesbuscarOri;
-	private List<Object[]> lCursosVigentesBuscar;
-	private String buscarCursoVigente = "";
-
-	@Command
-	@NotifyChange("lCursosVigentesBuscar")
-	public void filtrarCursoVigenteBuscar() {
-
-		this.lCursosVigentesBuscar = this.filtrarListaObject(buscarCursoVigente, this.lCursosVigentesbuscarOri);
-
-	}
-
-	@Command
-	@NotifyChange({"lCursosVigentesBuscar","buscarCursoVigente"})
-	public void generarListaBuscarCursoVigente() {
-
-		if (this.alumnoSelected == null) {
-
+			this.alumnoFinder.generarListFinder();
+			BindUtils.postNotifyChange(null, null, this.alumnoFinder, "listFinder");
 			return;
 
 		}
 		
-		this.buscarCursoVigente="";
+		if (this.cursoFinder != null && finder.compareTo(this.cursoFinder.getNameFinder()) == 0) {
 
-		String sqlBuscarCursoVigente = this.um.getSql("buscarCursoVigentePorAlumno.sql").replace("?1",
-				this.alumnoSelected.getAlumnoid() + "");
+			this.cursoFinder.generarListFinder();
+			BindUtils.postNotifyChange(null, null, this.cursoFinder, "listFinder");
+			return;
+		}		
+		
+		
 
-		this.lCursosVigentesBuscar = this.reg.sqlNativo(sqlBuscarCursoVigente);
-		this.lCursosVigentesbuscarOri = this.lCursosVigentesBuscar;
 	}
 
 	@Command
-	@NotifyChange({ "buscarCursoVigente", "lEstadosCuentas", "cursoVigenteSelected","saldoVencido", "saldoTotal" })
-	public void onSelectCursoVigente(@BindingParam("id") long id) {
+	public void finderFilter(@BindingParam("filter") String filter, @BindingParam("finder") String finder) {
 
-		this.cursoVigenteSelected = this.reg.getObjectById(CursoVigente.class.getName(), id);
-		this.buscarCursoVigente = cursoVigenteSelected.getCurso().getCurso();
-		this.lCobranzasDetalles = null;
+		if (finder.compareTo(this.alumnoFinder.getNameFinder()) == 0) {
+
+			this.alumnoFinder.setListFinder(this.filtrarListaObject(filter, this.alumnoFinder.getListFinderOri()));
+			BindUtils.postNotifyChange(null, null, this.alumnoFinder, "listFinder");
+			return;
+
+		}
+		
+		if (this.cursoFinder != null && finder.compareTo(this.cursoFinder.getNameFinder()) == 0) {
+
+			this.cursoFinder.setListFinder(this.filtrarListaObject(filter, this.cursoFinder.getListFinderOri()));
+			BindUtils.postNotifyChange(null, null, this.cursoFinder, "listFinder");
+			return;
+		}
+		
+	}
+
+	@Command
+	@NotifyChange("*")
+	public void onSelectetItemFinder(@BindingParam("id") Long id, @BindingParam("finder") String finder) {
+
+		if (finder.compareTo(this.alumnoFinder.getNameFinder()) == 0) {
+			
+			this.alumnoSelected = this.reg.getObjectById(Alumno.class.getName(), id);			
+			this.cursoVigenteSelected = null;
+			this.lEstadosCuentas = null;
+			this.lCobranzasDetalles = null;
+			this.saldoVencido = 0;
+			this.saldoTotal = 0;
+			this.importeTotalCurso = 0;
+			this.importeAbonado = 0;
+			
+			String sqlBuscarCursoVigente = this.um.getSql("buscarCursoVigentePorAlumno.sql").replace("?1",
+					this.alumnoSelected.getAlumnoid() + "");
+			
+			this.cursoFinder = new FinderModel("Curso", sqlBuscarCursoVigente);
+			
+			return;
+		}
+		
+		
+
+		if (this.cursoFinder != null && finder.compareTo(this.cursoFinder.getNameFinder()) == 0) {
+			
+			this.cursoVigenteSelected = this.reg.getObjectById(CursoVigente.class.getName(), id);
+			this.lCobranzasDetalles = null;
 
 
-		refrescarEstadosCuentas();
-		calcularSaldos();
+			refrescarEstadosCuentas();
+			calcularSaldos();
+			importesTotales();
+			return;
+		}
+		
 
 	}
 	
-	public void calcularSaldos() {
+	
+	private void importesTotales() {
+		
+		String sqlImporteTotal = this.um.getSql("estadoCuentaAlumno/importeTotalPorAlumnoCursoVigente.sql").replace("?1",
+				this.alumnoSelected.getAlumnoid() + "").replace("?2", this.cursoVigenteSelected.getCursovigenteid()+"");;
+		List<Object[]> resultImporteTotal = this.reg.sqlNativo(sqlImporteTotal);
+		this.importeTotalCurso = 0;
+		if (resultImporteTotal.size() > 0) {
+			this.importeTotalCurso = Double.parseDouble(resultImporteTotal.get(0)[1].toString());
+		}
+		
+		String sqlImporteAbonado = this.um.getSql("estadoCuentaAlumno/importeAbonadoPorAlumnoCursoVigente.sql").replace("?1",
+				this.alumnoSelected.getAlumnoid() + "").replace("?2", this.cursoVigenteSelected.getCursovigenteid()+"");;
+		List<Object[]> resultImporteAbonado = this.reg.sqlNativo(sqlImporteAbonado);
+		this.importeAbonado = 0;
+		if (resultImporteAbonado.size() > 0) {
+			this.importeAbonado = Double.parseDouble(resultImporteAbonado.get(0)[1].toString());
+		}
+		
+	}
+	
+	private void calcularSaldos() {
 		
 		String sqlSaldoTotal = this.um.getSql("saldoTotalPorAlumnoCursoVigente.sql").replace("?1",
 				this.alumnoSelected.getAlumnoid() + "").replace("?2", this.cursoVigenteSelected.getCursovigenteid()+"");;
@@ -427,38 +465,6 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 		this.lEstadosCuentas = lEstadosCuentas;
 	}
 
-	public List<Object[]> getlAlumnosBuscar() {
-		return lAlumnosBuscar;
-	}
-
-	public void setlAlumnosBuscar(List<Object[]> lAlumnosBuscar) {
-		this.lAlumnosBuscar = lAlumnosBuscar;
-	}
-
-	public String getBuscarAlumno() {
-		return buscarAlumno;
-	}
-
-	public void setBuscarAlumno(String buscarAlumno) {
-		this.buscarAlumno = buscarAlumno;
-	}
-
-	public List<Object[]> getlCursosVigentesBuscar() {
-		return lCursosVigentesBuscar;
-	}
-
-	public void setlCursosVigentesBuscar(List<Object[]> lCursosVigentesBuscar) {
-		this.lCursosVigentesBuscar = lCursosVigentesBuscar;
-	}
-
-	public String getBuscarCursoVigente() {
-		return buscarCursoVigente;
-	}
-
-	public void setBuscarCursoVigente(String buscarCursoVigente) {
-		this.buscarCursoVigente = buscarCursoVigente;
-	}
-
 	public List<CobranzaDetalle> getlCobranzasDetalles() {
 		return lCobranzasDetalles;
 	}
@@ -529,5 +535,37 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 
 	public void setSaldoVencido(double saldoVencido) {
 		this.saldoVencido = saldoVencido;
+	}
+
+	public double getImporteTotalCurso() {
+		return importeTotalCurso;
+	}
+
+	public void setImporteTotalCurso(double importeTotalCurso) {
+		this.importeTotalCurso = importeTotalCurso;
+	}
+
+	public double getImporteAbonado() {
+		return importeAbonado;
+	}
+
+	public void setImporteAbonado(double importeAbonado) {
+		this.importeAbonado = importeAbonado;
+	}
+
+	public FinderModel getAlumnoFinder() {
+		return alumnoFinder;
+	}
+
+	public void setAlumnoFinder(FinderModel alumnoFinder) {
+		this.alumnoFinder = alumnoFinder;
+	}
+
+	public FinderModel getCursoFinder() {
+		return cursoFinder;
+	}
+
+	public void setCursoFinder(FinderModel cursoFinder) {
+		this.cursoFinder = cursoFinder;
 	}
 }

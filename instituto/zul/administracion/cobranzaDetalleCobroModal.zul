@@ -1,4 +1,5 @@
 <?page title="sedeModal" contentType="text/html;charset=UTF-8"?>
+<?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
 <zk>
 	<window title="Tipos de cobros Crear/Ver/Editar" border="normal"
 		position="center,center" closable="true" mode="modal"
@@ -129,7 +130,7 @@
 				<label value="Monto:" />
 			</tablechildren>
 			<tablechildren>
-				<doublebox value="@load(vm.cobranzaDetalleCobroSelected.monto) @save(vm.cobranzaDetalleCobroSelected.monto, before='agregarCobranzaDetalleCobro')" 
+				<doublebox value="@bind(vm.cobranzaDetalleCobroSelected.monto)" 
 				constraint="no empty: Es campo obligatorio." style="text-align:right" hflex="1"
 				format="#,###"/>
 			</tablechildren>
@@ -138,8 +139,10 @@
 				<label value="Entidad:" />
 			</tablechildren>
 			<tablechildren visible="@load(!vm.camposCobroModal[0])">
+			
+				<textbox value="@load(vm.cobranzaDetalleCobroSelected.entidad.entidad)" readonly="true"/>
 
-				<bandbox id="bd"
+			<!-- 	<bandbox id="bd"
 					value="@load(vm.buscarEntidad) @save(vm.buscarEntidad, before='guardarEntidad')"
 					constraint="no empty: Es campo obligatorio." mold="rounded"
 					autodrop="true" width="150px"
@@ -189,7 +192,7 @@
 
 						</vbox>
 					</bandpopup>
-				</bandbox>
+				</bandbox> -->
 
 			</tablechildren>
 
@@ -204,14 +207,26 @@
 				<label value="Cuenta DB #:" />
 			</tablechildren>
 			<tablechildren visible="@load(!vm.camposCobroModal[1])">
-				<textbox value="@bind(vm.cobranzaDetalleCobroSelected.cuentaNum)" disabled="@load(vm.camposCobroModal[1])"/>
+				<!-- <textbox value="@bind(vm.cobranzaDetalleCobroSelected.cuentaNum)" disabled="@load(vm.camposCobroModal[1])"/>  -->
+				
+				<finder
+						finderValue="@load(vm.cobranzaDetalleCobroSelected.cuentaNum)"
+						finderModel="@load(vm.cuentaFinder)" disabled="@load(vm.camposCobroModal[1])"/>
+				
+				
 			</tablechildren>
 			
 			<tablechildren>
 				<label value="Cuenta CR #:" />
 			</tablechildren>
 			<tablechildren>
-				<textbox value="@bind(vm.cobranzaDetalleCobroSelected.cuentaNumCR)"/>
+				<!-- <textbox value="@bind(vm.cobranzaDetalleCobroSelected.cuentaNumCR)"/> -->
+				
+				<finder
+						finderValue="@load(vm.cobranzaDetalleCobroSelected.cuentaNumCR)"
+						finderModel="@load(vm.cuentaCRfinder)" />
+				
+				
 			</tablechildren>
 
 			<tablechildren visible="@load(!vm.camposCobroModal[2])">

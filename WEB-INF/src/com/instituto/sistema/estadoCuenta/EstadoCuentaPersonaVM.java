@@ -1,5 +1,7 @@
 package com.instituto.sistema.estadoCuenta;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -18,16 +20,12 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
 import com.doxacore.components.finder.FinderModel;
-import com.doxacore.modelo.Tipo;
-import com.instituto.modelo.Alumno;
 import com.instituto.modelo.Cobranza;
 import com.instituto.modelo.CobranzaDetalle;
 import com.instituto.modelo.Concepto;
 import com.instituto.modelo.CursoVigente;
-import com.instituto.modelo.CursoVigenteMateria;
 import com.instituto.modelo.EstadoCuenta;
 import com.instituto.modelo.Persona;
-import com.instituto.modelo.Servicio;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
 
@@ -47,10 +45,19 @@ public class EstadoCuentaPersonaVM extends TemplateViewModelLocal {
 	
 	private double saldoTotal = 0;
 	private double saldoVencido = 0;
+	
+	private Date fechaInicio = new Date();
+	private Date fechaFin = new Date();
+	
+	private double contadoTotal = 0;
+	private double creditoTotal = 0;
+	private double reciboTotal = 0;
 
 	@Init(superclass = true)
 	public void initEstadoCuentaVM() {
 		
+		
+		this.cargarRangoFecha();
 		this.inicializarFinders();
 
 	}
@@ -67,6 +74,31 @@ public class EstadoCuentaPersonaVM extends TemplateViewModelLocal {
 		this.opInactivarEstadoCuentaPersona = this.operacionHabilitada(ParamsLocal.OP_INACTIVAR_ESTADOCUENTAPERSONA);
 		this.opBorrarEstadoCuentaPersona = this.operacionHabilitada(ParamsLocal.OP_BORRAR_ESTADOCUENTAPERSONA);
 
+	}
+	
+	private void cargarRangoFecha() {
+		
+		Calendar calendar = Calendar.getInstance();
+        
+        // Establecer el día del mes en 1 para obtener la primera fecha del mes actual
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 00);
+        calendar.set(Calendar.MINUTE, 00);
+        calendar.set(Calendar.SECOND, 00);
+        calendar.set(Calendar.MILLISECOND, 000);
+
+        this.fechaInicio = calendar.getTime();
+        
+        // Avanzar al primer día del mes siguiente
+        calendar.add(Calendar.MONTH, 1);
+        calendar.add(Calendar.DAY_OF_MONTH, -1); // Retroceder un día para obtener el último día del mes actual
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
+
+        this.fechaFin = calendar.getTime();
+		
 	}
 	
 	// SeccionFinder
@@ -104,6 +136,20 @@ public class EstadoCuentaPersonaVM extends TemplateViewModelLocal {
 		}
 
 	}
+	
+	@Command
+	@NotifyChange("*")
+	public void onChangeFiltroFechas() {
+		
+		if (this.personaSelected == null) {
+			
+			return;
+		}
+		
+		this.refrescarEstadosCuentas();
+		this.calcularSaldos();
+		
+	}
 
 	@Command
 	public void finderFilter(@BindingParam("filter") String filter, @BindingParam("finder") String finder) {
@@ -133,6 +179,7 @@ public class EstadoCuentaPersonaVM extends TemplateViewModelLocal {
 			
 			this.refrescarEstadosCuentas();
 			this.calcularSaldos();
+			this.calcularTotales();
 		}
 		
 		
@@ -162,12 +209,52 @@ public class EstadoCuentaPersonaVM extends TemplateViewModelLocal {
 		
 	}
 	
+	private void calcularTotales() {
+		
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		String sqlTotales = this.um.getSql("estadoCuentaPersona/totalesPorPersona.sql").replace("?1", this.personaSelected.getPersonaid()+"")
+				.replace("?2", sdf.format(this.fechaInicio))
+				.replace("?3", sdf.format(this.fechaFin));
+		
+		//System.out.println(sqlTotales);
+		
+		List<Object[]> resultTotal = this.reg.sqlNativo(sqlTotales);
+		this.saldoTotal = 0;
+		
+		for (Object[] x : resultTotal) {
+			
+			if (x[3].toString().compareTo(ParamsLocal.SIGLA_COMPROBANTE_FACTURA)==0) {
+				
+				if (x[4].toString().compareTo(ParamsLocal.SIGLA_CONDICION_VENTA_CONTADO) == 0) {
+					
+					this.contadoTotal =  Double.parseDouble(x[1].toString());
+					
+				}else {
+					
+					this.creditoTotal =  Double.parseDouble(x[2].toString());
+					
+				}
+				
+			}else {
+				
+				this.reciboTotal = Double.parseDouble(x[1].toString());
+				
+			}
+			
+		}
+
+	}
+	
 	@NotifyChange({"lEstadosCuentas"})
 	public void refrescarEstadosCuentas() {
 		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
 		this.lEstadosCuentas = this.reg.getAllObjectsByCondicionOrder(EstadoCuenta.class.getName(),
-				"personaid = "
-						+ this.personaSelected.getPersonaid(),
+				"personaid = " + this.personaSelected.getPersonaid() 
+				+"and creado between '"+sdf.format(this.fechaInicio)+"' and '"+sdf.format(this.fechaFin)+"' ",
 				"estadocuentaid desc");
 		
 	}
@@ -485,6 +572,46 @@ public class EstadoCuentaPersonaVM extends TemplateViewModelLocal {
 
 	public void setOpBorrarEstadoCuentaPersona(boolean opBorrarEstadoCuentaPersona) {
 		this.opBorrarEstadoCuentaPersona = opBorrarEstadoCuentaPersona;
+	}
+
+	public Date getFechaInicio() {
+		return fechaInicio;
+	}
+
+	public void setFechaInicio(Date fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+
+	public Date getFechaFin() {
+		return fechaFin;
+	}
+
+	public void setFechaFin(Date fechaFin) {
+		this.fechaFin = fechaFin;
+	}
+
+	public double getContadoTotal() {
+		return contadoTotal;
+	}
+
+	public void setContadoTotal(double contadoTotal) {
+		this.contadoTotal = contadoTotal;
+	}
+
+	public double getCreditoTotal() {
+		return creditoTotal;
+	}
+
+	public void setCreditoTotal(double creditoTotal) {
+		this.creditoTotal = creditoTotal;
+	}
+
+	public double getReciboTotal() {
+		return reciboTotal;
+	}
+
+	public void setReciboTotal(double reciboTotal) {
+		this.reciboTotal = reciboTotal;
 	}
 	
 	

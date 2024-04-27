@@ -152,7 +152,7 @@
 								onClick="@command('modalCobranzaDetalleServicio')"
 								disabled="@load(vm.disableCobranza)"
 								style="background-color:green" 
-								visible="@load(vm.condicionHabilitada)"/>
+								/>
 							
 							<button label="Agregar Detalle Factura"
 								iconSclass=" z-icon-plus"
@@ -173,7 +173,7 @@
 -->
 					
 	
-	 					<auxheader label="Descripcion" align="left" />
+	 					<auxheader label="Descripcion" align="center" />
 	 					
 	 					<auxheader label="Monto Total" align="center" />  
 	 					

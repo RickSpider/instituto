@@ -9,7 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
@@ -26,7 +25,6 @@ import org.zkoss.zul.Window;
 
 import com.doxacore.components.finder.FinderModel;
 import com.doxacore.modelo.Tipo;
-import com.doxacore.modelo.Usuario;
 import com.instituto.fe.util.MetodosCE;
 import com.instituto.modelo.Alumno;
 import com.instituto.modelo.Caja;
@@ -35,10 +33,9 @@ import com.instituto.modelo.CobranzaDetalle;
 import com.instituto.modelo.CobranzaDetalleCobro;
 import com.instituto.modelo.Comprobante;
 import com.instituto.modelo.Cotizacion;
-import com.instituto.modelo.Entidad;
+import com.instituto.modelo.Cuenta;
 import com.instituto.modelo.EstadoCuenta;
-import com.instituto.modelo.Persona;
-import com.instituto.modelo.Servicio;
+import com.instituto.modelo.PersonaEntidad;
 import com.instituto.modelo.SifenDocumento;
 import com.instituto.modelo.UsuarioSede;
 import com.instituto.sistema.reporte.ReporteKudePDF;
@@ -155,8 +152,8 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		saldoTotal = 0;
 		saldoVencido = 0;
 		condicionHabilitada = true;
-		this.buscarAlumno = "";
-	/*	this.buscarComprobante = "";
+	/*	this.buscarAlumno = "";
+		this.buscarComprobante = "";
 		this.buscarCondicionVenta = "";*/
 
 		defaultCobranza();
@@ -199,111 +196,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	}	
 
-	// Seccion Buscar Alumno
-	private List<Object[]> lAlumnosbuscarOri;
-	private List<Object[]> lAlumnosBuscar;
-	private Alumno buscarSelectedAlumno;
-	private String buscarAlumno = "";
-
-	@Command
-	@NotifyChange("lAlumnosBuscar")
-	public void filtrarAlumnoBuscar() {
-
-		this.lAlumnosBuscar = this.filtrarListaObject(buscarAlumno, this.lAlumnosbuscarOri);
-
-	}
-
-	@Command
-	@NotifyChange("lAlumnosBuscar")
-	public void generarListaBuscarAlumno() {
-
-		String sqlBuscarAlumno = this.um.getSql("buscarAlumnoNotSede.sql");
-
-		this.lAlumnosBuscar = this.reg.sqlNativo(sqlBuscarAlumno);
-		this.lAlumnosbuscarOri = this.lAlumnosBuscar;
-	}
-
-	@Command
-	@NotifyChange({ "cobranzaSelected", "buscarAlumno", "saldoTotal", "saldoVencido" })
-	public void onSelectAlumno(@BindingParam("id") long id) {
-
-		this.buscarSelectedAlumno = this.reg.getObjectById(Alumno.class.getName(), id);
-		this.buscarAlumno = buscarSelectedAlumno.getFullNombre();
-		this.cobranzaSelected.setAlumno(buscarSelectedAlumno);
-
-		if (buscarSelectedAlumno.getPersonaFacturacion() == null) {
-
-			if (buscarSelectedAlumno.getPersona().getRazonSocial() != null
-					&& buscarSelectedAlumno.getPersona().getRazonSocial().length() > 0) {
-
-				this.cobranzaSelected.setRazonSocial(buscarSelectedAlumno.getPersona().getRazonSocial());
-
-			} else {
-
-				this.cobranzaSelected.setRazonSocial(buscarSelectedAlumno.getPersona().getNombreCompleto());
-
-			}
-
-			if (buscarSelectedAlumno.getPersona().getRuc() != null
-					&& buscarSelectedAlumno.getPersona().getRuc().length() > 0) {
-
-				this.cobranzaSelected.setRuc(buscarSelectedAlumno.getPersona().getRuc());
-
-			} else {
-
-				this.cobranzaSelected.setRuc(buscarSelectedAlumno.getPersona().getDocumentoNum());
-			}
-
-			this.cobranzaSelected.setDireccion(buscarSelectedAlumno.getPersona().getDireccion());
-			this.cobranzaSelected.setTelefono(buscarSelectedAlumno.getPersona().getTelefono());
-
-		} else {
-
-			if (buscarSelectedAlumno.getPersonaFacturacion().getRazonSocial() != null
-					&& buscarSelectedAlumno.getPersonaFacturacion().getRazonSocial().length() > 0) {
-
-				this.cobranzaSelected.setRazonSocial(buscarSelectedAlumno.getPersonaFacturacion().getRazonSocial());
-
-			} else {
-
-				this.cobranzaSelected.setRazonSocial(buscarSelectedAlumno.getPersonaFacturacion().getNombreCompleto());
-
-			}
-
-			if (buscarSelectedAlumno.getPersona().getRuc() != null
-					&& buscarSelectedAlumno.getPersona().getRuc().length() > 0) {
-
-				this.cobranzaSelected.setRuc(buscarSelectedAlumno.getPersonaFacturacion().getRuc());
-
-			} else {
-
-				this.cobranzaSelected.setRuc(buscarSelectedAlumno.getPersonaFacturacion().getDocumentoNum());
-			}
-
-			this.cobranzaSelected.setDireccion(buscarSelectedAlumno.getPersonaFacturacion().getDireccion());
-			this.cobranzaSelected.setTelefono(buscarSelectedAlumno.getPersonaFacturacion().getTelefono());
-
-		}
-
-		String sqlSaldoTotal = this.um.getSql("saldoTotalPorAlumno.sql").replace("?1",
-				this.buscarSelectedAlumno.getAlumnoid() + "");
-		List<Object[]> resultSaldoTotal = this.reg.sqlNativo(sqlSaldoTotal);
-		this.saldoTotal = 0;
-		if (resultSaldoTotal.size() > 0) {
-			this.saldoTotal = Double.parseDouble(resultSaldoTotal.get(0)[1].toString());
-		}
-
-		String sqlSaldoVencido = this.um.getSql("saldoVencidoPorAlumno.sql").replace("?1",
-				this.buscarSelectedAlumno.getAlumnoid() + "");
-		List<Object[]> resultSaldoVencido = this.reg.sqlNativo(sqlSaldoVencido);
-		this.saldoVencido = 0;
-		if (resultSaldoVencido.size() > 0) {
-			this.saldoVencido = Double.parseDouble(resultSaldoVencido.get(0)[1].toString());
-		}
-
-	}
-
-	// fin Buscar Alumno
+	
 
 	// Seccion modal detalles
 
@@ -505,7 +398,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 		}
 
-		this.buscarEntidad = "";
+		//this.buscarEntidad = "";
 
 		cobranzaDetalleCobroSelected = new CobranzaDetalleCobro();
 
@@ -924,7 +817,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	// fin detalle cobro
 
 	// Seccion Buscar Entidad
-	private List<Object[]> lEntidadesbuscarOri;
+/*	private List<Object[]> lEntidadesbuscarOri;
 	private List<Object[]> lEntidadesBuscar;
 	private Entidad buscarSelectedEntidad;
 	private String buscarEntidad = "";
@@ -955,17 +848,127 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		this.buscarEntidad = buscarSelectedEntidad.getEntidad();
 		this.cobranzaDetalleCobroSelected.setEntidad(buscarSelectedEntidad);
 
-	}
+	}*/
 
 	// fin Buscar Entidad
 	
+	// Seccion Buscar Alumno
+/*		private List<Object[]> lAlumnosbuscarOri;
+		private List<Object[]> lAlumnosBuscar;
+		private Alumno buscarSelectedAlumno;
+		private String buscarAlumno = "";
+
+		@Command
+		@NotifyChange("lAlumnosBuscar")
+		public void filtrarAlumnoBuscar() {
+
+			this.lAlumnosBuscar = this.filtrarListaObject(buscarAlumno, this.lAlumnosbuscarOri);
+
+		}
+
+		@Command
+		@NotifyChange("lAlumnosBuscar")
+		public void generarListaBuscarAlumno() {
+
+			String sqlBuscarAlumno = this.um.getSql("buscarAlumnoNotSede.sql");
+
+			this.lAlumnosBuscar = this.reg.sqlNativo(sqlBuscarAlumno);
+			this.lAlumnosbuscarOri = this.lAlumnosBuscar;
+		}
+
+		@Command
+		@NotifyChange({ "cobranzaSelected", "buscarAlumno", "saldoTotal", "saldoVencido" })
+		public void onSelectAlumno(@BindingParam("id") long id) {
+
+			this.buscarSelectedAlumno = this.reg.getObjectById(Alumno.class.getName(), id);
+			this.buscarAlumno = buscarSelectedAlumno.getFullNombre();
+			this.cobranzaSelected.setAlumno(buscarSelectedAlumno);
+
+			if (buscarSelectedAlumno.getPersonaFacturacion() == null) {
+
+				if (buscarSelectedAlumno.getPersona().getRazonSocial() != null
+						&& buscarSelectedAlumno.getPersona().getRazonSocial().length() > 0) {
+
+					this.cobranzaSelected.setRazonSocial(buscarSelectedAlumno.getPersona().getRazonSocial());
+
+				} else {
+
+					this.cobranzaSelected.setRazonSocial(buscarSelectedAlumno.getPersona().getNombreCompleto());
+
+				}
+
+				if (buscarSelectedAlumno.getPersona().getRuc() != null
+						&& buscarSelectedAlumno.getPersona().getRuc().length() > 0) {
+
+					this.cobranzaSelected.setRuc(buscarSelectedAlumno.getPersona().getRuc());
+
+				} else {
+
+					this.cobranzaSelected.setRuc(buscarSelectedAlumno.getPersona().getDocumentoNum());
+				}
+
+				this.cobranzaSelected.setDireccion(buscarSelectedAlumno.getPersona().getDireccion());
+				this.cobranzaSelected.setTelefono(buscarSelectedAlumno.getPersona().getTelefono());
+
+			} else {
+
+				if (buscarSelectedAlumno.getPersonaFacturacion().getRazonSocial() != null
+						&& buscarSelectedAlumno.getPersonaFacturacion().getRazonSocial().length() > 0) {
+
+					this.cobranzaSelected.setRazonSocial(buscarSelectedAlumno.getPersonaFacturacion().getRazonSocial());
+
+				} else {
+
+					this.cobranzaSelected.setRazonSocial(buscarSelectedAlumno.getPersonaFacturacion().getNombreCompleto());
+
+				}
+
+				if (buscarSelectedAlumno.getPersona().getRuc() != null
+						&& buscarSelectedAlumno.getPersona().getRuc().length() > 0) {
+
+					this.cobranzaSelected.setRuc(buscarSelectedAlumno.getPersonaFacturacion().getRuc());
+
+				} else {
+
+					this.cobranzaSelected.setRuc(buscarSelectedAlumno.getPersonaFacturacion().getDocumentoNum());
+				}
+
+				this.cobranzaSelected.setDireccion(buscarSelectedAlumno.getPersonaFacturacion().getDireccion());
+				this.cobranzaSelected.setTelefono(buscarSelectedAlumno.getPersonaFacturacion().getTelefono());
+
+			}
+
+			String sqlSaldoTotal = this.um.getSql("saldoTotalPorAlumno.sql").replace("?1",
+					this.buscarSelectedAlumno.getAlumnoid() + "");
+			List<Object[]> resultSaldoTotal = this.reg.sqlNativo(sqlSaldoTotal);
+			this.saldoTotal = 0;
+			if (resultSaldoTotal.size() > 0) {
+				this.saldoTotal = Double.parseDouble(resultSaldoTotal.get(0)[1].toString());
+			}
+
+			String sqlSaldoVencido = this.um.getSql("saldoVencidoPorAlumno.sql").replace("?1",
+					this.buscarSelectedAlumno.getAlumnoid() + "");
+			List<Object[]> resultSaldoVencido = this.reg.sqlNativo(sqlSaldoVencido);
+			this.saldoVencido = 0;
+			if (resultSaldoVencido.size() > 0) {
+				this.saldoVencido = Double.parseDouble(resultSaldoVencido.get(0)[1].toString());
+			}
+
+		}
+
+		// fin Buscar Alumno
+	*/
 	private FinderModel comprobanteFinder;
 	private FinderModel condicionFinder;
+	private FinderModel alumnoFinder;
+	private FinderModel cuentaFinder;
+	private FinderModel cuentaCRfinder;
 	
 	@NotifyChange("*")
 	public void inicializarFinders() {
 
-		
+		String sqlBuscarAlumno = this.um.getSql("buscarAlumnoNotSede.sql");
+		this.alumnoFinder = new FinderModel("Alumno",sqlBuscarAlumno);
 		
 		String sqlTipo = "Select t.tipoid as id, t.tipo as comprobante, t.descripcion as descripcion from tipos t\n"
 						+ "join tipotipos tt on tt.tipotipoid = t.tipotipoid \n"
@@ -975,25 +978,49 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		comprobanteFinder = new FinderModel("Comprobante", sqlTipo.replace("?1", ParamsLocal.SIGLA_COMPROBANTE));
 		condicionFinder = new FinderModel("Condicion", sqlTipo.replace("?1", ParamsLocal.SIGLA_CONDICION_VENTA));
 		
+		String sqlCuentaCR = this.um.getSql("buscarCuenta.sql").replace("?1", this.getCurrentSede().getSedeid()+"");
+		
+		cuentaCRfinder = new FinderModel("CuentaCR", sqlCuentaCR);
 
 	}
 
 	public void generarFinders(@BindingParam("finder") String finder) {
 
+		if (finder.compareTo(this.alumnoFinder.getNameFinder())==0) {
+			
+			this.alumnoFinder.generarListFinder();
+			BindUtils.postNotifyChange(null, null, this.alumnoFinder, "listFinder");
+			return;
+		}
 				
 		if (finder.compareTo(this.comprobanteFinder.getNameFinder()) == 0) {
 
 			this.comprobanteFinder.generarListFinder();
 			BindUtils.postNotifyChange(null, null, this.comprobanteFinder, "listFinder");
-
+			return;
 		}
 		
 		if (finder.compareTo(this.condicionFinder.getNameFinder()) == 0) {
 
 			this.condicionFinder.generarListFinder();
 			BindUtils.postNotifyChange(null, null, this.condicionFinder, "listFinder");
-
+			return;
 		}
+		
+		if (finder.compareTo(this.cuentaFinder.getNameFinder()) == 0) {
+
+			this.cuentaFinder.generarListFinder();
+			BindUtils.postNotifyChange(null, null, this.cuentaFinder, "listFinder");
+			return;
+		}
+		
+		if (finder.compareTo(this.cuentaCRfinder.getNameFinder()) == 0) {
+
+			this.cuentaCRfinder.generarListFinder();
+			BindUtils.postNotifyChange(null, null, this.cuentaCRfinder, "listFinder");
+			return;
+		}
+		
 		
 
 	}
@@ -1002,24 +1029,43 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	public void finderFilter(@BindingParam("filter") String filter, @BindingParam("finder") String finder) {
 
 		
+		if (finder.compareTo(this.alumnoFinder.getNameFinder()) == 0) {
+
+			this.alumnoFinder.setListFinder(this.filtrarListaObject(filter, this.alumnoFinder.getListFinderOri()));
+			BindUtils.postNotifyChange(null, null, this.alumnoFinder, "listFinder");
+			return;
+		}
+		
 		if (finder.compareTo(this.comprobanteFinder.getNameFinder()) == 0) {
 
 			this.comprobanteFinder.setListFinder(this.filtrarListaObject(filter, this.comprobanteFinder.getListFinderOri()));
 			BindUtils.postNotifyChange(null, null, this.comprobanteFinder, "listFinder");
-
+			return;
 		}
 		
 		if (finder.compareTo(this.condicionFinder.getNameFinder()) == 0) {
 
 			this.condicionFinder.setListFinder(this.filtrarListaObject(filter, this.condicionFinder.getListFinderOri()));
 			BindUtils.postNotifyChange(null, null, this.condicionFinder, "listFinder");
-
+			return;
 		}
 		
 
-	
+		if (finder.compareTo(this.cuentaFinder.getNameFinder()) == 0) {
 
+			this.cuentaFinder.setListFinder(this.filtrarListaObject(filter, this.cuentaFinder.getListFinderOri()));
+			BindUtils.postNotifyChange(null, null, this.cuentaFinder, "listFinder");
 
+			return;
+		}
+		
+		if (finder.compareTo(this.cuentaCRfinder.getNameFinder()) == 0) {
+
+			this.cuentaCRfinder.setListFinder(this.filtrarListaObject(filter, this.cuentaCRfinder.getListFinderOri()));
+			BindUtils.postNotifyChange(null, null, this.cuentaCRfinder, "listFinder");
+
+			return;
+		}
 
 	}
 
@@ -1027,6 +1073,87 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	@NotifyChange("*")
 	public void onSelectetItemFinder(@BindingParam("id") Long id, @BindingParam("finder") String finder) {
 
+		if (finder.compareTo(this.alumnoFinder.getNameFinder()) == 0) {
+			
+			Alumno buscarSelectedAlumno = this.reg.getObjectById(Alumno.class.getName(), id);
+		//	this.buscarAlumno = buscarSelectedAlumno.getFullNombre();
+			this.cobranzaSelected.setAlumno(buscarSelectedAlumno);
+
+			if (buscarSelectedAlumno.getPersonaFacturacion() == null) {
+
+				if (buscarSelectedAlumno.getPersona().getRazonSocial() != null
+						&& buscarSelectedAlumno.getPersona().getRazonSocial().length() > 0) {
+
+					this.cobranzaSelected.setRazonSocial(buscarSelectedAlumno.getPersona().getRazonSocial());
+
+				} else {
+
+					this.cobranzaSelected.setRazonSocial(buscarSelectedAlumno.getPersona().getNombreCompleto());
+
+				}
+
+				if (buscarSelectedAlumno.getPersona().getRuc() != null
+						&& buscarSelectedAlumno.getPersona().getRuc().length() > 0) {
+
+					this.cobranzaSelected.setRuc(buscarSelectedAlumno.getPersona().getRuc());
+
+				} else {
+
+					this.cobranzaSelected.setRuc(buscarSelectedAlumno.getPersona().getDocumentoNum());
+				}
+
+				this.cobranzaSelected.setDireccion(buscarSelectedAlumno.getPersona().getDireccion());
+				this.cobranzaSelected.setTelefono(buscarSelectedAlumno.getPersona().getTelefono());
+
+			} else {
+
+				if (buscarSelectedAlumno.getPersonaFacturacion().getRazonSocial() != null
+						&& buscarSelectedAlumno.getPersonaFacturacion().getRazonSocial().length() > 0) {
+
+					this.cobranzaSelected.setRazonSocial(buscarSelectedAlumno.getPersonaFacturacion().getRazonSocial());
+
+				} else {
+
+					this.cobranzaSelected.setRazonSocial(buscarSelectedAlumno.getPersonaFacturacion().getNombreCompleto());
+
+				}
+
+				if (buscarSelectedAlumno.getPersona().getRuc() != null
+						&& buscarSelectedAlumno.getPersona().getRuc().length() > 0) {
+
+					this.cobranzaSelected.setRuc(buscarSelectedAlumno.getPersonaFacturacion().getRuc());
+
+				} else {
+
+					this.cobranzaSelected.setRuc(buscarSelectedAlumno.getPersonaFacturacion().getDocumentoNum());
+				}
+
+				this.cobranzaSelected.setDireccion(buscarSelectedAlumno.getPersonaFacturacion().getDireccion());
+				this.cobranzaSelected.setTelefono(buscarSelectedAlumno.getPersonaFacturacion().getTelefono());
+
+			}
+
+			String sqlSaldoTotal = this.um.getSql("saldoTotalPorAlumno.sql").replace("?1",
+					buscarSelectedAlumno.getAlumnoid() + "");
+			List<Object[]> resultSaldoTotal = this.reg.sqlNativo(sqlSaldoTotal);
+			this.saldoTotal = 0;
+			if (resultSaldoTotal.size() > 0) {
+				this.saldoTotal = Double.parseDouble(resultSaldoTotal.get(0)[1].toString());
+			}
+
+			String sqlSaldoVencido = this.um.getSql("saldoVencidoPorAlumno.sql").replace("?1",
+					buscarSelectedAlumno.getAlumnoid() + "");
+			List<Object[]> resultSaldoVencido = this.reg.sqlNativo(sqlSaldoVencido);
+			this.saldoVencido = 0;
+			if (resultSaldoVencido.size() > 0) {
+				this.saldoVencido = Double.parseDouble(resultSaldoVencido.get(0)[1].toString());
+			}
+			
+			String cuentaDBSQL = this.um.getSql("buscarPersonaEntidad.sql").replace("?1", this.cobranzaSelected.getAlumno().getPersona().getPersonaid()+"");
+			System.out.println(cuentaDBSQL);
+			this.cuentaFinder = new FinderModel("CuentaDB", cuentaDBSQL);
+		
+		}
 		
 		if (finder.compareTo(this.comprobanteFinder.getNameFinder()) == 0) {
 
@@ -1052,7 +1179,26 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			this.cobranzaSelected.setCondicionVentaTipo(this.reg.getObjectById(Tipo.class.getName(), id));
 		}
 		
+		if (finder.compareTo(this.cuentaFinder.getNameFinder()) == 0) {
+			
+			PersonaEntidad personaEntidad = this.reg.getObjectByCondicion(PersonaEntidad.class.getName(),
+					"personaid = " + this.cobranzaSelected.getAlumno().getPersona().getPersonaid()+
+					" And entidadid = "+id);
+			
+		//	this.buscarEntidad = personaEntidad.getEntidad().getEntidad();
+			this.cobranzaDetalleCobroSelected.setEntidad(personaEntidad.getEntidad());
+			this.cobranzaDetalleCobroSelected.setCuentaNum(personaEntidad.getCuenta());
+			this.cobranzaDetalleCobroSelected.setTitular(this.cobranzaSelected.getAlumno().getPersona().getNombreCompleto());			
+			return;
+		}
 		
+		if (finder.compareTo(this.cuentaCRfinder.getNameFinder()) == 0) {
+			
+			Cuenta cuenta = this.reg.getObjectById(Cuenta.class.getName(), id);
+			this.cobranzaDetalleCobroSelected.setCuentaNumCR(cuenta.getNumero());
+			
+			return;
+		}
 
 	}
 
@@ -1657,7 +1803,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		this.cobranzaSelected = cobranzaSelected;
 	}
 
-	public List<Object[]> getlAlumnosBuscar() {
+	/*public List<Object[]> getlAlumnosBuscar() {
 		return lAlumnosBuscar;
 	}
 
@@ -1671,7 +1817,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	public void setBuscarAlumno(String buscarAlumno) {
 		this.buscarAlumno = buscarAlumno;
-	}
+	}*/
 
 	public List<CobranzaDetalleCobro> getlDetallesCobros() {
 		return lDetallesCobros;
@@ -1745,7 +1891,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		this.buscarFormaPago = buscarFormaPago;
 	}
 
-	public List<Object[]> getlEntidadesBuscar() {
+/*	public List<Object[]> getlEntidadesBuscar() {
 		return lEntidadesBuscar;
 	}
 
@@ -1759,7 +1905,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	public void setBuscarEntidad(String buscarEntidad) {
 		this.buscarEntidad = buscarEntidad;
-	}
+	}*/
 
 	public boolean[] getCamposCobroModal() {
 		return camposCobroModal;
@@ -1879,6 +2025,30 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	public void setCondicionFinder(FinderModel condicionFinder) {
 		this.condicionFinder = condicionFinder;
+	}
+
+	public FinderModel getAlumnoFinder() {
+		return alumnoFinder;
+	}
+
+	public void setAlumnoFinder(FinderModel alumnoFinder) {
+		this.alumnoFinder = alumnoFinder;
+	}
+
+	public FinderModel getCuentaFinder() {
+		return cuentaFinder;
+	}
+
+	public void setCuentaFinder(FinderModel cuentaFinder) {
+		this.cuentaFinder = cuentaFinder;
+	}
+
+	public FinderModel getCuentaCRfinder() {
+		return cuentaCRfinder;
+	}
+
+	public void setCuentaCRfinder(FinderModel cuentaCRfinder) {
+		this.cuentaCRfinder = cuentaCRfinder;
 	}
 
 }

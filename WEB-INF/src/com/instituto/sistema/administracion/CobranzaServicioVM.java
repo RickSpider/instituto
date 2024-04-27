@@ -33,9 +33,10 @@ import com.instituto.modelo.CobranzaDetalle;
 import com.instituto.modelo.CobranzaDetalleCobro;
 import com.instituto.modelo.Comprobante;
 import com.instituto.modelo.Cotizacion;
-import com.instituto.modelo.Entidad;
+import com.instituto.modelo.Cuenta;
 import com.instituto.modelo.EstadoCuenta;
 import com.instituto.modelo.Persona;
+import com.instituto.modelo.PersonaEntidad;
 import com.instituto.modelo.Servicio;
 import com.instituto.modelo.SifenDocumento;
 import com.instituto.modelo.UsuarioSede;
@@ -198,6 +199,10 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 	private FinderModel comprobanteFinder;
 	private FinderModel condicionFinder;
 	private FinderModel servicioFinder;
+	private FinderModel cuentaFinder;
+	private FinderModel cuentaCRfinder;
+	
+	
 
 	@NotifyChange("*")
 	public void inicializarFinders() {
@@ -217,49 +222,84 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 		condicionFinder = new FinderModel("Condicion", sqlTipo.replace("?1", ParamsLocal.SIGLA_CONDICION_VENTA));
 
 		servicioFinder = new FinderModel("Servicio", this.um.getSql("servicio/buscarServicio.sql"));
+		
+		String sqlCuentaCR = this.um.getSql("buscarCuenta.sql").replace("?1", this.getCurrentSede().getSedeid()+"");
+		
+		cuentaCRfinder = new FinderModel("CuentaCR", sqlCuentaCR);
 
 	}
 
 	public void generarFinders(@BindingParam("finder") String finder) {
+		
+		/*Map<String, FinderModel> findersMap = new HashMap<>();
+	    findersMap.put(this.personaFinder.getNameFinder(), this.personaFinder);
+	    findersMap.put(this.comprobanteFinder.getNameFinder(), this.comprobanteFinder);
+	    findersMap.put(this.condicionFinder.getNameFinder(), this.condicionFinder);
+	    findersMap.put(this.servicioFinder.getNameFinder(), this.servicioFinder);
+	    findersMap.put(this.cuentaFinder.getNameFinder(), this.cuentaFinder);
+	    findersMap.put(this.cuentaCRfinder.getNameFinder(), this.cuentaCRfinder);
+
+	    FinderModel finderObject = findersMap.get(finder);
+	    if (finderObject != null) {
+	        finderObject.generarListFinder();
+	        BindUtils.postNotifyChange(null, null, finderObject, "listFinder");
+	    }*/
 
 		if (finder.compareTo(this.personaFinder.getNameFinder()) == 0) {
 
 			this.personaFinder.generarListFinder();
 			BindUtils.postNotifyChange(null, null, this.personaFinder, "listFinder");
-
+			return;
 		}
 
 		if (finder.compareTo(this.comprobanteFinder.getNameFinder()) == 0) {
 
 			this.comprobanteFinder.generarListFinder();
 			BindUtils.postNotifyChange(null, null, this.comprobanteFinder, "listFinder");
-
+			return;
 		}
 
 		if (finder.compareTo(this.condicionFinder.getNameFinder()) == 0) {
 
 			this.condicionFinder.generarListFinder();
 			BindUtils.postNotifyChange(null, null, this.condicionFinder, "listFinder");
-
+			return;
 		}
 
 		if (finder.compareTo(this.servicioFinder.getNameFinder()) == 0) {
 
 			this.servicioFinder.generarListFinder();
 			BindUtils.postNotifyChange(null, null, this.servicioFinder, "listFinder");
+			return;
+		}
+		
+		if (finder.compareTo(this.cuentaFinder.getNameFinder()) == 0) {
 
+			this.cuentaFinder.generarListFinder();
+			BindUtils.postNotifyChange(null, null, this.cuentaFinder, "listFinder");
+			return;
+		}
+		
+		if (finder.compareTo(this.cuentaCRfinder.getNameFinder()) == 0) {
+
+			this.cuentaCRfinder.generarListFinder();
+			BindUtils.postNotifyChange(null, null, this.cuentaCRfinder, "listFinder");
+			return;
 		}
 
 	}
 
 	@Command
 	public void finderFilter(@BindingParam("filter") String filter, @BindingParam("finder") String finder) {
-
+		
+		
+	    
 		if (finder.compareTo(this.personaFinder.getNameFinder()) == 0) {
 
 			this.personaFinder.setListFinder(this.filtrarListaObject(filter, this.personaFinder.getListFinderOri()));
 			BindUtils.postNotifyChange(null, null, this.personaFinder, "listFinder");
 
+			return;
 		}
 
 		if (finder.compareTo(this.comprobanteFinder.getNameFinder()) == 0) {
@@ -268,6 +308,7 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 					.setListFinder(this.filtrarListaObject(filter, this.comprobanteFinder.getListFinderOri()));
 			BindUtils.postNotifyChange(null, null, this.comprobanteFinder, "listFinder");
 
+			return;
 		}
 
 		if (finder.compareTo(this.condicionFinder.getNameFinder()) == 0) {
@@ -276,6 +317,7 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 					.setListFinder(this.filtrarListaObject(filter, this.condicionFinder.getListFinderOri()));
 			BindUtils.postNotifyChange(null, null, this.condicionFinder, "listFinder");
 
+			return;
 		}
 
 		if (finder.compareTo(this.servicioFinder.getNameFinder()) == 0) {
@@ -283,6 +325,23 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 			this.servicioFinder.setListFinder(this.filtrarListaObject(filter, this.servicioFinder.getListFinderOri()));
 			BindUtils.postNotifyChange(null, null, this.servicioFinder, "listFinder");
 
+			return;
+		}
+		
+		if (finder.compareTo(this.cuentaFinder.getNameFinder()) == 0) {
+
+			this.cuentaFinder.setListFinder(this.filtrarListaObject(filter, this.cuentaFinder.getListFinderOri()));
+			BindUtils.postNotifyChange(null, null, this.cuentaFinder, "listFinder");
+
+			return;
+		}
+		
+		if (finder.compareTo(this.cuentaCRfinder.getNameFinder()) == 0) {
+
+			this.cuentaCRfinder.setListFinder(this.filtrarListaObject(filter, this.cuentaCRfinder.getListFinderOri()));
+			BindUtils.postNotifyChange(null, null, this.cuentaCRfinder, "listFinder");
+
+			return;
 		}
 
 	}
@@ -316,6 +375,13 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 				this.cobranzaSelected.setRazonSocial(p.getNombreCompleto());
 
 			}
+			
+			String cuentaDBSQL = this.um.getSql("buscarPersonaEntidad.sql").replace("?1", this.cobranzaSelected.getPersona().getPersonaid()+"");
+			System.out.println(cuentaDBSQL);
+			this.cuentaFinder = new FinderModel("CuentaDB", cuentaDBSQL);
+			
+			
+			return;
 
 		}
 
@@ -339,6 +405,8 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 				this.cobranzaSelected.setCondicionVentaTipo(null);
 
 			}
+			
+			return;
 		}
 
 		if (finder.compareTo(this.condicionFinder.getNameFinder()) == 0) {
@@ -356,6 +424,8 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 				this.vencimientoFacturaCredito = null;
 			}
 
+			return;
+			
 		}
 
 		if (finder.compareTo(this.servicioFinder.getNameFinder()) == 0) {
@@ -363,6 +433,29 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 			Servicio s = this.reg.getObjectById(Servicio.class.getName(), id);
 			this.cobranzaDetalleSelected.setServicio(s);
 			this.cobranzaDetalleSelected.getEstadoCuenta().setConcepto(s.getConcepto());
+			
+			return;
+		}
+		
+		if (finder.compareTo(this.cuentaFinder.getNameFinder()) == 0) {
+			
+			PersonaEntidad personaEntidad = this.reg.getObjectByCondicion(PersonaEntidad.class.getName(),
+					"personaid = " + this.cobranzaSelected.getPersona().getPersonaid()+
+					" And entidadid = "+id);
+			
+		//	this.buscarEntidad = personaEntidad.getEntidad().getEntidad();
+			this.cobranzaDetalleCobroSelected.setEntidad(personaEntidad.getEntidad());
+			this.cobranzaDetalleCobroSelected.setCuentaNum(personaEntidad.getCuenta());
+			this.cobranzaDetalleCobroSelected.setTitular(this.cobranzaSelected.getPersona().getNombreCompleto());			
+			return;
+		}
+		
+		if (finder.compareTo(this.cuentaCRfinder.getNameFinder()) == 0) {
+			
+			Cuenta cuenta = this.reg.getObjectById(Cuenta.class.getName(), id);
+			this.cobranzaDetalleCobroSelected.setCuentaNumCR(cuenta.getNumero());
+			
+			return;
 		}
 
 	}
@@ -491,6 +584,8 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 
 		if (this.lEstadosCuentasAux.size() > 0) {
 
+		
+			
 			for (EstadoCuenta x : this.lEstadosCuentasAux) {
 
 				CobranzaDetalle cobranzaDetalle = new CobranzaDetalle();
@@ -506,6 +601,8 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 
 			
 		} else if (this.lFacturasAux.size() > 0){
+			
+			
 			
 			for (Object[] x : this.lFacturasAux) {
 				
@@ -524,7 +621,7 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 			
 		}else {
 			
-			
+		
 			if (this.cobranzaDetalleSelected.getServicio() == null) {
 				
 				this.mensajeInfo("Debes seleccionar un servicio.");
@@ -633,7 +730,7 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 
 		}
 
-		this.buscarEntidad = "";
+	//	this.buscarEntidad = "";
 
 		cobranzaDetalleCobroSelected = new CobranzaDetalleCobro();
 
@@ -1044,7 +1141,7 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 
 	// fin detalle cobro
 
-	// Seccion Buscar Entidad
+	/*// Seccion Buscar Entidad
 	private List<Object[]> lEntidadesbuscarOri;
 	private List<Object[]> lEntidadesBuscar;
 	private Entidad buscarSelectedEntidad;
@@ -1077,7 +1174,7 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 		this.cobranzaDetalleCobroSelected.setEntidad(buscarSelectedEntidad);
 
 	}
-
+*/
 	// fin Buscar Entidad
 
 	// buscarTipo
@@ -1354,8 +1451,9 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 
 			if (x.getEstadoCuenta().getVencimiento() == null) {
 
-				if (this.cobranzaSelected.getCondicionVentaTipo().getSigla()
-						.compareTo(ParamsLocal.SIGLA_CONDICION_VENTA_CONTADO) == 0) {
+				if (this.cobranzaSelected.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_RECIBO) == 0 || this.cobranzaSelected.getCondicionVentaTipo().getSigla()
+						.compareTo(ParamsLocal.SIGLA_CONDICION_VENTA_CONTADO) == 0  
+						) {
 
 					x.getEstadoCuenta().setVencimiento(new Date());
 					
@@ -1767,7 +1865,7 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 		this.buscarFormaPago = buscarFormaPago;
 	}
 
-	public List<Object[]> getlEntidadesBuscar() {
+/*	public List<Object[]> getlEntidadesBuscar() {
 		return lEntidadesBuscar;
 	}
 
@@ -1785,7 +1883,7 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 
 	public boolean[] getCamposCobroModal() {
 		return camposCobroModal;
-	}
+	}*/
 
 	public void setCamposCobroModal(boolean[] camposCobroModal) {
 		this.camposCobroModal = camposCobroModal;
@@ -1933,6 +2031,22 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 
 	public void setlFacturasAux(List<Object[]> lFacturasAux) {
 		this.lFacturasAux = lFacturasAux;
+	}
+
+	public FinderModel getCuentaFinder() {
+		return cuentaFinder;
+	}
+
+	public void setCuentaFinder(FinderModel cuentaFinder) {
+		this.cuentaFinder = cuentaFinder;
+	}
+
+	public FinderModel getCuentaCRfinder() {
+		return cuentaCRfinder;
+	}
+
+	public void setCuentaCRfinder(FinderModel cuentaCRfinder) {
+		this.cuentaCRfinder = cuentaCRfinder;
 	}
 
 }
