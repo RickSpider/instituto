@@ -108,7 +108,7 @@
 									<button iconSclass="z-icon-refresh "
 										
 										onClick="@command('consultarComprobante', sifenDocumentoid=each[0])"
-										tooltiptext="Enviar Comprobante" />
+										tooltiptext="Consultar Comprobante" />
 									
 									<button iconSclass="z-icon-print"
 										class="doxa-button-orange"
