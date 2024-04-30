@@ -1,5 +1,3 @@
-SELECT 
-e.entidadid,
-e.entidad
+SELECT e.entidadid as id, e.entidad as entidad
 FROM entidades e
-order by entidadid asc;
+order by e.entidadid asc;

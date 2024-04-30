@@ -34,6 +34,7 @@ import com.instituto.modelo.CobranzaDetalleCobro;
 import com.instituto.modelo.Comprobante;
 import com.instituto.modelo.Cotizacion;
 import com.instituto.modelo.Cuenta;
+import com.instituto.modelo.Entidad;
 import com.instituto.modelo.EstadoCuenta;
 import com.instituto.modelo.PersonaEntidad;
 import com.instituto.modelo.SifenDocumento;
@@ -723,7 +724,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	}
 
-	private boolean[] camposCobroModal = new boolean[9];
+	private boolean[] camposCobroModal = new boolean[10];
 
 	private void desabilitarCampos() {
 
@@ -756,6 +757,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			camposCobroModal[4] = false;
 			camposCobroModal[5] = false;
 			camposCobroModal[7] = false;
+			camposCobroModal[9] = false;
 
 		}
 
@@ -767,6 +769,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			camposCobroModal[4] = false;
 			camposCobroModal[5] = false;
 			camposCobroModal[6] = false;
+			camposCobroModal[9] = false;
 
 		}
 
@@ -781,6 +784,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			// camposCobroModal[4] = false;
 			camposCobroModal[5] = false;
 			camposCobroModal[8] = false;
+			camposCobroModal[9] = false;
 
 		}
 
@@ -795,6 +799,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			camposCobroModal[4] = false;
 			camposCobroModal[5] = false;
 			camposCobroModal[8] = false;
+			camposCobroModal[9] = false;
 
 		}
 
@@ -809,6 +814,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			camposCobroModal[2] = false;
 			camposCobroModal[5] = false;
 			camposCobroModal[8] = false;
+			
 
 		}
 
@@ -963,6 +969,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	private FinderModel alumnoFinder;
 	private FinderModel cuentaFinder;
 	private FinderModel cuentaCRfinder;
+	private FinderModel entidadFinder;
 	
 	@NotifyChange("*")
 	public void inicializarFinders() {
@@ -981,6 +988,11 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		String sqlCuentaCR = this.um.getSql("buscarCuenta.sql").replace("?1", this.getCurrentSede().getSedeid()+"");
 		
 		cuentaCRfinder = new FinderModel("CuentaCR", sqlCuentaCR);
+		
+		String sqlEntidad = this.um.getSql("buscarEntidad.sql");
+		
+		entidadFinder = new FinderModel("entidad",sqlEntidad);
+		
 
 	}
 
@@ -1018,6 +1030,13 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 			this.cuentaCRfinder.generarListFinder();
 			BindUtils.postNotifyChange(null, null, this.cuentaCRfinder, "listFinder");
+			return;
+		}
+		
+		if (finder.compareTo(this.entidadFinder.getNameFinder()) == 0) {
+
+			this.entidadFinder.generarListFinder();
+			BindUtils.postNotifyChange(null, null, this.entidadFinder, "listFinder");
 			return;
 		}
 		
@@ -1063,6 +1082,14 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 			this.cuentaCRfinder.setListFinder(this.filtrarListaObject(filter, this.cuentaCRfinder.getListFinderOri()));
 			BindUtils.postNotifyChange(null, null, this.cuentaCRfinder, "listFinder");
+
+			return;
+		}
+		
+		if (finder.compareTo(this.entidadFinder.getNameFinder()) == 0) {
+
+			this.entidadFinder.setListFinder(this.filtrarListaObject(filter, this.entidadFinder.getListFinderOri()));
+			BindUtils.postNotifyChange(null, null, this.entidadFinder, "listFinder");
 
 			return;
 		}
@@ -1196,6 +1223,13 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			
 			Cuenta cuenta = this.reg.getObjectById(Cuenta.class.getName(), id);
 			this.cobranzaDetalleCobroSelected.setCuentaNumCR(cuenta.getNumero());
+			
+			return;
+		}
+		
+		if (finder.compareTo(this.entidadFinder.getNameFinder()) == 0) {
+			
+			this.cobranzaDetalleCobroSelected.setEntidad(this.reg.getObjectById(Entidad.class.getName(), id));
 			
 			return;
 		}
@@ -2049,6 +2083,14 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	public void setCuentaCRfinder(FinderModel cuentaCRfinder) {
 		this.cuentaCRfinder = cuentaCRfinder;
+	}
+
+	public FinderModel getEntidadFinder() {
+		return entidadFinder;
+	}
+
+	public void setEntidadFinder(FinderModel entidadFinder) {
+		this.entidadFinder = entidadFinder;
 	}
 
 }

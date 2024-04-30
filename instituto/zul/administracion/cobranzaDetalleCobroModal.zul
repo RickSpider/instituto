@@ -140,61 +140,19 @@
 			</tablechildren>
 			<tablechildren visible="@load(!vm.camposCobroModal[0])">
 			
-				<textbox value="@load(vm.cobranzaDetalleCobroSelected.entidad.entidad)" readonly="true"/>
+			
+				
+			
+				<textbox value="@load(vm.cobranzaDetalleCobroSelected.entidad.entidad)" readonly="true" visible="@load(!vm.camposCobroModal[9])" />
 
-			<!-- 	<bandbox id="bd"
-					value="@load(vm.buscarEntidad) @save(vm.buscarEntidad, before='guardarEntidad')"
-					constraint="no empty: Es campo obligatorio." mold="rounded"
-					autodrop="true" width="150px"
-					onOpen="@command('generarListaBuscarEntidad')" readonly="true"
-					disabled="@load(vm.camposCobroModal[0])">
-					<bandpopup>
-
-						<vbox>
-
-							<hbox>
-
-								<label value="Buscar:" />
-
-								<textbox instant="true"
-									value="@bind(vm.buscarEntidad)"
-									onChange="@command('filtrarEntidadBuscar')" />
-
-							</hbox>
-
-							<listbox height="250px" width="450px"
-								mold="paging" autopaging="true" onSelect="bd.close()"
-								model="@load(vm.lEntidadesBuscar)">
-
-								<listhead>
-									<listheader label="ID" hflex="min" />
-									<listheader label="Entidad" />
-									
-								</listhead>
-
-								<template name="model">
-
-									<listitem
-										onClick="@command('onSelectEntidad', id = each[0])">
-
-										<listcell
-											label="@load(each[0])" />
-
-										<listcell
-											label="@load(each[1])" />
-
-										
-									</listitem>
-
-								</template>
-								<listitem />
-							</listbox>
-
-						</vbox>
-					</bandpopup>
-				</bandbox> -->
-
+				<vlayout visible="@load(vm.camposCobroModal[9])">
+					<finder
+							finderValue="@load(vm.cobranzaDetalleCobroSelected.entidad.entidad)"
+							finderModel="@load(vm.entidadFinder)" />
+				</vlayout>
 			</tablechildren>
+			
+			
 
 			<tablechildren visible="@load(!vm.camposCobroModal[8])">
 				<label value="Comprobante #:" />
