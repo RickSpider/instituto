@@ -1,0 +1,75 @@
+<?page title="Empresa" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Empresa" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.abm.EmpresaVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<tablelayout columns="2">
+			
+			<tablechildren>
+				<label value="RUC: " style="font-weight:bold" />
+			</tablechildren>
+			<tablechildren>
+				<textbox value="@bind(vm.empresaSelected.ruc)"/>
+			</tablechildren>
+			
+			<tablechildren>
+				<label value="Razon Social: " style="font-weight:bold" />
+			</tablechildren>
+			<tablechildren>
+				<textbox value="@bind(vm.empresaSelected.razonSocial)"/>
+			</tablechildren>
+			
+			
+			<tablechildren>
+				<label value="Nombre Fantasia: " style="font-weight:bold" />
+			</tablechildren>
+			<tablechildren>
+				<textbox value="@bind(vm.empresaSelected.nombreFantasia)"/>
+			</tablechildren>
+			
+			
+			<tablechildren>
+				<label value="Direccion: " style="font-weight:bold" />
+			</tablechildren>
+			<tablechildren>
+				<textbox value="@bind(vm.empresaSelected.direccion)"/>
+			</tablechildren>
+			
+			
+			<tablechildren>
+				<label value="Telefono: " style="font-weight:bold" />
+			</tablechildren>
+			<tablechildren>
+				<textbox value="@bind(vm.empresaSelected.telefono)"/>
+			</tablechildren>
+			
+			
+			<tablechildren>
+				<label value="Dato Extra 1: " style="font-weight:bold" />
+			</tablechildren>
+			<tablechildren>
+				<textbox value="@bind(vm.empresaSelected.extra1)"/>
+			</tablechildren>
+			
+			
+			<tablechildren>
+				<label value="Dato Extra 2 " style="font-weight:bold" />
+			</tablechildren>
+			<tablechildren>
+				<textbox value="@bind(vm.empresaSelected.extra2)"/>
+			</tablechildren>
+			
+
+		</tablelayout>
+		
+		<space height="10px" />
+
+			<hlayout>
+
+				<button label="Aceptar" onClick="@command('guardar')" />
+
+			</hlayout>
+
+	</window>
+</zk>

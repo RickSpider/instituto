@@ -1,0 +1,157 @@
+<?page title="Ingreso Caja" contentType="text/html;charset=UTF-8"?>
+<?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
+
+<zk>
+	<window title="Ingreso Caja" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.tesoreria.IngresoCajaVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<vlayout vflex="1">
+
+			<tablelayout columns="2">
+
+				<tablechildren>
+					<label value="FechaInicio:"
+						style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<datebox value="@bind(vm.fechaInicio)"
+						format="dd/MM/yyyy HH:mm:ss " width="150px" readonly="true"
+						instant="true" onChange="@command('cargarDatos')" />
+				</tablechildren>
+
+				<tablechildren>
+					<label value="Fecha Fin: " style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<datebox value="@bind(vm.fechaFin)"
+						format="dd/MM/yyyy HH:mm:ss " width="150px" readonly="true"
+						instant="true" onChange="@command('cargarDatos')" />
+				</tablechildren>
+
+				<tablechildren>
+					<label value="Alumno/Persona: "
+						style="font-weight:bold" />
+				</tablechildren>
+
+				<tablechildren>
+
+					<radiogroup id="sv1"
+						onCheck="@command('onCheckRadioButton', radio = self.selectedItem.value)" />
+					<hbox>
+						<radio label="Alumno" value="1" radiogroup="sv1"
+							selected="true" />
+						<radio label="Persona" value="2"
+							radiogroup="sv1" />
+
+						<vbox visible="@load(vm.visibleAP)">
+
+							<finder
+								finderValue="@load(vm.alumnoSelected.persona.documentoNum)"
+								finderModel="@init(vm.alumnoFinder)" />
+
+						</vbox>
+
+						<vbox visible="@load(!vm.visibleAP)">
+
+							<finder
+								finderValue="@load(vm.personaSelected.documentoNum)"
+								finderModel="@init(vm.personaFinder)" />
+
+						</vbox>
+
+					</hbox>
+
+
+
+				</tablechildren>
+
+				<tablechildren>
+					<label value="Total General: "
+						style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<doublebox value="@load(vm.totalGeneral)"
+						format="#,###" readonly="true" />
+				</tablechildren>
+
+			</tablelayout>
+
+
+
+			<listbox emptyMessage="lista vacía..." vflex="1">
+
+				<custom-attributes
+					org.zkoss.zul.listbox.groupSelect="false" />
+
+				<listhead>
+
+					<listheader hflex="min" />
+					<listheader label="Monto" align="right" hflex="min" />
+					<listheader label="Fecha" align="left" />
+					<listheader label="Cuenta #" align="left" />
+					<listheader label="Entidad" align="left" />
+					<listheader label="Transaccion #" align="left" />
+					<listheader label="Alumno/Persona" align="left" />
+					<listheader label="Comprobante #" align="left" />
+					<listheader label="Fecha Emision Pago" align="left" />
+					<listheader label="Tipo Comprobante" align="left" />
+
+
+
+				</listhead>
+
+
+
+				<forEach items="@load(vm.lIngresoCaja)" var="each">
+
+					<listgroup open="true">
+						<listcell />
+						<listcell />
+						<listcell>
+
+							<label value="@load(each.entidad)" />
+							<label value="@load(each.cuentaNum)" />
+
+						</listcell>
+						<listcell />
+						<listcell />
+						<listcell />
+						<listcell />
+						<listcell />
+						<listcell />
+						<listcell>
+							<label value="Total: " />
+							<label
+								value="@load(each.total) @converter('formatedNumber', format='#,###')" />
+						</listcell>
+
+
+					</listgroup>
+
+
+					<forEach items="@load(each.ldata)" var="x">
+
+						<listitem>
+							<listcell />
+							<listcell
+								label="@load(x[0]) @converter('formatedNumber', format='#,###')" />
+							<listcell label="@load(x[1])" />
+							<listcell label="@load(x[2])" />
+							<listcell label="@load(x[3])" />
+							<listcell label="@load(x[4])" />
+							<listcell label="@load(x[5])" />
+							<listcell label="@load(x[6])" />
+							<listcell label="@load(x[7])" />
+							<listcell label="@load(x[8])" />
+
+						</listitem>
+					</forEach>
+
+				</forEach>
+
+
+			</listbox>
+		</vlayout>
+	</window>
+</zk>
