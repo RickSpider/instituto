@@ -162,7 +162,7 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 		}*/
 		
 		ReportExcel re = new ReportExcel("EstadoDeCuenta");
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
 		//CursoVigente cv = this.reg.getObjectById(CursoVigente.class.getName(), cursoVigenteid);
 		
 		List<String[]> titulos = new ArrayList<String[]>();

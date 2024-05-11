@@ -137,8 +137,8 @@
 							<listcell
 								label="@load(x[0]) @converter('formatedNumber', format='#,###')" />
 							<listcell label="@load(x[1])" />
-							<listcell label="@load(x[2])" />
-							<listcell label="@load(x[3])" />
+							<listcell label="@load(x[9])" />
+							<listcell label="@load(x[10])" />
 							<listcell label="@load(x[4])" />
 							<listcell label="@load(x[5])" />
 							<listcell label="@load(x[6])" />

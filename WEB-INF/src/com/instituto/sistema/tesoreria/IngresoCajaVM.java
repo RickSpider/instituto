@@ -73,6 +73,9 @@ public class IngresoCajaVM extends TemplateViewModelLocal {
 		}
 	
 		this.lIngresoCaja = new ArrayList<IngresoCajaDataModel>();
+		
+		System.out.println(sql);
+		
 		List<Object[]> ingresos = this.reg.sqlNativo(sql);
 		
 		
@@ -87,7 +90,11 @@ public class IngresoCajaVM extends TemplateViewModelLocal {
 		}
 		
 		
+		this.totalGeneral = 0;
+		
 		IngresoCajaDataModel icm = new IngresoCajaDataModel(ingresos.get(0)[2].toString(), ingresos.get(0)[3].toString());
+		
+		
 		
 		for (Object[] x : ingresos) {
 			

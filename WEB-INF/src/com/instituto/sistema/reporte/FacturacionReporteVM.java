@@ -35,6 +35,10 @@ public class FacturacionReporteVM extends TemplateViewModelLocal {
 	@Init(superclass = true)
 	public void initFacturacionReporteVM() {
 		
+		this.fechaInicio = this.um.modificarHorasMinutosSegundos(new Date(), 0,0,0,0);
+		this.fechaFin = this.um.modificarHorasMinutosSegundos(this.fechaInicio, 23, 59, 59, 999);
+
+		
 		listaRegistros.add("Todos");
 		listaRegistros.add("Activos");
 		listaRegistros.add("Anulados");
@@ -47,7 +51,8 @@ public class FacturacionReporteVM extends TemplateViewModelLocal {
 
 	@AfterCompose(superclass = true)
 	public void afterComposeFacturacionReporteVM() {
-
+		
+	
 	}
 
 	@Override
@@ -69,7 +74,7 @@ public class FacturacionReporteVM extends TemplateViewModelLocal {
 		}
 		
 		ReportExcel re = new ReportExcel("Facturacion");
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		//CursoVigente cv = this.reg.getObjectById(CursoVigente.class.getName(), cursoVigenteid);
 		
 		List<String[]> titulos = new ArrayList<String[]>();

@@ -4,72 +4,100 @@
 		viewModel="@id('vm') @init('com.instituto.sistema.abm.EmpresaVM')"
 		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
 
-		<tablelayout columns="2">
-			
-			<tablechildren>
-				<label value="RUC: " style="font-weight:bold" />
-			</tablechildren>
-			<tablechildren>
-				<textbox value="@bind(vm.empresaSelected.ruc)"/>
-			</tablechildren>
-			
-			<tablechildren>
-				<label value="Razon Social: " style="font-weight:bold" />
-			</tablechildren>
-			<tablechildren>
-				<textbox value="@bind(vm.empresaSelected.razonSocial)"/>
-			</tablechildren>
-			
-			
-			<tablechildren>
-				<label value="Nombre Fantasia: " style="font-weight:bold" />
-			</tablechildren>
-			<tablechildren>
-				<textbox value="@bind(vm.empresaSelected.nombreFantasia)"/>
-			</tablechildren>
-			
-			
-			<tablechildren>
-				<label value="Direccion: " style="font-weight:bold" />
-			</tablechildren>
-			<tablechildren>
-				<textbox value="@bind(vm.empresaSelected.direccion)"/>
-			</tablechildren>
-			
-			
-			<tablechildren>
-				<label value="Telefono: " style="font-weight:bold" />
-			</tablechildren>
-			<tablechildren>
-				<textbox value="@bind(vm.empresaSelected.telefono)"/>
-			</tablechildren>
-			
-			
-			<tablechildren>
-				<label value="Dato Extra 1: " style="font-weight:bold" />
-			</tablechildren>
-			<tablechildren>
-				<textbox value="@bind(vm.empresaSelected.extra1)"/>
-			</tablechildren>
-			
-			
-			<tablechildren>
-				<label value="Dato Extra 2 " style="font-weight:bold" />
-			</tablechildren>
-			<tablechildren>
-				<textbox value="@bind(vm.empresaSelected.extra2)"/>
-			</tablechildren>
-			
+		<hbox>
+			<tablelayout columns="2">
 
-		</tablelayout>
-		
+				<tablechildren>
+					<label value="RUC: " style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<textbox value="@bind(vm.empresaSelected.ruc)" />
+				</tablechildren>
+
+				<tablechildren>
+					<label value="Razon Social: "
+						style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<textbox
+						value="@bind(vm.empresaSelected.razonSocial)" />
+				</tablechildren>
+
+
+				<tablechildren>
+					<label value="Nombre Fantasia: "
+						style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<textbox
+						value="@bind(vm.empresaSelected.nombreFantasia)" />
+				</tablechildren>
+
+
+				<tablechildren>
+					<label value="Direccion: " style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<textbox
+						value="@bind(vm.empresaSelected.direccion)" />
+				</tablechildren>
+
+
+				<tablechildren>
+					<label value="Telefono: " style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<textbox value="@bind(vm.empresaSelected.telefono)" />
+				</tablechildren>
+
+
+				<tablechildren>
+					<label value="Dato Extra 1: "
+						style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<textbox value="@bind(vm.empresaSelected.extra1)" />
+				</tablechildren>
+
+
+				<tablechildren>
+					<label value="Dato Extra 2 "
+						style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<textbox value="@bind(vm.empresaSelected.extra2)" />
+				</tablechildren>
+
+
+				<tablechildren>
+					<label value="Logo:" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<hbox>
+
+						<button iconSclass="z-icon-cloud-upload"
+							tooltiptext="Subir Archivo" upload="true,maxsize=3072"
+							onUpload="@command('uploadFile', file=event.media)" />
+						
+
+					</hbox>
+
+				</tablechildren>
+
+
+			</tablelayout>
+			<vlayout width="150px" height="180px">
+			<image id="image" content="@load(vm.logoFile)" width="100%" height="100%"/>
+			</vlayout>
+			
+		</hbox>
 		<space height="10px" />
 
-			<hlayout>
+		<hlayout>
 
-				<button label="Aceptar" onClick="@command('guardar')" />
+			<button label="Aceptar" onClick="@command('guardar')" />
 
-			</hlayout>
+		</hlayout>
 
 	</window>
 </zk>

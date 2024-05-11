@@ -11,7 +11,7 @@
 			</tablechildren>
 			<tablechildren>
 				<datebox value="@bind(vm.fechaInicio)"
-				format="short " width="150px" readonly="true" instant="true"/>
+				format="dd/MM/yyyy HH:mm:ss " width="150px" readonly="true" instant="true"/>
 			</tablechildren>
 
 			<tablechildren>
@@ -19,7 +19,7 @@
 			</tablechildren>
 			<tablechildren>
 				<datebox  value="@bind(vm.fechaFin)" 
-				format="short " width="150px" readonly="true" instant="true"/>
+				format="dd/MM/yyyy HH:mm:ss " width="150px" readonly="true" instant="true"/>
 			</tablechildren>
 			
 			<tablechildren>
@@ -59,7 +59,7 @@
 
 			<tablechildren>
 			
-				<button label="Estado de Cuenta"
+				<button label="Generar Reporte"
 					onClick="@command('generarReporte')"
 					disabled="@load(!vm.opCrearFacturacionReporte)"/>
 

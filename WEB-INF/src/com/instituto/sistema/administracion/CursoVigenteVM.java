@@ -1,8 +1,10 @@
 package com.instituto.sistema.administracion;
 
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.poi.util.IOUtils;
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.BindingParam;
@@ -29,11 +31,13 @@ import com.instituto.modelo.CursoVigenteAlumno;
 import com.instituto.modelo.CursoVigenteConcepto;
 import com.instituto.modelo.CursoVigenteConvenio;
 import com.instituto.modelo.CursoVigenteMateria;
+import com.instituto.modelo.Empresa;
 import com.instituto.modelo.Materia;
 import com.instituto.modelo.EstadoCuenta;
 import com.instituto.modelo.Curso;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
+import com.lowagie.text.pdf.codec.Base64.InputStream;
 
 public class CursoVigenteVM extends TemplateViewModelLocal {
 
@@ -1347,15 +1351,20 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		
 		List<String[]> titulos = new ArrayList<String[]>();
 		
-		String[] t1 = {"INSTITUTO SANTO TOMAS"};
-		String[] t2 = {"LISTA DE ALUMNOS"};
+		String tituloLogo = "INSTITUTO SANTO TOMAS\n"
+				+ "Resolucion M.E.C. Nº 841/98";
+		
+		//String[] t1 = {"INSTITUTO SANTO TOMAS"};
+		//String[] t2 = {"LISTA DE ALUMNOS"};
+		String[] espacioBlanco = {""};
 		String[] t3 = {"Sede:",this.getCurrentSede().getSede()};
 		String[] t4 = {"Curso:", cv.getCurso().getCurso()};
 		
 		
 		
-		titulos.add(t1);
-		titulos.add(t2);
+		//titulos.add(t1);
+		//titulos.add(t2);
+		titulos.add(espacioBlanco);
 		titulos.add(t3);
 		titulos.add(t4);
 		
@@ -1373,7 +1382,19 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			
 		}
 		
-		re.descargar(titulos, headersDatos, datos);
+		Empresa emp = this.reg.getObjectById(Empresa.class.getName(), 1);
+		
+		if (emp != null && emp.getPathLogo() != null) {
+			 
+			re.descargar(titulos, headersDatos, datos, tituloLogo, emp.getPathLogo() );
+			
+		}else {
+			
+			re.descargar(titulos, headersDatos, datos);
+			
+		}
+		
+		//re.descargar(titulos, headersDatos, datos);
 		
 		
 	}
@@ -1386,8 +1407,11 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		
 		List<String[]> titulos = new ArrayList<String[]>();
 		
-		String[] t1 = {"INSTITUTO SANTO TOMAS"};
-		String[] t2 = {"Resolucion M.E.C. Nº 841/98"};
+		String tituloLogo = "INSTITUTO SANTO TOMAS\n"
+				+ "Resolucion M.E.C. Nº 841/98";
+		
+		//String[] t1 = {"INSTITUTO SANTO TOMAS"};
+		//String[] t2 = {"Resolucion M.E.C. Nº 841/98"};
 		String[] espacioBlanco = {""};
 		String[] t3 = {"Sede:",this.getCurrentSede().getSede()};
 		String[] t4 = {"Curso:", cv.getCurso().getCurso()};
@@ -1395,8 +1419,8 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		String[] t6 = {"FECHA:"};
 		String[] t7 = {"PROFESOR/A:"};
 		
-		titulos.add(t1);
-		titulos.add(t2);
+		//titulos.add(t1);
+		//titulos.add(t2);
 		titulos.add(espacioBlanco);
 		titulos.add(t3);
 		titulos.add(t4);
@@ -1444,7 +1468,19 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			
 		}
 		
-		re.descargar(titulos, headersDatos, datos2);
+		Empresa emp = this.reg.getObjectById(Empresa.class.getName(), 1);
+		
+		if (emp != null && emp.getPathLogo() != null) {
+			 
+			re.descargar(titulos, headersDatos, datos2, tituloLogo, emp.getPathLogo() );
+			
+		}else {
+			
+			re.descargar(titulos, headersDatos, datos2);
+			
+		}
+		
+		
 		
 	}
 
