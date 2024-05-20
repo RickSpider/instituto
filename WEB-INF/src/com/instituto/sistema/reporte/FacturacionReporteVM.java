@@ -74,12 +74,13 @@ public class FacturacionReporteVM extends TemplateViewModelLocal {
 		}
 		
 		ReportExcel re = new ReportExcel("Facturacion");
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat sdfConsulta = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat sdfRespuesta = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		//CursoVigente cv = this.reg.getObjectById(CursoVigente.class.getName(), cursoVigenteid);
 		
 		List<String[]> titulos = new ArrayList<String[]>();
 		
-		SimpleDateFormat sdfRango = new SimpleDateFormat("dd-MM-yyyy");
+		SimpleDateFormat sdfRango = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		
 		String[] t1 = {"INSTITUTO SANTO TOMAS"};
 		String[] t2 = {"Resolucion M.E.C. Nº 841/98"};
@@ -103,7 +104,7 @@ public class FacturacionReporteVM extends TemplateViewModelLocal {
 		headersDatos.add(hd1);
 		
 		
-		String sql1 =  this.um.getSql("facturacionReporte/facturasReporte.sql").replace("?1", sdf.format(fechaInicio) ).replace("?2", sdf.format(fechaFin));
+		String sql1 =  this.um.getSql("facturacionReporte/facturasReporte.sql").replace("?1", sdfConsulta.format(fechaInicio) ).replace("?2", sdfConsulta.format(fechaFin));
 		
 		System.out.println(sql1);
 		
@@ -152,7 +153,7 @@ public class FacturacionReporteVM extends TemplateViewModelLocal {
 			
 			Object[] o = datos.get(i);
 			
-			Date d = sdf.parse(o[1].toString());
+			Date d = sdfRespuesta.parse(o[1].toString());
 			
 			if (mes.compareTo(sdfMes.format(d))!=0) {
 				

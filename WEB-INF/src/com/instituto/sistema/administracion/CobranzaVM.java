@@ -820,150 +820,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	}
 
-	// fin detalle cobro
-
-	// Seccion Buscar Entidad
-/*	private List<Object[]> lEntidadesbuscarOri;
-	private List<Object[]> lEntidadesBuscar;
-	private Entidad buscarSelectedEntidad;
-	private String buscarEntidad = "";
-
-	@Command
-	@NotifyChange("lEntidadesBuscar")
-	public void filtrarEntidadBuscar() {
-
-		this.lEntidadesBuscar = this.filtrarListaObject(buscarEntidad, this.lEntidadesbuscarOri);
-
-	}
-
-	@Command
-	@NotifyChange("lEntidadesBuscar")
-	public void generarListaBuscarEntidad() {
-
-		String sqlBuscarEntidad = this.um.getSql("buscarEntidad.sql");
-
-		this.lEntidadesBuscar = this.reg.sqlNativo(sqlBuscarEntidad);
-		this.lEntidadesbuscarOri = this.lEntidadesBuscar;
-	}
-
-	@Command
-	@NotifyChange("buscarEntidad")
-	public void onSelectEntidad(@BindingParam("id") long id) {
-
-		this.buscarSelectedEntidad = this.reg.getObjectById(Entidad.class.getName(), id);
-		this.buscarEntidad = buscarSelectedEntidad.getEntidad();
-		this.cobranzaDetalleCobroSelected.setEntidad(buscarSelectedEntidad);
-
-	}*/
-
-	// fin Buscar Entidad
-	
-	// Seccion Buscar Alumno
-/*		private List<Object[]> lAlumnosbuscarOri;
-		private List<Object[]> lAlumnosBuscar;
-		private Alumno buscarSelectedAlumno;
-		private String buscarAlumno = "";
-
-		@Command
-		@NotifyChange("lAlumnosBuscar")
-		public void filtrarAlumnoBuscar() {
-
-			this.lAlumnosBuscar = this.filtrarListaObject(buscarAlumno, this.lAlumnosbuscarOri);
-
-		}
-
-		@Command
-		@NotifyChange("lAlumnosBuscar")
-		public void generarListaBuscarAlumno() {
-
-			String sqlBuscarAlumno = this.um.getSql("buscarAlumnoNotSede.sql");
-
-			this.lAlumnosBuscar = this.reg.sqlNativo(sqlBuscarAlumno);
-			this.lAlumnosbuscarOri = this.lAlumnosBuscar;
-		}
-
-		@Command
-		@NotifyChange({ "cobranzaSelected", "buscarAlumno", "saldoTotal", "saldoVencido" })
-		public void onSelectAlumno(@BindingParam("id") long id) {
-
-			this.buscarSelectedAlumno = this.reg.getObjectById(Alumno.class.getName(), id);
-			this.buscarAlumno = buscarSelectedAlumno.getFullNombre();
-			this.cobranzaSelected.setAlumno(buscarSelectedAlumno);
-
-			if (buscarSelectedAlumno.getPersonaFacturacion() == null) {
-
-				if (buscarSelectedAlumno.getPersona().getRazonSocial() != null
-						&& buscarSelectedAlumno.getPersona().getRazonSocial().length() > 0) {
-
-					this.cobranzaSelected.setRazonSocial(buscarSelectedAlumno.getPersona().getRazonSocial());
-
-				} else {
-
-					this.cobranzaSelected.setRazonSocial(buscarSelectedAlumno.getPersona().getNombreCompleto());
-
-				}
-
-				if (buscarSelectedAlumno.getPersona().getRuc() != null
-						&& buscarSelectedAlumno.getPersona().getRuc().length() > 0) {
-
-					this.cobranzaSelected.setRuc(buscarSelectedAlumno.getPersona().getRuc());
-
-				} else {
-
-					this.cobranzaSelected.setRuc(buscarSelectedAlumno.getPersona().getDocumentoNum());
-				}
-
-				this.cobranzaSelected.setDireccion(buscarSelectedAlumno.getPersona().getDireccion());
-				this.cobranzaSelected.setTelefono(buscarSelectedAlumno.getPersona().getTelefono());
-
-			} else {
-
-				if (buscarSelectedAlumno.getPersonaFacturacion().getRazonSocial() != null
-						&& buscarSelectedAlumno.getPersonaFacturacion().getRazonSocial().length() > 0) {
-
-					this.cobranzaSelected.setRazonSocial(buscarSelectedAlumno.getPersonaFacturacion().getRazonSocial());
-
-				} else {
-
-					this.cobranzaSelected.setRazonSocial(buscarSelectedAlumno.getPersonaFacturacion().getNombreCompleto());
-
-				}
-
-				if (buscarSelectedAlumno.getPersona().getRuc() != null
-						&& buscarSelectedAlumno.getPersona().getRuc().length() > 0) {
-
-					this.cobranzaSelected.setRuc(buscarSelectedAlumno.getPersonaFacturacion().getRuc());
-
-				} else {
-
-					this.cobranzaSelected.setRuc(buscarSelectedAlumno.getPersonaFacturacion().getDocumentoNum());
-				}
-
-				this.cobranzaSelected.setDireccion(buscarSelectedAlumno.getPersonaFacturacion().getDireccion());
-				this.cobranzaSelected.setTelefono(buscarSelectedAlumno.getPersonaFacturacion().getTelefono());
-
-			}
-
-			String sqlSaldoTotal = this.um.getSql("saldoTotalPorAlumno.sql").replace("?1",
-					this.buscarSelectedAlumno.getAlumnoid() + "");
-			List<Object[]> resultSaldoTotal = this.reg.sqlNativo(sqlSaldoTotal);
-			this.saldoTotal = 0;
-			if (resultSaldoTotal.size() > 0) {
-				this.saldoTotal = Double.parseDouble(resultSaldoTotal.get(0)[1].toString());
-			}
-
-			String sqlSaldoVencido = this.um.getSql("saldoVencidoPorAlumno.sql").replace("?1",
-					this.buscarSelectedAlumno.getAlumnoid() + "");
-			List<Object[]> resultSaldoVencido = this.reg.sqlNativo(sqlSaldoVencido);
-			this.saldoVencido = 0;
-			if (resultSaldoVencido.size() > 0) {
-				this.saldoVencido = Double.parseDouble(resultSaldoVencido.get(0)[1].toString());
-			}
-
-		}
-
-		// fin Buscar Alumno
-	*/
+	//seccion finder
 	private FinderModel comprobanteFinder;
 	private FinderModel condicionFinder;
 	private FinderModel alumnoFinder;
@@ -1610,7 +1467,8 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 		for (CobranzaDetalle x : lDetalles) {
 
-			x.setCobranza(this.cobranzaSelected);
+			x.setCobranza(this.cobranzaSelected);			
+			
 			this.save(x);
 			
 			if (this.cobranzaSelected.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_RECIBO) ==0 

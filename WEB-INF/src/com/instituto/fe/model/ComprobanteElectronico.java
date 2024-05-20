@@ -37,7 +37,7 @@ public class ComprobanteElectronico {
 	/**
 	 * OBLIGATORIO para comprobante tipo factura electronica y autofactura
 	 */
-	private int tipoTransaccion;
+	private Long tipoTransaccion;
 	private String descripcionTipoTransaccion;
 
 	// private int tipoImpuesto;
@@ -230,16 +230,8 @@ public class ComprobanteElectronico {
 		this.motivoEvento = motivoEvento;
 	}
 
-	public int getTipoTransaccion() {
-		return tipoTransaccion;
-	}
-
 	public String getFechaVencimiento() {
 		return new SimpleDateFormat("dd-MM-yyyy").format(fechaVencimiento);
-	}
-
-	public void setTipoTransaccion(int tipoTransaccion) {
-		this.tipoTransaccion = tipoTransaccion;
 	}
 
 	/**
@@ -257,4 +249,14 @@ public class ComprobanteElectronico {
 		this.descripcionTipoTransaccion = descripcionTipoTransaccion;
 	}
 
+	public Long getTipoTransaccion() {
+		return tipoTransaccion;
+	}
+
+	public void setTipoTransaccion(Long tipoTransaccion) {
+		this.tipoTransaccion = tipoTransaccion;
+	}
+
+	
+	
 }

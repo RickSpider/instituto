@@ -134,6 +134,34 @@
 				constraint="no empty: Es campo obligatorio." style="text-align:right" hflex="1"
 				format="#,###"/>
 			</tablechildren>
+			
+			<tablechildren>
+				<label value="Cuenta CR #:" />
+			</tablechildren>
+			<tablechildren>
+				<!-- <textbox value="@bind(vm.cobranzaDetalleCobroSelected.cuentaNumCR)"/> -->
+				
+				<finder
+						finderValue="@load(vm.cobranzaDetalleCobroSelected.cuentaNumCR)"
+						finderModel="@load(vm.cuentaCRfinder)" />
+				
+				
+			</tablechildren>
+			
+			<tablechildren visible="@load(!vm.camposCobroModal[1])">
+				<label value="Cuenta DB #:" />
+			</tablechildren>
+			<tablechildren visible="@load(!vm.camposCobroModal[1])">
+				<!-- <textbox value="@bind(vm.cobranzaDetalleCobroSelected.cuentaNum)" disabled="@load(vm.camposCobroModal[1])"/>  -->
+				
+				<finder
+						finderValue="@load(vm.cobranzaDetalleCobroSelected.cuentaNum)"
+						finderModel="@load(vm.cuentaFinder)" disabled="@load(vm.camposCobroModal[1])"/>
+				
+				
+			</tablechildren>
+			
+			
 
 			<tablechildren visible="@load(!vm.camposCobroModal[0])">
 				<label value="Entidad:" />
@@ -161,37 +189,22 @@
 				<textbox value="@bind(vm.cobranzaDetalleCobroSelected.comprobanteNum)" disabled="@load(vm.camposCobroModal[8])"/>
 			</tablechildren>
 
-			<tablechildren visible="@load(!vm.camposCobroModal[1])">
-				<label value="Cuenta DB #:" />
-			</tablechildren>
-			<tablechildren visible="@load(!vm.camposCobroModal[1])">
-				<!-- <textbox value="@bind(vm.cobranzaDetalleCobroSelected.cuentaNum)" disabled="@load(vm.camposCobroModal[1])"/>  -->
-				
-				<finder
-						finderValue="@load(vm.cobranzaDetalleCobroSelected.cuentaNum)"
-						finderModel="@load(vm.cuentaFinder)" disabled="@load(vm.camposCobroModal[1])"/>
-				
-				
-			</tablechildren>
 			
-			<tablechildren>
-				<label value="Cuenta CR #:" />
-			</tablechildren>
-			<tablechildren>
-				<!-- <textbox value="@bind(vm.cobranzaDetalleCobroSelected.cuentaNumCR)"/> -->
-				
-				<finder
-						finderValue="@load(vm.cobranzaDetalleCobroSelected.cuentaNumCR)"
-						finderModel="@load(vm.cuentaCRfinder)" />
-				
-				
-			</tablechildren>
 
 			<tablechildren visible="@load(!vm.camposCobroModal[2])">
 				<label value="Transaccion #:" />
 			</tablechildren>
 			<tablechildren visible="@load(!vm.camposCobroModal[2])">
 				<textbox value="@bind(vm.cobranzaDetalleCobroSelected.transaccionNum)" disabled="@load(vm.camposCobroModal[2])"/>
+			</tablechildren>
+			
+			<tablechildren visible="@load(!vm.camposCobroModal[5])">
+				<label value="Fecha Emision:" />
+			</tablechildren>
+			<tablechildren visible="@load(!vm.camposCobroModal[5])">
+				<datebox
+					value="@bind(vm.cobranzaDetalleCobroSelected.emision)"
+					format="dd/MM/yyyy KK:mm:ss" hflex="1" disabled="@load(vm.camposCobroModal[5])"/>
 			</tablechildren>
 			
 			<tablechildren visible="@load(!vm.camposCobroModal[7])">
@@ -215,14 +228,7 @@
 				<textbox value="@bind(vm.cobranzaDetalleCobroSelected.titular)" disabled="@load(vm.camposCobroModal[4])" />
 			</tablechildren>
 
-			<tablechildren visible="@load(!vm.camposCobroModal[5])">
-				<label value="Fecha Emision:" />
-			</tablechildren>
-			<tablechildren visible="@load(!vm.camposCobroModal[5])">
-				<datebox
-					value="@bind(vm.cobranzaDetalleCobroSelected.emision)"
-					format="dd/MM/yyyy KK:mm:ss" hflex="1" disabled="@load(vm.camposCobroModal[5])"/>
-			</tablechildren>
+			
 
 			<tablechildren visible="@load(!vm.camposCobroModal[6])">
 				<label value="Fecha Vencimiento:" />

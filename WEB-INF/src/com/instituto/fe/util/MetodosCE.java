@@ -239,6 +239,8 @@ public class MetodosCE extends Control {
 			
 			ResultRest rr = enviarJson(link, sd.getJson());
 			
+			System.out.println("Json enviado: \n"+sd.getJson());
+			
 			//System.out.println("Esta es la respuesta: "+rr.getCode()+" "+rr.getMensaje());
 				
 			if (rr == null) {
@@ -272,6 +274,7 @@ public class MetodosCE extends Control {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		
 		return null;
