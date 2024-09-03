@@ -17,6 +17,10 @@
 	<nav label="Administracion" iconSclass="z-icon-group"
 		children="@load(vm.pageMap[self.label].values()) @template('navitem')"
 		visible="@load(vm.menuVisible( vm.pageMap[self.label].values().size() ))" />
+	
+	<nav label="Compras" iconSclass="z-icon-shopping-cart "
+		children="@load(vm.pageMap[self.label].values()) @template('navitem')"
+		visible="@load(vm.menuVisible( vm.pageMap[self.label].values().size() ))" />
 		
 	<nav label="Estado de Cuenta" iconSclass="z-icon-bar-chart"
 		children="@load(vm.pageMap[self.label].values()) @template('navitem')"
@@ -34,5 +38,7 @@
 	<nav label="Reportes" iconSclass=" z-icon-file-text-o "
 		children="@load(vm.pageMap[self.label].values()) @template('navitem')"
 		visible="@load(vm.menuVisible( vm.pageMap[self.label].values().size() ))" />
+	
+	
 
 </zk>

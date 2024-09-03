@@ -8,9 +8,8 @@ public class ParamsLocal extends Params {
 	 * EJEMPLO DE COMO CREAR PARAMETROS
 	 * 
 	 * 
-	 * public static final String OP_CREAR_? = "Crear?"; 
-	 * public static final String OP_EDITAR_? = "Editar?"; 
-	 * public static final String OP_BORRAR_? = "Borrar?";
+	 * public static final String OP_CREAR_? = "Crear?"; public static final String
+	 * OP_EDITAR_? = "Editar?"; public static final String OP_BORRAR_? = "Borrar?";
 	 * 
 	 */
 
@@ -23,13 +22,20 @@ public class ParamsLocal extends Params {
 	public static final String SIGLA_IMPUESTO_IVA_EXENTO = "IVA_EXENTO";
 	public static final String SIGLA_MATERIA = "MATERIA";
 	public static final String SIGLA_PERSONA = "PERSONA";
+	
 	public static final String SIGLA_ESTADO_CV_MATERIA = "ESTADO_CV_MATERIA";
+	public static final String SIGLA_ESTAOD_CV_MATERIA_PENDIENTE = "ESTADO_CV_MATERIA_PENDIENTE";
+	public static final String SIGLA_ESTAOD_CV_MATERIA_PROCESO = "ESTADO_CV_MATERIA_PROCESO";
+	public static final String SIGLA_ESTAOD_CV_MATERIA_FINALIZADO = "ESTADO_CV_MATERIA_FINALIZADO";
+	
 	public static final String SIGLA_MONEDA = "MONEDA";
 	public static final String SIGLA_MONEDA_GUARANI = "MONEDA_GUARANI";
 	public static final String SIGLA_MONEDA_DOLAR = "MONEDA_DOLAR";
+	
 	public static final String SIGLA_COMPROBANTE = "COMPROBANTE";
 	public static final String SIGLA_COMPROBANTE_FACTURA = "COMPROBANTE_FACTURA";
 	public static final String SIGLA_COMPROBANTE_RECIBO = "COMPROBANTE_RECIBO";
+	
 	public static final String SIGLA_FORMA_PAGO = "FORMA_PAGO";
 	public static final String SIGLA_FORMA_PAGO_EFECTIVO = "FORMA_PAGO_EFECTIVO";
 	public static final String SIGLA_FORMA_PAGO_TRANSFERENCIA = "FORMA_PAGO_TRANSFERENCIA";
@@ -48,9 +54,19 @@ public class ParamsLocal extends Params {
 	public static final String SIGLA_CONDICION_VENTA = "CONDICION_VENTA";
 	public static final String SIGLA_CONDICION_VENTA_CONTADO = "CONDICION_VENTA_CONTADO";
 	public static final String SIGLA_CONDICION_VENTA_CREDITO = "CONDICION_VENTA_CREDITO";
-	
+
 	public static final String SIGLA_TRANSACCION_EGRESO = "TRANSACCION_EGRESO";
 	public static final String SIGLA_TRANSACCION_INGRESO = "TRANSACCION_INGRESO";
+
+	public static final String SIGLA_ORDEN_COMPRA = "ORDEN_COMPRA";
+	public static final String SIGLA_ORDEN_COMPRA_ACTIVO = "ORDEN_COMPRA_ACTIVO";
+	public static final String SIGLA_ORDEN_COMPRA_PAGADO = "ORDEN_COMPRA_PAGADO";
+	public static final String SIGLA_ORDEN_COMPRA_CANCELADO = "ORDEN_COMPRA_CANCELADO";
+	
+	public static final String SIGLA_PROVEEDOR = "PROVEEDOR";
+	public static final String SIGLA_PROVEEDOR_PROVEEDOR = "PROVEEDOR_PROVEEDOR";
+	public static final String SIGLA_PROVEEDOR_DOCENTE = "PROVEEDOR_DOCENTE";
+	
 
 	// Sede
 	public static final String OP_CREAR_SEDE = "CrearSede";
@@ -171,7 +187,7 @@ public class ParamsLocal extends Params {
 	public static final String OP_CREAR_ESTADOCUENTA = "CrearEstadoCuenta";
 	public static final String OP_INACTIVAR_ESTADOCUENTA = "InactivarEstadoCuenta";
 	public static final String OP_BORRAR_ESTADOCUENTA = "BorrarEstadoCuenta";
-	
+
 	// Estado Cuenta
 	public static final String OP_CREAR_ESTADOCUENTAPERSONA = "CrearEstadoCuentaPersona";
 	public static final String OP_INACTIVAR_ESTADOCUENTAPERSONA = "InactivarEstadoCuentaPersona";
@@ -192,17 +208,17 @@ public class ParamsLocal extends Params {
 	public static final String OP_CREAR_CUENTA = "CrearCuenta";
 	public static final String OP_EDITAR_CUENTA = "EditarCuenta";
 	public static final String OP_BORRAR_CUENTA = "BorrarCuenta";
-	
+
 	// Transaccion
 	public static final String OP_CREAR_TRANSACCION = "CrearTransaccion";
 	public static final String OP_EDITAR_TRANSACCION = "EditarTransaccion";
 	public static final String OP_BORRAR_TRANSACCION = "BorrarTransaccion";
-	
+
 	// Transaccion
 	public static final String OP_CREAR_SERVICIO = "CrearServicio";
 	public static final String OP_EDITAR_SERVICIO = "EditarServicio";
 	public static final String OP_BORRAR_SERVICIO = "BorrarServicio";
-	
+
 	// CobranzaServicio
 	public static final String OP_CREAR_COBRANZASERVICIO = "CrearCobranzaServicio";
 	public static final String OP_DEFINIR_FECHA_COBRANZASERVICIO = "DefinirFechaCobranzaServicio";
@@ -211,5 +227,35 @@ public class ParamsLocal extends Params {
 	public static final String OP_CREAR_SIFENDOCUMENTO = "CrearSifenDocumento";
 	public static final String OP_EDITAR_SIFENDOCUMENTO = "EditarSifenDocumento";
 	public static final String OP_BORRAR_SIFENDOCUMENTO = "BorrarSifenDocumento";
+
+	// Rubro
+	public static final String OP_CREAR_RUBRO = "CrearRubro";
+	public static final String OP_EDITAR_RUBRO = "EditarRubro";
+	public static final String OP_BORRAR_RUBRO = "BorrarRubro";
+
+	// CuentaRubro
+	public static final String OP_CREAR_CUENTARUBRO = "CrearCuentaRubro";
+	public static final String OP_EDITAR_CUENTARUBRO = "EditarCuentaRubro";
+	public static final String OP_BORRAR_CUENTARUBRO = "BorrarCuentaRubro";
+
+	// Proveedor
+	public static final String OP_CREAR_PROVEEDOR = "CrearProveedor";
+	public static final String OP_EDITAR_PROVEEDOR = "EditarProveedor";
+	public static final String OP_BORRAR_PROVEEDOR = "BorrarProveedor";
+
+	// PResupuesto
+	public static final String OP_CREAR_PRESUPUESTO = "CrearPresupuesto";
+	public static final String OP_EDITAR_PRESUPUESTO = "EditarPresupuesto";
+	public static final String OP_BORRAR_PRESUPUESTO = "BorrarPresupuesto";
+
+	// OrdenCompra
+	public static final String OP_CREAR_ORDENCOMPRA = "CrearOrdenCompra";
+	public static final String OP_EDITAR_ORDENCOMPRA = "EditarOrdenCompra";
+	public static final String OP_BORRAR_ORDENCOMPRA = "BorrarOrdenCompra";
+	
+	// Pago
+	public static final String OP_CREAR_PAGO = "CrearPago";
+	public static final String OP_EDITAR_PAGO = "EditarPago";
+	public static final String OP_BORRAR_PAGO = "BorrarPago";
 
 }

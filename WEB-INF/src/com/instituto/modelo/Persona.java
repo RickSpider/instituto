@@ -253,5 +253,12 @@ public class Persona extends Modelo implements Serializable {
 	public void setRazonSocial(String razonSocial) {
 		this.razonSocial = razonSocial;
 	}
+	
+	public String getFullNombre() {
+		
+		return this.nombre+" "+this.apellido;
+		
+	}
+	
 
 }

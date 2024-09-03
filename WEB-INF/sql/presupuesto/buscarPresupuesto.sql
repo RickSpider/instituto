@@ -1,0 +1,1 @@
+Select presupuestoid as id, anho as Presupuesto from presupuestos;

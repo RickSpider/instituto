@@ -178,6 +178,16 @@
 						readonly="true" />
 				</tablechildren>
 				
+				<tablechildren style="padding-left: 5px">
+					<label value="Direccion:" />
+				</tablechildren>
+				
+				<tablechildren style="padding-left: 5px" colspan="3">
+					<textbox
+						value="@load(vm.cobranzaSelected.direccion)" width="350px"
+						readonly="true" />
+				</tablechildren>
+				
 				
 
 			</tablelayout>
@@ -334,7 +344,7 @@
 							<button label="Agregar Tipo Pago"
 								iconSclass=" z-icon-plus"
 								onClick="@command('modalCobranzaDetalleCobro')"
-								disabled="@load(vm.disableCobranza)" style="background-color:green" />
+								disabled="@load(vm.disableCobranzaTipoPago)" style="background-color:green" />
 						</auxheader>
 
 					</auxhead>

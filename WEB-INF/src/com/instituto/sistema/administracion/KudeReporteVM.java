@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,9 @@ public class KudeReporteVM extends TemplateReportViewModel {
 		
 		parameters.put("Fecha", cobranza.getFecha());
 		parameters.put("RazonSocial", cobranza.getRazonSocial());
+		parameters.put("Direccion", cobranza.getDireccion());
+		
+		System.out.println("la direccion es : "+cobranza.getDireccion());
 		
 		if (cobranza.getAlumno() != null) {
 			
@@ -63,15 +67,23 @@ public class KudeReporteVM extends TemplateReportViewModel {
 			
 		}		
 		
+		parameters.put("CreditoVencimiento", cobranza.getFechaCreditoVencimiento());
+		
 		parameters.put("Ruc", cobranza.getRuc());
 		parameters.put("ComprobanteNum", cobranza.getComprobanteNum());
 		parameters.put("Total", new Double(cobranza.getTotalDetalle()));
-		PasarNumerosLetras pnl = new PasarNumerosLetras();
-		parameters.put("TotalLetras",pnl.Convertir(String.valueOf(cobranza.getTotalDetalle()), true));
+		PasarNumerosLetras pnl = new PasarNumerosLetras();		
+		
+		DecimalFormat df = new DecimalFormat("#");
+        df.setMaximumFractionDigits(0);
+		
+		parameters.put("TotalLetras",pnl.Convertir(df.format(cobranza.getTotalDetalle()), true));
 		
 		parameters.put("Timbrado",cobranza.getTimbrado());
 		parameters.put("FechaInicio", cobranza.getComprobanteEmision());
 		parameters.put("FechaFin", cobranza.getComprobanteVencimiento());
+		
+		
 		
 		if (cobranza.getCondicionVentaTipo().getSigla().compareTo(ParamsLocal.SIGLA_CONDICION_VENTA_CONTADO)==0) {
 			

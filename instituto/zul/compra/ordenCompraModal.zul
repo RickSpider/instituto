@@ -1,0 +1,310 @@
+<?page title="ordenCompraModal" contentType="text/html;charset=UTF-8"?>
+
+<?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
+<?component name="finderModelo" templateURI="/instituto/zul/component/finderCursoVigenteMateria.zul"?>
+
+<zk>
+	<window title="Orden Compra Crear/Ver/Editar" border="normal"
+		position="center,center" closable="true" mode="modal"
+		action="show: slideDown;hide: slideUp">
+
+		<vlayout width="750px" height="700px">
+
+			<hlayout>
+
+				<tablelayout columns="4" hflex="1">
+
+					<tablechildren>
+
+						<label value="ID:" />
+
+					</tablechildren>
+					<tablechildren>
+
+						<textbox
+							value="@load(vm.ordenCompraSelected.ordencompraid)" width="75px"
+							readonly="true" />
+
+					</tablechildren>
+					
+					<tablechildren>
+
+						<label value="Moneda:" />
+
+					</tablechildren>
+					<tablechildren>
+
+						<finder
+							finderValue="@load(vm.ordenCompraSelected.monedaTipo.tipo)"
+							finderModel="@init(vm.monedaFinder)" />
+
+					</tablechildren>
+					
+						<tablechildren>
+
+						<label value="Fecha:" />
+
+					</tablechildren>
+					<tablechildren>
+
+						<datebox
+							value="@bind(vm.ordenCompraSelected.fecha)" width="200px"
+							format="dd/MM/yyyy hh:mm:ss" />
+
+					</tablechildren>
+					
+
+					<tablechildren>
+
+						<label value="Estado:" />
+
+					</tablechildren>
+					<tablechildren>
+
+						<finder
+							finderValue="@load(vm.ordenCompraSelected.estadoTipo.tipo)"
+							finderModel="@init(vm.estadoTipoFinder)" />
+
+					</tablechildren>
+
+					<tablechildren>
+
+						<label value="Vencimiento:" />
+
+					</tablechildren>
+					<tablechildren>
+
+						<datebox
+							value="@bind(vm.ordenCompraSelected.fechaVencimiento)"
+							width="200px" />
+
+					</tablechildren>
+
+					<tablechildren>
+
+						<label value="Proveedor:" />
+
+					</tablechildren>
+					
+					
+
+					<tablechildren>
+						<finder
+							finderValue="@load(vm.ordenCompraSelected.proveedor.persona.fullNombre)"
+							finderModel="@init(vm.proveedorFinder)" />
+					</tablechildren>
+					
+				
+					
+
+					
+
+					<tablechildren>
+
+						<label value="Descripcion:" />
+
+					</tablechildren>
+					<tablechildren>
+
+						<textbox
+							value="@bind(vm.ordenCompraSelected.descripcion)" rows="3"
+							maxlength="255" />
+
+					</tablechildren>
+
+				</tablelayout>
+
+
+
+
+			</hlayout>
+
+			<space height="10px" />
+
+			<vlayout vflex="1">
+
+				<listbox emptyMessage="lista vacía..." mold="paging"
+					autopaging="true" vflex="1" hflex="1"
+					model="@load(vm.ordenCompraSelected.detalles)" checkmark="true">
+
+					<auxhead>
+
+						<auxheader colspan="5">
+
+							<hlayout>
+
+								<label value="Cuenta:" />
+
+								<finder
+									finderValue="@load(vm.cuentaRubroSelected.cuentaRubro)"
+									finderModel="@init(vm.rubroFinder)" />
+
+								<label value="Monto:" />
+
+								<doublebox
+									value="@bind(vm.monto)" />
+									
+								<finder
+									finderValue="@load(vm.impuestoSelected.tipo)"
+									finderModel="@init(vm.impuestoTipoFinder)" />
+
+								<button iconSclass=" z-icon-plus"
+									class="doxa-button-green"
+									tooltiptext="Agregar Detalle"
+									onClick="@command('agregarDetalle')" />
+
+							</hlayout>
+
+
+
+						</auxheader>
+
+
+					</auxhead>
+
+					<listhead visible="false">
+					
+					
+						<listheader width="35px" align="center"/>
+						<listheader label="ID Cuenta" align="center"
+							width="75px" />
+						<listheader label="Cuenta" align="left" />
+
+						<listheader label="Monto" align="center"
+							width="250px" />
+							
+						<listheader label="Impuesto" align="center"
+							/>
+						<listheader width="50px" />
+
+					</listhead>
+
+					<auxhead>
+						
+						<auxheader />
+						<auxheader label="ID Cuenta" align="center" />
+						<auxheader label="Cuenta" align="center" />
+						<auxheader label="Monto" align="center" />
+						<auxheader label="Impuesto" align="center" />
+						<auxheader />
+
+					</auxhead>
+
+
+					<template name="model">
+
+						<listitem
+							onClick="@command('refrescarDetallesDoc', dato = each )">
+							
+							<listcell/>
+							
+							<listcell
+								label="@load(each.cuentaRubro.cuentarubroid)" />
+							<listcell
+								label="@load(each.cuentaRubro.cuentaRubro)" />
+							<listcell>
+								<doublebox value="@load(each.monto)"
+									style="text-align:right" format="#,###"
+									readonly="true" hflex="1" />
+							</listcell>
+							
+							<listcell label="@load(each.impuestoTipo.tipo)"/>
+									
+							
+							<listcell>
+
+								<button iconSclass="z-icon-trash-o"
+									style="background-color:red"
+									onClick="@command('borrarDetalle', dato=each)"
+									tooltiptext="Borrar" disabled="@load(!vm.opEditarOrdenCompra)" />
+
+							</listcell>
+						</listitem>
+
+
+					</template>
+
+					<listfoot>
+						<listfooter span="5" align="left">
+							<hlayout>
+								<label
+									value="@load(vm.ordenCompraSelected.detalles.size())" />
+								<label value="items" />
+							</hlayout>
+						</listfooter>
+					</listfoot>
+
+				</listbox>
+
+
+				<listbox emptyMessage="lista vacía..." mold="paging"
+					autopaging="true" vflex="1" hflex="1"
+					model="@load(vm.ordenCompraDetalleSelected.detallesDoc)" visible="@load(vm.verDetalleDoc)">
+
+					<auxhead>
+
+						<auxheader colspan="4">
+
+							<hlayout>
+
+								<finderModelo
+									finderValue="@load(vm.cursoVigenteMateriaSelected.cursovigentemateriapk.materia.materia)"
+									finderModel="@load(vm.cursoVigenteMateriaFinder)" />
+
+								<button iconSclass=" z-icon-plus"
+									class="doxa-button-green"
+									tooltiptext="Agregar Detalle"
+									onClick="@command('agragarDocumento')" />
+
+							</hlayout>
+
+
+
+						</auxheader>
+
+					</auxhead>
+
+					<listhead>
+
+						<listheader label="Sede" align="center" />
+						<listheader label="Curso" align="center" />
+						<listheader label="Materia" align="center" />
+						<listheader label="fecha" align="center" />
+						
+
+					</listhead>
+
+
+					<template name="model">
+						<listitem>
+
+							<listcell
+								label="@load(each.cursoVigenteMateria.cursovigentemateriapk.cursoVigente.sede.sede)" />
+							<listcell
+								label="@load(each.cursoVigenteMateria.cursovigentemateriapk.cursoVigente.curso.curso)" />
+							<listcell
+								label="@load(each.cursoVigenteMateria.cursovigentemateriapk.materia.materia)" />
+							<listcell
+								label="@load(each.cursoVigenteMateria.fechaInicio)" />
+							
+						</listitem>
+
+					</template>
+
+				</listbox>
+
+			</vlayout>
+
+
+
+			<hlayout>
+
+				<button label="Aceptar" onClick="@command('guardar')" />
+
+			</hlayout>
+
+		</vlayout>
+
+
+	</window>
+</zk>

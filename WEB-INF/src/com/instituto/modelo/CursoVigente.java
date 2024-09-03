@@ -47,6 +47,7 @@ public class CursoVigente extends Modelo implements Serializable{
 	
 	// do;lu;ma;mi;ju;vi;sa
 	private String dias = "false;false;false;false;false;false;false";
+	
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -135,6 +136,6 @@ public class CursoVigente extends Modelo implements Serializable{
 		return bDias;
 		
 	}
-
+	
 	
 }

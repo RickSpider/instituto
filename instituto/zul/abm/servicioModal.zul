@@ -22,18 +22,7 @@
 						width="75px" readonly="true" />
 
 				</tablechildren>
-				
-				<tablechildren>
 
-					<label value="Servicio:" />
-
-				</tablechildren>
-				<tablechildren>
-				
-					<textbox value="@bind(vm.servicioSelected.servicio)"/>
-				
-				</tablechildren>
-				
 
 				<tablechildren>
 
@@ -43,6 +32,17 @@
 				<tablechildren>
 				
 					<finder finderValue="@load(vm.servicioSelected.concepto.concepto)" finderModel="@init(vm.conceptoFinder)"/>
+				
+				</tablechildren>
+				
+				<tablechildren>
+
+					<label value="Servicio:" />
+
+				</tablechildren>
+				<tablechildren>
+				
+					<textbox value="@bind(vm.servicioSelected.servicio)" rows="3" maxlength="255"/>
 				
 				</tablechildren>
 

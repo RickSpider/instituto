@@ -21,4 +21,5 @@ where c.fecha between '?1' and '?2'
 and c.anulado = false
 --1 and a.alumnoid = ?3
 --2 and p.personaid = ?4
+and condicionventatipoid = ?5
 order by cdc.cuentanumcr, c.fecha;

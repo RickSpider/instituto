@@ -32,17 +32,15 @@ public class CursoVigenteMateria extends Modelo implements Serializable {
 	@JoinColumn(name = "estadoid")
 	private Tipo estado;
 	
-	@Override
-	public Object[] getArrayObjectDatos() {
-		Object [] o = {this.getOrden(), this.getMateria().getMateria(), getMateria().getMateriaTipo().getTipo(),this.estado.getTipo()}; 
-		return o;
-	}
-	
 	@Temporal(TemporalType.DATE)
 	private Date fechaInicio;
 	
 	@Temporal(TemporalType.DATE)
 	private Date fechaFin;
+	
+	@ManyToOne
+	@JoinColumn(name = "proveedorid")
+	private Proveedor proveedor;
 
 
 	public static long getSerialversionuid() {
@@ -94,6 +92,12 @@ public class CursoVigenteMateria extends Modelo implements Serializable {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public Object[] getArrayObjectDatos() {
+		Object [] o = {this.getOrden(), this.getMateria().getMateria(),this.getProveedor().getPersona().getFullNombre() ,getMateria().getMateriaTipo().getTipo(),this.estado.getTipo()}; 
+		return o;
+	}
 
 	public Date getFechaInicio() {
 		return fechaInicio;
@@ -110,6 +114,16 @@ public class CursoVigenteMateria extends Modelo implements Serializable {
 	public void setFechaFin(Date fechaFin) {
 		this.fechaFin = fechaFin;
 	}
+
+	public Proveedor getProveedor() {
+		return proveedor;
+	}
+
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
+	}
+
+	
 	
 
 }

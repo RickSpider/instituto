@@ -1,0 +1,67 @@
+<?page title="cuentaRubroModal" contentType="text/html;charset=UTF-8"?>
+
+<?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
+
+<zk>
+	<window title="Rubro Crear/Ver/Editar" border="normal"
+		position="center,center" closable="true" mode="modal"
+		action="show: slideDown;hide: slideUp">
+
+		<vlayout>
+
+			<tablelayout columns="2">
+
+				<tablechildren>
+
+					<label value="ID:" />
+
+				</tablechildren>
+				<tablechildren>
+
+					<textbox
+						value="@load(vm.cuentaRubroSelected.cuentarubroid)" width="75px"
+						readonly="true" />
+
+				</tablechildren>
+
+				<tablechildren>
+
+					<label value="Cuenta:" />
+
+				</tablechildren>
+				<tablechildren>
+
+					<textbox
+						value="@bind(vm.cuentaRubroSelected.cuentaRubro)" rows="2" />
+
+				</tablechildren>
+
+				<tablechildren>
+
+					<label value="Rubro:" />
+
+				</tablechildren>
+				<tablechildren>
+
+					<finder
+						finderValue="@load(vm.cuentaRubroSelected.rubro.rubro)"
+						finderModel="@init(vm.rubroFinder)" />
+
+				</tablechildren>
+
+
+			</tablelayout>
+
+			<space height="10px" />
+
+			<hlayout>
+
+				<button label="Aceptar" onClick="@command('guardar')" />
+
+			</hlayout>
+
+		</vlayout>
+
+
+	</window>
+</zk>

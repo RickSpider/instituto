@@ -12,8 +12,10 @@ import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
 import com.doxacore.components.finder.FinderModel;
+import com.doxacore.modelo.Tipo;
 import com.instituto.modelo.Alumno;
 import com.instituto.modelo.Persona;
+import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
 
 public class IngresoCajaVM extends TemplateViewModelLocal {
@@ -27,11 +29,15 @@ public class IngresoCajaVM extends TemplateViewModelLocal {
 	private Alumno alumnoSelected;
 	private Persona personaSelected;
 	
+	private long condicionVentaId;
+	
 	@Init(superclass = true)
 	public void initIngresoCajaVM() {
 	
 		this.fechaInicio = this.um.modificarHorasMinutosSegundos(new Date(), 0,0,0,0);
 		this.fechaFin = this.um.modificarHorasMinutosSegundos(this.fechaInicio, 23, 59, 59, 999);
+		Tipo condicionVenta =  this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_CONDICION_VENTA_CONTADO);
+		this.condicionVentaId = condicionVenta.getTipoid();
 		cargarDatos();
 		inicializarFinders();
 		
@@ -56,9 +62,12 @@ public class IngresoCajaVM extends TemplateViewModelLocal {
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
+		
+		
 		String sql = this.um.getSql("cajaIngreso/ingresoCajaList.sql")
 				.replace("?1", sdf.format(this.fechaInicio))
-				.replace("?2", sdf.format(this.fechaFin));
+				.replace("?2", sdf.format(this.fechaFin))
+				.replace("?5", this.condicionVentaId+"");
 		
 		if (radioSelected == 1 && this.alumnoSelected != null) {
 			

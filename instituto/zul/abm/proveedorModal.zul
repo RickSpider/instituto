@@ -1,0 +1,57 @@
+<?page title="proveedorModal" contentType="text/html;charset=UTF-8"?>
+
+<?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
+
+<zk>
+	<window title="Proveedor Crear/Ver/Editar" border="normal"
+		position="center,center" closable="true" mode="modal"
+		action="show: slideDown;hide: slideUp">
+
+		<vlayout>
+
+			<tablelayout columns="2">
+			
+				<tablechildren>
+						<label value="ID:" />				
+				</tablechildren>
+				<tablechildren>
+					<textbox value="@load(vm.proveedorSelected.proveedorid)"
+						width="75px" readonly="true" />
+				</tablechildren>
+				
+				<tablechildren>
+						<label value="Persona:" />				
+				</tablechildren>
+				<tablechildren>
+					<finder finderValue="@load(vm.proveedorSelected.persona.fullNombre)" finderModel="@init(vm.personaFinder)" disabled="@load(vm.editar)"/> 
+				</tablechildren>
+				
+				<tablechildren>
+						<label value="Tipo Proveedor:" />				
+				</tablechildren>
+				<tablechildren>
+					<finder finderValue="@load(vm.proveedorSelected.proveedorTipo.tipo)" finderModel="@init(vm.proveedorTipoFinder)" /> 
+				</tablechildren>
+				
+				<tablechildren>
+						<label value="Activo:" />				
+				</tablechildren>
+				<tablechildren>
+					<checkbox checked="@bind(vm.proveedorSelected.activo)" />
+				</tablechildren>
+			
+			
+			</tablelayout>
+					
+
+			<hlayout>
+
+				<button label="Aceptar" onClick="@command('guardar')" />
+
+			</hlayout>
+
+		</vlayout>
+
+
+	</window>
+</zk>

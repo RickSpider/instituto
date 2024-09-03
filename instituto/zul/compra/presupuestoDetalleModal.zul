@@ -1,0 +1,54 @@
+<?page title="presupuestoDetalleModal" contentType="text/html;charset=UTF-8"?>
+
+<?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
+
+<zk>
+	<window title="Persupuesto Detalle Agregar" border="normal"
+		position="center,center" closable="true" mode="modal"
+		action="show: slideDown;hide: slideUp">
+
+		<vlayout>
+
+			<tablelayout columns="2">
+
+				
+				<tablechildren>
+					<label value="Rubro:" />
+				</tablechildren>
+				
+				<tablechildren>
+					<finder finderValue="@load(vm.presupuestoDetalleSelected.rubro.rubro)" finderModel="@init(vm.rubroFinder)"/>
+				</tablechildren>
+				
+				<tablechildren>
+					<label value="Moneda:" />
+				</tablechildren>
+				
+				<tablechildren>
+					<finder finderValue="@load(vm.presupuestoDetalleSelected.monedaTipo.tipo)" finderModel="@init(vm.monedaFinder)"/>
+				</tablechildren>
+				
+				<tablechildren>
+					<label value="Monto:" />
+				</tablechildren>
+				
+				<tablechildren>
+					<doublebox value="@bind(vm.presupuestoDetalleSelected.monto)"/>
+				</tablechildren>
+				
+
+			</tablelayout>
+			
+			<space height="10px" />
+
+			<hlayout>
+
+				<button label="Agregar" onClick="@command('agregarDetalle')" />
+
+			</hlayout>
+
+		</vlayout>
+
+
+	</window>
+</zk>

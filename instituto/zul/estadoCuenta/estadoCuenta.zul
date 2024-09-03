@@ -9,81 +9,90 @@
 
 		<vlayout vflex="1">
 
-			<tablelayout columns="4">
+			<hlayout>
 
-				<tablechildren>
-					<label value="Alumno:" style="font-weight:bold" />
-				</tablechildren>
-				<tablechildren>
-				
-					<finder
-						finderValue="@load(vm.alumnoSelected.persona.documentoNum)"
-						finderModel="@init(vm.alumnoFinder)" />
-
-				</tablechildren>
-
-				<tablechildren colspan="3">
-					<label value="@load(vm.alumnoSelected.fullNombre)" />
-				</tablechildren>
-
-				<tablechildren>
-					<label value="Curso:" style="font-weight:bold" />
-				</tablechildren>
-				<tablechildren>
-
-					<finder
-						finderValue="@load(vm.cursoVigenteSelected.curso.curso)"
-						finderModel="@load(vm.cursoFinder)" />
+				<tablelayout columns="4">
+	
+					<tablechildren>
+						<label value="Alumno:" style="font-weight:bold" />
+					</tablechildren>
+					<tablechildren>
 					
-
-				</tablechildren>
-
-				<tablechildren colspan="3">
-					<label
-						value="@load(vm.cursoVigenteSelected.curso.curso)" />
-				</tablechildren>
+						<finder
+							finderValue="@load(vm.alumnoSelected.persona.documentoNum)"
+							finderModel="@init(vm.alumnoFinder)" />
+	
+					</tablechildren>
+	
+					<tablechildren colspan="3">
+						<label value="@load(vm.alumnoSelected.fullNombre)" />
+					</tablechildren>
+	
+					<tablechildren>
+						<label value="Curso:" style="font-weight:bold" />
+					</tablechildren>
+					<tablechildren>
+	
+						<finder
+							finderValue="@load(vm.cursoVigenteSelected.curso.curso)"
+							finderModel="@load(vm.cursoFinder)" />
+						
+	
+					</tablechildren>
+	
+					<tablechildren colspan="3">
+						<label
+							value="@load(vm.cursoVigenteSelected.curso.curso)" />
+					</tablechildren>
+					
+					
+					<tablechildren >
+						<label value="Importe Total:" style="font-weight:bold"/>
+					</tablechildren>
+					<tablechildren>
+						<doublebox width="120px"
+							value="@load(vm.importeTotalCurso)" format="#,###"
+							style="text-align:right" readonly="true" />
+					</tablechildren>
+					
+					<tablechildren >
+						<label value="Saldo Total:" style="font-weight:bold" />
+					</tablechildren>
+					<tablechildren >
+						<doublebox width="120px"
+							value="@load(vm.saldoTotal)" format="#,###"
+							style="text-align:right" readonly="true" />
+					</tablechildren>
+	
+					<tablechildren >
+						<label value="Importe Abonado:" style="font-weight:bold" />
+					</tablechildren>
+					<tablechildren >
+						<doublebox width="120px"
+							value="@load(vm.importeAbonado)" format="#,###"
+							style="text-align:right" readonly="true" />
+					</tablechildren>
+					
+					
+					<tablechildren >
+						<label value="Saldo Vencido:" style="font-weight:bold"/>
+					</tablechildren>
+					<tablechildren >
+						<doublebox width="120px"
+							value="@load(vm.saldoVencido)" format="#,###"
+							style="text-align:right" readonly="true" />
+					</tablechildren>				
+					
+				</tablelayout>
 				
+				<vlayout>
+					<label value="Comentario del Alumno:" style="font-weight:bold"/>
+					<textbox value="@load(vm.alumnoSelected.comentario)" rows="5" cols="40" readonly="true"/>
+					
 				
-				<tablechildren >
-					<label value="Importe Total:" style="font-weight:bold"/>
-				</tablechildren>
-				<tablechildren>
-					<doublebox width="120px"
-						value="@load(vm.importeTotalCurso)" format="#,###"
-						style="text-align:right" readonly="true" />
-				</tablechildren>
-				
-				<tablechildren >
-					<label value="Saldo Total:" style="font-weight:bold" />
-				</tablechildren>
-				<tablechildren >
-					<doublebox width="120px"
-						value="@load(vm.saldoTotal)" format="#,###"
-						style="text-align:right" readonly="true" />
-				</tablechildren>
-
-				<tablechildren >
-					<label value="Importe Abonado:" style="font-weight:bold" />
-				</tablechildren>
-				<tablechildren >
-					<doublebox width="120px"
-						value="@load(vm.importeAbonado)" format="#,###"
-						style="text-align:right" readonly="true" />
-				</tablechildren>
-				
-				
-				<tablechildren >
-					<label value="Saldo Vencido:" style="font-weight:bold"/>
-				</tablechildren>
-				<tablechildren >
-					<doublebox width="120px"
-						value="@load(vm.saldoVencido)" format="#,###"
-						style="text-align:right" readonly="true" />
-				</tablechildren>
-
-				
-				
-			</tablelayout>
+				</vlayout>					
+			
+			</hlayout>
 
 			<hlayout vflex="1">
 

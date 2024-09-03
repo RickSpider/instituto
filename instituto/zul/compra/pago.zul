@@ -1,0 +1,181 @@
+<?page title="Pagos" contentType="text/html;charset=UTF-8"?>
+
+<?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
+
+<zk>
+	<window title="Pago" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.compra.PagoVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<hlayout vflex="1">
+
+			<vlayout hflex="1" vflex="1">
+
+				<hbox hflex="1">
+					<hbox pack="start">
+
+						<tablelayout columns="7">
+							<tablechildren>
+								<label value="Desde:" />
+							</tablechildren>
+							<tablechildren>
+								<datebox value="@bind(vm.fechaDesde)" format="dd/MM/yyyy"/>
+							</tablechildren>
+
+							<tablechildren>
+								<label value="Hasta:" />
+							</tablechildren>
+							<tablechildren>
+								<datebox value="@bind(vm.fechaHasta)" format="dd/MM/yyyy"/>
+							</tablechildren>
+							
+							<tablechildren>
+								<label value="Comprobante Tipo:" />
+							</tablechildren>
+							<tablechildren>
+								<finder
+									finderValue="@load(vm.comprobanteTipoFiltro.tipo)"
+									finderModel="@init(vm.comprobanteTipoFiltroFinder)"
+									/>
+							</tablechildren>
+							
+							
+							<tablechildren>
+								<button label="Filtrar"
+									onClick="@command('filtrarPorFechas')"
+									/>
+							</tablechildren>
+							
+							<tablechildren>
+								<label value="Total:" />
+							</tablechildren>
+							<tablechildren>
+								<doublebox value="@load(vm.totalGral)" format="#,###" readonly="true"/>
+							</tablechildren>
+						</tablelayout>
+
+					</hbox>
+
+					<hbox pack="end" hflex="1">
+
+						<button label="Agregar"
+							iconSclass=" z-icon-plus" onClick="@command('modalPagoAgregar')"
+							disabled="@load(!vm.opCrearPago)" />
+
+					</hbox>
+
+				</hbox>
+
+				<listbox emptyMessage="lista vacía..." mold="paging"
+					vflex="1" model="@load(vm.lPagos)" checkmark="true">
+
+					<listhead>
+
+						<listheader hflex="min" align="center" />
+						<listheader label="ID" align="right"
+							hflex="min" />
+						<listheader label="Fecha" align="left" />
+						<listheader label="Proveedor" align="left" />
+
+						<listheader label="Timbrado" align="left" />
+						<listheader label="Comprobante #" align="left" />
+						<listheader label="Comprobante" align="left" />
+						<listheader label="Total" align="left" />
+
+						<listheader hflex="min" />
+
+
+					</listhead>
+
+
+					<auxhead>
+
+						<auxheader />
+						<auxheader />
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[1])"
+								instant="true" onChange="@command('filtrarPago')" hflex="1" />
+						</auxheader>
+
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[2])"
+								instant="true" onChange="@command('filtrarPago')" hflex="1" />
+						</auxheader>
+
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[3])"
+								instant="true" onChange="@command('filtrarPago')" hflex="1" />
+						</auxheader>
+
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[4])"
+								instant="true" onChange="@command('filtrarPago')" hflex="1" />
+						</auxheader>
+
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[5])"
+								instant="true" onChange="@command('filtrarPago')" hflex="1" />
+						</auxheader>
+
+						<auxheader />
+						<auxheader />
+
+
+					</auxhead>
+
+					<template name="model">
+
+						<listitem>
+							<listcell />
+							<listcell label="@load(each[0])" />
+							<listcell label="@load(each[1])" />
+							<listcell label="@load(each[2])" />
+							<listcell label="@load(each[3])" />
+							<listcell label="@load(each[4])" />
+							<listcell label="@load(each[5])" />
+							<listcell label="@load(each[6])  @converter('formatedNumber', format='#,###')"/>
+
+							<listcell>
+								<hlayout>
+
+									<button iconSclass="z-icon-edit"
+										onClick="@command('modalPago', pagoid=each[0])"
+										tooltiptext="Editar" disabled="@load(!vm.opEditarPago)" />
+
+									<button iconSclass="z-icon-trash-o"
+										style="background-color:red"
+										onClick="@command('borrarPagoConfirmacion', pagoid=each[0])"
+										tooltiptext="Borrar" disabled="@load(!vm.opBorrarPago)" />
+
+
+								</hlayout>
+
+
+							</listcell>
+
+
+						</listitem>
+
+
+					</template>
+
+					<listfoot>
+						<listfooter span="7" align="left">
+							<hlayout>
+								<label value="@load(vm.lPagos.size())" />
+								<label value="items" />
+							</hlayout>
+						</listfooter>
+					</listfoot>
+
+
+				</listbox>
+
+			</vlayout>
+
+
+
+		</hlayout>
+
+	</window>
+</zk>

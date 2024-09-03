@@ -52,6 +52,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	private Cobranza cobranzaSelected;
 	private Caja cajaSelected;
 	private boolean disableCobranza = false;
+	private boolean disableCobranzaTipoPago = false;
 	private List<CobranzaDetalleCobro> lDetallesCobros = new ArrayList<CobranzaDetalleCobro>();
 	private List<CobranzaDetalle> lDetalles = new ArrayList<CobranzaDetalle>();
 	private double saldoTotal = 0;
@@ -136,6 +137,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		} else {
 
 			this.disableCobranza = false;
+			this.disableCobranzaTipoPago = false;
 
 		}
 
@@ -171,11 +173,12 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		if (!this.opCrearCobranza) {
 
 			this.disableCobranza = true;
+			this.disableCobranzaTipoPago = true;
 
 		} else {
 
 			this.disableCobranza = false;
-
+			this.disableCobranzaTipoPago = false;
 		}
 
 		this.verificarCaja();
@@ -183,6 +186,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		if (this.cajaSelected == null) {
 
 			this.disableCobranza = true;
+			this.disableCobranzaTipoPago = true;
 
 		}
 
@@ -1036,6 +1040,8 @@ public class CobranzaVM extends TemplateViewModelLocal {
 			String cuentaDBSQL = this.um.getSql("buscarPersonaEntidad.sql").replace("?1", this.cobranzaSelected.getAlumno().getPersona().getPersonaid()+"");
 			System.out.println(cuentaDBSQL);
 			this.cuentaFinder = new FinderModel("CuentaDB", cuentaDBSQL);
+			
+			return;
 		
 		}
 		
@@ -1056,11 +1062,27 @@ public class CobranzaVM extends TemplateViewModelLocal {
 				this.cobranzaSelected.setCondicionVentaTipo(null);
 				
 			}
+			
+			return;
 		}
 		
 		if (finder.compareTo(this.condicionFinder.getNameFinder()) == 0) {
 
 			this.cobranzaSelected.setCondicionVentaTipo(this.reg.getObjectById(Tipo.class.getName(), id));
+			
+			if (this.cobranzaSelected.getCondicionVentaTipo().getSigla().compareTo(ParamsLocal.SIGLA_CONDICION_VENTA_CONTADO) == 0) {
+				
+				this.disableCobranzaTipoPago = false;
+				
+			}else {
+				
+				this.disableCobranzaTipoPago = true;
+				
+			}
+			
+			
+			
+			return;
 		}
 		
 		if (finder.compareTo(this.cuentaFinder.getNameFinder()) == 0) {
@@ -1491,6 +1513,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		}
 
 		this.disableCobranza = true;
+		this.disableCobranzaTipoPago = true;
 
 		//BindUtils.postNotifyChange(null, null, this, "*");
 
@@ -1949,6 +1972,14 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 	public void setEntidadFinder(FinderModel entidadFinder) {
 		this.entidadFinder = entidadFinder;
+	}
+
+	public boolean isDisableCobranzaTipoPago() {
+		return disableCobranzaTipoPago;
+	}
+
+	public void setDisableCobranzaTipoPago(boolean disableCobranzaTipoPago) {
+		this.disableCobranzaTipoPago = disableCobranzaTipoPago;
 	}
 
 }

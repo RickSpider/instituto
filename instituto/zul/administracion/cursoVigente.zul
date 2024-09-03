@@ -474,6 +474,10 @@
 											align="center" hflex="min" />
 										<listheader label="Materia"
 											align="left" />
+											
+										<listheader label="Docente"
+											align="left" />
+											
 										<listheader label="Tipo"
 											align="center" hflex="min" />
 										
@@ -509,11 +513,18 @@
 												value="@bind(vm.filtroColumnsMaterias[2])" instant="true"
 												onChange="@command('filtrarCursoVigenteMateria')" hflex="1" />
 										</auxheader>
+										
+										<auxheader>
+											<textbox
+												value="@bind(vm.filtroColumnsMaterias[3])" instant="true"
+												onChange="@command('filtrarCursoVigenteMateria')" hflex="1" />
+										</auxheader>
+										
 										<auxheader/>
 										<auxheader />
 										<auxheader>
 											<textbox
-												value="@bind(vm.filtroColumnsMaterias[3])" instant="true"
+												value="@bind(vm.filtroColumnsMaterias[4])" instant="true"
 												onChange="@command('filtrarCursoVigenteMateria')" hflex="1" />
 										</auxheader>
 									</auxhead>
@@ -530,6 +541,10 @@
 											<listcell
 												label="@load(each.materia.materia)"
 												tooltiptext="@load(each.materia.materia)" />
+												
+											<listcell
+												label="@load(each.proveedor.persona.fullNombre)"
+												tooltiptext="@load(each.proveedor.persona.fullNombre)" />
 											
 											<listcell
 												label="@load(each.materia.materiaTipo.tipo)"

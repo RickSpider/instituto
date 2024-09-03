@@ -151,7 +151,7 @@
 				<hbox width="130px">
 					<label value="Comentario: " style="font-weight:bold" />
 				</hbox>
-				<textbox value="@bind(vm.alumnoSelected.comentario)"
+				<textbox value="@bind(vm.alumnoSelected.comentario)" rows="3"
 					width="200px" />
 			</hlayout>
 

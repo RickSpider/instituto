@@ -1,0 +1,109 @@
+<?page title="Presupuestos" contentType="text/html;charset=UTF-8"?>
+
+<?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
+
+<zk>
+	<window title="Presupuesto" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.compra.PresupuestoVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<vlayout  hflex="1" vflex="1">
+
+			<tablelayout columns="2">
+
+				<tablechildren>
+					<label value="Presupuestoid:" />
+				</tablechildren>
+				<tablechildren>
+					<finder finderValue="@load(vm.presupuestoSelected.presupuestoid)" finderModel="@load(vm.presupuestoFinder)"/>
+				</tablechildren>
+
+				<tablechildren>
+					<label value="Año:" />
+				</tablechildren>
+				<tablechildren>
+					<textbox value="@bind(vm.presupuestoSelected.anho)" readonly="@load(vm.editar)"/>
+					<button label="Guardar"
+							iconSclass=" z-icon-plus"
+							onClick="@command('guardar')" disabled="@load(!vm.opCrearPresupuesto)"/>
+				</tablechildren>
+
+			</tablelayout>
+
+			<listbox emptyMessage="lista vacía..." mold="paging"
+				autopaging="true" vflex="1" hflex="1"
+				model="@load(vm.presupuestoSelected.detalles)">
+
+				<auxhead>
+
+					<auxheader colspan="5" align="center">
+						<button label="Agregar Detalle"
+							iconSclass=" z-icon-plus"
+							onClick="@command('modalPresupuestoDetalle')"
+							style="background-color:green" disabled="@load(!vm.opCrearPresupuesto)"/>
+					</auxheader>
+
+				</auxhead>
+				
+				<listhead visible = "false">
+
+					<listheader label="ID Rubro" align="center"  width="75px"/>
+					<listheader label="Rubro" align="left" />
+					<listheader label="Moneda" align="center" width="200px"/>
+					<listheader label="Monto" align="center"  width="250px"/>
+					<listheader width="50px"/>
+
+				</listhead>
+				
+				<auxhead>
+				
+					<auxheader label="ID Rubro" align="center" />
+					<auxheader label="Rubro" align="center" />
+					<auxheader label="Moneda" align="center" />
+					<auxheader label="Monto" align="center"/>
+					<auxheader />
+				
+				</auxhead>
+
+				
+
+
+				<template name="model">
+
+					<listitem>
+						<listcell label="@load(each.rubro.rubroid)" />
+						<listcell label="@load(each.rubro.rubro)" />
+						<listcell label="@load(each.monedaTipo.tipo)" />
+						<listcell  >
+							<doublebox value="@bind(each.monto)" style="text-align:right" format="#,###" readonly="@load(!vm.opEditarPresupuesto)" hflex="1"/>
+						</listcell>
+						<listcell>
+						
+							<button iconSclass="z-icon-trash-o"
+									style="background-color:red"
+									onClick="@command('borrarDetalle', dato=each)"
+									tooltiptext="Borrar" disabled="@load(!vm.opEditarPresupuesto)" />
+							
+						</listcell>
+					</listitem>
+					
+
+				</template>
+
+				<listfoot>
+					<listfooter span="5" align="left">
+						<hlayout>
+							<label
+								value="@load(vm.presupuestoSelected.detalles.size())" />
+							<label value="items" />
+						</hlayout>
+					</listfooter>
+				</listfoot>
+
+			</listbox>
+
+		</vlayout>
+
+
+	</window>
+</zk>

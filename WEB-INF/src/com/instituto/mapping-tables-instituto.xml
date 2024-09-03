@@ -32,4 +32,14 @@
 <mapping class="com.instituto.modelo.Servicio" />
 <mapping class="com.instituto.modelo.SifenDocumento" />
 <mapping class="com.instituto.modelo.Empresa" />
-
+<mapping class="com.instituto.modelo.Rubro" />
+<mapping class="com.instituto.modelo.CuentaRubro" />
+<mapping class="com.instituto.modelo.Proveedor" />
+<mapping class="com.instituto.modelo.Presupuesto" />
+<mapping class="com.instituto.modelo.PresupuestoDetalle" />
+<mapping class="com.instituto.modelo.OrdenCompra" />
+<mapping class="com.instituto.modelo.OrdenCompraDetalle" />
+<mapping class="com.instituto.modelo.OrdenCompraDetalleDoc" />
+<mapping class="com.instituto.modelo.Pago" />
+<mapping class="com.instituto.modelo.PagoDetalle" />
+<mapping class="com.instituto.modelo.PagoDetalleDoc" />

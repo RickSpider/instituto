@@ -1,0 +1,47 @@
+<bandbox value="${finderValue}" disabled="${disabled}"
+	mold="rounded" autodrop="true"
+	onOpen="@command('generarFinders', finder= finderModel.nameFinder)"
+	width="150px" readonly="true">
+	<bandpopup>
+
+		<vbox>
+
+			<hbox>
+
+				<label value="Buscar:" />
+
+				<textbox instant="true"
+					onChange="@command('finderFilter', filter=self.value, finder= finderModel.nameFinder)" />
+
+			</hbox>
+
+			<listbox height="250px" width="450px" mold="paging"
+				autopaging="true" onSelect="self.getParent().getParent().getParent().close()"
+				model="@load(finderModel.listFinderModelo)">
+
+				<listhead>
+				
+					<listheader label="Curso"/>
+
+					<listheader label="Materia" />
+
+
+				</listhead>
+
+				<template name="model">
+
+					<listitem
+						onClick="@command('onSelectetItemModeloFinder', dato = each, finder= finderModel.nameFinder)">
+					
+						<listcell label="@load(each.cursovigentemateriapk.cursoVigente.curso.curso)"/>
+						<listcell label="@load(each.cursovigentemateriapk.materia.materia)"/>
+
+					</listitem>
+
+				</template>
+				<listitem />
+			</listbox>
+
+		</vbox>
+	</bandpopup>
+</bandbox>

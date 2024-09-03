@@ -99,6 +99,18 @@
 					<textbox value="@load(vm.cobranzaSelected.ruc)"
 						width="120px" readonly="true" />
 				</tablechildren>
+				
+				
+				
+				<tablechildren style="padding-left: 5px">
+					<label value="Direccion:" />
+				</tablechildren>
+				
+				<tablechildren style="padding-left: 5px" colspan="3">
+					<textbox
+						value="@load(vm.cobranzaSelected.direccion)" width="500px"
+						readonly="true" />
+				</tablechildren>
 
 
 
@@ -129,6 +141,8 @@
 						 						
 						<listheader label="Descripcion" align="left" />
 						
+						<listheader label="Tipo Iva" align="left" />
+						
 						<listheader label="Monto Total" align="right" visible="@load(!vm.condicionHabilitada)"/> 
 						
 						<listheader label="Saldo" align="right" visible="@load(!vm.condicionHabilitada)"/> 
@@ -146,7 +160,7 @@
 
 					<auxhead>
 
-						<auxheader colspan="5" align="center">
+						<auxheader colspan="6" align="center">
 							<button label="Agregar Detalle Servicio"
 								iconSclass=" z-icon-plus"
 								onClick="@command('modalCobranzaDetalleServicio')"
@@ -175,6 +189,8 @@
 	
 	 					<auxheader label="Descripcion" align="center" />
 	 					
+	 					<auxheader label="Tipo IVA" align="center" />
+	 					
 	 					<auxheader label="Monto Total" align="center" />  
 	 					
 	 					<auxheader label="Saldo" align="center" />  
@@ -190,6 +206,8 @@
 						<listitem>
 
 							<listcell label="@load(each.descripcion)" />
+							
+							<listcell label="@load(each.servicio.concepto.impuestoTipo.tipo)" />
 
 							<!-- <listcell
 								label="@load(each.servicio.servicio)" />
@@ -266,7 +284,7 @@
 							<button label="Agregar Tipo Pago"
 								iconSclass=" z-icon-plus"
 								onClick="@command('modalCobranzaDetalleCobro')"
-								disabled="@load(vm.disableCobranza)"
+								disabled="@load(vm.disableCobranzaTipoPago)"
 								style="background-color:green" />
 						</auxheader>
 

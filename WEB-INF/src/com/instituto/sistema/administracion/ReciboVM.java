@@ -1,5 +1,6 @@
 package com.instituto.sistema.administracion;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,8 +46,10 @@ public class ReciboVM extends TemplateReportViewModel {
 		parameters.put("Ruc", cobranza.getRuc());
 		parameters.put("ComprobanteNum", cobranza.getComprobanteNum());
 		parameters.put("Total", new Double(cobranza.getTotalDetalle()));
+		DecimalFormat df = new DecimalFormat("#");
+        df.setMaximumFractionDigits(0);
 		PasarNumerosLetras pnl = new PasarNumerosLetras();
-		parameters.put("TotalLetras",pnl.Convertir(String.valueOf(cobranza.getTotalDetalle()), true));
+		parameters.put("TotalLetras",pnl.Convertir(df.format(cobranza.getTotalDetalle()), true));
 		parameters.put("Anulado", cobranza.isAnulado());
 		return parameters;
 	}
@@ -58,7 +61,5 @@ public class ReciboVM extends TemplateReportViewModel {
 		
 		return datos;
 	}
-
-	
 
 }

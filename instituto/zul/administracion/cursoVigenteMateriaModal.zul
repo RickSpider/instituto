@@ -1,4 +1,7 @@
 <?page title="cursoVigenteMateriaModal" contentType="text/html;charset=UTF-8"?>
+
+<?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
+
 <zk>
 	<window title="Materia Crear/Ver/Editar" border="normal"
 		position="center,center" closable="true" mode="modal"
@@ -133,9 +136,16 @@
 
 			</hlayout>
 
+			<hlayout>
+				<hbox width="130px">
+					<label value="Docente: " style="font-weight:bold" />
+				</hbox>
+					<finder
+						finderValue="@load(vm.cursoVigenteMateriaSelected.proveedor.persona.fullNombre)"
+						finderModel="@init(vm.proveedorFinder)" />
+			</hlayout>
 			
-			
-				<hlayout>
+			<hlayout>
 				<hbox width="130px">
 					<label value="Fecha Incio: " style="font-weight:bold" />
 				</hbox>

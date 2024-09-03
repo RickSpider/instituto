@@ -1,0 +1,432 @@
+<?page title="pagoModal" contentType="text/html;charset=UTF-8"?>
+
+<?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
+<?component name="finderModelo" templateURI="/instituto/zul/component/finderCursoVigenteMateria.zul"?>
+
+<zk>
+	<window title="Pago Crear/Ver/Editar" border="normal"
+		position="center,center" closable="true" mode="modal"
+		action="show: slideDown;hide: slideUp">
+
+		<vlayout width="1000px" height="640px">
+
+			<hlayout>
+
+				<tablelayout columns="6" hflex="1">
+
+					<tablechildren>
+
+						<label value="ID:" />
+
+					</tablechildren>
+					<tablechildren>
+
+						<textbox value="@load(vm.pagoSelected.pagoid)"
+							width="75px" readonly="true" />
+
+					</tablechildren>
+
+					<tablechildren>
+
+						<label value="Moneda:" />
+
+					</tablechildren>
+					<tablechildren>
+
+						<finder
+							finderValue="@load(vm.pagoSelected.monedaTipo.tipo)"
+							finderModel="@init(vm.monedaFinder)" />
+
+					</tablechildren>
+
+
+
+					
+					<tablechildren>
+
+						<label value="Moneda Cambio:" />
+
+					</tablechildren>
+					<tablechildren>
+
+						<doublebox
+							value="@bind(vm.pagoSelected.monedaCambio)" />
+
+					</tablechildren>
+					
+					<tablechildren>
+
+						<label value="Fecha:" />
+
+					</tablechildren>
+					<tablechildren>
+
+						<datebox value="@bind(vm.pagoSelected.fecha)"
+							width="200px" format="dd/MM/yyyy hh:mm:ss" disabled="@load(vm.camposCabecera[6])"/>
+
+					</tablechildren>
+					
+					<tablechildren>
+
+						<label value="Pago Credito Relacionado:" />
+
+					</tablechildren>
+					<tablechildren>
+
+						<finder
+							finderValue="@load(vm.pagoSelected.pagoRelacionado.comprobanteNum)"
+							finderModel="@init(vm.pagoRelacionadoFinder)"
+							disabled="@load(vm.camposCabecera[0])" />
+
+					</tablechildren>
+					
+
+					<tablechildren>
+
+						<label value="Orden de Compra:" />
+
+					</tablechildren>
+					<tablechildren>
+
+						<finder
+							finderValue="@load(vm.pagoSelected.ordenCompra.ordencompraid)"
+							finderModel="@init(vm.ordenCompraFinder)"
+							disabled="@load(vm.camposCabecera[1])" />
+
+					</tablechildren>
+
+					
+
+					<tablechildren>
+
+						<label value="Proveedor:" />
+
+					</tablechildren>
+
+					<tablechildren>
+						<finder
+							finderValue="@load(vm.pagoSelected.proveedor.persona.fullNombre)"
+							finderModel="@init(vm.proveedorFinder)"
+							disabled="@load(vm.camposCabecera[2])" />
+					</tablechildren>
+
+					<tablechildren>
+
+						<label value="Tipo Comprobante" />
+
+					</tablechildren>
+					<tablechildren>
+
+						<finder
+							finderValue="@load(vm.pagoSelected.comprobanteTipo.tipo)"
+							finderModel="@init(vm.comprobanteTipoFinder)"
+							disabled="@load(vm.camposCabecera[3])" />
+
+					</tablechildren>
+
+					<tablechildren>
+
+						<label value="Condicion:" />
+
+					</tablechildren>
+					<tablechildren>
+
+						<finder
+							finderValue="@load(vm.pagoSelected.condicionVentaTipo.tipo)"
+							finderModel="@init(vm.condicionTipoFinder)"
+							disabled="@load(vm.camposCabecera[4])" />
+
+					</tablechildren>
+
+
+
+					<tablechildren>
+
+						<label value="Timbrado" />
+
+					</tablechildren>
+					<tablechildren>
+
+						<longbox
+							value="@bind(vm.pagoSelected.timbrado)" disabled="@load(vm.camposCabecera[7])"/>
+
+					</tablechildren>
+
+					<tablechildren>
+
+						<label value="Comprobante #:" />
+
+					</tablechildren>
+					<tablechildren>
+
+						<textbox
+							value="@bind(vm.pagoSelected.comprobanteNum)" disabled="@load(vm.camposCabecera[8])"/>
+
+					</tablechildren>
+
+					<tablechildren>
+						<label value="Comprobante Virtual/Electrónico:" />
+					</tablechildren>
+					<tablechildren>
+						<checkbox
+							checked="@bind(vm.pagoSelected.comprobanteElectronico)" mold="switch" disabled="@load(vm.camposCabecera[9])"/>
+					</tablechildren>
+
+					<tablechildren >
+
+						<label value="Descripcion:" />
+
+					</tablechildren>
+					<tablechildren colspan="2">
+
+						<textbox
+							value="@bind(vm.pagoSelected.descripcion)" rows="3" cols="50"
+							maxlength="255" disabled="@load(vm.camposCabecera[10])"/>
+
+					</tablechildren>
+
+					<tablechildren >
+
+						<label value="Cod. Control/CDC:" />
+
+					</tablechildren>
+					<tablechildren colspan="2">
+
+						<textbox
+							value="@bind(vm.pagoSelected.cdc)" rows="3" cols="40"
+							maxlength="255" disabled="@load(vm.camposCabecera[11])"/>
+
+					</tablechildren>
+					
+					<tablechildren>
+
+						<label value="Total 10:" />
+
+					</tablechildren>
+					<tablechildren>
+
+						<doublebox
+							value="@load(vm.pagoSelected.total10)" readonly="true"
+							format="#,###.##" />
+
+					</tablechildren>
+					
+					<tablechildren>
+
+						<label value="Total 5:" />
+
+					</tablechildren>
+					<tablechildren>
+
+						<doublebox value="@load(vm.pagoSelected.total5)"
+							readonly="true" format="#,###.##" />
+
+					</tablechildren>
+
+					<tablechildren>
+
+						<label value="Total Excento:" />
+
+					</tablechildren>
+					<tablechildren>
+
+						<doublebox
+							value="@load(vm.pagoSelected.totalExento)" readonly="true"
+							format="#,###.##" />
+
+					</tablechildren>
+
+					
+
+				</tablelayout>
+
+
+			</hlayout>
+
+			<vlayout vflex="1">
+
+				<listbox emptyMessage="lista vacía..." mold="paging"
+					autopaging="true" vflex="1" hflex="1"
+					model="@load(vm.pagoSelected.detalles)" checkmark="true">
+
+					<auxhead>
+
+						<auxheader colspan="5">
+
+							<hlayout>
+
+								<label value="Cuenta:" />
+
+								<finder
+									finderValue="@load(vm.cuentaRubroSelected.cuentaRubro)"
+									finderModel="@init(vm.rubroFinder)"
+									disabled="@load(vm.camposDetalle)" />
+
+								<label value="Monto:" />
+
+								<doublebox value="@bind(vm.monto)"
+									disabled="@load(vm.camposDetalle)" />
+
+								<finder
+									finderValue="@load(vm.impuestoSelected.tipo)"
+									finderModel="@init(vm.impuestoTipoFinder)"
+									disabled="@load(vm.camposDetalle)" />
+
+
+								<button iconSclass=" z-icon-plus"
+									class="doxa-button-green" tooltiptext="Agregar Detalle"
+									onClick="@command('agregarDetalle')"
+									disabled="@load(vm.camposDetalle)" />
+
+							</hlayout>
+
+
+
+						</auxheader>
+
+
+					</auxhead>
+
+					<listhead visible="false">
+
+						<listheader width="35px" align="center" />
+
+						<listheader label="ID Cuenta" align="center"
+							width="75px" />
+						<listheader label="Cuenta" align="left" />
+
+						<listheader label="Monto" align="center"
+							width="250px" />
+						<listheader label="Impuesto" align="left" />
+						<listheader width="50px" />
+
+					</listhead>
+
+					<auxhead>
+						<auxheader />
+						<auxheader label="ID Cuenta" align="center" />
+						<auxheader label="Cuenta" align="center" />
+						<auxheader label="Monto" align="center" />
+						<auxheader label="Impuesto" align="center" />
+						<auxheader />
+
+					</auxhead>
+
+
+					<template name="model">
+
+						<listitem
+							onClick="@command('refrescarDetallesDoc', dato = each )">
+							<listcell />
+							<listcell
+								label="@load(each.cuentaRubro.cuentarubroid)" />
+							<listcell
+								label="@load(each.cuentaRubro.cuentaRubro)" />
+							<listcell>
+								<doublebox value="@bind(each.monto)"
+									style="text-align:right" format="#,###" hflex="1"
+									readonly="true" />
+							</listcell>
+
+							<listcell
+								label="@load(each.impuestoTipo.tipo)" />
+
+							<listcell>
+
+								<button iconSclass="z-icon-trash-o"
+									style="background-color:red"
+									onClick="@command('borrarDetalle', dato=each)"
+									tooltiptext="Borrar" disabled="@load(!vm.opEditarPago)" />
+
+							</listcell>
+						</listitem>
+
+
+					</template>
+
+					<listfoot>
+						<listfooter span="5" align="left">
+							<hlayout>
+								<label
+									value="@load(vm.pagoSelected.detalles.size())" />
+								<label value="items" />
+							</hlayout>
+						</listfooter>
+					</listfoot>
+
+				</listbox>
+
+
+				<listbox emptyMessage="lista vacía..." mold="paging"
+					autopaging="true" vflex="1" hflex="1"
+					model="@load(vm.pagoDetalleSelected.detallesDoc)"
+					visible="@load(vm.verDetalleDoc)">
+
+					<auxhead>
+
+						<auxheader colspan="4">
+
+							<hlayout>
+
+								<finderModelo
+									finderValue="@load(vm.cursoVigenteMateriaSelected.cursovigentemateriapk.materia.materia)"
+									finderModel="@load(vm.cursoVigenteMateriaFinder)" disabled="@load(vm.camposDetalle)"/>
+
+								<button iconSclass=" z-icon-plus"
+									class="doxa-button-green" tooltiptext="Agregar Detalle"
+									onClick="@command('agragarDocumento')" disabled="@load(vm.camposDetalle)"/>
+
+							</hlayout>
+
+
+
+						</auxheader>
+
+					</auxhead>
+
+					<listhead>
+
+						<listheader label="Sede" align="center" />
+						<listheader label="Curso" align="center" />
+						<listheader label="Materia" align="center" />
+						<listheader label="fecha" align="center" />
+
+
+					</listhead>
+
+
+					<template name="model">
+						<listitem>
+
+							<listcell
+								label="@load(each.cursoVigenteMateria.cursovigentemateriapk.cursoVigente.sede.sede)" />
+							<listcell
+								label="@load(each.cursoVigenteMateria.cursovigentemateriapk.cursoVigente.curso.curso)" />
+							<listcell
+								label="@load(each.cursoVigenteMateria.cursovigentemateriapk.materia.materia)" />
+							<listcell
+								label="@load(each.cursoVigenteMateria.fechaInicio)" />
+
+						</listitem>
+
+					</template>
+
+				</listbox>
+
+
+
+			</vlayout>
+
+
+
+			<hlayout>
+
+				<button label="Aceptar" onClick="@command('guardar')" />
+
+			</hlayout>
+
+		</vlayout>
+
+
+	</window>
+</zk>

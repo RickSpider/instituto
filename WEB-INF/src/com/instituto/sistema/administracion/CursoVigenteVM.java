@@ -19,6 +19,7 @@ import org.zkoss.zk.ui.util.Notification;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
+import com.doxacore.components.finder.FinderModel;
 import com.doxacore.modelo.Tipo;
 import com.doxacore.modelo.Tipotipo;
 import com.doxacore.report.ReportExcel;
@@ -33,11 +34,12 @@ import com.instituto.modelo.CursoVigenteConvenio;
 import com.instituto.modelo.CursoVigenteMateria;
 import com.instituto.modelo.Empresa;
 import com.instituto.modelo.Materia;
+import com.instituto.modelo.Proveedor;
 import com.instituto.modelo.EstadoCuenta;
 import com.instituto.modelo.Curso;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
-import com.lowagie.text.pdf.codec.Base64.InputStream;
+
 
 public class CursoVigenteVM extends TemplateViewModelLocal {
 
@@ -143,7 +145,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 		this.filtroColumnsAlumnos = new String[2];
 		this.filtroColumnsConceptos = new String[2];
-		this.filtroColumnsMaterias = new String[4];
+		this.filtroColumnsMaterias = new String[5];
 		this.filtroColumnsConvenios = new String[2];
 
 		for (int i = 0; i < this.filtroColumns.length; i++) {
@@ -230,7 +232,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 	@Command
 	public void modalCursoVigente(@BindingParam("cursovigenteid") long cursovigenteid) {
-
+		
 		if (cursovigenteid != -1) {
 
 			if (!this.opEditarCursoVigente)
@@ -960,7 +962,9 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 	@Command
 	public void modalCursoVigenteMateria(@BindingParam("cursovigentemateria") CursoVigenteMateria cursoVigenteMateria) {
-
+		
+		this.inicializarFinders();
+		
 		if (cursoVigenteMateria != null) {
 
 			if (!this.opEditarCursoVigenteMateria)
@@ -1342,6 +1346,64 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	}
 
 	// fin buscarEstado
+	
+	
+	// Seccion Finder
+
+	private FinderModel proveedorFinder;
+
+	@NotifyChange("*")
+	public void inicializarFinders() {
+		
+		Tipo docente = this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_PROVEEDOR_DOCENTE);
+
+		String sqlDocente = this.um.getSql("proveedor/buscarProveedorSedeTipo.sql").replace("?1", this.getCurrentSede().getSedeid()+"").replace("?2", docente.getTipoid()+"");
+
+		proveedorFinder = new FinderModel("Docente", sqlDocente);
+
+	}
+
+	public void generarFinders(@BindingParam("finder") String finder) {
+
+		if (finder.compareTo(this.proveedorFinder.getNameFinder()) == 0) {
+
+			this.proveedorFinder.generarListFinder();
+			BindUtils.postNotifyChange(null, null, this.proveedorFinder, "listFinder");
+
+			return;
+
+		}
+
+	}
+
+	@Command
+	public void finderFilter(@BindingParam("filter") String filter, @BindingParam("finder") String finder) {
+
+		if (finder.compareTo(this.proveedorFinder.getNameFinder()) == 0) {
+
+			this.proveedorFinder.setListFinder(this.filtrarListaObject(filter, this.proveedorFinder.getListFinderOri()));
+			BindUtils.postNotifyChange(null, null, this.proveedorFinder, "listFinder");
+
+			return;
+
+		}
+
+	}
+
+	@Command
+	@NotifyChange("*")
+	public void onSelectetItemFinder(@BindingParam("id") Long id, @BindingParam("finder") String finder) {
+
+		if (finder.compareTo(this.proveedorFinder.getNameFinder()) == 0) {
+
+			this.cursoVigenteMateriaSelected.setProveedor(this.reg.getObjectById(Proveedor.class.getName(), id));
+			// BindUtils.postNotifyChange(null, null, this, "rubroFinder");
+
+			return;
+		}
+
+	}
+	
 	
 	@Command
 	public void listaAlumnosExport(@BindingParam("cursoVigenteid") Long cursoVigenteid) {
@@ -1827,5 +1889,23 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	public void setOpAnularCursoVigenteAlumno(boolean opAnularCursoVigenteAlumno) {
 		this.opAnularCursoVigenteAlumno = opAnularCursoVigenteAlumno;
 	}
+
+	public boolean isOpEditarCursoVigenteAlumno() {
+		return opEditarCursoVigenteAlumno;
+	}
+
+	public void setOpEditarCursoVigenteAlumno(boolean opEditarCursoVigenteAlumno) {
+		this.opEditarCursoVigenteAlumno = opEditarCursoVigenteAlumno;
+	}
+
+	public FinderModel getProveedorFinder() {
+		return proveedorFinder;
+	}
+
+	public void setProveedorFinder(FinderModel proveedorFinder) {
+		this.proveedorFinder = proveedorFinder;
+	}
+
+	
 
 }
