@@ -1,9 +1,9 @@
-<?page title="Pagos" contentType="text/html;charset=UTF-8"?>
+<?page title="Estado de Cuenta Proveedor" contentType="text/html;charset=UTF-8"?>
 
 <?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
 
 <zk>
-	<window title="Pago" border="normal"
+	<window title="Estado de Cuenta Proveedor" border="normal"
 		viewModel="@id('vm') @init('com.instituto.sistema.compra.PagoVM')"
 		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
 
@@ -58,7 +58,7 @@
 
 					<hbox pack="end" hflex="1">
 
-						<button label="Agregar"
+						<button label="Agregar Pago"
 							iconSclass=" z-icon-plus" onClick="@command('modalPagoAgregar')"
 							disabled="@load(!vm.opCrearPago)" />
 
@@ -137,6 +137,10 @@
 
 							<listcell>
 								<hlayout>
+								
+									<button iconSclass="z-icon-list-alt" style="background-color:orange"
+										onClick="@command('pargoRelacionadoModal', pagoid=each[0])"
+										tooltiptext="Pagos Relacionados" />
 
 									<button iconSclass="z-icon-edit"
 										onClick="@command('modalPago', pagoid=each[0])"

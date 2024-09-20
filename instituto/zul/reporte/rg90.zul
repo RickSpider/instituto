@@ -1,0 +1,128 @@
+<?page title="RG90" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="RG90" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.reporte.RG90VM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<hbox>
+			<tablelayout columns="3">
+
+				<tablechildren>
+					<label value="Filtro:" />
+				</tablechildren>
+				<tablechildren>
+
+					<datebox id="dateInvoices" cols="2"
+						value="@bind(vm.fecha)" onChange="@command('cargarDatos')"
+						format="MM/yyyy" width="200px">
+					</datebox>
+
+
+				</tablechildren>
+
+				<tablechildren>
+
+					<button label="Exportar" onClick="@command('exprtar')" />
+
+				</tablechildren>
+
+
+
+			</tablelayout>
+		</hbox>
+
+		<space width="10px" />
+
+		<listbox emptyMessage="lista vacía..." mold="paging" autopaging="true" vflex="1"
+			model="@load(vm.lRG90)" checkmark="true" >
+
+			<listhead>
+
+				<listheader hflex="min" />
+
+				<listheader
+					label="RUC"
+					style="word-wrap: break-word; white-space: normal;" align="center" hflex="min"/>
+				<listheader
+					label="RAZON SOCIAL"
+					style="word-wrap: break-word; white-space: normal;" align="center"
+					width="150px" />
+				<listheader label="TIPO DE COMPROBANTE"
+					style="word-wrap: break-word; white-space: normal;" align="center" />
+				<listheader label="FECHA "
+					style="word-wrap: break-word; white-space: normal;" align="center" hflex="min"/>
+				<listheader label="TIMBRADO"
+					style="word-wrap: break-word; white-space: normal;" align="center" hflex="min"/>
+				<listheader label="NÚMERO"
+					style="word-wrap: break-word; white-space: normal;" align="center"
+					hflex="min" />
+				<listheader label="GRAVADO AL 10%"
+					style="word-wrap: break-word; white-space: normal;" align="center" hflex="min"/>
+				<listheader label="GRAVADO AL 5%"
+					style="word-wrap: break-word; white-space: normal;" align="center" hflex="min"/>
+				<listheader label="EXENTO"
+					style="word-wrap: break-word; white-space: normal;" align="center" hflex="min"/>
+				<listheader label="MONTO TOTAL"
+					style="word-wrap: break-word; white-space: normal;" align="center" hflex="min"/>
+				<listheader label="CONDICIÓN DE VENTA"
+					style="word-wrap: break-word; white-space: normal;" align="center" />
+				<listheader label="MONEDA EXTRANJERA"
+					style="word-wrap: break-word; white-space: normal;" align="center" />
+				<listheader label="IMPUTA IVA"
+					style="word-wrap: break-word; white-space: normal;" align="center" />
+				<listheader label="IMPUTA IRE"
+					style="word-wrap: break-word; white-space: normal;" align="center" />
+				<listheader label="IMPUTA IRP-RSP"
+					style="word-wrap: break-word; white-space: normal;" align="center" />
+				<listheader label="NO IMPUTA"
+					style="word-wrap: break-word; white-space: normal;" align="center" />
+
+
+
+			</listhead>
+
+			<template name="model">
+
+				<listitem>
+
+					<listcell />
+
+					<listcell label="@load(each[2])" />
+					<listcell label="@load(each[3])" style="text-align:left"/>
+					<listcell label="@load(each[4])" />
+					<listcell label="@load(each[5])" />
+					<listcell label="@load(each[6])" />
+					<listcell label="@load(each[7])" />
+					<listcell >
+						<doublebox value="@load(each[8])"
+							readonly="true" format="#,###.##" style="text-align:right"/>
+					</listcell>
+					<listcell >
+						<doublebox value="@load(each[9])"
+							readonly="true" format="#,###.##" style="text-align:right" />
+					</listcell>
+					<listcell >
+						<doublebox value="@load(each[10])"
+							readonly="true" format="#,###.##" style="text-align:right"/>
+					</listcell>
+					<listcell >
+						<doublebox value="@load(each[11])"
+							readonly="true" format="#,###.##" style="text-align:right"/>
+					</listcell>
+					<listcell label="@load(each[12])" />
+					<listcell label="@load(each[13])" />
+					<listcell label="@load(each[14])" />
+					<listcell label="@load(each[15])" />
+					<listcell label="@load(each[16])" />
+					<listcell label="@load(each[17])" />
+
+
+				</listitem>
+
+			</template>
+
+
+		</listbox>
+
+	</window>
+</zk>

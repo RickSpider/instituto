@@ -24,7 +24,7 @@
 				<tablechildren>
 					<textbox value="@bind(vm.presupuestoSelected.anho)" readonly="@load(vm.editar)"/>
 					<button label="Guardar"
-							iconSclass=" z-icon-plus"
+							
 							onClick="@command('guardar')" disabled="@load(!vm.opCrearPresupuesto)"/>
 				</tablechildren>
 

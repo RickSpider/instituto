@@ -8,7 +8,7 @@
 		position="center,center" closable="true" mode="modal"
 		action="show: slideDown;hide: slideUp">
 
-		<vlayout width="1000px" height="640px">
+		<vlayout width="1000px" height="700px">
 
 			<hlayout>
 
@@ -99,15 +99,27 @@
 
 					<tablechildren>
 
-						<label value="Proveedor:" />
+						<label value="Proveedor RUC:" />
 
 					</tablechildren>
 
 					<tablechildren>
 						<finder
-							finderValue="@load(vm.pagoSelected.proveedor.persona.fullNombre)"
+							finderValue="@load(vm.pagoSelected.proveedor.persona.ruc)"
 							finderModel="@init(vm.proveedorFinder)"
 							disabled="@load(vm.camposCabecera[2])" />
+					</tablechildren>
+					
+					<tablechildren>
+
+						<label value="Razon Social:" />
+
+					</tablechildren>
+
+					<tablechildren >
+						<textbox
+							Value="@load(vm.pagoSelected.proveedor.persona.fullNombre)"
+							readonly="true" />
 					</tablechildren>
 
 					<tablechildren>
@@ -164,14 +176,6 @@
 
 					</tablechildren>
 
-					<tablechildren>
-						<label value="Comprobante Virtual/Electrónico:" />
-					</tablechildren>
-					<tablechildren>
-						<checkbox
-							checked="@bind(vm.pagoSelected.comprobanteElectronico)" mold="switch" disabled="@load(vm.camposCabecera[9])"/>
-					</tablechildren>
-
 					<tablechildren >
 
 						<label value="Descripcion:" />
@@ -195,6 +199,50 @@
 						<textbox
 							value="@bind(vm.pagoSelected.cdc)" rows="3" cols="40"
 							maxlength="255" disabled="@load(vm.camposCabecera[11])"/>
+
+					</tablechildren>
+					
+					<tablechildren>
+						<label value="Es Virtual/Electrónico:" />
+					</tablechildren>
+					<tablechildren>
+						<checkbox
+							checked="@bind(vm.pagoSelected.comprobanteElectronico)" mold="switch" disabled="@load(vm.camposCabecera[9])"/>
+					</tablechildren>
+					
+					<tablechildren>
+						<label value="Imputa al IVA" />
+					</tablechildren>
+					<tablechildren>
+						<checkbox
+							checked="@bind(vm.pagoSelected.imputaIVA)" mold="switch"/>
+					</tablechildren>
+					
+					<tablechildren>
+						<label value="Imputa al IRE" />
+					</tablechildren>
+					<tablechildren>
+						<checkbox
+							checked="@bind(vm.pagoSelected.imputaIRE)" mold="switch"/>
+					</tablechildren>
+					<tablechildren>
+						<label value="Imputa al IRP-RSP" />
+					</tablechildren>
+					<tablechildren>
+						<checkbox
+							checked="@bind(vm.pagoSelected.imputaIRPRSP)" mold="switch" />
+					</tablechildren>
+					<tablechildren>
+						<label value="No Imputa" />
+					</tablechildren>
+					<tablechildren>
+						<checkbox
+							checked="@bind(vm.pagoSelected.noImputa)" mold="switch" />
+					</tablechildren>
+					
+					<tablechildren colspan="4">
+
+						
 
 					</tablechildren>
 					

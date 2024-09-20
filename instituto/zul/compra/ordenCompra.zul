@@ -1,127 +1,181 @@
 <?page title="OrdenesCompras" contentType="text/html;charset=UTF-8"?>
 <zk>
-<window title="OrdenCompra" border="normal"
+	<window title="OrdenCompra" border="normal"
 		viewModel="@id('vm') @init('com.instituto.sistema.compra.OrdenCompraVM')"
 		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
 
 		<hlayout vflex="1">
-			
-				<vlayout hflex="1" vflex="1">
 
-					<hbox pack="end" hflex="1" >
+			<vlayout hflex="1" vflex="1">
+				<hlayout hflex="1">
+					<hbox pack="start" hflex="1">
 
-						<button label="Agregar"
-							iconSclass=" z-icon-plus" onClick="@command('modalOrdenCompraAgregar')" disabled="@load(!vm.opCrearOrdenCompra)" />
+						<tablelayout columns="5">
+							<tablechildren>
+								<label value="Filtro:" />
+							</tablechildren>
+
+							<tablechildren>
+								<combobox width="150px"
+									model="@load(vm.campo)"
+									selectedItem="@bind(vm.campoSelected)">
+									<template name="model">
+										<comboitem label="@load(each)" />
+									</template>
+								</combobox>
+							</tablechildren>
+
+							<tablechildren>
+								<combobox width="150px"
+									model="@load(vm.signosComparacion)"
+									selectedItem="@bind(vm.comparacionSelected)">
+									<template name="model">
+										<comboitem label="@load(each)" />
+									</template>
+								</combobox>
+							</tablechildren>
+
+							<tablechildren>
+								<datebox value="@bind(vm.fechaFiltro)"
+									format="dd/MM/yyyy" />
+							</tablechildren>
+
+							<tablechildren>
+								<button label="Filtrar"
+									onClick="@command('filtrarPorFechas')" />
+							</tablechildren>
+
+							<tablechildren>
+								<label value="Total:" />
+								</tablechildren>
+								<tablechildren>
+								<doublebox value="@load(vm.totalGral)"
+								format="#,###" readonly="true" />
+								</tablechildren>
+						</tablelayout>
 
 					</hbox>
 
-					<listbox emptyMessage="lista vacía..." mold="paging"
-						vflex="1" model="@load(vm.lOrdenesCompras)" checkmark="true">
+					<hbox pack="end" hflex="1">
 
-						<listhead>
+						<button label="Agregar"
+							iconSclass=" z-icon-plus"
+							onClick="@command('modalOrdenCompraAgregar')"
+							disabled="@load(!vm.opCrearOrdenCompra)" />
 
-							<listheader hflex="min" align="center" />
-							<listheader label="ID" align="right"
-								hflex="min" />
-							<listheader label="Fecha" align="left"
-								 />
-							<listheader label="Vencimiento" align="left"
-								 />
-								 
-							<listheader label="Proveedor" align="left"
-								 />
-							<listheader label="Estado" align="left"
-								 />
-							
-							<listheader hflex="min"/>
+					</hbox>
 
+				</hlayout>
 
-						</listhead>
+				<listbox emptyMessage="lista vacía..." mold="paging"
+					vflex="1" model="@load(vm.lOrdenesCompras)" checkmark="true">
 
+					<listhead>
 
-						<auxhead>
+						<listheader hflex="min" align="center" />
+						<listheader label="ID" align="right"
+							hflex="min" />
+						<listheader label="Fecha" align="left" />
+						<listheader label="Vencimiento" align="left" />
 
-							<auxheader />
-							<auxheader />
-							<auxheader>
-								<textbox
-									value="@bind(vm.filtroColumns[1])" instant="true"
-									onChange="@command('filtrarOrdenCompra')" hflex="1" />
-							</auxheader>
-							
-							<auxheader>
-								<textbox
-									value="@bind(vm.filtroColumns[2])" instant="true"
-									onChange="@command('filtrarOrdenCompra')" hflex="1" />
-							</auxheader>
-							
-							<auxheader>
-								<textbox
-									value="@bind(vm.filtroColumns[3])" instant="true"
-									onChange="@command('filtrarOrdenCompra')" hflex="1" />
-							</auxheader>
-							
-							<auxheader>
-								<textbox
-									value="@bind(vm.filtroColumns[4])" instant="true"
-									onChange="@command('filtrarOrdenCompra')" hflex="1" />
-							</auxheader>
-							
-							<auxheader/>
+						<listheader label="Proveedor" align="left" />
+						<listheader label="Estado" align="left" />
+						<listheader label="Total" align="left" />
 
-					
-						</auxhead>
-
-						<template name="model">
-
-							<listitem>
-								<listcell />
-								<listcell label="@load(each[0])" />
-								<listcell label="@load(each[1])  @converter('formatedDate', format='dd/MM/yyyy HH:mm:ss')" />
-								<listcell label="@load(each[2])  @converter('formatedDate', format='dd/MM/yyyy HH:mm:ss')" />
-								<listcell label="@load(each[3])" />
-								<listcell label="@load(each[4])" />
-								
-								<listcell>
-									<hlayout>
-									
-										<button iconSclass="z-icon-edit"
-											onClick="@command('modalOrdenCompra', ordenCompraid=each[0])"
-											tooltiptext="Editar" disabled="@load(!vm.opEditarOrdenCompra)"/>
-										
-										<button	iconSclass="z-icon-trash-o" style="background-color:red"
-											onClick="@command('borrarOrdenCompraConfirmacion', ordenCompraid=each[0])"
-											tooltiptext="Borrar" disabled="@load(!vm.opBorrarOrdenCompra)"/>
+						<listheader hflex="min" />
 
 
-									</hlayout>
+					</listhead>
 
 
-								</listcell>
+					<auxhead>
+
+						<auxheader />
+						<auxheader />
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[1])"
+								instant="true" onChange="@command('filtrarOrdenCompra')"
+								hflex="1" />
+						</auxheader>
+
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[2])"
+								instant="true" onChange="@command('filtrarOrdenCompra')"
+								hflex="1" />
+						</auxheader>
+
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[3])"
+								instant="true" onChange="@command('filtrarOrdenCompra')"
+								hflex="1" />
+						</auxheader>
+
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[4])"
+								instant="true" onChange="@command('filtrarOrdenCompra')"
+								hflex="1" />
+						</auxheader>
+
+						<auxheader />
+						<auxheader />
 
 
-							</listitem>
+					</auxhead>
 
+					<template name="model">
 
-						</template>
+						<listitem>
+							<listcell />
+							<listcell label="@load(each[0])" />
+							<listcell label="@load(each[1])" />
+							<listcell label="@load(each[2])" />
+							<listcell label="@load(each[3])" />
+							<listcell label="@load(each[4])" />
+							<listcell label="@load(each[5])  @converter('formatedNumber', format='#,###')" />
 
-						<listfoot>
-							<listfooter span="7" align="left">
+							<listcell>
 								<hlayout>
-									<label
-										value="@load(vm.lOrdenesCompras.size())" />
-									<label value="items" />
+
+									<button iconSclass="z-icon-edit"
+										onClick="@command('modalOrdenCompra', ordenCompraid=each[0])"
+										tooltiptext="Editar"
+										disabled="@load(!vm.opEditarOrdenCompra)" />
+
+									<button iconSclass="z-icon-trash-o"
+										style="background-color:red"
+										onClick="@command('borrarOrdenCompraConfirmacion', ordenCompraid=each[0])"
+										tooltiptext="Borrar"
+										disabled="@load(!vm.opBorrarOrdenCompra)" />
+
+
 								</hlayout>
-							</listfooter>
-						</listfoot>
 
 
-					</listbox>
+							</listcell>
 
-				</vlayout>
 
-		
-			
+						</listitem>
+
+
+					</template>
+
+					<listfoot>
+						<listfooter span="7" align="left">
+							<hlayout>
+								<label
+									value="@load(vm.lOrdenesCompras.size())" />
+								<label value="items" />
+							</hlayout>
+						</listfooter>
+					</listfoot>
+
+
+				</listbox>
+
+			</vlayout>
+
+
+
 		</hlayout>
 
 	</window>

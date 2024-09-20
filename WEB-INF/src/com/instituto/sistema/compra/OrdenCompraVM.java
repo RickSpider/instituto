@@ -1,5 +1,8 @@
 package com.instituto.sistema.compra;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.zkoss.bind.BindUtils;
@@ -45,9 +48,24 @@ public class OrdenCompraVM extends TemplateViewModelLocal {
 	private CursoVigenteMateria cursoVigenteMateriaSelected;
 
 	private boolean verDetalleDoc = false;
+	
+	private Date fechaFiltro;
+	private List<String> signosComparacion = new ArrayList<String>();
+	private String comparacionSelected = "";
+	private List<String> campo = new ArrayList<String>();
+	private String campoSelected = "";
+	
+	private double totalGral;
 
 	@Init(superclass = true)
 	public void initOrdenCompraVM() {
+		
+		this.signosComparacion.add(">=");
+		this.signosComparacion.add("<=");
+		this.signosComparacion.add("=");
+		
+		this.campo.add("Fecha");
+		this.campo.add("Vencimiento");
 
 		cargarOrdenesCompras();
 		inicializarFiltros();
@@ -69,11 +87,43 @@ public class OrdenCompraVM extends TemplateViewModelLocal {
 	}
 
 	private void cargarOrdenesCompras() {
+		
+		
 
 		String sqlOrdenCompra = this.um.getSql("ordenCompra/listaOrdenCompra.sql");
 
+		if (this.campoSelected != null && this.comparacionSelected != null && this.fechaFiltro != null) {
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
+			sqlOrdenCompra = sqlOrdenCompra.replace("--1", "");
+					
+			if (this.campoSelected.compareTo("Vencimiento") == 0) {
+				
+				sqlOrdenCompra = sqlOrdenCompra.replace("?1", "fechavencimiento").replace("?2", this.comparacionSelected).replace("?3", sdf.format(this.fechaFiltro));
+				
+			}else {
+				
+				sqlOrdenCompra = sqlOrdenCompra.replace("?1", this.campoSelected).replace("?2", this.comparacionSelected).replace("?3", sdf.format(this.fechaFiltro));
+				
+			}
+			
+			
+			
+		}
+		
+		System.out.println(sqlOrdenCompra);
+		
 		this.lOrdenesCompras = this.reg.sqlNativo(sqlOrdenCompra);
 		this.lOrdenesComprasOri = this.lOrdenesCompras;
+		
+		this.totalGral = 0;
+		for (Object[] ox: this.lOrdenesComprasOri ) {
+			
+			this.totalGral+= Double.parseDouble(ox[5].toString()); 
+			
+		}
+		
 	}
 
 	// seccion filtro
@@ -82,7 +132,7 @@ public class OrdenCompraVM extends TemplateViewModelLocal {
 
 	private void inicializarFiltros() {
 
-		this.filtroColumns = new String[2]; // se debe de iniciar el filtro deacuerdo a la cantidad declarada en el
+		this.filtroColumns = new String[5]; // se debe de iniciar el filtro deacuerdo a la cantidad declarada en el
 
 		for (int i = 0; i < this.filtroColumns.length; i++) {
 
@@ -560,6 +610,32 @@ public class OrdenCompraVM extends TemplateViewModelLocal {
 		this.cursoVigenteMateriaSelected = null;
 
 	}
+	
+	@Command
+	@NotifyChange("*")
+	public void filtrarPorFechas() {
+		
+		if (this.campoSelected == null) {
+			
+			return;
+			
+		}
+		
+		if (this.comparacionSelected == null) {
+			
+			return;
+			
+		}
+		
+		if (this.fechaFiltro == null) {
+			
+			
+			return;
+		}
+		
+		this.cargarOrdenesCompras();
+		
+	}
 
 	public List<Object[]> getlOrdenesCompras() {
 		return lOrdenesCompras;
@@ -719,6 +795,54 @@ public class OrdenCompraVM extends TemplateViewModelLocal {
 
 	public void setImpuestoTipoFinder(FinderModel impuestoTipoFinder) {
 		this.impuestoTipoFinder = impuestoTipoFinder;
+	}
+
+	public List<String> getSignosComparacion() {
+		return signosComparacion;
+	}
+
+	public void setSignosComparacion(List<String> signosComparacion) {
+		this.signosComparacion = signosComparacion;
+	}
+
+	public String getComparacionSelected() {
+		return comparacionSelected;
+	}
+
+	public void setComparacionSelected(String comparacionSelected) {
+		this.comparacionSelected = comparacionSelected;
+	}
+
+	public List<String> getCampo() {
+		return campo;
+	}
+
+	public void setCampo(List<String> campo) {
+		this.campo = campo;
+	}
+
+	public String getCampoSelected() {
+		return campoSelected;
+	}
+
+	public void setCampoSelected(String campoSelected) {
+		this.campoSelected = campoSelected;
+	}
+
+	public Date getFechaFiltro() {
+		return fechaFiltro;
+	}
+
+	public void setFechaFiltro(Date fechaFiltro) {
+		this.fechaFiltro = fechaFiltro;
+	}
+
+	public double getTotalGral() {
+		return totalGral;
+	}
+
+	public void setTotalGral(double totalGral) {
+		this.totalGral = totalGral;
 	}
 
 }

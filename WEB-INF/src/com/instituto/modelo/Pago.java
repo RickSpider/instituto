@@ -86,6 +86,15 @@ public class Pago extends Modelo implements Serializable {
 	private double total5 = 0;
 	private double totalExento = 0;
 	
+	@ColumnDefault("false")
+	private boolean imputaIVA = false;
+	@ColumnDefault("false")
+	private boolean imputaIRE = false;
+	@ColumnDefault("false")
+	private boolean imputaIRPRSP = false;
+	@ColumnDefault("false")
+	private boolean noImputa = false;
+	
 	@Override
 	public Object[] getArrayObjectDatos() {
 		// TODO Auto-generated method stub
@@ -241,6 +250,40 @@ public class Pago extends Modelo implements Serializable {
 	public void setCdc(String cdc) {
 		this.cdc = cdc;
 	}
+
+	public boolean isImputaIVA() {
+		return imputaIVA;
+	}
+
+	public void setImputaIVA(boolean imputaIVA) {
+		this.imputaIVA = imputaIVA;
+	}
+
+	public boolean isImputaIRE() {
+		return imputaIRE;
+	}
+
+	public void setImputaIRE(boolean imputaIRE) {
+		this.imputaIRE = imputaIRE;
+	}
+
+	public boolean isImputaIRPRSP() {
+		return imputaIRPRSP;
+	}
+
+	public void setImputaIRPRSP(boolean imputaIRPRSP) {
+		this.imputaIRPRSP = imputaIRPRSP;
+	}
+
+	public boolean isNoImputa() {
+		return noImputa;
+	}
+
+	public void setNoImputa(boolean noImputa) {
+		this.noImputa = noImputa;
+	}
+	
+	
 	
 	
 

@@ -1031,6 +1031,52 @@ public class PagoVM extends TemplateViewModelLocal {
 		this.cursoVigenteMateriaSelected = null;
 
 	}
+	
+	
+	//Seccion Pagos Relacionados
+	
+	private List<Object[]> lPagosRelacionados;
+	private double totalPagosRelacionados = 0;
+	
+	@Command
+	public void pargoRelacionadoModal(@BindingParam("pagoid") long pagoid) {
+		
+		this.totalPagosRelacionados = 0;
+		
+		this.pagoSelected = this.reg.getObjectById(Pago.class.getName(), pagoid);
+		
+		if (this.pagoSelected.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_FACTURA) != 0 ) {
+			
+			this.mensajeInfo("Solo las Facturas a creditos tienen Pagos Relacionados");
+			
+			return;
+			
+		}
+		
+		String sqlPagoRelacionado = this.um.getSql("pago/listaPagosRelacionados.sql").replace("?1", pagoid+"");
+		this.lPagosRelacionados = this.reg.sqlNativo(sqlPagoRelacionado);
+		
+		for (Object[] x: this.lPagosRelacionados) {
+			
+			this.totalPagosRelacionados += Double.parseDouble(x[3].toString());
+			
+		}
+		
+		
+	
+		modal = (Window) Executions.createComponents("/instituto/zul/compra/pagoCompRelacionadoModal.zul", this.mainComponent,
+				null);
+		Selectors.wireComponents(modal, this, false);
+		modal.doModal();
+	
+	}
+	
+	@Command
+	public void cerrarVentana() {
+		
+		this.modal.detach();
+		
+	}
 
 	public List<Object[]> getlPagos() {
 		return lPagos;
@@ -1276,6 +1322,26 @@ public class PagoVM extends TemplateViewModelLocal {
 
 	public void setComprobanteTipoFiltro(Tipo comprobanteTipoFiltro) {
 		this.comprobanteTipoFiltro = comprobanteTipoFiltro;
+	}
+
+
+	public List<Object[]> getlPagosRelacionados() {
+		return lPagosRelacionados;
+	}
+
+
+	public void setlPagosRelacionados(List<Object[]> lPagosRelacionados) {
+		this.lPagosRelacionados = lPagosRelacionados;
+	}
+
+
+	public double getTotalPagosRelacionados() {
+		return totalPagosRelacionados;
+	}
+
+
+	public void setTotalPagosRelacionados(double totalPagosRelacionados) {
+		this.totalPagosRelacionados = totalPagosRelacionados;
 	}
 
 	
