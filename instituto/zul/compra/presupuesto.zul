@@ -27,6 +27,13 @@
 							
 							onClick="@command('guardar')" disabled="@load(!vm.opCrearPresupuesto)"/>
 				</tablechildren>
+				
+				<tablechildren>
+					
+					<button label="Ver Ejecutados"
+							class="doxa-button-orange"
+							onClick="@command('modalPresupuestoEjecutado')" />
+				</tablechildren>
 
 			</tablelayout>
 
@@ -40,7 +47,7 @@
 						<button label="Agregar Detalle"
 							iconSclass=" z-icon-plus"
 							onClick="@command('modalPresupuestoDetalle')"
-							style="background-color:green" disabled="@load(!vm.opCrearPresupuesto)"/>
+							class="doxa-button-green" disabled="@load(!vm.opCrearPresupuesto)"/>
 					</auxheader>
 
 				</auxhead>

@@ -50,7 +50,7 @@
 								<label value="Total:" />
 							</tablechildren>
 							<tablechildren>
-								<doublebox value="@load(vm.totalGral)" format="#,###" readonly="true"/>
+								<doublebox style="text-align:right" value="@load(vm.totalGral)" format="#,###" readonly="true"/>
 							</tablechildren>
 						</tablelayout>
 
@@ -80,7 +80,7 @@
 						<listheader label="Timbrado" align="left" />
 						<listheader label="Comprobante #" align="left" />
 						<listheader label="Comprobante" align="left" />
-						<listheader label="Total" align="left" />
+						<listheader hflex="min" label="Total" align="left" />
 
 						<listheader hflex="min" />
 
@@ -133,7 +133,13 @@
 							<listcell label="@load(each[3])" />
 							<listcell label="@load(each[4])" />
 							<listcell label="@load(each[5])" />
-							<listcell label="@load(each[6])  @converter('formatedNumber', format='#,###')"/>
+							<listcell >
+						
+								<doublebox value="@load(each[6])" 
+									format="#,###"
+									readonly="true" style="text-align:right"/>
+						
+							</listcell>
 
 							<listcell>
 								<hlayout>

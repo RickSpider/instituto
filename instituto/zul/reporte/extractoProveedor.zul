@@ -1,0 +1,60 @@
+<?page title="EstadoCuentaReporte" contentType="text/html;charset=UTF-8"?>
+
+<?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
+
+<zk>
+	<window title="Facturacion Reporte" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.reporte.ExtractoProveedorVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<tablelayout columns="2">
+
+			<tablechildren>
+				<label value="FechaInicio:" />
+			</tablechildren>
+			<tablechildren>
+				<datebox value="@bind(vm.fechaInicio)"
+					format="dd/MM/yyyy HH:mm:ss " width="150px" readonly="true"
+					instant="true" />
+			</tablechildren>
+
+			<tablechildren>
+				<label value="Fecha Fin: " />
+			</tablechildren>
+			<tablechildren>
+				<datebox value="@bind(vm.fechaFin)"
+					format="dd/MM/yyyy HH:mm:ss " width="150px" readonly="true"
+					instant="true" />
+			</tablechildren>
+
+			<tablechildren>
+
+				<label value="Proveedor:" />
+
+			</tablechildren>
+
+
+
+			<tablechildren>
+				<finder
+					finderValue="@load(vm.proveedorSelected.persona.fullNombre)"
+					finderModel="@init(vm.proveedorFinder)" />
+			</tablechildren>
+
+
+
+
+
+			<tablechildren>
+
+				<button label="Generar Reporte"
+					onClick="@command('generarReporte')" />
+
+			</tablechildren>
+
+
+
+		</tablelayout>
+
+	</window>
+</zk>

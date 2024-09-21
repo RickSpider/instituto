@@ -292,6 +292,41 @@ public class PresupuestoVM extends TemplateViewModelLocal {
 		this.lPresupuestos = this.filtrarListaObject(this.filtroColumns, this.lPresupuestosOri);
 
 	}
+	
+	private List<Object[]> lPresupuestoEjecutado;
+	private double totalPresupuesto = 0;
+	private double totalEjecutado = 0;
+	
+	@Command
+	public void modalPresupuestoEjecutado() {
+		
+		String sql = this.um.getSql("presupuesto/listaPresupuestoEjecutado.sql").replace("?1", this.presupuestoSelected.getAnho()+"");
+		
+		this.lPresupuestoEjecutado = this.reg.sqlNativo(sql);
+		
+		totalPresupuesto = 0;
+		totalEjecutado = 0;
+		
+		for (Object[] ox: this.lPresupuestoEjecutado) {
+			
+			this.totalPresupuesto += Double.parseDouble(ox[2].toString());
+			this.totalEjecutado += Double.parseDouble(ox[3].toString());
+			
+		}
+		
+		modal = (Window) Executions.createComponents("/instituto/zul/compra/presupuestoEjecutadoModal.zul",
+				this.mainComponent, null);
+		Selectors.wireComponents(modal, this, false);
+		modal.doModal();
+
+	}
+	
+	@Command
+	public void cerrarVentana() {
+		
+		this.modal.detach();
+		
+	}
 
 	public List<Object[]> getlPresupuestos() {
 		return lPresupuestos;
@@ -379,6 +414,30 @@ public class PresupuestoVM extends TemplateViewModelLocal {
 
 	public void setMonedaFinder(FinderModel monedaFinder) {
 		this.monedaFinder = monedaFinder;
+	}
+
+	public List<Object[]> getlPresupuestoEjecutado() {
+		return lPresupuestoEjecutado;
+	}
+
+	public void setlPresupuestoEjecutado(List<Object[]> lPresupuestoEjecutado) {
+		this.lPresupuestoEjecutado = lPresupuestoEjecutado;
+	}
+
+	public double getTotalPresupuesto() {
+		return totalPresupuesto;
+	}
+
+	public void setTotalPresupuesto(double totalPresupuesto) {
+		this.totalPresupuesto = totalPresupuesto;
+	}
+
+	public double getTotalEjecutado() {
+		return totalEjecutado;
+	}
+
+	public void setTotalEjecutado(double totalEjecutado) {
+		this.totalEjecutado = totalEjecutado;
 	}
 
 	
