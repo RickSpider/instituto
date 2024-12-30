@@ -453,6 +453,15 @@ public class CobranzaVM extends TemplateViewModelLocal {
 	}
 
 	private boolean verificarCampos() {
+		
+		
+		if (this.cobranzaDetalleCobroSelected.getCuentaNumCR() == null) {
+			
+			this.mensajeInfo("Falta CuentaCR");
+			return false;
+			
+		}
+		
 
 		if (this.cobranzaDetalleCobroSelected.getFormaPago().getSigla()
 				.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_TARJETA_CREDITO) == 0

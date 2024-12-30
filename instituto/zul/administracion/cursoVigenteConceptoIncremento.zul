@@ -1,0 +1,62 @@
+<?page title="cursoVigenteConceptoModal" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Actualizar Importes" border="normal"
+		position="center,center" closable="true" mode="modal"
+		action="show: slideDown;hide: slideUp">
+
+		<vlayout>
+
+			<tablelayout columns="2">
+			
+				<tablechildren >
+				
+					<label value="Concepto:" style="font-weight:bold"/>
+				
+				</tablechildren>
+			
+				<tablechildren>
+				
+					<textbox value="@load(vm.cursoVigenteConceptoSelected.concepto.concepto)" readonly="true"/>
+				
+				</tablechildren>
+			
+				<tablechildren>
+				
+					<label value="Fecha:" style="font-weight:bold"/>
+				
+				</tablechildren>
+			
+				<tablechildren>
+				
+					<datebox value="@bind(vm.incrementoFecha)" format="dd/MM/yyyy" />
+				
+				</tablechildren>
+				
+				<tablechildren>
+				
+					<label value="Incremento:" style="font-weight:bold"/>
+				
+				</tablechildren>
+			
+				<tablechildren>
+				
+					<doublebox value="@bind(vm.incremento)" format="#,###"/>
+				
+				</tablechildren>
+			
+			</tablelayout>
+			
+
+			<space height="10px" />
+
+			<hlayout>
+
+				<button label="Confirmar" onClick="@command('confirmacionIncremento')"/>
+
+			</hlayout>
+
+		</vlayout>
+
+
+	</window>
+</zk>

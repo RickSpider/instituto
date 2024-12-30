@@ -19,6 +19,7 @@ import org.zkoss.bind.annotation.NotifyChange;
 import com.doxacore.report.ReportExcel;
 import com.instituto.modelo.Alumno;
 import com.instituto.modelo.CursoVigente;
+import com.instituto.modelo.Empresa;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
 
@@ -161,14 +162,16 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 			
 		}*/
 		
+		Empresa empresa = this.reg.getObjectById(Empresa.class.getName(), 1);
+		
 		ReportExcel re = new ReportExcel("EstadoDeCuenta");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
 		//CursoVigente cv = this.reg.getObjectById(CursoVigente.class.getName(), cursoVigenteid);
 		
 		List<String[]> titulos = new ArrayList<String[]>();
 		
-		String[] t1 = {"INSTITUTO SANTO TOMAS"};
-		String[] t2 = {"Resolucion M.E.C. Nº 841/98"};
+		String[] t1 = {empresa.getNombreFantasia()};
+		String[] t2 = {empresa.getExtra2()};
 		String[] t3 = {"Sede:",this.getCurrentSede().getSede()};
 		String[] t4 = {"REPORTE DE ESTADO DE CUENTA"};
 		String[] t5 = {"Fecha Inicio:", sdf.format(fechaInicio)};
@@ -228,6 +231,14 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 		
 		List<Object[]> datos = this.reg.sqlNativo(sql1);
 		List<Object[]> datos2 = this.reg.sqlNativo(sql2);
+		
+		
+		System.out.println("==========================================");
+		System.out.println(sql1);
+		System.out.println("==========================================");
+		System.out.println(sql2);
+		System.out.println("==========================================");
+		
 		
 		List<Object[]> datos3 = new ArrayList<>();
 		

@@ -72,6 +72,8 @@
 				format="#,###" 
 				constraint="no empty: Es campo obligatorio."/>
 			</hlayout>
+			
+			
 
 			<space height="10px" />
 

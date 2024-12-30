@@ -8,7 +8,6 @@ import java.util.List;
 import com.doxacore.util.Register;
 import com.instituto.modelo.CursoVigenteAlumno;
 import com.instituto.modelo.CursoVigenteConcepto;
-import com.instituto.modelo.CursoVigenteConvenio;
 import com.instituto.modelo.Feriado;
 import com.instituto.modelo.EstadoCuenta;
 

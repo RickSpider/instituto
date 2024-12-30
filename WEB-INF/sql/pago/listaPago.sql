@@ -5,7 +5,7 @@ from pagos p
 join proveedores pr on pr.proveedorid = p.proveedorid
 join personas pers on pers.personaid = pr.personaid
 join tipos tcomp on tcomp.tipoid = p.comprobanteTipoID
-join tipos tcondvent on tcondvent.tipoid = p.condicionventatipoid
+left join tipos tcondvent on tcondvent.tipoid = p.condicionventatipoid
 where fecha BETWEEN '?1' AND '?2'
 --1 and p.comprobantetipoid = ?3
 order by p.fecha desc;

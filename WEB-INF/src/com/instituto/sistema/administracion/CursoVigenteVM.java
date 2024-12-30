@@ -1,10 +1,10 @@
 package com.instituto.sistema.administracion;
 
-import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import org.apache.poi.util.IOUtils;
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.BindingParam;
@@ -126,7 +126,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	private void cargarCursosVigentes() {
 
 		this.lCursosVigentes = this.reg.getAllObjectsByCondicionOrder(CursoVigente.class.getName(),
-				"sedeid = " + this.getCurrentSede().getSedeid(), "CursoVigenteid asc");
+				"sedeid = " + this.getCurrentSede().getSedeid(), "CursoVigenteid desc");
 		this.lCursosVigentesOri = this.lCursosVigentes;
 	}
 
@@ -753,6 +753,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		modal.doModal();
 
 	}
+	
 
 	public boolean verificarCamposConcepto() {
 
@@ -840,6 +841,72 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		BindUtils.postNotifyChange(null, null, this, "lConceptosCursosVigentes");
 
 	}
+	
+	private Date incrementoFecha = new Date();
+	private double incremento = 0;
+	
+	@Command 
+	public void cursoVigenteConceptoIncremento(@BindingParam("cursovigenteconcepto") CursoVigenteConcepto cursoVigenteConcepto) {
+		
+		if (!this.opEditarCursoVigenteConcepto)
+			return;
+		
+		this.cursoVigenteConceptoSelected = cursoVigenteConcepto;
+
+		
+		modal = (Window) Executions.createComponents("/instituto/zul/administracion/cursoVigenteConceptoIncremento.zul",
+				this.mainComponent, null);
+		Selectors.wireComponents(modal, this, false);
+		modal.doModal();
+		
+	}
+	
+	@Command
+	public void confirmacionIncremento() {
+		
+		this.mensajeEliminar("Se incrementaran los estasdos de cuentas de los alumnos que no han pagado apartir de fecha establecida"+" \n Continuar?", new EventListener() {
+
+					@Override
+					public void onEvent(Event evt) throws Exception {
+
+						if (evt.getName().equals(Messagebox.ON_YES)) {
+
+							actualizarIncremento(incrementoFecha, cursoVigenteConceptoSelected);
+
+						}
+
+					}
+
+				});
+
+	}
+	
+	
+	public void actualizarIncremento(Date fecha, CursoVigenteConcepto cvc) {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		String sql="update estadoscuentas\r\n" +
+				"set monto = monto+"+incremento+"\n"+
+				"where cursovigenteid = "+cvc.getCursoVigente().getCursovigenteid()+" \r\n" + 
+				"and monto > (montodescuento + pago)\r\n" + 
+				"and conceptoid = "+cvc.getConcepto().getConceptoid()+"\r\n" + 
+				"and vencimiento >= '"+sdf.format(fecha)+"';";
+		
+		System.out.println(sql);
+		
+		this.reg.sqlNativoVoid(sql);
+		
+		
+		
+		this.incrementoFecha= new Date();
+		this.incremento=0;
+		
+		Notification.show("Se actualizaron los estados de cuenta de los alumnos, favor verificar.");
+		
+		this.modal.detach();
+	}
+	
 	
 	@Command
 	public void anularInscripcionAlumnoConfirmacion(@BindingParam("cursoVigenteAlumno") final CursoVigenteAlumno ca) {
@@ -1413,8 +1480,9 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		
 		List<String[]> titulos = new ArrayList<String[]>();
 		
-		String tituloLogo = "INSTITUTO SANTO TOMAS\n"
-				+ "Resolucion M.E.C. Nº 841/98";
+		Empresa empresa = this.reg.getObjectById(Empresa.class.getName(), 1);
+		String tituloLogo = empresa.getNombreFantasia()+"\n"
+				+ empresa.getExtra2();
 		
 		//String[] t1 = {"INSTITUTO SANTO TOMAS"};
 		//String[] t2 = {"LISTA DE ALUMNOS"};
@@ -1469,8 +1537,9 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		
 		List<String[]> titulos = new ArrayList<String[]>();
 		
-		String tituloLogo = "INSTITUTO SANTO TOMAS\n"
-				+ "Resolucion M.E.C. Nº 841/98";
+		Empresa empresa = this.reg.getObjectById(Empresa.class.getName(), 1);
+		String tituloLogo = empresa.getNombreFantasia()+"\n"
+				+ empresa.getExtra2();
 		
 		//String[] t1 = {"INSTITUTO SANTO TOMAS"};
 		//String[] t2 = {"Resolucion M.E.C. Nº 841/98"};
@@ -1904,6 +1973,22 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 	public void setProveedorFinder(FinderModel proveedorFinder) {
 		this.proveedorFinder = proveedorFinder;
+	}
+
+	public Date getIncrementoFecha() {
+		return incrementoFecha;
+	}
+
+	public void setIncrementoFecha(Date incrementoFecha) {
+		this.incrementoFecha = incrementoFecha;
+	}
+
+	public double getIncremento() {
+		return incremento;
+	}
+
+	public void setIncremento(double incremento) {
+		this.incremento = incremento;
 	}
 
 	

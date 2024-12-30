@@ -328,8 +328,9 @@ public class EstadoCuentaPersonaVM extends TemplateViewModelLocal {
 		
 		this.modal.detach();
 		
-		refrescarEstadosCuentas();
-		
+		this.refrescarEstadosCuentas();
+		this.calcularSaldos();
+		this.calcularTotales();
 		
 	}
 	

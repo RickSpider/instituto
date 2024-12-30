@@ -19,6 +19,7 @@ import com.doxacore.modelo.Tipo;
 import com.doxacore.report.ReportExcel;
 import com.instituto.modelo.Alumno;
 import com.instituto.modelo.CursoVigente;
+import com.instituto.modelo.Empresa;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
 
@@ -77,13 +78,14 @@ public class FacturacionReporteVM extends TemplateViewModelLocal {
 		SimpleDateFormat sdfConsulta = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		SimpleDateFormat sdfRespuesta = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		//CursoVigente cv = this.reg.getObjectById(CursoVigente.class.getName(), cursoVigenteid);
+		Empresa empresa = this.reg.getObjectById(Empresa.class.getName(), 1);
 		
 		List<String[]> titulos = new ArrayList<String[]>();
 		
 		SimpleDateFormat sdfRango = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		
-		String[] t1 = {"INSTITUTO SANTO TOMAS"};
-		String[] t2 = {"Resolucion M.E.C. Nº 841/98"};
+		String[] t1 = {empresa.getNombreFantasia()};
+		String[] t2 = {empresa.getExtra2()};
 		String[] t3 = {"Sede:",this.getCurrentSede().getSede()};
 		String[] t4 = {"REPORTE DE FACTURACION"};
 		String[] t5 = {"Fecha Inicio:", sdfRango.format(fechaInicio)};

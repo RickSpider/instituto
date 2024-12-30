@@ -291,7 +291,7 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 	
 
 	@Command
-	@NotifyChange("lEstadosCuentas")
+	@NotifyChange("*")
 	public void guardar() {
 		
 		this.save(this.estadoCuentaSelected);
@@ -301,7 +301,8 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 		this.modal.detach();
 		
 		refrescarEstadosCuentas();
-		
+		calcularSaldos();
+		importesTotales();
 		
 	}
 	
@@ -400,8 +401,11 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 		this.reg.deleteObject(estadoCuenta);
 
 		this.refrescarEstadosCuentas();
+		calcularSaldos();
+		importesTotales();
 
-		BindUtils.postNotifyChange(null, null, this, "lEstadosCuentas");
+		BindUtils.postNotifyChange(null, null, this, "*");
+		
 
 	}
 	

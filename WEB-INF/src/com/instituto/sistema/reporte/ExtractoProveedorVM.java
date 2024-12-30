@@ -21,6 +21,7 @@ import com.doxacore.modelo.Tipo;
 import com.doxacore.report.ReportExcel;
 import com.instituto.modelo.Alumno;
 import com.instituto.modelo.CursoVigente;
+import com.instituto.modelo.Empresa;
 import com.instituto.modelo.Proveedor;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
@@ -116,28 +117,21 @@ public class ExtractoProveedorVM extends TemplateViewModelLocal {
 	public void generarReporte() throws ParseException {
 		
 		
-		if (this.proveedorSelected == null) {
-			
-			this.mensajeError("No hay proveedor Seleccionado");
-			return;
-			
-		}
-		
 		Date generado = new Date();
 		
 		SimpleDateFormat sdfArchivo = new SimpleDateFormat("yyyyMMdd_HHmmss");
 		ReportExcel re = new ReportExcel("ExtractoProveedor"+sdfArchivo.format(generado));
 		SimpleDateFormat sdfConsulta = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		SimpleDateFormat sdfRespuesta = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-		
+		Empresa empresa = this.reg.getObjectById(Empresa.class.getName(), 1);
 		
 		List<String[]> titulos = new ArrayList<String[]>();
 		
 		SimpleDateFormat sdfRango = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		String[] t0 = {"GENERADO", sdfRespuesta.format(generado)};
 		String[] t01 = {"USUARIO", this.getCurrentUser().getAccount()};
-		String[] t1 = {"INSTITUTO SANTO TOMAS"};
-		String[] t2 = {"Resolucion M.E.C. Nº 841/98"};
+		String[] t1 = {empresa.getNombreFantasia()};
+		String[] t2 = {empresa.getExtra2()};
 		String[] t3 = {"Sede:",this.getCurrentSede().getSede()};
 		String[] t4 = {"REPORTE DE EXTRACTO DE PROVEEDOR"};
 		String[] t5 = {"Fecha Inicio:", sdfRango.format(fechaInicio)};
@@ -158,15 +152,22 @@ public class ExtractoProveedorVM extends TemplateViewModelLocal {
 		titulos.add(espacioBlanco);
 		
 		List<String[]> headersDatos = new ArrayList<String[]>();
-		String [] hd1 =  {"Fecha","Comprobante","Factura Nro", "Total"};
-		headersDatos.add(hd1);
+		//String [] hd1 =  {"Fecha","Comprobante","Factura Nro", "Total"};
+		//headersDatos.add(hd1);
 		
 		
 		String sql1 =  this.um.getSql("pago/extractoProveedor.sql").replace("?1", sdfConsulta.format(fechaInicio) )
-				.replace("?2", sdfConsulta.format(fechaFin))
-				.replace("?3", this.proveedorSelected.getProveedorid()+"");
+				.replace("?2", sdfConsulta.format(fechaFin));
 		
-		System.out.println(sql1);
+		if (this.proveedorSelected != null) {
+			
+			sql1 = sql1.replace("--#1", "").replace("?3", this.proveedorSelected.getProveedorid()+"");
+			
+		}
+				
+				
+		
+		//System.out.println(sql1);
 		
 		
 		List<Object[]> datos = this.reg.sqlNativo(sql1);
@@ -179,27 +180,104 @@ public class ExtractoProveedorVM extends TemplateViewModelLocal {
 		DecimalFormat df = new DecimalFormat("#,##0.##",dfs);
 		df.setGroupingUsed(true);
 	
+		
 		double totalFContado = 0;
 		double totalFCredito = 0;
 		double totalRecibo = 0;
 		double totalPFCredito = 0;
-		double saldo = 0;
 		
+		double totalGFContado = 0;
+		double totalGFCredito = 0;
+		double totalGRecibo = 0;
+		double totalGPFCredito = 0;
+		
+		
+		
+		long proveedorid = 0;
 		Tipo recibo = this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_COMPROBANTE_RECIBO);
 		Tipo condContado =  this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_CONDICION_VENTA_CONTADO);
 		
+		if (datos.size() > 0) {
+			
+			proveedorid = Long.parseLong(datos.get(0)[1].toString());
+			Object[] proveedor = {"Proveedor", datos.get(0)[1].toString()+" - "+datos.get(0)[9].toString() };
+			datos2.add(proveedor);
+			
+			String [] hd1 =  {"Fecha","Comprobante","Factura Nro", "Total"};
+			datos2.add(hd1);
+			
+		}
+		
+		
 				
 		for (Object[] ox : datos) {
+			
+			
+			long proveedoridActual = Long.parseLong(ox[1].toString());
+			
+			if (proveedoridActual != proveedorid) {
+				
+				
+				
+				datos2.add(espacioBlanco);
+				Object[] tfcontado = {"Total Factura Contado", df.format(totalFContado)}; 
+				Object[] tfcredito = {"Total Factura Credito", df.format(totalFCredito)}; 
+				Object[] trecibo = {"Total Recibo", df.format(totalRecibo)}; 
+				Object[] tPagoFCredito = {"Total Pago F. Credito ", df.format(totalPFCredito)}; 
+				Object[] tSaldo = {"Saldo a Pagar", df.format(totalFCredito-totalPFCredito)}; 
+				
+				datos2.add(tfcontado);
+				datos2.add(tfcredito);
+				datos2.add(trecibo);
+				datos2.add(tPagoFCredito);
+				datos2.add(tSaldo);
+				datos2.add(espacioBlanco);
+				
+				Object[] proveedor = {"Proveedor", ox[1].toString()+" - "+ox[9].toString() };
+				datos2.add(proveedor);
+				
+				String [] hd1 =  {"Fecha","Comprobante","Factura Nro", "Total"};
+				datos2.add(hd1);
+				
+				totalFContado = 0;
+				totalFCredito = 0;
+				totalRecibo = 0;
+				totalPFCredito = 0;
+				
+				proveedorid = proveedoridActual;
+				
+			}
 			
 			long comprobanteid = Long.parseLong(ox[3].toString());
 			
 			if (comprobanteid == recibo.getTipoid().longValue()) {
 				
 				totalRecibo += Double.parseDouble(ox[7].toString());
+				totalGRecibo += Double.parseDouble(ox[7].toString());
 				
 				if (ox[8] != null) {
 					
-					totalPFCredito += Double.parseDouble(ox[7].toString());
+					long idrelacionado = Long.parseLong(ox[8].toString());
+					boolean existe = false;
+					
+					
+					for (Object[] oxe : datos) {
+						
+						long idpago = Long.parseLong(oxe[1].toString());
+						
+						if (idpago == idrelacionado) {
+							
+							existe = true;
+							break;
+						}
+					}
+					
+					if(existe) {
+						
+						totalPFCredito += Double.parseDouble(ox[7].toString());
+						totalGPFCredito += Double.parseDouble(ox[7].toString());
+						
+					}
 					
 				}
 				
@@ -211,10 +289,12 @@ public class ExtractoProveedorVM extends TemplateViewModelLocal {
 				if (condVentaid == condContado.getTipoid().longValue()) {
 					
 					totalFContado += Double.parseDouble(ox[7].toString());
+					totalGFContado += Double.parseDouble(ox[7].toString());
 					
 				}else {
 					
 					totalFCredito += Double.parseDouble(ox[7].toString());
+					totalGFCredito += Double.parseDouble(ox[7].toString());
 					
 				}
 
@@ -225,20 +305,33 @@ public class ExtractoProveedorVM extends TemplateViewModelLocal {
 			
 			datos2.add(oData);
 			
-		}		
-	
+		}	
+		
 		datos2.add(espacioBlanco);
 		Object[] tfcontado = {"Total Factura Contado", df.format(totalFContado)}; 
 		Object[] tfcredito = {"Total Factura Credito", df.format(totalFCredito)}; 
 		Object[] trecibo = {"Total Recibo", df.format(totalRecibo)}; 
 		Object[] tPagoFCredito = {"Total Pago F. Credito ", df.format(totalPFCredito)}; 
-		Object[] tSaldo = {"Saldo a Pagar", df.format(totalFCredito-totalPFCredito)}; 
+		Object[] tSaldo = {"Saldo a Pagar", df.format(totalGFCredito-totalPFCredito)}; 
 		
 		datos2.add(tfcontado);
 		datos2.add(tfcredito);
 		datos2.add(trecibo);
 		datos2.add(tPagoFCredito);
 		datos2.add(tSaldo);
+	
+		datos2.add(espacioBlanco);
+		Object[] tgfcontado = {"Total General Factura Contado", df.format(totalGFContado)}; 
+		Object[] tgfcredito = {"Total General Factura Credito", df.format(totalGFCredito)}; 
+		Object[] tgrecibo = {"Total General Recibo", df.format(totalGRecibo)}; 
+		Object[] tgPagoFCredito = {"Total General Pago F. Credito ", df.format(totalGPFCredito)}; 
+		//Object[] tgSaldo = {"Saldo General a Pagar", df.format(totalGFCredito-totalGPFCredito)}; 
+		
+		datos2.add(tgfcontado);
+		datos2.add(tgfcredito);
+		datos2.add(tgrecibo);
+		datos2.add(tgPagoFCredito);
+		//datos2.add(tgSaldo);
 		
 		re.descargar(titulos, headersDatos, datos2);
 		

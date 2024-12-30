@@ -31,6 +31,7 @@ import com.doxacore.modelo.Usuario;
 import com.doxacore.report.ReportExcel;
 import com.instituto.modelo.Caja;
 import com.instituto.modelo.Cobranza;
+import com.instituto.modelo.Empresa;
 import com.instituto.modelo.Entidad;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
@@ -367,11 +368,13 @@ public class CajaVM extends TemplateViewModelLocal implements FinderInterface {
 
 		ReportExcel re = new ReportExcel("Caja_" + caja.getCajaid());
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-
+		Empresa empresa = this.reg.getObjectById(Empresa.class.getName(), 1);
+		
+		
 		List<String[]> titulos = new ArrayList<String[]>();
 
-		String[] t1 = { "INSTITUTO SANTO TOMAS" };
-		String[] t2 = { "Resolucion M.E.C. Nº 841/98" };
+		String[] t1 = { empresa.getNombreFantasia() };
+		String[] t2 = { empresa.getExtra2() };
 		String[] t3 = { "SEDE:", this.getCurrentSede().getSede() };
 
 		String[] t4 = { "REPORTE DE CAJA" };

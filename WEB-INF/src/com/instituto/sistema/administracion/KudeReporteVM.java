@@ -16,6 +16,7 @@ import com.doxacore.util.PasarNumerosLetras;
 import com.doxacore.report.TemplateReportViewModel;
 import com.instituto.fe.util.GenerarQR;
 import com.instituto.modelo.Cobranza;
+import com.instituto.modelo.Empresa;
 import com.instituto.modelo.SifenDocumento;
 import com.instituto.util.ParamsLocal;
 
@@ -28,6 +29,14 @@ import net.sf.jasperreports.engine.util.JRLoader;
 
 
 public class KudeReporteVM extends TemplateReportViewModel {
+	
+	/*
+	 * 
+	 * 
+	 * si acatualizas esta clase anada actualiza reporte/ReporteKudePDF.java
+	 * 
+	 * 
+	 */
 	
 	@Init(superclass = true)
 	public void initFacturaVM() {
@@ -52,8 +61,19 @@ public class KudeReporteVM extends TemplateReportViewModel {
 	protected Map<String, Object> cargarParametros() {
 		
 		Cobranza cobranza = this.reg.getObjectById(Cobranza.class.getName(), this.id);
+		
+		Empresa empresa = this.reg.getObjectById(Empresa.class.getName(), 1);
 
 		Map<String, Object> parameters = new HashMap<>();
+		
+
+		parameters.put("RucEmpresa", empresa.getRuc());
+		parameters.put("RazonSocialEmpresa", empresa.getRazonSocial());
+		parameters.put("NombreFantaciaEmpresa", empresa.getNombreFantasia());
+		parameters.put("DireccionEmpresa", empresa.getDireccion());
+		parameters.put("TelefonoEmpresa", empresa.getTelefono());
+		parameters.put("CiudadPais", empresa.getExtra1());
+		
 		
 		parameters.put("Fecha", cobranza.getFecha());
 		parameters.put("RazonSocial", cobranza.getRazonSocial());

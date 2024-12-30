@@ -305,6 +305,12 @@
 														onClick="@command('modalCursoVigenteConcepto', cursovigenteconcepto=each)"
 														tooltiptext="Editar"
 														disabled="@load(!vm.opEditarCursoVigenteConcepto)" />
+														
+													<button
+														iconSclass="z-icon-edit" style="background-color:orange"
+														onClick="@command('cursoVigenteConceptoIncremento', cursovigenteconcepto=each)"
+														tooltiptext="Editar"
+														disabled="@load(!vm.opEditarCursoVigenteConcepto)" />
 
 													<button
 														iconSclass="z-icon-trash-o" style="background-color:red"

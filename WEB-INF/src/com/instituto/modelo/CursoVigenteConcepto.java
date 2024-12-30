@@ -86,6 +86,5 @@ public class CursoVigenteConcepto extends Modelo implements Serializable {
 		this.importe = importe;
 	}
 	
-	
 
 }

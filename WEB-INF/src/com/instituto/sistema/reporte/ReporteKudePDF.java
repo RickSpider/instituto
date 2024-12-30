@@ -8,10 +8,17 @@ import com.doxacore.report.ReportPDF;
 import com.doxacore.util.PasarNumerosLetras;
 import com.instituto.fe.util.GenerarQR;
 import com.instituto.modelo.Cobranza;
+import com.instituto.modelo.Empresa;
 import com.instituto.modelo.SifenDocumento;
 import com.instituto.util.ParamsLocal;
 
 public class ReporteKudePDF extends ReportPDF {
+	
+	/*
+	 * 
+	 * Esta clase es para enviod de emails
+	 * 
+	 */
 	
 	
 	public ReporteKudePDF(Long id, String fileName) {
@@ -32,8 +39,16 @@ public class ReporteKudePDF extends ReportPDF {
 	protected Map<String, Object> cargarParametros() {
 		
 		Cobranza cobranza = this.reg.getObjectById(Cobranza.class.getName(), this.id);
-
+		Empresa empresa = this.reg.getObjectById(Empresa.class.getName(), 1);
+		
 		Map<String, Object> parameters = new HashMap<>();
+		
+		parameters.put("RucEmpresa", empresa.getRuc());
+		parameters.put("RazonSocialEmpresa", empresa.getRazonSocial());
+		parameters.put("NombreFantaciaEmpresa", empresa.getNombreFantasia());
+		parameters.put("DireccionEmpresa", empresa.getDireccion());
+		parameters.put("TelefonoEmpresa", empresa.getTelefono());
+		parameters.put("CiudadPais", empresa.getExtra1());
 		
 		parameters.put("Fecha", cobranza.getFecha());
 		parameters.put("RazonSocial", cobranza.getRazonSocial());

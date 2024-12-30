@@ -54,7 +54,11 @@ public class AgendamientoVM extends TemplateViewModelLocal {
 	
 	public void cargarMaterias() {
 		
-		String sql = "select cv.cursovigenteid, c.curso,m.materia, cvm.fechainicio, cvm.fechafin \r\n" + 
+		String sql = "select "
+				+ "cv.cursovigenteid, "
+				+ "c.curso,m.materia, "
+				+ "cvm.fechainicio, "
+				+ "cvm.fechafin \r\n" + 
 				"from cursosvigentesmaterias cvm\r\n" + 
 				"left join cursosvigentes cv on cv.cursovigenteid = cvm.cursovigenteid\r\n" + 
 				"left join cursos c on c.cursoid = cv.cursoid\r\n" + 
