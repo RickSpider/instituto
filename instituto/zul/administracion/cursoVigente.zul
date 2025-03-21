@@ -164,13 +164,13 @@
 								<hlayout>
 								
 									<button iconSclass="z-icon-list-alt " 
-										style="background-color:green"
+										class="doxa-button-green"
 										onClick="@command('planillaCalificaciones', cursoVigenteid=each.cursovigenteid)"
 										tooltiptext="Planilla de Calificaciones"/>
 								
 									
 									<button iconSclass="z-icon-list" 
-										style="background-color:orange"
+										class="doxa-button-orange"
 										onClick="@command('listaAlumnosExport', cursoVigenteid=each.cursovigenteid)"
 										tooltiptext="Lista de Alumnos"/>
 								
@@ -181,7 +181,7 @@
 										disabled="@load(!vm.opEditarCursoVigente)" />
 										
 									<button iconSclass="z-icon-trash-o"
-										style="background-color:red"
+										class="doxa-button-red"
 										onClick="@command('borrarCursoVigenteConfirmacion', cursoVigente=each)"
 										tooltiptext="Borrar"
 										disabled="@load(!vm.opBorrarCursoVigente)" />
@@ -307,13 +307,13 @@
 														disabled="@load(!vm.opEditarCursoVigenteConcepto)" />
 														
 													<button
-														iconSclass="z-icon-edit" style="background-color:orange"
+														iconSclass="z-icon-arrow-circle-o-up " class="doxa-button-orange"
 														onClick="@command('cursoVigenteConceptoIncremento', cursovigenteconcepto=each)"
-														tooltiptext="Editar"
+														tooltiptext="Incrementar"
 														disabled="@load(!vm.opEditarCursoVigenteConcepto)" />
 
 													<button
-														iconSclass="z-icon-trash-o" style="background-color:red"
+														iconSclass="z-icon-trash-o" class="doxa-button-red"
 														onClick="@command('borrarConceptoConfirmacion', cursoVigenteConcepto=each)"
 														tooltiptext="Borrar"
 														disabled="@load(!vm.opQuitarCursoVigenteConcepto)" />
@@ -422,7 +422,7 @@
 														disabled="@load(!vm.opEditarCursoVigenteConvenio)" />
 
 													<button
-														iconSclass="z-icon-trash-o" style="background-color:red"
+														iconSclass="z-icon-trash-o" class="doxa-button-red"
 														onClick="@command('borrarConvenioConfirmacion', cursoVigenteConvenio=each)"
 														tooltiptext="Borrar"
 														disabled="@load(!vm.opQuitarCursoVigenteConvenio)" />
@@ -577,9 +577,16 @@
 														onClick="@command('modalCursoVigenteMateria', cursovigentemateria=each)"
 														tooltiptext="Editar"
 														disabled="@load(!vm.opEditarCursoVigenteMateria)" />
+														
+													<button
+														iconSclass=" z-icon-th-list " 
+														onClick="@command('generarPlanillaMateriaModal', cursovigentemateria=each)"
+														tooltiptext="GenerarPlanilla"
+														disabled="@load(!vm.opEditarCursoVigenteMateria)" 
+														class="doxa-button-green"/>
 
 													<button
-														iconSclass="z-icon-trash-o" style="background-color:red"
+														iconSclass="z-icon-trash-o" class="doxa-button-red"
 														onClick="@command('borrarMateriaConfirmacion', cursoVigenteMateria=each)"
 														tooltiptext="Borrar"
 														disabled="@load(!vm.opQuitarCursoVigenteMateria)" />
@@ -709,14 +716,14 @@
 												<hlayout>
 												
 												<button
-														iconSclass="z-icon-unlink " style="background-color:red"
+														iconSclass="z-icon-unlink " class="doxa-button-red"
 														onClick="@command('anularInscripcionAlumnoConfirmacion', cursoVigenteAlumno=each)"
 														tooltiptext="Anular Inscripcion"
 														disabled="@load(!vm.opAnularCursoVigenteAlumno)" />
 												
 												
 												<button
-														iconSclass= "z-icon-trash-o" style="background-color:red"
+														iconSclass= "z-icon-trash-o" class="doxa-button-red"
 														onClick="@command('borrarAlumnoConfirmacion', cursoVigenteAlumno=each)"
 														tooltiptext="Borrar"
 														disabled="@load(!vm.opQuitarCursoVigenteAlumno)" />

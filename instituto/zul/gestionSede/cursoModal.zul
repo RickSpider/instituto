@@ -1,4 +1,7 @@
 <?page title="cursoModal" contentType="text/html;charset=UTF-8"?>
+
+<?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
+
 <zk>
 	<window title="Curso Crear/Ver/Editar" border="normal"
 		position="center,center" closable="true" mode="modal"
@@ -6,54 +9,111 @@
 
 		<vlayout>
 
-			<hlayout>
-				<hbox width="130px">
+
+			<tablelayout columns="2" width="100%">
+				<tablechildren>
 					<label value="Curso: " style="font-weight:bold" />
-				</hbox>
-				<textbox value="@load(vm.cursoSelected.curso) @save(vm.cursoSelected.curso, before='guardar')"
-					readonly="@load(vm.editar)" width="150px" 
-					constraint="no empty: Es campo obligatorio."/>
-			</hlayout>
+				</tablechildren>
+				<tablechildren>
+					<textbox
+						value="@load(vm.cursoSelected.curso) @save(vm.cursoSelected.curso, before='guardar')"
+						width="150px" constraint="no empty: Es campo obligatorio." />
+				</tablechildren>
 
-			<hlayout>
-
-				<hbox width="130px">
+				<tablechildren>
 					<label value="Descripción: "
 						style="font-weight:bold" />
-				</hbox>
-				<textbox value="@load(vm.cursoSelected.descripcion) @save(vm.cursoSelected.descripcion, before='guardar')"
-					constraint="no empty: Es campo obligatorio."
-					width="150px" />
+				</tablechildren>
+				<tablechildren>
+					<textbox
+						value="@load(vm.cursoSelected.descripcion) @save(vm.cursoSelected.descripcion, before='guardar')"
+						width="150px" constraint="no empty: Es campo obligatorio." />
+				</tablechildren>
 
-			</hlayout>
-			
-			<hlayout>
-				<hbox width="130px">
+				<tablechildren>
 					<label value="Duración (meses): "
 						style="font-weight:bold" />
-				</hbox>
-				<intbox
-					value="@load(vm.cursoSelected.duracion) @save(vm.cursoSelected.duracion, before='guardar')"
-					constraint="no empty: Es campo obligatorio." width="150px" />
+				</tablechildren>
+				<tablechildren>
+					<intbox
+						value="@load(vm.cursoSelected.duracion) @save(vm.cursoSelected.duracion, before='guardar')"
+						width="150px" constraint="no empty: Es campo obligatorio." />
+				</tablechildren>
 
-			</hlayout>
-			
-			<hlayout>
-				<hbox width="130px">
+				<tablechildren>
 					<label value="Periodo Educativo: "
 						style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<intbox
+						value="@load(vm.cursoSelected.periodoEducativo) @save(vm.cursoSelected.periodoEducativo, before='guardar')"
+						width="150px" constraint="no empty: Es campo obligatorio." />
+				</tablechildren>
+				
+				<tablechildren>
+
+						<label value="Escala:" style="font-weight:bold"/>
+
+					</tablechildren>
+					<tablechildren>
+
+						<finder
+							finderValue="@load(vm.cursoSelected.escala.nombre)"
+							finderModel="@init(vm.escalaFinder)" />
+
+					</tablechildren>
+				
+			</tablelayout>
+
+
+			<!-- <hlayout>
+				<hbox width="130px">
+				<label value="Curso: " style="font-weight:bold" />
+				</hbox>
+				<textbox value="@load(vm.cursoSelected.curso) @save(vm.cursoSelected.curso, before='guardar')"
+				width="150px" 
+				constraint="no empty: Es campo obligatorio."/>
+				</hlayout>
+				
+				<hlayout>
+				
+				<hbox width="130px">
+				<label value="Descripción: "
+				style="font-weight:bold" />
+				</hbox>
+				<textbox value="@load(vm.cursoSelected.descripcion) @save(vm.cursoSelected.descripcion, before='guardar')"
+				constraint="no empty: Es campo obligatorio."
+				width="150px" />
+				
+				</hlayout>
+				
+				<hlayout>
+				<hbox width="130px">
+				<label value="Duración (meses): "
+				style="font-weight:bold" />
 				</hbox>
 				<intbox
-					value="@load(vm.cursoSelected.periodoEducativo) @save(vm.cursoSelected.periodoEducativo, before='guardar')"
-					constraint="no empty: Es campo obligatorio." width="150px" />
-
-			</hlayout>
+				value="@load(vm.cursoSelected.duracion) @save(vm.cursoSelected.duracion, before='guardar')"
+				constraint="no empty: Es campo obligatorio." width="150px" />
+				
+				</hlayout>
+				
+				<hlayout>
+				<hbox width="130px">
+				<label value="Periodo Educativo: "
+				style="font-weight:bold" />
+				</hbox>
+				<intbox
+				value="@load(vm.cursoSelected.periodoEducativo) @save(vm.cursoSelected.periodoEducativo, before='guardar')"
+				constraint="no empty: Es campo obligatorio." width="150px" />
+				
+				</hlayout> -->
 
 			<space height="10px" />
 
 			<hlayout>
 
-				<button label="Aceptar" onClick="@command('guardar')"/>
+				<button label="Aceptar" onClick="@command('guardar')" />
 
 			</hlayout>
 

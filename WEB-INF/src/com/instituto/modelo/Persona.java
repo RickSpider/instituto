@@ -129,6 +129,12 @@ public class Persona extends Modelo implements Serializable {
 			
 		return this.apellido.trim()+", "+this.nombre.trim();
 	}
+	
+	public String getFullNombre() {
+		
+		return this.nombre+" "+this.apellido;
+		
+	}
 
 	public String getEmail() {
 		return email;
@@ -254,11 +260,6 @@ public class Persona extends Modelo implements Serializable {
 		this.razonSocial = razonSocial;
 	}
 	
-	public String getFullNombre() {
-		
-		return this.nombre+" "+this.apellido;
-		
-	}
 	
 
 }

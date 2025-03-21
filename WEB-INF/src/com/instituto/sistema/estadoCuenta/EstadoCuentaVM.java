@@ -2,6 +2,7 @@ package com.instituto.sistema.estadoCuenta;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
@@ -23,9 +24,7 @@ import com.instituto.modelo.Cobranza;
 import com.instituto.modelo.CobranzaDetalle;
 import com.instituto.modelo.Concepto;
 import com.instituto.modelo.CursoVigente;
-import com.instituto.modelo.CursoVigenteMateria;
 import com.instituto.modelo.EstadoCuenta;
-import com.instituto.modelo.Persona;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
 
@@ -102,11 +101,18 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 
 		}
 		
-		if (this.cursoFinder != null && finder.compareTo(this.cursoFinder.getNameFinder()) == 0) {
+		
+		
+		
+		if (!Objects.isNull(this.cursoFinder) && finder.compareTo(this.cursoFinder.getNameFinder()) == 0) {
 
 			this.cursoFinder.generarListFinder();
 			BindUtils.postNotifyChange(null, null, this.cursoFinder, "listFinder");
 			return;
+		}else if (Objects.isNull(this.cursoFinder)) {
+			
+			this.mensajeError("Debes Agregar Un alumno.");
+			
 		}		
 		
 		
@@ -159,6 +165,8 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 		
 
 		if (this.cursoFinder != null && finder.compareTo(this.cursoFinder.getNameFinder()) == 0) {
+			
+			
 			
 			this.cursoVigenteSelected = this.reg.getObjectById(CursoVigente.class.getName(), id);
 			this.lCobranzasDetalles = null;
@@ -444,6 +452,19 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 	}
 
 	//Fin agregar estado cuenta
+	
+	public boolean isDisabledCursoFinder() {
+		
+		if (Objects.isNull(this.cursoFinder)) {
+			
+			return true;
+			
+		}
+		
+		return false;
+		
+		
+	}
 	
 	public Alumno getAlumnoSelected() {
 		return alumnoSelected;

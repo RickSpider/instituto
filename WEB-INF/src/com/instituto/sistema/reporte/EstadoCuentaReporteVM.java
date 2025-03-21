@@ -233,11 +233,11 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 		List<Object[]> datos2 = this.reg.sqlNativo(sql2);
 		
 		
-		System.out.println("==========================================");
+		/*System.out.println("==========================================");
 		System.out.println(sql1);
 		System.out.println("==========================================");
 		System.out.println(sql2);
-		System.out.println("==========================================");
+		System.out.println("==========================================");*/
 		
 		
 		List<Object[]> datos3 = new ArrayList<>();

@@ -1,8 +1,12 @@
 package com.instituto.sistema.administracion;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Init;
@@ -10,6 +14,7 @@ import org.zkoss.bind.annotation.Init;
 import com.doxacore.util.PasarNumerosLetras;
 import com.doxacore.report.TemplateReportViewModel;
 import com.instituto.modelo.Cobranza;
+import com.instituto.modelo.Empresa;
 import com.instituto.util.ParamsLocal;
 
 
@@ -38,8 +43,16 @@ public class FacturaVM extends TemplateReportViewModel {
 	protected Map<String, Object> cargarParametros() {
 		
 		Cobranza cobranza = this.reg.getObjectById(Cobranza.class.getName(), this.id);
+		Empresa empresa = this.reg.getObjectById(Empresa.class.getName(), 1);
 
 		Map<String, Object> parameters = new HashMap<>();
+		
+		try {
+			parameters.put("Logo", ImageIO.read(new ByteArrayInputStream(empresa.getLogo())));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		parameters.put("Fecha", cobranza.getFecha());
 		parameters.put("RazonSocial", cobranza.getRazonSocial());

@@ -1,6 +1,7 @@
 package com.instituto.sistema.abm;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
@@ -17,10 +18,14 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
 import com.doxacore.components.finder.FinderModel;
+import com.doxacore.modelo.Rol;
 import com.doxacore.modelo.Tipo;
+import com.doxacore.modelo.Usuario;
+import com.doxacore.modelo.UsuarioRol;
+import com.doxacore.util.UtilStaticMetodos;
 import com.instituto.modelo.Proveedor;
+import com.instituto.modelo.UsuarioSede;
 import com.instituto.modelo.Persona;
-import com.instituto.modelo.Rubro;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
 
@@ -125,7 +130,18 @@ public class ProveedorVM extends TemplateViewModelLocal {
 			
 			this.editar = true;
 		
-
+			if (this.proveedorSelected.getProveedorTipo().getSigla().compareTo(ParamsLocal.SIGLA_PROVEEDOR_DOCENTE) == 0
+					&& Objects.isNull(this.proveedorSelected.getUsuario())) {
+				
+				Usuario u = new Usuario();
+				u.setAccount(this.proveedorSelected.getPersona().getDocumentoNum());
+				u.setFullName(this.proveedorSelected.getPersona().getNombreCompleto());
+				u.setActivo(true);
+				u.setPassword(UtilStaticMetodos.getSHA256(u.getAccount()));
+				
+				this.proveedorSelected.setUsuario(u);
+				
+			}
 			
 
 		} else {
@@ -151,6 +167,40 @@ public class ProveedorVM extends TemplateViewModelLocal {
 	@Command
 	@NotifyChange("lProveedores")
 	public void guardar() {
+		
+		if (this.proveedorSelected.getProveedorTipo().getSigla().compareTo(ParamsLocal.SIGLA_PROVEEDOR_DOCENTE) == 0
+				&& Objects.isNull(this.proveedorSelected.getUsuario().getUsuarioid())) {
+			
+			Usuario u = this.save(this.proveedorSelected.getUsuario());
+			
+			Rol rol = this.reg.getObjectByCondicion(Rol.class.getName(), "rol = 'Docente'");
+			
+			UsuarioRol ur = new UsuarioRol();
+			ur.setRol(rol);
+			ur.setUsuario(u);
+			
+			this.save(ur);
+			
+			UsuarioSede us = new UsuarioSede();
+			
+			us.setUsuario(u);
+			us.setSede(this.getCurrentSede());
+			us.setActivo(true);
+			
+			this.save(us);
+			
+			this.proveedorSelected.setUsuario(u);
+
+			
+		}else if (this.proveedorSelected.getProveedorTipo().getSigla().compareTo(ParamsLocal.SIGLA_PROVEEDOR_DOCENTE) == 0
+				&&
+				!Objects.isNull(this.proveedorSelected.getUsuario())) {
+			
+			this.save(this.proveedorSelected.getUsuario());
+			
+		}
+		
+		
 
 		this.proveedorSelected.setSede(this.getCurrentSede());
 
@@ -265,7 +315,8 @@ public class ProveedorVM extends TemplateViewModelLocal {
 
 			this.proveedorTipoFinder.setListFinder(this.filtrarListaObject(filter, this.proveedorTipoFinder.getListFinderOri()));
 			BindUtils.postNotifyChange(null, null, this.proveedorTipoFinder, "listFinder");
-
+			
+			
 			return;
 
 		}
@@ -289,10 +340,39 @@ public class ProveedorVM extends TemplateViewModelLocal {
 
 			this.proveedorSelected.setProveedorTipo(this.reg.getObjectById(Tipo.class.getName(), id));
 			// BindUtils.postNotifyChange(null, null, this, "rubroFinder");
+			
+			if (this.proveedorSelected.getProveedorTipo().getSigla().compareTo(ParamsLocal.SIGLA_PROVEEDOR_DOCENTE) == 0 ) {
+				
+				Usuario u = new Usuario();
+				u.setAccount(this.proveedorSelected.getPersona().getDocumentoNum());
+				u.setFullName(this.proveedorSelected.getPersona().getNombreCompleto());
+				u.setActivo(true);
+				u.setPassword(UtilStaticMetodos.getSHA256(u.getAccount()));
+				
+				this.proveedorSelected.setUsuario(u);
+				
+			}else {
+				
+				this.proveedorSelected.setUsuario(null);
+				
+			}
+
 
 			return;
 		}
 
+	}
+	
+	public boolean getVisibleUsuario() {
+		
+		if(this.proveedorSelected.getProveedorTipo().getSigla().compareTo(ParamsLocal.SIGLA_PROVEEDOR_DOCENTE) ==0) {
+			
+			return true;
+			
+		}
+		
+		return false;
+		
 	}
 
 

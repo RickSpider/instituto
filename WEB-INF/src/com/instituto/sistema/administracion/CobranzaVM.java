@@ -588,7 +588,9 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		if (this.cobranzaDetalleCobroSelected.getFormaPago().getSigla()
 				.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_TRANSFERENCIA) == 0
 				|| this.cobranzaDetalleCobroSelected.getFormaPago().getSigla()
-						.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_BOCA_COBRANZA) == 0) {
+						.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_BOCA_COBRANZA) == 0
+				||this.cobranzaDetalleCobroSelected.getFormaPago().getSigla()
+					.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_DIFERIDO) == 0) {
 
 			if (this.cobranzaDetalleCobroSelected.getEntidad() == null) {
 
@@ -804,7 +806,9 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		if (this.cobranzaDetalleCobroSelected.getFormaPago().getSigla()
 				.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_TRANSFERENCIA) == 0
 				|| this.cobranzaDetalleCobroSelected.getFormaPago().getSigla()
-						.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_BOCA_COBRANZA) == 0) {
+						.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_BOCA_COBRANZA) == 0
+				|| this.cobranzaDetalleCobroSelected.getFormaPago().getSigla()
+						.compareTo(ParamsLocal.SIGLA_FORMA_PAGO_DIFERIDO) == 0) {
 
 			camposCobroModal[0] = false;
 			camposCobroModal[1] = false;

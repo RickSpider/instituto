@@ -9,40 +9,74 @@
 
 		<vlayout>
 
-			<tablelayout columns="2">
-			
-				<tablechildren>
-						<label value="ID:" />				
-				</tablechildren>
-				<tablechildren>
-					<textbox value="@load(vm.proveedorSelected.proveedorid)"
-						width="75px" readonly="true" />
-				</tablechildren>
+			<hlayout>
+
+				<tablelayout columns="2">
+	
+					<tablechildren>
+						<label value="ID:" style="font-weight:bold"/>
+					</tablechildren>
+					<tablechildren>
+						<textbox
+							value="@load(vm.proveedorSelected.proveedorid)" width="75px"
+							readonly="true" />
+					</tablechildren>
+	
+					<tablechildren>
+						<label value="Persona:" style="font-weight:bold"/>
+					</tablechildren>
+					<tablechildren>
+						<finder
+							finderValue="@load(vm.proveedorSelected.persona.fullNombre)"
+							finderModel="@init(vm.personaFinder)" disabled="@load(vm.editar)" />
+					</tablechildren>
+	
+					<tablechildren>
+						<label value="Tipo Proveedor:" style="font-weight:bold"/>
+					</tablechildren>
+					<tablechildren>
+						<finder
+							finderValue="@load(vm.proveedorSelected.proveedorTipo.tipo)"
+							finderModel="@init(vm.proveedorTipoFinder)" />
+					</tablechildren>
+	
+					<tablechildren>
+						<label value="Activo:" style="font-weight:bold"/>
+					</tablechildren>
+					<tablechildren>
+						<checkbox
+							checked="@bind(vm.proveedorSelected.activo)" />
+					</tablechildren>
+	
+	
+				</tablelayout>
 				
-				<tablechildren>
-						<label value="Persona:" />				
-				</tablechildren>
-				<tablechildren>
-					<finder finderValue="@load(vm.proveedorSelected.persona.fullNombre)" finderModel="@init(vm.personaFinder)" disabled="@load(vm.editar)"/> 
-				</tablechildren>
 				
-				<tablechildren>
-						<label value="Tipo Proveedor:" />				
-				</tablechildren>
-				<tablechildren>
-					<finder finderValue="@load(vm.proveedorSelected.proveedorTipo.tipo)" finderModel="@init(vm.proveedorTipoFinder)" /> 
-				</tablechildren>
+				<space width="10px"/>
 				
-				<tablechildren>
-						<label value="Activo:" />				
-				</tablechildren>
-				<tablechildren>
-					<checkbox checked="@bind(vm.proveedorSelected.activo)" />
-				</tablechildren>
-			
-			
-			</tablelayout>
+				<tablelayout columns="2" visible="@load(vm.visibleUsuario)">
 					
+					<tablechildren>
+						<label value="Usuario:" style="font-weight:bold"/>
+					</tablechildren>
+					<tablechildren>
+						<textbox value="@load(vm.proveedorSelected.usuario.account)" />
+					</tablechildren>
+					
+					<tablechildren>
+						<label value="Password" style="font-weight:bold"/>
+					</tablechildren>
+					<tablechildren>
+						<textbox value="@load(vm.proveedorSelected.usuario.password)" type="password"/>
+					</tablechildren>
+					
+					
+					
+	
+				</tablelayout>
+			
+			</hlayout>
+
 
 			<hlayout>
 

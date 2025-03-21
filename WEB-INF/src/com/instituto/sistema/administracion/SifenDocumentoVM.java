@@ -8,7 +8,12 @@ import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.select.Selectors;
+import org.zkoss.zk.ui.util.Notification;
+import org.zkoss.zul.Window;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.instituto.fe.model.ConsultaCDC;
 import com.instituto.fe.util.MetodosCE;
 import com.instituto.modelo.SifenDocumento;
@@ -16,6 +21,8 @@ import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
 
 public class SifenDocumentoVM extends TemplateViewModelLocal{
+	
+	private SifenDocumento sifenDocumentoSelected;
 	
 	private List<Object[]> lSifenDocumentos;
 	private List<Object[]> lSifenDocumentosOri;
@@ -104,9 +111,17 @@ public class SifenDocumentoVM extends TemplateViewModelLocal{
 		
 		SifenDocumento sd = this.reg.getObjectById(SifenDocumento.class.getName(), sifenDocumentoid);
 		
+		if (sd.isCancelado()) {
+			
+			this.mensajeInfo("El documento ya fue cancelado.");
+			
+			return;
+			
+		}
+		
 		if (sd.isEnviado()) {
 			
-			this.mensajeInfo("El documento ya fue enviado");
+			this.mensajeInfo("El documento ya fue enviado.");
 			
 			return;
 			
@@ -169,12 +184,50 @@ public class SifenDocumentoVM extends TemplateViewModelLocal{
 
 		SifenDocumento sd = this.reg.getObjectById(SifenDocumento.class.getName(), sifenDocumentoid);
 		
+	
 		Executions.getCurrent().sendRedirect(
 				"/instituto/zul/administracion/kudeReporte.zul?id=" + sd.getCobranza().getCobranzaid(),
 				"_blank");
 
 	}
+	
+	private Window modal;
+	
+	@Command
+	public void modalSifenDocumento(@BindingParam("sifendocumentoid") long sifendocumentoid) {
+		
+		this.sifenDocumentoSelected = this.reg.getObjectById(SifenDocumento.class.getName(), sifendocumentoid);
+		
+		/*Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        Object jsonObject = gson.fromJson(this.sifenDocumentoSelected.getJson(), Object.class);
+        
+        this.sifenDocumentoSelected.setJson(gson.toJson(jsonObject));*/
+		
 
+		modal = (Window) Executions.createComponents("/instituto/zul/administracion/sifenDocuemntoModal.zul",
+				this.mainComponent, null);
+		Selectors.wireComponents(modal, this, false);
+		modal.doModal();
+
+	}
+	
+	@Command
+	@NotifyChange("lSifenDocumentos")
+	public void guardar() {
+
+		this.save(this.sifenDocumentoSelected);
+		
+		this.sifenDocumentoSelected = null;
+	
+		this.modal.detach();
+		
+		this.cargarSifenDocumentos();
+		
+		Notification.show("El Documento electronico fue actualizado, reenvielo.");
+		
+	}
+	
+	
 	public List<Object[]> getlSifenDocumentos() {
 		return lSifenDocumentos;
 	}
@@ -215,5 +268,14 @@ public class SifenDocumentoVM extends TemplateViewModelLocal{
 		this.filtroColumns = filtroColumns;
 	}
 
+	public SifenDocumento getSifenDocumentoSelected() {
+		return sifenDocumentoSelected;
+	}
+
+	public void setSifenDocumentoSelected(SifenDocumento sifenDocumentoSelected) {
+		this.sifenDocumentoSelected = sifenDocumentoSelected;
+	}
+
+	
 
 }

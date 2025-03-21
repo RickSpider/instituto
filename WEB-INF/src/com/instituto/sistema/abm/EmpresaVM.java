@@ -2,7 +2,6 @@ package com.instituto.sistema.abm;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,16 +10,14 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Date;
 
-import org.zkoss.bind.BindUtils;
+
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
 import org.zkoss.image.AImage;
-import org.zkoss.util.media.AMedia;
 import org.zkoss.util.media.Media;
 import org.zkoss.zk.ui.util.Notification;
 
@@ -60,12 +57,20 @@ public class EmpresaVM extends TemplateViewModelLocal {
 			return;
 		}
 
-		try {
-			this.logoFile = new AImage(this.empresaSelected.getPathLogo());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+		if (this.empresaSelected.getLogo() != null) {
+			
+			try {
+				this.logoFile = new AImage("logo.png",this.empresaSelected.getLogo());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
+		
+		
+		
 
 	}
 
@@ -74,16 +79,29 @@ public class EmpresaVM extends TemplateViewModelLocal {
 	@Command
 	@NotifyChange("*")
 	public void uploadFile(@BindingParam("file") Media file) {
+		
+		 if (file == null) {
+		        this.mensajeInfo("No se ha seleccionado ningún archivo.");
+		        return;
+		    }
 
-		if (file.getName().contains(".png")) {
+		 String fileName = file.getName().toLowerCase();
+		    if (!fileName.endsWith(".png")) {
+		        this.mensajeInfo("Archivo no válido, debe ser .png.");
+		        return;
+		    }
+		    
+		 // Validar tamaño (Ejemplo: máximo 5MB)
+		  /*  int maxSize = 5 * 1024 * 1024; // 5MB
+		    if (file.getByteData().length > maxSize) {
+		        this.mensajeInfo("El archivo es demasiado grande. Máximo permitido: 5MB.");
+		        return;
+		    }*/
+		    
+		    this.empresaSelected.setLogo(file.getByteData());
+		    this.logoFile = file;
 
-			this.empresaSelected.setPathLogo(SystemInfo.SISTEMA_PATH_ABSOLUTO + "/logo/" + file.getName());
-			this.logoFile = file;
-		} else {
-
-			this.mensajeInfo("Archivo no valido, debe ser .png.");
-
-		}
+		    this.mensajeInfo("Archivo subido correctamente.");
 
 	}
 
@@ -93,7 +111,7 @@ public class EmpresaVM extends TemplateViewModelLocal {
 
 		this.empresaSelected = this.save(this.empresaSelected);
 
-		this.guardarLogo();
+		//this.guardarLogo();
 
 		Notification.show("Datos Actualizados.");
 

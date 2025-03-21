@@ -44,6 +44,7 @@ public class ParamsLocal extends Params {
 	public static final String SIGLA_FORMA_PAGO_GIRO = "FORMA_PAGO_GIRO";
 	public static final String SIGLA_FORMA_PAGO_QR = "FORMA_PAGO_QR";
 	public static final String SIGLA_FORMA_PAGO_CHEQUE = "FORMA_PAGO_CHEQUE";
+	public static final String SIGLA_FORMA_PAGO_DIFERIDO = "FORMA_PAGO_DIFERIDO";
 
 	public static final String SIGLA_FORMA_PAGO_DEPOSITO_BANCARIO = "FORMA_PAGO_DEPOSITO_BANCARIO";
 	public static final String SIGLA_FORMA_PAGO_DEPOSITO_ATM = "FORMA_PAGO_DEPOSITO_ATM";
@@ -66,6 +67,11 @@ public class ParamsLocal extends Params {
 	public static final String SIGLA_PROVEEDOR = "PROVEEDOR";
 	public static final String SIGLA_PROVEEDOR_PROVEEDOR = "PROVEEDOR_PROVEEDOR";
 	public static final String SIGLA_PROVEEDOR_DOCENTE = "PROVEEDOR_DOCENTE";
+	
+	public static final String SIGLA_EVALUACION = "EVALUACION";
+	public static final String SIGLA_EVALUACION_ORDINARIO = "EVALUACION_ORDINARIO";
+	public static final String SIGLA_EVALUACION_COMPLEMENTARIO = "EVALUACION_COMPLEMENTARIO";
+	public static final String SIGLA_EVALUACION_REGULARIZACION = "EVALUACION_REGULARIZACION";
 	
 
 	// Sede
@@ -257,5 +263,17 @@ public class ParamsLocal extends Params {
 	public static final String OP_CREAR_PAGO = "CrearPago";
 	public static final String OP_EDITAR_PAGO = "EditarPago";
 	public static final String OP_BORRAR_PAGO = "BorrarPago";
+	
+	// Escala
+	
+	public static final String OP_CREAR_ESCALA = "CrearEscala";
+	public static final String OP_EDITAR_ESCALA = "EditarEscala";
+	public static final String OP_BORRAR_ESCALA = "BorrarEscala";
+	
+	// Evaluacion
+	
+	public static final String OP_CREAR_EVALUACION = "CrearEvaluacion";
+	public static final String OP_EDITAR_EVALUACION = "EditarEvaluacion";
+	public static final String OP_BORRAR_EVALUACION = "BorrarEvaluacion";
 
 }

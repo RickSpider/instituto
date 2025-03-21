@@ -1,0 +1,115 @@
+<?page title="escalaModal" contentType="text/html;charset=UTF-8"?>
+
+<zk>
+	<window title="Escala Crear/Ver/Editar" border="normal"
+		position="center,center" closable="true" mode="modal"
+		action="show: slideDown;hide: slideUp">
+
+		<vlayout >
+
+			<vlayout>
+
+				<tablelayout columns="2" hflex="1">
+
+					<tablechildren>
+
+						<label value="ID:" style="font-weight:bold"/>
+
+					</tablechildren>
+					<tablechildren>
+
+						<textbox value="@load(vm.escalaSelected.escalaid)"
+							width="75px" readonly="true" />
+
+					</tablechildren>
+
+					<tablechildren>
+
+						<label value="Nombre:" style="font-weight:bold"/>
+
+					</tablechildren>
+					<tablechildren>
+
+						<textbox value="@bind(vm.escalaSelected.nombre)"
+							width="100px" />
+
+					</tablechildren>
+					
+					<tablechildren>
+
+						<label value="Limite Superirio:" style="font-weight:bold"/>
+
+					</tablechildren>
+					<tablechildren>
+
+						<doublebox value="@bind(vm.escalaSelected.limiteSuperior)"
+							width="100px" />
+
+					</tablechildren>
+
+				
+
+
+				</tablelayout>
+				
+				
+				<listbox emptyMessage="lista vacía..." mold="paging"
+					autopaging="true" height="250px" width="400px"
+					model="@load(vm.escalaSelected.detalles)" checkmark="true">
+				
+				
+					<auxhead>
+					
+						<auxheader colspan="5" align="center"> <button label="Agregar" onClick="@command('agregarDetalle')"/> </auxheader>
+					
+					</auxhead>
+					
+					<listhead>
+						
+						<listheader hflex="min"/>
+						<listheader label="Inferior"  />
+						<listheader label="Superior" />
+						<listheader label="Nota"  />	
+						<listheader hflex="min"/>
+					
+					</listhead>
+					
+					
+					
+					<template name="model">
+						<listitem>
+							<listcell />
+							<listcell > <doublebox value="@bind(each.limiteInferior)" /> </listcell>
+							<listcell > <doublebox value="@bind(each.limiteSuperior)" /> </listcell>
+							<listcell > <doublebox value="@bind(each.nota)" /> </listcell>
+							<listcell >
+							
+								<button iconSclass="z-icon-trash-o"
+										style="background-color:red"
+										onClick="@command('borrarDetalle', detalle=each)"
+										tooltiptext="Borrar" />
+							
+							</listcell>
+							
+						
+						</listitem>
+					</template>
+					
+				</listbox>
+
+
+			</vlayout>
+
+
+
+			<hlayout>
+
+				<button label="Aceptar" onClick="@command('guardar')" />
+
+			</hlayout>
+
+		</vlayout>
+
+
+	</window>
+</zk>

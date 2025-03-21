@@ -4,21 +4,17 @@ import java.util.List;
 
 import org.zkoss.zul.Textbox;
 import org.zkoss.bind.BindUtils;
-import org.zkoss.bind.ValidationContext;
-import org.zkoss.bind.Validator;
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.BindingParam;
 import org.zkoss.bind.annotation.Command;
 import org.zkoss.bind.annotation.Init;
 import org.zkoss.bind.annotation.NotifyChange;
-import org.zkoss.bind.validator.AbstractValidator;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.util.Notification;
 import org.zkoss.zul.Messagebox;
-import org.zkoss.zul.South;
 import org.zkoss.zul.Window;
 
 import com.doxacore.TemplateViewModel;
@@ -36,8 +32,8 @@ import com.instituto.util.ParamsLocal;
 
 public class PersonaVM extends TemplateViewModel {
 
-	private List<Persona> lPersonas;
-	private List<Persona> lPersonasOri;
+	private List<Object[]> lPersonas;
+	private List<Object[]> lPersonasOri;
 	private Persona personaSelected;
 
 	private boolean opCrearPersona;
@@ -72,7 +68,9 @@ public class PersonaVM extends TemplateViewModel {
 
 	private void cargarPersonas() {
 
-		this.lPersonas = this.reg.getAllObjectsByCondicionOrder(Persona.class.getName(), null, "Personaid asc");
+		String sqlPersonas = this.um.getSql("persona/listaPersona.sql");
+		
+		this.lPersonas = this.reg.sqlNativo(sqlPersonas);
 		this.lPersonasOri = this.lPersonas;
 	}
 
@@ -82,8 +80,7 @@ public class PersonaVM extends TemplateViewModel {
 
 	private void inicializarFiltros() {
 
-		this.filtroColumns = new String[7]; // se debe de iniciar el filtro deacuerdo a la cantidad declarada en el
-											// modelo sin id
+		this.filtroColumns = new String[7];
 
 		for (int i = 0; i < this.filtroColumns.length; i++) {
 
@@ -97,7 +94,9 @@ public class PersonaVM extends TemplateViewModel {
 	@NotifyChange("lPersonas")
 	public void filtrarPersona() {
 
-		this.lPersonas = this.filtrarLT(this.filtroColumns, this.lPersonasOri);
+		//this.lPersonas = this.filtrarLT(this.filtroColumns, this.lPersonasOri);
+		
+		this.lPersonas = this.filtrarListaObject(this.filtroColumns, this.lPersonasOri);
 
 	}
 
@@ -260,11 +259,13 @@ public class PersonaVM extends TemplateViewModel {
 	// fin modal
 
 	@Command
-	public void borrarPersonaConfirmacion(@BindingParam("persona") final Persona persona) {
+	public void borrarPersonaConfirmacion(@BindingParam("personaid") Long personaid) {
 
 		if (!this.opBorrarPersona)
 			return;
 
+		
+		
 		EventListener event = new EventListener() {
 
 			@Override
@@ -272,7 +273,7 @@ public class PersonaVM extends TemplateViewModel {
 
 				if (evt.getName().equals(Messagebox.ON_YES)) {
 
-					borrarPersona(persona);
+					borrarPersona(personaid);
 
 				}
 
@@ -283,7 +284,10 @@ public class PersonaVM extends TemplateViewModel {
 		this.mensajeEliminar("La persona sera eliminada. \n Continuar?", event);
 	}
 
-	private void borrarPersona(Persona persona) {
+	private void borrarPersona(Long personaid) {
+		
+		Persona persona = this.reg.getObjectById(Persona.class.getName(), personaid);
+		
 
 		Alumno alu = this.reg.getObjectById(Alumno.class.getName(), persona.getPersonaid());
 		
@@ -750,13 +754,7 @@ public class PersonaVM extends TemplateViewModel {
 
 	// fin buscador de Entidad
 
-	public List<Persona> getlPersonas() {
-		return lPersonas;
-	}
-
-	public void setlPersonas(List<Persona> lPersonas) {
-		this.lPersonas = lPersonas;
-	}
+	
 
 	public Persona getPersonaSelected() {
 		return personaSelected;
@@ -972,6 +970,14 @@ public class PersonaVM extends TemplateViewModel {
 
 	public void setBuscarEntidad(String buscarEntidad) {
 		this.buscarEntidad = buscarEntidad;
+	}
+
+	public List<Object[]> getlPersonas() {
+		return lPersonas;
+	}
+
+	public void setlPersonas(List<Object[]> lPersonas) {
+		this.lPersonas = lPersonas;
 	}
 
 	// fin buscador de ciudad

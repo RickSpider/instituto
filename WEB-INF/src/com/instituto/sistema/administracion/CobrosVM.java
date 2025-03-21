@@ -5,8 +5,6 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
@@ -19,16 +17,13 @@ import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
 import org.zkoss.zul.Messagebox;
 
-import com.doxacore.util.EmailService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.instituto.fe.model.Contribuyente;
 import com.instituto.fe.model.EventoCancelar;
-import com.instituto.fe.model.Timbrado;
 import com.instituto.fe.util.MetodosCE;
 import com.instituto.modelo.Cobranza;
 import com.instituto.modelo.CobranzaDetalle;
-import com.instituto.modelo.Comprobante;
 import com.instituto.modelo.EstadoCuenta;
 import com.instituto.modelo.SifenDocumento;
 import com.instituto.sistema.reporte.ReporteKudePDF;
@@ -128,12 +123,12 @@ public class CobrosVM extends TemplateViewModelLocal{
 
 		};
 		
-		this.mensajeEliminar("Anular "+cobranza.getComprobanteTipo().getTipo()+" Nº "+cobranza.getComprobanteNum()+", una vez anulado no se podra revertir el proceso. \n Continuar?", event);
+		this.mensajeEliminar("Anular "+cobranza.getComprobanteTipo().getTipo()+" Nº "+cobranza.getComprobanteNum()+", una vez anulado no se podra revertir el proceso. \n Continuar?!", event);
 	}
 	
 	private void anularCobranza(Cobranza cobranza) {
 		
-		SifenDocumento sd = null ;
+		/*SifenDocumento sd = null ;
 		
 		if (cobranza.isComprobanteElectronico()) {
 			
@@ -150,7 +145,7 @@ public class CobrosVM extends TemplateViewModelLocal{
 				
 			}
 			
-		}
+		}*/
 		
 		List<CobranzaDetalle> lDetalles = this.reg.getAllObjectsByCondicionOrder(CobranzaDetalle.class.getName(), "cobranzaid = "+cobranza.getCobranzaid(), null);
 		
@@ -198,34 +193,41 @@ public class CobrosVM extends TemplateViewModelLocal{
 		
 		if (cobranza.isComprobanteElectronico()) {
 			
-			//SifenDocumento sd = this.reg.getObjectByCondicion(SifenDocumento.class.getName(), "cobranzaid = "+cobranza.getCobranzaid());
+			SifenDocumento sd = this.reg.getObjectByCondicion(SifenDocumento.class.getName(), "cobranzaid = "+cobranza.getCobranzaid());
 			
-			if (sd != null) {
+			if (sd != null ) {
 				
-				Contribuyente c = new Contribuyente();
-				c.setContribuyenteid(Long.parseLong(this.getSistemaPropiedad("FE_ID").getValor()));
-				c.setPass(this.getSistemaPropiedad("FE_PASS").getValor());
 				
-				EventoCancelar eventoC = new EventoCancelar();
-				eventoC.setContribuyente(c);
-				eventoC.setFecha(new Date());
-				eventoC.setCdc(sd.getCdc());
+				if (sd.getCdc() == null || sd.getCdc().length() == 0) {
+		
+					sd.setEstado("Anulado antes del envio");
+					sd.setCancelado(true);
+					sd.setEnviado(true);
+					
+				}else{
 				
-				MetodosCE mce = new MetodosCE();
-				Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
+					Contribuyente c = new Contribuyente();
+					c.setContribuyenteid(Long.parseLong(this.getSistemaPropiedad("FE_ID").getValor()));
+					c.setPass(this.getSistemaPropiedad("FE_PASS").getValor());
+					
+					EventoCancelar eventoC = new EventoCancelar();
+					eventoC.setContribuyente(c);
+					eventoC.setFecha(new Date());
+					eventoC.setCdc(sd.getCdc());
+					
+					MetodosCE mce = new MetodosCE();
+					Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
+					
+					sd.setCanceladoFecha(eventoC.getFecha());
+					sd.setCanceladoJson(gson.toJson(eventoC));
+					
+					this.save(sd);
+					
+					String link = this.getSistemaPropiedad("FE_HOST").getValor()+MetodosCE.EVENTO_CANCELAR_FACTURA;
+					
+					mce.enviarJson(link, sd.getCanceladoJson());
 				
-				sd.setCanceladoFecha(eventoC.getFecha());
-				sd.setCanceladoJson(gson.toJson(eventoC));
-				
-				this.save(sd);
-				
-				String link = this.getSistemaPropiedad("FE_HOST").getValor()+MetodosCE.EVENTO_CANCELAR_FACTURA;
-				
-				mce.enviarJson(link, sd.getCanceladoJson());
-				
-			}else {
-				
-				this.mensajeError("No se encontro el Documento Sifen.");
+				}
 				
 			}
 			

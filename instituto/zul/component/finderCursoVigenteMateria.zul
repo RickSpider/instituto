@@ -1,7 +1,9 @@
 <bandbox value="${finderValue}" disabled="${disabled}"
 	mold="rounded" autodrop="true"
 	onOpen="@command('generarFinders', finder= finderModel.nameFinder)"
-	width="150px" readonly="true">
+	width="150px" readonly="true"
+	tooltiptext="${finderValue}"
+	buttonVisible="${empty buttonVisible ? true : buttonVisible}">
 	<bandpopup>
 
 		<vbox>
@@ -21,9 +23,15 @@
 
 				<listhead>
 				
+					<listheader label="Sede" hflex="min"/>
+				
 					<listheader label="Curso"/>
 
 					<listheader label="Materia" />
+					
+					<listheader label="Inicio" hflex="min"/>
+					
+					
 
 
 				</listhead>
@@ -33,8 +41,14 @@
 					<listitem
 						onClick="@command('onSelectetItemModeloFinder', dato = each, finder= finderModel.nameFinder)">
 					
-						<listcell label="@load(each.cursovigentemateriapk.cursoVigente.curso.curso)"/>
-						<listcell label="@load(each.cursovigentemateriapk.materia.materia)"/>
+						<listcell label="@load(each.cursoVigente.sede.sede)" />
+					
+						<listcell label="@load(each.cursoVigente.curso.curso)" tooltiptext="@load(each.cursovigentemateriapk.cursoVigente.curso.curso)"/>
+						<listcell label="@load(each.materia.materia)" tooltiptext="@load(each.cursovigentemateriapk.materia.materia)"/>
+						
+						<listcell label="@load(each.fechaInicioStr)"/>
+						
+						
 
 					</listitem>
 

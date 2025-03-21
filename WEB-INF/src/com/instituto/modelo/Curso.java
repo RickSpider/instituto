@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.doxacore.modelo.Modelo;
@@ -29,6 +31,10 @@ public class Curso extends Modelo implements Serializable {
 	private String curso;
 	private String descripcion;
 	private int duracion;
+	
+	@ManyToOne
+	@JoinColumn(name="escalaid")
+	private Escala escala;
 	
 	@Column(name = "periodoeducativo", nullable = false, columnDefinition = "int default 1")
 	private int periodoEducativo;
@@ -89,6 +95,14 @@ public class Curso extends Modelo implements Serializable {
 
 	public void setPeriodoEducativo(int periodoEducativo) {
 		this.periodoEducativo = periodoEducativo;
+	}
+
+	public Escala getEscala() {
+		return escala;
+	}
+
+	public void setEscala(Escala escala) {
+		this.escala = escala;
 	}
 
 	

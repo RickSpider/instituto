@@ -17,13 +17,14 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Window;
 
 import com.doxacore.TemplateViewModel;
-
+import com.doxacore.components.finder.FinderModel;
 import com.instituto.util.ParamsLocal;
-import com.instituto.modelo.Concepto;
 import com.instituto.modelo.Curso;
 import com.instituto.modelo.CursoConcepto;
 import com.instituto.modelo.CursoMateria;
+import com.instituto.modelo.Escala;
 import com.instituto.modelo.Materia;
+import com.instituto.modelo.Rubro;
 
 
 public class CursoVM extends TemplateViewModel {
@@ -111,6 +112,8 @@ public class CursoVM extends TemplateViewModel {
 	
 	@Command
 	public void modalCurso(@BindingParam("cursoid") long cursoid) {
+		
+		this.inicializarFinders();
 
 		if (cursoid != -1) {
 			
@@ -369,6 +372,65 @@ public class CursoVM extends TemplateViewModel {
 	}
 
 	// fins buscador
+	
+	//seccion finder
+	
+	
+	private FinderModel escalaFinder;
+	
+	@NotifyChange("*")
+	public void inicializarFinders() {
+
+		String sqlEscala = this.um.getSql("escala/buscarEscala.sql");
+
+		escalaFinder = new FinderModel("Escala", sqlEscala);
+		
+
+	}
+
+	public void generarFinders(@BindingParam("finder") String finder) {
+
+		if (finder.compareTo(this.escalaFinder.getNameFinder()) == 0) {
+
+			this.escalaFinder.generarListFinder();
+			BindUtils.postNotifyChange(null, null, this.escalaFinder, "listFinder");
+
+			return;
+
+		}
+		
+	}
+
+	@Command
+	public void finderFilter(@BindingParam("filter") String filter, @BindingParam("finder") String finder) {
+
+		if (finder.compareTo(this.escalaFinder.getNameFinder()) == 0) {
+
+			this.escalaFinder.setListFinder(this.filtrarListaObject(filter, this.escalaFinder.getListFinderOri()));
+			BindUtils.postNotifyChange(null, null, this.escalaFinder, "listFinder");
+
+			return;
+
+		}
+	
+
+	}
+
+	@Command
+	@NotifyChange("*")
+	public void onSelectetItemFinder(@BindingParam("id") Long id, @BindingParam("finder") String finder) {
+
+		if (finder.compareTo(this.escalaFinder.getNameFinder()) == 0) {
+
+			this.cursoSelected.setEscala(this.reg.getObjectById(Escala.class.getName(), id));
+
+			return;
+		}
+
+	}
+		
+	
+	//fin finder
 
 	
 	public List<Curso> getlCursos() {
@@ -474,5 +536,15 @@ public class CursoVM extends TemplateViewModel {
 	public void setlConceptosCurso(List<CursoConcepto> lConceptosCurso) {
 		this.lConceptosCurso = lConceptosCurso;
 	}
+
+	public FinderModel getEscalaFinder() {
+		return escalaFinder;
+	}
+
+	public void setEscalaFinder(FinderModel escalaFinder) {
+		this.escalaFinder = escalaFinder;
+	}
+	
+	
 
 }

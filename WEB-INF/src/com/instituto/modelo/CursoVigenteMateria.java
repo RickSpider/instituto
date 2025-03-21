@@ -1,6 +1,7 @@
 package com.instituto.modelo;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.EmbeddedId;
@@ -13,8 +14,6 @@ import javax.persistence.TemporalType;
 
 import com.doxacore.modelo.Modelo;
 import com.doxacore.modelo.Tipo;
-
-import bsh.This;
 
 @Entity
 @Table(name="cursosvigentesmaterias")
@@ -95,7 +94,7 @@ public class CursoVigenteMateria extends Modelo implements Serializable {
 	
 	@Override
 	public Object[] getArrayObjectDatos() {
-		Object [] o = {this.getOrden(), this.getMateria().getMateria(),this.getProveedor().getPersona().getFullNombre() ,getMateria().getMateriaTipo().getTipo(),this.estado.getTipo()}; 
+		Object [] o = {this.getOrden(), this.getCursoVigente().getCurso().getCurso() ,this.getMateria().getMateria(),this.getProveedor().getPersona().getNombreCompleto() ,getMateria().getMateriaTipo().getTipo(),this.estado.getTipo()}; 
 		return o;
 	}
 
@@ -103,6 +102,10 @@ public class CursoVigenteMateria extends Modelo implements Serializable {
 		return fechaInicio;
 	}
 
+	public String getFechaInicioStr() {
+		return new SimpleDateFormat("dd/MM/yyyy").format(fechaInicio);
+	}
+	
 	public void setFechaInicio(Date fechaInicio) {
 		this.fechaInicio = fechaInicio;
 	}

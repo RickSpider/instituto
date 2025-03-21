@@ -43,3 +43,7 @@
 <mapping class="com.instituto.modelo.Pago" />
 <mapping class="com.instituto.modelo.PagoDetalle" />
 <mapping class="com.instituto.modelo.PagoDetalleDoc" />
+<mapping class="com.instituto.modelo.Escala" />
+<mapping class="com.instituto.modelo.EscalaDetalle" />
+<mapping class="com.instituto.modelo.Evaluacion" />
+<mapping class="com.instituto.modelo.EvaluacionDetalle" />

@@ -1,13 +1,13 @@
 package com.instituto.sistema.administracion;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Init;
@@ -19,13 +19,6 @@ import com.instituto.modelo.Cobranza;
 import com.instituto.modelo.Empresa;
 import com.instituto.modelo.SifenDocumento;
 import com.instituto.util.ParamsLocal;
-
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.util.JRLoader;
 
 
 public class KudeReporteVM extends TemplateReportViewModel {
@@ -65,6 +58,13 @@ public class KudeReporteVM extends TemplateReportViewModel {
 		Empresa empresa = this.reg.getObjectById(Empresa.class.getName(), 1);
 
 		Map<String, Object> parameters = new HashMap<>();
+		
+		try {
+			parameters.put("Logo", ImageIO.read(new ByteArrayInputStream(empresa.getLogo())));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 
 		parameters.put("RucEmpresa", empresa.getRuc());

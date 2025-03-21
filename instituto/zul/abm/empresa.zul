@@ -95,7 +95,7 @@
 
 		<hlayout>
 
-			<button label="Aceptar" onClick="@command('guardar')" />
+			<button label="Actualizar" onClick="@command('guardar')" />
 
 		</hlayout>
 

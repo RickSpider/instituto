@@ -4,51 +4,68 @@
 		position="center,center" closable="true" mode="modal"
 		action="show: slideDown;hide: slideUp">
 
-		<tablelayout columns="2">
-		
+		<tablelayout columns="4">
+
 			<tablechildren>
-				<lable value="Id:"/>
+				<label value="Id:" />
 			</tablechildren>
-			<tablechildren>
-				<textbox value="@bind(vm.sifenDocumentoSelected.sifenDocumentoid)" />
-			</tablechildren>
-			
-			<tablechildren>
-				<lable value="CDC:"/>
-			</tablechildren>
-			<tablechildren>
-				<textbox value="@bind(vm.sifenDocumentoSelected.cdc)" />
+			<tablechildren colspan="3">
+				<textbox
+					value="@bind(vm.sifenDocumentoSelected.sifendocumentoid)"
+					width="80px" readonly="true" />
 			</tablechildren>
 			
 			<tablechildren>
-				<lable value="Enviado:"/>
+				<label value="CDC:" />
 			</tablechildren>
+			<tablechildren colspan="3">
+				<textbox value="@bind(vm.sifenDocumentoSelected.cdc)"
+					width="350px" readonly="true" />
+			</tablechildren>
+
 			<tablechildren>
-				<textbox value="@bind(vm.sifenDocumentoSelected.enviado)" />
+				<label value="Enviado:" />
 			</tablechildren>
+			<tablechildren colspan="3">
+				<checkbox
+					checked="@bind(vm.sifenDocumentoSelected.enviado)" mold="switch" />
+			</tablechildren>
+
 			
+
 			<tablechildren>
-				<lable value="Estado:"/>
+				<label value="Estado:" />
 			</tablechildren>
 			<tablechildren>
-				<textbox value="@bind(vm.sifenDocumentoSelected.estado)" />
+				<textbox value="@bind(vm.sifenDocumentoSelected.estado)"
+					readonly="true" />
 			</tablechildren>
-			
+
 			<tablechildren>
-				<lable value="Respuesta:"/>
-			</tablechildren>
-			<tablechildren>
-				<textbox value="@bind(vm.sifenDocumentoSelected.respuesta)" />
-			</tablechildren>
-			
-			<tablechildren>
-				<lable value="Json:"/>
+				<label value="Respuesta:" />
 			</tablechildren>
 			<tablechildren>
-				<textbox value="@bind(vm.sifenDocumentoSelected.json)" />
+				<textbox
+					value="@bind(vm.sifenDocumentoSelected.respuesta)" readonly="true" />
 			</tablechildren>
-		
+
+			<tablechildren>
+				<label value="Json:" />
+			</tablechildren>
+			<tablechildren colspan="3">
+				<textbox value="@bind(vm.sifenDocumentoSelected.json)"
+					width="500px" rows="10" />
+			</tablechildren>
+
 		</tablelayout>
+
+		<space height="10px" />
+
+		<hlayout>
+
+			<button label="Aceptar" onClick="@command('guardar')" />
+
+		</hlayout>
 
 
 	</window>

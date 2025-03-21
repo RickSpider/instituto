@@ -17,6 +17,10 @@
 	<nav label="Administracion" iconSclass="z-icon-group"
 		children="@load(vm.pageMap[self.label].values()) @template('navitem')"
 		visible="@load(vm.menuVisible( vm.pageMap[self.label].values().size() ))" />
+		
+	<nav label="Gestion Evaluación" iconSclass=" z-icon-th-list "
+		children="@load(vm.pageMap[self.label].values()) @template('navitem')"
+		visible="@load(vm.menuVisible( vm.pageMap[self.label].values().size() ))" />
 	
 	<nav label="Compras" iconSclass="z-icon-shopping-cart "
 		children="@load(vm.pageMap[self.label].values()) @template('navitem')"

@@ -1,9 +1,12 @@
 package com.instituto.sistema.administracion;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
@@ -36,9 +39,13 @@ import com.instituto.modelo.Empresa;
 import com.instituto.modelo.Materia;
 import com.instituto.modelo.Proveedor;
 import com.instituto.modelo.EstadoCuenta;
+import com.instituto.modelo.Evaluacion;
+import com.instituto.modelo.EvaluacionDetalle;
 import com.instituto.modelo.Curso;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
+
+
 
 
 public class CursoVigenteVM extends TemplateViewModelLocal {
@@ -59,6 +66,8 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	private CursoVigenteConcepto cursoVigenteConceptoSelected;
 	private CursoVigenteMateria cursoVigenteMateriaSelected;
 	private CursoVigenteConvenio cursoVigenteConvenioSelected;
+	
+	private Tipo evaluacionTipoSelected;
 
 	private boolean[] bDias = new boolean[7];
 
@@ -1418,6 +1427,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	// Seccion Finder
 
 	private FinderModel proveedorFinder;
+	private FinderModel evaluacionTipoFinder;
 
 	@NotifyChange("*")
 	public void inicializarFinders() {
@@ -1427,6 +1437,11 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		String sqlDocente = this.um.getSql("proveedor/buscarProveedorSedeTipo.sql").replace("?1", this.getCurrentSede().getSedeid()+"").replace("?2", docente.getTipoid()+"");
 
 		proveedorFinder = new FinderModel("Docente", sqlDocente);
+		
+		String sqlEvaluacionTipo = this.um.getCoreSql("buscarTiposPorSiglaTipotipo.sql").replace("?1",
+				ParamsLocal.SIGLA_EVALUACION);
+		
+		this.evaluacionTipoFinder = new FinderModel("evaluacionTipo", sqlEvaluacionTipo);
 
 	}
 
@@ -1436,6 +1451,15 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 			this.proveedorFinder.generarListFinder();
 			BindUtils.postNotifyChange(null, null, this.proveedorFinder, "listFinder");
+
+			return;
+
+		}
+		
+		if (finder.compareTo(this.evaluacionTipoFinder.getNameFinder()) == 0) {
+
+			this.evaluacionTipoFinder.generarListFinder();
+			BindUtils.postNotifyChange(null, null, this.evaluacionTipoFinder, "listFinder");
 
 			return;
 
@@ -1454,6 +1478,15 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			return;
 
 		}
+		
+		if (finder.compareTo(this.evaluacionTipoFinder.getNameFinder()) == 0) {
+
+			this.evaluacionTipoFinder.setListFinder(this.filtrarListaObject(filter, this.evaluacionTipoFinder.getListFinderOri()));
+			BindUtils.postNotifyChange(null, null, this.evaluacionTipoFinder, "listFinder");
+
+			return;
+
+		}
 
 	}
 
@@ -1468,6 +1501,15 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 			return;
 		}
+		
+		if (finder.compareTo(this.evaluacionTipoFinder.getNameFinder()) == 0) {
+
+			this.evaluacionTipoSelected = this.reg.getObjectById(Tipo.class.getName(), id);
+			
+
+			return;
+		}
+
 
 	}
 	
@@ -1516,7 +1558,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		
 		if (emp != null && emp.getPathLogo() != null) {
 			 
-			re.descargar(titulos, headersDatos, datos, tituloLogo, emp.getPathLogo() );
+			re.descargar(titulos, headersDatos, datos, tituloLogo, emp.getLogo() );
 			
 		}else {
 			
@@ -1528,6 +1570,140 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		
 		
 	}
+	
+	@Command
+	public void generarPlanillaMateriaModal(@BindingParam("cursovigentemateria") CursoVigenteMateria cursovigentemateria ) {
+		
+		this.inicializarFinders();
+		
+		this.evaluacionTipoSelected = this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_EVALUACION_ORDINARIO);
+		this.cursoVigenteMateriaSelected = cursovigentemateria;
+		
+		modal = (Window) Executions.createComponents("/instituto/zul/administracion/generarPlanillaMateriaModal.zul",
+				this.mainComponent, null);
+		Selectors.wireComponents(modal, this, false);
+		modal.doModal();
+		
+	}
+	
+	
+	
+	@Command
+	public void planillaCalificacionesMateria() {
+		
+		
+		CursoVigente cv = this.cursoVigenteMateriaSelected.getCursoVigente();
+		Evaluacion ev = this.reg.getObjectByCondicion(Evaluacion.class.getName(), 
+				"cursovigenteid = "+cv.getCursovigenteid()+" "+
+				"and materiaid = "+cursoVigenteMateriaSelected.getMateria().getMateriaid()+" "+
+				"and evaluacionTipoId = "+this.evaluacionTipoSelected.getTipoid());
+		
+		if (ev == null) {
+			
+			this.mensajeError("No hay evaluacion cargada.");
+			
+			return;
+			
+		}
+		
+		
+		ReportExcel re = new ReportExcel("PlanillaCalificaciones_"+this.cursoVigenteMateriaSelected.getMateria().getMateria());
+		
+		List<String[]> titulos = new ArrayList<String[]>();
+		
+		Empresa empresa = this.reg.getObjectById(Empresa.class.getName(), 1);
+		String tituloLogo = empresa.getNombreFantasia()+"\n"
+				+ empresa.getExtra2();
+		
+		//String[] t1 = {"INSTITUTO SANTO TOMAS"};
+		//String[] t2 = {"Resolucion M.E.C. Nº 841/98"};
+		String[] espacioBlanco = {""};
+		String[] t3 = {"Sede:",this.getCurrentSede().getSede()};
+		String[] t4 = {"Curso:", cv.getCurso().getCurso()};
+		String[] t5 = {"ASIGNATURA: ", this.cursoVigenteMateriaSelected.getMateria().getMateria()};
+		String[] t6 = {"EVALUCION: ", this.evaluacionTipoSelected.getTipo()};
+		String[] t7 = {"FECHA:",};
+		String[] t8 = {"PROFESOR/A:", this.cursoVigenteMateriaSelected.getProveedor().getPersona().getNombreCompleto()};
+		
+		//titulos.add(t1);
+		//titulos.add(t2);
+		titulos.add(espacioBlanco);
+		titulos.add(espacioBlanco);
+		titulos.add(espacioBlanco);
+		titulos.add(t3);
+		titulos.add(t4);
+		titulos.add(t5);
+		titulos.add(t6);
+		titulos.add(t7);
+		titulos.add(t8);
+		
+		List<String[]> headersDatos = new ArrayList<String[]>();
+		String [] hd1 =  {"Nro","Apellidos", "Nombres", "C.I.", "EVALUACIONES", "","","","","", "TOTAL","Calificacion"};
+		String [] hd2=  {"","", "", "", "Evaluacion 1","Evaluacion2","Evaluacion 3","Evaluacion 4","Evaluacion 5" ,"Evaluacion Final","Calificacion","Letra"};
+		headersDatos.add(hd1);
+		headersDatos.add(hd2);
+
+		Empresa emp = this.reg.getObjectById(Empresa.class.getName(), 1);
+		
+		List<Object[]> datos2 = new ArrayList<>();
+		
+		DecimalFormatSymbols dfs = new DecimalFormatSymbols(new Locale("es", "ES"));
+		dfs.setDecimalSeparator('.');
+		DecimalFormat df = new DecimalFormat("#,##0.##",dfs);
+		
+		int c = 1;		
+		for (EvaluacionDetalle edx : ev.getDetalles()) {
+			
+			
+			
+			if (edx.getCalificacion()!= 0) {
+				
+				Object[] o = {c,edx.getAlumno().getPersona().getApellido(),
+						edx.getAlumno().getPersona().getNombre(),
+						edx.getAlumno().getPersona().getDocumentoNum(),
+						df.format(edx.getProceso1()),
+						df.format(edx.getProceso2()),
+						df.format(edx.getProceso3()),
+						df.format(edx.getProceso4()),
+						df.format(edx.getProceso5()),
+						df.format(edx.getPfinal()),
+						df.format(edx.getCalificacion()),
+						this.convertir(edx.getCalificacion())};
+				
+				datos2.add(o);
+				c+=1;
+			}
+			
+			
+		}
+		
+		if (emp != null && emp.getPathLogo() != null) {
+			 
+			re.descargar(titulos, headersDatos, datos2, tituloLogo, emp.getLogo() );
+			
+		}else {
+			
+			re.descargar(titulos, headersDatos, datos2);
+			
+		}
+		
+		this.modal.detach();
+		
+	}
+	
+	 private String convertir(double numero) {
+		 
+		 int num = (int) numero;
+		 
+	        switch (num) {
+	            case 1: return "uno";
+	            case 2: return "dos";
+	            case 3: return "tres";
+	            case 4: return "cuatro";
+	            case 5: return "cinco";
+	            default: return "Número fuera de rango";
+	        }
+	    }
 	
 	@Command
 	public void planillaCalificaciones(@BindingParam("cursoVigenteid") Long cursoVigenteid) {
@@ -1561,7 +1737,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		
 		List<String[]> headersDatos = new ArrayList<String[]>();
 		String [] hd1 =  {"Nro", "Apellidos", "Nombres", "C.I.", "EVALUACIONES", "","","", "TOTAL","Calificacion"};
-		String [] hd2=  {"", "", "", "", "Evaluacion 1","Evaluacion2","Evaluacion 3", "Evaluacion Final","","Nº","Letra"};
+		String [] hd2=  {"", "", "", "", "Evaluacion 1","Evaluacion2","Evaluacion 3","Evaluacion 4","Evaluacion 5" ,"Evaluacion Final","","Nº","Letra"};
 		headersDatos.add(hd1);
 		headersDatos.add(hd2);
 		
@@ -1603,7 +1779,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		
 		if (emp != null && emp.getPathLogo() != null) {
 			 
-			re.descargar(titulos, headersDatos, datos2, tituloLogo, emp.getPathLogo() );
+			re.descargar(titulos, headersDatos, datos2, tituloLogo, emp.getLogo() );
 			
 		}else {
 			
@@ -1991,6 +2167,23 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		this.incremento = incremento;
 	}
 
+	public FinderModel getEvaluacionTipoFinder() {
+		return evaluacionTipoFinder;
+	}
+
+	public void setEvaluacionTipoFinder(FinderModel evaluacionTipoFinder) {
+		this.evaluacionTipoFinder = evaluacionTipoFinder;
+	}
+
+	public Tipo getEvaluacionTipoSelected() {
+		return evaluacionTipoSelected;
+	}
+
+	public void setEvaluacionTipoSelected(Tipo evaluacionTipoSelected) {
+		this.evaluacionTipoSelected = evaluacionTipoSelected;
+	}
+
+	
 	
 
 }

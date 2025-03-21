@@ -62,7 +62,7 @@
 					<tablechildren>
 
 						<datebox value="@bind(vm.pagoSelected.fecha)"
-							width="200px" format="dd/MM/yyyy hh:mm:ss" disabled="@load(vm.camposCabecera[6])"/>
+							width="200px" format="dd/MM/yyyy hh:mm:ss" />
 
 					</tablechildren>
 					

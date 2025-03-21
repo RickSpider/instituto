@@ -35,7 +35,8 @@
 	
 						<finder
 							finderValue="@load(vm.cursoVigenteSelected.curso.curso)"
-							finderModel="@load(vm.cursoFinder)" />
+							finderModel="@load(vm.cursoFinder)" 
+							disabled = "@load(vm.disabledCursoFinder)"/>
 						
 	
 					</tablechildren>

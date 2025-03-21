@@ -115,10 +115,10 @@
 										onClick="@command('generarKude', sifenDocumentoid=each[0])"
 										tooltiptext="Imprimir Comprobante" />
 										
-									<!-- <button iconSclass="z-icon-edit"
-										onClick="@command('', sifenDocumentoid=each[0])"
-										tooltiptext="Enviar Comprobante" 
-										disabled="@load(vm.opEditarSifenDocumento)"/> -->
+									<button iconSclass="z-icon-edit"
+										onClick="@command('modalSifenDocumento', sifendocumentoid=each[0])"
+										tooltiptext="Editar Comprobante" 
+										/>
 								
 									<!-- <button iconSclass="z-icon-trash-o"
 										style="background-color:red"

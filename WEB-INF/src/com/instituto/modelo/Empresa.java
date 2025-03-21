@@ -34,6 +34,8 @@ public class Empresa extends Modelo{
 	
 	private String pathLogo;
 	
+	private byte[] logo;
+	
 	
 	@Override
 	public Object[] getArrayObjectDatos() {
@@ -106,6 +108,12 @@ public class Empresa extends Modelo{
 	}
 	public void setNombreFantasia(String nombreFantasia) {
 		this.nombreFantasia = nombreFantasia;
+	}
+	public byte[] getLogo() {
+		return logo;
+	}
+	public void setLogo(byte[] logo) {
+		this.logo = logo;
 	}
 	
 	

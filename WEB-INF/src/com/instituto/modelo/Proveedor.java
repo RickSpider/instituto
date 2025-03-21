@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import com.doxacore.modelo.Modelo;
 import com.doxacore.modelo.Tipo;
+import com.doxacore.modelo.Usuario;
 
 @Entity 
 @Table(name="proveedores")
@@ -39,6 +40,10 @@ public class Proveedor extends Modelo implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "proveedortipoid")
 	private Tipo proveedorTipo;
+	
+	@ManyToOne
+	@JoinColumn(name = "usuarioid")
+	private Usuario usuario;
 	
 	private boolean activo;
 
@@ -92,6 +97,14 @@ public class Proveedor extends Modelo implements Serializable{
 
 	public void setProveedorTipo(Tipo proveedorTipo) {
 		this.proveedorTipo = proveedorTipo;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 	
 	

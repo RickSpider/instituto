@@ -1,9 +1,13 @@
 package com.instituto.sistema.administracion;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Init;
@@ -42,6 +46,15 @@ public class ReciboVM extends TemplateReportViewModel {
 		Empresa empresa = this.reg.getObjectById(Empresa.class.getName(), 1);
 
 		Map<String, Object> parameters = new HashMap<>();
+		
+		try {
+			parameters.put("Logo", ImageIO.read(new ByteArrayInputStream(empresa.getLogo())));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		parameters.put("RucEmpresa", empresa.getRuc());
 		
 		parameters.put("RucEmpresa", empresa.getRuc());
 		parameters.put("RazonSocialEmpresa", empresa.getRazonSocial());

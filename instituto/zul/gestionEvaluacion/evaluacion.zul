@@ -1,0 +1,468 @@
+<?page title="Evaluaciones" contentType="text/html;charset=UTF-8"?>
+
+<?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
+<?component name="finderModelo" templateURI="/instituto/zul/component/finderCursoVigenteMateria.zul"?>
+
+<zk>
+	<window title="Evaluacion" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.gestionEvaluacion.EvaluacionVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<hlayout vflex="1" visible="@load(!vm.agregarEditar)">
+
+			<vlayout hflex="1" vflex="1">
+
+				<hbox pack="end" hflex="1">
+
+					<button label="Agregar" iconSclass=" z-icon-plus"
+						onClick="@command('agregarEvaluacionAgregar')"
+						disabled="@load(!vm.opCrearEvaluacion)" />
+
+				</hbox>
+
+				<listbox emptyMessage="lista vacía..." mold="paging"
+					autopaging="true" vflex="1" model="@load(vm.lEvaluaciones)"
+					checkmark="true">
+
+					<listhead>
+
+						<listheader hflex="min" align="center" />
+						<listheader label="ID" align="right"
+							hflex="min" />
+						<listheader label="Fecha" align="left" />
+						<listheader label="Docente" align="left" />
+						<listheader label="Tipo" align="left" />
+						<listheader label="Curso" align="left" />
+						<listheader label="Materia" align="left" />
+						<listheader hflex="min" />
+
+					</listhead>
+
+
+					<auxhead>
+
+						<auxheader />
+						<auxheader />
+
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[1])"
+								instant="true" onChange="@command('filtrarEvaluacion')"
+								hflex="1" />
+						</auxheader>
+
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[2])"
+								instant="true" onChange="@command('filtrarEvaluacion')"
+								hflex="1" />
+						</auxheader>
+
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[3])"
+								instant="true" onChange="@command('filtrarEvaluacion')"
+								hflex="1" />
+						</auxheader>
+
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[4])"
+								instant="true" onChange="@command('filtrarEvaluacion')"
+								hflex="1" />
+						</auxheader>
+
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[5])"
+								instant="true" onChange="@command('filtrarEvaluacion')"
+								hflex="1" />
+						</auxheader>
+
+
+
+						<auxheader />
+					</auxhead>
+
+					<template name="model">
+
+						<listitem>
+							<listcell />
+							<listcell label="@load(each[0])" />
+							<listcell label="@load(each[1])" />
+							<listcell label="@load(each[2])" />
+							<listcell label="@load(each[3])" />
+							<listcell label="@load(each[4])" />
+							<listcell label="@load(each[5])" />
+
+
+							<listcell>
+								<hlayout>
+								
+								
+									<button iconSclass="z-icon-edit"
+										onClick="@command('editarEvaluacion', evaluacionid=each[0])"
+										tooltiptext="Editar" disabled="@load(!vm.opEditarEvaluacion)" />
+										
+									<button iconSclass="z-icon-list"
+										class="doxa-button-green"
+										onClick="@command('generarReporte', evaluacionid=each[0])"
+										tooltiptext="Generar Reporte"  />
+									
+									<button iconSclass="z-icon-trash-o"
+										class="doxa-button-red"
+										onClick="@command('borrarEvaluacionConfirmacion', evaluacionid=each[0])"
+										tooltiptext="Borrar" disabled="@load(!vm.opBorrarEvaluacion)" />
+
+
+								</hlayout>
+
+
+							</listcell>
+
+
+						</listitem>
+
+
+					</template>
+
+					<listfoot>
+						<listfooter span="4" align="left">
+							<hlayout>
+								<label
+									value="@load(vm.lEvaluaciones.size())" />
+								<label value="items" />
+							</hlayout>
+						</listfooter>
+					</listfoot>
+
+
+				</listbox>
+
+			</vlayout>
+
+
+
+
+
+		</hlayout>
+
+		<vlayout vflex="1" visible="@load(vm.agregarEditar)"
+			validationMessages="@id('vmsgs')">
+
+
+			<vlayout>
+			
+			<groupbox onOpen="lbDetalles.invalidate()">
+				<caption label="Datos Cabecera" />
+
+				<tablelayout columns="4">
+
+					<tablechildren>
+						<label value="ID:" style="font-weight:bold" />
+					</tablechildren>
+
+					<tablechildren>
+						<textbox
+							value="@load(vm.evaluacionSelected.evaluacionid)" width="75px"
+							readonly="true" />
+					</tablechildren>
+
+					<tablechildren colspan="2" >
+					
+						<hlayout spacing="2px">
+							
+							<button label="Volver Atras"
+								onClick="@command('volverLista')"
+								iconSclass=" z-icon-external-link-square " />
+							
+							<button label="Finalizar"
+								onClick="@command('finalizarEvaluacionConfirmacionDocente')"
+								iconSclass=" z-icon-check  " 
+								disabled="@load(vm.evaluacionSelected.finalizadoDocente)" />
+							
+							<button label="Finalizar Total"
+								onClick="@command('finalizarEvaluacion')"
+								iconSclass=" z-icon-check  "
+								visible="@load(!vm.rolDocente)" 
+								disabled="@load(vm.evaluacionSelected.finalizado)" />
+						
+						</hlayout>
+					
+						
+					</tablechildren>
+
+					<tablechildren>
+						<label value="Fecha:" style="font-weight:bold" />
+					</tablechildren>
+
+					<tablechildren>
+						<datebox
+							value="@bind(vm.evaluacionSelected.fecha)" width="150px"
+							format="dd/MM/yyyy hh:mm:ss" readonly="@load(vm.evaluacionSelected.finalizado)"
+							buttonVisible="@load(!vm.evaluacionSelected.finalizado)" />
+					</tablechildren>
+
+					<tablechildren>
+						<label value="Docente:"
+							style="font-weight:bold" />
+					</tablechildren>
+
+					<tablechildren>
+						<textbox
+							value="@load(vm.evaluacionSelected.docente.persona.fullNombre)"
+							width="250px" readonly="true" 
+							visible="@load(!vm.visibleDocente)"/>
+							
+						<finder
+							finderValue="@load(vm.evaluacionSelected.docente.persona.fullNombre)"
+							finderModel="@load(vm.docenteFinder)" 
+							finderVisible="@load(vm.visibleDocente)"
+							/>
+							
+							
+					</tablechildren>
+
+
+
+					<tablechildren>
+						<label value="Evaluacion Tipo:"
+							style="font-weight:bold" />
+					</tablechildren>
+
+					<tablechildren>
+						<finder
+							finderValue="@load(vm.evaluacionSelected.evaluacionTipo.tipo)"
+							finderModel="@load(vm.evaluacionTipoFinder)" buttonVisible="@load(!vm.disabledCab)" />
+					</tablechildren>
+
+					<tablechildren>
+						<label value="Curso/Materia:"
+							style="font-weight:bold" />
+					</tablechildren>
+
+					<tablechildren >
+						
+						<hlayout spacing="2px">
+					
+							<finderModelo
+								finderValue="@load(vm.evaluacionSelected.cursoVigenteMateria.cursovigentemateriapk.cursoVigente.curso.curso)"
+								finderModel="@load(vm.cursoVigenteMateriaFinder)" buttonVisible="@load(!vm.disabledCab)"/>
+							
+							<textbox
+								value="@load(vm.evaluacionSelected.cursoVigenteMateria.cursovigentemateriapk.materia.materia)"
+								width="250px"
+								tooltiptext="@load(vm.evaluacionSelected.cursoVigenteMateria.cursovigentemateriapk.materia.materia)"
+								readonly="true" />
+								
+						</hlayout>
+						
+					</tablechildren>
+
+				</tablelayout>
+
+				<tablelayout columns="4">
+
+					<tablechildren>
+						<label value="Total Proceso 1:"
+							style="font-weight:bold" 
+							/>
+					</tablechildren>
+
+					<tablechildren>
+						<doublebox 
+							value="@bind(vm.evaluacionSelected.totalProceso1)"
+							constraint="no empty, no negative" 
+							onChange="@command('verificarTotales')"
+							disabled="@load(vm.disabledDet)"
+							/>
+
+					</tablechildren>
+
+					<tablechildren>
+						<label value="Total Proceso 2:"
+							style="font-weight:bold" />
+					</tablechildren>
+
+					<tablechildren>
+						<doublebox
+							value="@bind(vm.evaluacionSelected.totalProceso2)" 
+							constraint="no empty, no negative" 
+							onChange="@command('verificarTotales')"
+							disabled="@load(vm.disabledDet)"
+							/>
+					</tablechildren>
+
+					<tablechildren>
+						<label value="Total Proceso 3:"
+							style="font-weight:bold" />
+					</tablechildren>
+
+					<tablechildren>
+						<doublebox
+							value="@bind(vm.evaluacionSelected.totalProceso3)" 
+							constraint="no empty, no negative" 
+							onChange="@command('verificarTotales')"
+							disabled="@load(vm.disabledDet)"
+							/>
+					</tablechildren>
+
+					<tablechildren>
+						<label value="Total Proceso 4:"
+							style="font-weight:bold" />
+					</tablechildren>
+
+					<tablechildren>
+						<doublebox
+							value="@bind(vm.evaluacionSelected.totalProceso4)" 
+							constraint="no empty, no negative" 
+							onChange="@command('verificarTotales')"
+							disabled="@load(vm.disabledDet)"
+							/>
+					</tablechildren>
+
+					<tablechildren>
+						<label value="Total Proceso 5:"
+							style="font-weight:bold" />
+					</tablechildren>
+
+					<tablechildren>
+						<doublebox
+							value="@bind(vm.evaluacionSelected.totalProceso5)" 
+							constraint="no empty, no negative" 
+							onChange="@command('verificarTotales')"
+							disabled="@load(vm.disabledDet)"
+							/>
+					</tablechildren>
+
+					<tablechildren>
+						<label value="Total Final:"
+							style="font-weight:bold" />
+					</tablechildren>
+
+					<tablechildren>
+						<doublebox
+							value="@bind(vm.evaluacionSelected.totalfinal)" 
+							constraint="no empty, no negative" 
+							onChange="@command('verificarTotales')"
+							disabled="@load(vm.disabledDet)"
+							/>
+					</tablechildren>
+
+				</tablelayout>
+
+ 			</groupbox>
+			</vlayout>
+
+			<listbox id="lbDetalles" emptyMessage="lista vacía..." mold="paging"
+				autopaging="true" vflex="1" 
+				model="@load(vm.evaluacionSelected.detalles)" checkmark="true"
+				>
+
+				<listhead>
+
+					<listheader hflex="min" align="center" />
+					<listheader label="#" hflex="min" style="font-weight:bold"/>
+					<listheader label="Alumno" hflex="min" style="font-weight:bold"/>
+					<listheader label="Proceso 1" style="font-weight:bold"/>
+					<listheader label="Proceso 2" style="font-weight:bold"/>
+					<listheader label="Proceso 3" style="font-weight:bold"/>
+					<listheader label="Proceso 4" style="font-weight:bold"/>
+					<listheader label="Proceso 5" style="font-weight:bold"/>
+					<listheader label="Final" style="font-weight:bold"/>
+					<listheader label="Puntaje Total" style="font-weight:bold"/>
+					<listheader label="Calificacion" hflex="min" style="font-weight:bold"/>
+					<listheader hflex="min"/>
+
+				</listhead>
+
+				<template name="model">
+
+					<listitem disabled="@load(vm.disabledDet)">
+						<listcell />
+						
+						<listcell
+							label="@load(forEachStatus.index+1)" />
+
+						<listcell>
+							<textbox
+								value="@load(each.alumno.persona.nombreCompleto)" width="250px"
+								readonly="true" tabindex="-1"/>
+						</listcell>
+
+						<listcell>
+							<doublebox value="@bind(each.proceso1) "
+								style="text-align:right" hflex="1"
+								onChange="@command('checkVal',detalle=each, cmp=self, dato=self.value, max = vm.evaluacionSelected.totalProceso1)"
+								constraint="no empty, no negative" 
+								disabled="${ vm.evaluacionSelected.totalProceso1 == 0}"/>
+						</listcell>
+
+						<listcell>
+							<doublebox value="@bind(each.proceso2)"
+								style="text-align:right" hflex="1"
+								onChange="@command('checkVal',detalle=each, cmp=self, dato=self.value, max = vm.evaluacionSelected.totalProceso2)"
+								constraint="no empty, no negative" 
+								disabled="${ vm.evaluacionSelected.totalProceso2 == 0}"/>
+						</listcell>
+
+						<listcell>
+							<doublebox value="@bind(each.proceso3)"
+								style="text-align:right" hflex="1"
+								onChange="@command('checkVal',detalle=each, cmp=self, dato=self.value, max = vm.evaluacionSelected.totalProceso3)"
+								constraint="no empty, no negative" 
+								disabled="${ vm.evaluacionSelected.totalProceso3 == 0}"/>
+						</listcell>
+
+						<listcell>
+							<doublebox value="@bind(each.proceso4)"
+								style="text-align:right" hflex="1"
+								onChange="@command('checkVal',detalle=each, cmp=self, dato=self.value, max = vm.evaluacionSelected.totalProceso4)"
+								constraint="no empty, no negative" 
+								disabled="${ vm.evaluacionSelected.totalProceso4 == 0}"/>
+						</listcell>
+
+						<listcell>
+							<doublebox value="@bind(each.proceso5)"
+								style="text-align:right" hflex="1"
+								onChange="@command('checkVal', detalle=each, cmp=self, dato=self.value, max = vm.evaluacionSelected.totalProceso5)"
+								constraint="no empty, no negative" 
+								disabled="${ vm.evaluacionSelected.totalProceso5 == 0}"/>
+						</listcell>
+
+						<listcell>
+							<doublebox value="@bind(each.pfinal)"
+								style="text-align:right" hflex="1" 
+								onChange="@command('checkVal', detalle=each, cmp=self, dato=self.value, max = vm.evaluacionSelected.totalfinal)"
+								constraint="no empty, no negative" 
+								disabled="${ vm.evaluacionSelected.totalfinal == 0}"/>
+						</listcell>
+						
+						<listcell>
+							<doublebox value="@load(each.proceso1+each.proceso2+each.proceso3+each.proceso4+each.proceso5+each.pfinal)"
+								style="text-align:right" hflex="1" 
+								constraint="no empty, no negative" 
+								readonly="true"/>
+						</listcell>
+
+						<listcell>
+							<doublebox value="@load(each.calificacion)" style="text-align:right; font-weight:bold" 
+								readonly="true" tabindex="-1"
+								hflex="1" />
+						</listcell>
+						
+						<listcell>
+							<button iconSclass="z-icon-eraser" class="doxa-button-red"
+										onClick="@command('borrarPuntaje', detalle=each)"
+										tooltiptext="Borrar Puntajes" tabindex="-1"/>
+						</listcell>
+
+					</listitem>
+
+
+				</template>
+
+			</listbox>
+
+
+
+		</vlayout>
+
+
+	</window>
+</zk>
