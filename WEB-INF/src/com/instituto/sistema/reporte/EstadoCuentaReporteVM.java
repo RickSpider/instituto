@@ -188,7 +188,7 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 		titulos.add(espacioBlanco);
 		
 		List<String[]> headersDatos = new ArrayList<String[]>();
-		String [] hd1 =  {"Curso","Alumno","Fecha Vencimiento", "Fecha Pago", "Descripcion", "Importe Debito", "Credito", "Saldo"};
+		String [] hd1 =  {"Curso","Alumno","Fecha Vencimiento", "Fecha Pago", "Descripcion", "Importe Debito", "Credito", "Descuento", "Saldo"};
 		headersDatos.add(hd1);
 		
 		
@@ -247,8 +247,10 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 		
 		double totalCredito = 0;
 		double totalDebito = 0;
+		double totalDescuento = 0;
 		double totalGralCredito = 0;
 		double totalGralDebito = 0;
+		double totalGralDescuento = 0;
 		
 		//String doubleFormato = "%,.2f";
 		DecimalFormatSymbols dfs = new DecimalFormatSymbols(new Locale("es", "ES"));
@@ -276,7 +278,7 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 				
 				totalDebito =0; 
 				totalCredito = 0;
-				
+				totalDescuento = 0;
 				
 			}
 			
@@ -296,6 +298,7 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 		
 				totalDebito = 0;
 				totalCredito = 0;
+				
 
 				
 			}
@@ -305,7 +308,7 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 			totalDebito += Double.parseDouble(x[2].toString()); 
 			double saldo =  Double.parseDouble(x[2].toString()); 
 			
-			Object[] o = new Object[8];
+			Object[] o = new Object[9];
 			
 			o[0] = "";
 			o[1] = "";
@@ -315,6 +318,7 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 			o[5] = df.format(Double.parseDouble(x[2].toString()));
 			o[6] = "";
 			o[7] = "";
+			o[8] = "";
 			
 			datos3.add(o);
 			
@@ -326,7 +330,7 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 				if (Long.parseLong(x[3].toString()) == Long.parseLong(x2[3].toString()) ) {
 					
 					
-					Object[] o2 = new Object[8];
+					Object[] o2 = new Object[9];
 					
 					o2[0] = "";
 					o2[1] = "";
@@ -335,10 +339,12 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 					o2[4] = x2[1];
 					o2[5] = "";
 					
-					saldo -= Double.parseDouble(x2[2].toString());
+		
+					saldo -= (Double.parseDouble(x2[2].toString()) + Double.parseDouble(x2[4].toString()));
 					
 					o2[6] = df.format(Double.parseDouble(x2[2].toString()));
-					o2[7] = df.format(saldo);
+					o2[7] = df.format(Double.parseDouble(x2[4].toString()));
+					o2[8] = df.format(saldo);
 					
 					datos3.add(o2);
 					
@@ -346,6 +352,8 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 					
 					totalGralCredito += Double.parseDouble(x2[2].toString()); 
 					totalCredito += Double.parseDouble(x2[2].toString());
+					totalDescuento += Double.parseDouble(x2[4].toString());
+					totalGralDescuento += Double.parseDouble(x2[4].toString());
 				}
 				
 				
@@ -358,11 +366,11 @@ public class EstadoCuentaReporteVM extends TemplateViewModelLocal {
 			
 		}
 		
-		Object[] total = {"Total:","","","","",df.format(totalDebito),df.format(totalCredito),df.format((totalDebito - totalCredito))};			
+		Object[] total = {"Total:","","","","",df.format(totalDebito),df.format(totalCredito),df.format(totalDescuento),df.format((totalDebito - (totalCredito+totalDescuento)))};			
 		datos3.add(total);
 		datos3.add(espacioBlanco);
 		
-		Object[] totales = {"Total General:","","","","",df.format(totalGralDebito),df.format(totalGralCredito),df.format((totalGralDebito - totalGralCredito))};
+		Object[] totales = {"Total General:","","","","",df.format(totalGralDebito),df.format(totalGralCredito),df.format(totalGralDescuento),df.format((totalGralDebito - (totalGralCredito+totalGralDescuento)))};
 				
 		datos3.add(totales);
 		

@@ -1,7 +1,5 @@
 package com.instituto.util;
 
-import java.util.List;
-
 import org.zkoss.bind.annotation.AfterCompose;
 import org.zkoss.bind.annotation.Init;
 import com.doxacore.TemplateViewModel;

@@ -45,6 +45,7 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 	private double saldoVencido = 0;
 	private double importeTotalCurso = 0;
 	private double importeAbonado = 0;
+	private double importeDescuento = 0;
 
 	@Init(superclass = true)
 	public void initEstadoCuentaVM() {
@@ -198,6 +199,7 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 		this.importeAbonado = 0;
 		if (resultImporteAbonado.size() > 0) {
 			this.importeAbonado = Double.parseDouble(resultImporteAbonado.get(0)[1].toString());
+			this.importeDescuento = Double.parseDouble(resultImporteAbonado.get(0)[2].toString());
 		}
 		
 	}
@@ -592,5 +594,13 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 
 	public void setCursoFinder(FinderModel cursoFinder) {
 		this.cursoFinder = cursoFinder;
+	}
+
+	public double getImporteDescuento() {
+		return importeDescuento;
+	}
+
+	public void setImporteDescuento(double importeDescuento) {
+		this.importeDescuento = importeDescuento;
 	}
 }

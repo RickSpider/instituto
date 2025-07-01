@@ -1,7 +1,5 @@
 <?page title="pagosRelacionadosModal" contentType="text/html;charset=UTF-8"?>
 
-<?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
-<?component name="finderModelo" templateURI="/instituto/zul/component/finderCursoVigenteMateria.zul"?>
 
 <zk>
 	<window title="Pagos Relacionados" border="normal"

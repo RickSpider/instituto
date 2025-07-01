@@ -178,7 +178,7 @@
 
 						<auxhead>
 
-							<auxheader label="Detalles" colspan="7"
+							<auxheader label="Detalles" colspan="8"
 								align="center" />
 
 						</auxhead>
@@ -190,6 +190,7 @@
 							<listheader label="Id" align="Center"
 								hflex="min" />
 							<listheader label="Alumno" align="Center" />
+							<listheader label="Fecha Inscripción" hflex="min" />
 							<listheader label="Monto" hflex="min"
 								align="Center" />
 							<listheader label="Pago" hflex="min"
@@ -203,7 +204,7 @@
 
 						<template name="model">
 
-							<listitem sclass="@load(each[5] ? 'inactivo':'')">
+							<listitem sclass="@load(each[6] ? 'inactivo':'')">
 
 								<listcell />
 
@@ -211,15 +212,17 @@
 
 								<listcell label="@load(each[1])"
 									style="text-align: left" />
-
-								<listcell
-									label="@load(each[2])  @converter('formatedNumber', format='#,###')" />
+									
+								<listcell label="@load(each[2])"/>
 
 								<listcell
 									label="@load(each[3])  @converter('formatedNumber', format='#,###')" />
 
 								<listcell
 									label="@load(each[4])  @converter('formatedNumber', format='#,###')" />
+
+								<listcell
+									label="@load(each[5])  @converter('formatedNumber', format='#,###')" />
 
 
 								<listcell>

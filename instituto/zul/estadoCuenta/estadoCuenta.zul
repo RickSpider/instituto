@@ -82,6 +82,15 @@
 						<doublebox width="120px"
 							value="@load(vm.saldoVencido)" format="#,###"
 							style="text-align:right" readonly="true" />
+					</tablechildren>
+					
+					<tablechildren >
+						<label value="Importe Descuento:" style="font-weight:bold" />
+					</tablechildren>
+					<tablechildren >
+						<doublebox width="120px"
+							value="@load(vm.importeDescuento)" format="#,###"
+							style="text-align:right" readonly="true" />
 					</tablechildren>				
 					
 				</tablelayout>

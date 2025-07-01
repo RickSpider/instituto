@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -1429,6 +1430,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	private FinderModel proveedorFinder;
 	private FinderModel evaluacionTipoFinder;
 
+
 	@NotifyChange("*")
 	public void inicializarFinders() {
 		
@@ -1775,6 +1777,8 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			
 		}
 		
+		
+		
 		Empresa emp = this.reg.getObjectById(Empresa.class.getName(), 1);
 		
 		if (emp != null && emp.getPathLogo() != null) {
@@ -1788,6 +1792,191 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		}
 		
 		
+		
+	}
+	
+	@Command
+	public void generarPlanillaCalificacionesGeneralesModal(@BindingParam("cursoVigenteid") Long cursoVigenteid) {
+		
+		this.inicializarFinders();
+		
+		this.evaluacionTipoSelected = this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_EVALUACION_ORDINARIO);
+		this.cursoVigenteSelected = this.reg.getObjectById(CursoVigente.class.getName(), cursoVigenteid);
+		
+		modal = (Window) Executions.createComponents("/instituto/zul/administracion/generarPlanillaCalificacionesGeneralModal.zul",
+				this.mainComponent, null);
+		Selectors.wireComponents(modal, this, false);
+		modal.doModal();
+		
+	}
+	
+	@Command
+	public void planillaCalificacionesGenerales() {
+		
+		ReportExcel re = new ReportExcel("PlanillaCalificacionesCurso"+"cursoVigenteid");
+		
+		
+		List<String[]> titulos = new ArrayList<String[]>();
+		
+		Empresa empresa = this.reg.getObjectById(Empresa.class.getName(), 1);
+		String tituloLogo = empresa.getNombreFantasia()+"\n"
+				+ empresa.getExtra2();
+		
+		
+		String[] espacioBlanco = {""};
+		String[] t1 = {"Sede:",this.getCurrentSede().getSede()};
+		String[] t2 = {"Curso:", this.cursoVigenteSelected.getCurso().getCurso()};
+		String[] t3 = {"Fecha:"};
+		String[] t4 = {"Evaluacion:", this.evaluacionTipoSelected.getDescripcion()};
+		
+		titulos.add(espacioBlanco);
+		titulos.add(t1);
+		titulos.add(t2);
+		titulos.add(t3);
+		titulos.add(t4);
+		
+		
+		String sql = this.um.getSql("cursoVigente/cursoVigenteMateriaLista.sql").replace("?1", this.cursoVigenteSelected.getCursovigenteid()+"");
+		List<Object[]> result = this.reg.sqlNativo(sql);
+		
+		
+		int cantPeriodo = this.cursoVigenteSelected.getCurso().getPeriodoEducativo();
+		int cantMaterias = result.size();
+		List<String[]> headersDatos = new ArrayList<String[]>();
+		
+		int totalCol = 5+cantPeriodo+cantMaterias;
+		
+		String [] hd1 =  new String[totalCol];
+		hd1[0] = "Nro";
+		hd1[1] = "Nombre y Apellido";
+		hd1[2] = "C.I.";
+		hd1[3] = "Fecha de Inscripcion";
+		hd1[totalCol-1] = "Promedio General";
+		int mxp = cantMaterias/cantPeriodo;
+		int cantUs = 4;
+		for (int i = 0 ; i<cantMaterias; i++) {
+			hd1[cantUs++] = result.get(i)[2].toString();
+			if ((i+1)%mxp == 0) {
+				hd1[cantUs++] = "Promedio Periodo";
+				
+			}
+			
+		}
+		
+
+		headersDatos.add(hd1);
+		
+		String sql2  = this.um.getSql("cursoVigente/notasEvaluacion.sql").replace("?1", this.cursoVigenteSelected.getCursovigenteid()+"").replace("?2", this.evaluacionTipoSelected.getTipoid()+"");
+		
+		List<Object[]> datos = this.reg.sqlNativo(sql2);
+		
+		if (datos.size() == 0) {
+			
+			this.mensajeError("No hay Notas cargadas");
+			
+			return;
+			
+		}
+		
+		List<Object[]> datos2 = new ArrayList<>();
+		
+		int colus = 4;
+		Object[] dato = new Object[colus+cantMaterias];
+		Arrays.fill(dato, "0.0");
+		Long alumnoid = Long.parseLong(datos.get(0)[2].toString());
+
+		dato[1] = datos.get(0)[3].toString();
+		dato[2] = datos.get(0)[4].toString();
+		dato[3] = datos.get(0)[11].toString();
+		
+		
+		int datosSize = datos.size();
+		List<Object[]> datosAux = new ArrayList<>();
+		
+		for (int i = 0 ; i<datosSize; i++) {
+			
+			int orden = Integer.parseInt(datos.get(i)[8].toString());
+			long auxalumnoid = Long.parseLong(datos.get(i)[2].toString());
+			
+			if (alumnoid.longValue() != auxalumnoid) {
+				
+				
+				datosAux.add(dato);
+				
+				alumnoid = Long.parseLong(datos.get(i)[2].toString());
+				dato = new Object[colus+cantMaterias];
+				Arrays.fill(dato, "0.0");
+				
+				dato[1] = datos.get(i)[3].toString();
+				dato[2] = datos.get(i)[4].toString();
+				dato[3] = datos.get(i)[11].toString();
+				
+			}	
+			
+			dato[colus-1+orden] = datos.get(i)[10].toString();
+			
+		}
+		
+		datosAux.add(dato);
+		
+		DecimalFormatSymbols dfs = new DecimalFormatSymbols(new Locale("es", "ES"));
+		dfs.setDecimalSeparator('.');
+		DecimalFormat df = new DecimalFormat("#,##0.##",dfs);
+		
+		int auxsize = datosAux.size();
+		for (int i = 0; i<auxsize; i++){
+			
+			Object[] datoF = new Object[totalCol];
+			Arrays.fill(datoF, "0.0");
+			Object[] dat = datosAux.get(i);
+			datoF[0] = String.valueOf(i);
+			datoF[1] = dat[1];
+			datoF[2] = dat[2];
+			datoF[3] = dat[3];
+			
+			double sumTotal = 0.0;
+			double sumPeriodo = 0.0;
+			int periodo = 0;
+			
+			for (int j = 0; j<cantMaterias; j++){
+				
+				datoF[colus+j+periodo]= df.format(Double.parseDouble(dat[colus+j].toString()));			
+				sumPeriodo += Double.parseDouble(dat[colus+j].toString());
+				sumTotal += Double.parseDouble(dat[colus+j].toString());
+				
+				if ((j+1)%mxp == 0) {
+					periodo++;
+					datoF[colus+j+periodo] = df.format((Double)sumPeriodo/mxp);
+					sumPeriodo = 0.0;
+						
+				}
+			}
+			
+			double promedioAntesFinal = Double.parseDouble(datoF[datoF.length-2].toString());
+			
+			if (promedioAntesFinal == 0.0) {
+				
+				datoF[datoF.length-2] = df.format((Double) sumPeriodo/mxp);
+				
+			}
+			
+			
+			datoF[datoF.length-1] = df.format((Double) sumTotal/cantMaterias);
+			datos2.add(datoF);
+			
+		}		
+		
+		if (empresa != null && empresa.getPathLogo() != null) {
+			 
+			re.descargar(titulos, headersDatos, datos2, tituloLogo, empresa.getLogo() );
+			
+		}else {
+			
+			re.descargar(titulos, headersDatos, datos2);
+			
+		}
+		
+		this.modal.detach();
 		
 	}
 

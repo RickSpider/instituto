@@ -20,7 +20,13 @@ public class ParamsLocal extends Params {
 	public static final String SIGLA_IMPUESTO_IVA_10 = "IVA_10";
 	public static final String SIGLA_IMPUESTO_IVA_5 = "IVA_5";
 	public static final String SIGLA_IMPUESTO_IVA_EXENTO = "IVA_EXENTO";
+	
 	public static final String SIGLA_MATERIA = "MATERIA";
+	public static final String SIGLA_MATERIA_AULA = "MATERIA_AULA";
+	public static final String SIGLA_MATERIA_TALLER = "MATERIA_TALLER";
+	public static final String SIGLA_MATERIA_CUOTA = "MATERIA_CUOTA";
+	
+	
 	public static final String SIGLA_PERSONA = "PERSONA";
 	
 	public static final String SIGLA_ESTADO_CV_MATERIA = "ESTADO_CV_MATERIA";

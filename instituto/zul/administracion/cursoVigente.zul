@@ -164,6 +164,11 @@
 								<hlayout>
 								
 									<button iconSclass="z-icon-list-alt " 
+										class="doxa-button-violet"
+										onClick="@command('generarPlanillaCalificacionesGeneralesModal', cursoVigenteid=each.cursovigenteid)"
+										tooltiptext="Planilla de Calificaciones General"/>
+								
+									<button iconSclass="z-icon-list-alt " 
 										class="doxa-button-green"
 										onClick="@command('planillaCalificaciones', cursoVigenteid=each.cursovigenteid)"
 										tooltiptext="Planilla de Calificaciones"/>

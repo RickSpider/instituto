@@ -93,7 +93,7 @@
 									<button iconSclass=" z-icon-print "
 										style="background-color:green"
 										onClick="@command('generarReporteCaja', cajaid=each[0])"
-										tooltiptext="Cerrar Caja" disabled="@load(!vm.opEditarCaja)" />
+										tooltiptext="Reporte Caja" disabled="@load(!vm.opEditarCaja)" />
 
 
 									<button iconSclass="z-icon-lock"
