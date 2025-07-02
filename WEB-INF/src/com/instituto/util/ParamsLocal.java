@@ -281,5 +281,10 @@ public class ParamsLocal extends Params {
 	public static final String OP_CREAR_EVALUACION = "CrearEvaluacion";
 	public static final String OP_EDITAR_EVALUACION = "EditarEvaluacion";
 	public static final String OP_BORRAR_EVALUACION = "BorrarEvaluacion";
+	
+	// Total curso Reporte
+	
+	public static final String OP_CREAR_TOTALCURSOREPORTE = "CrearTotalCursoReporte";
+	
 
 }

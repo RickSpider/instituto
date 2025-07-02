@@ -1,6 +1,7 @@
 Select 
 alumnoid, 
-sum (pago+montodescuento) as importePagado
+sum (pago) as importePagado,
+sum (montodescuento) as importeDescuento
 from estadoscuentas
 where 
 alumnoid=?1 and cursovigenteid =?2 and inactivo = false

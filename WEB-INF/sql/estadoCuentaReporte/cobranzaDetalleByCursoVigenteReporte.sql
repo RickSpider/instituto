@@ -1,8 +1,9 @@
 select 
 c.fecha, 
 concat(ct.tipo,' ',c.comprobantenum) as descripcion, 
-cd.monto+cd.montodescuento, 
-cd.estadocuentaid 
+cd.monto,
+cd.estadocuentaid,
+cd.montodescuento 
 from cobranzasdetalles cd
 
 left join cobranzas c on c.cobranzaid = cd.cobranzaid

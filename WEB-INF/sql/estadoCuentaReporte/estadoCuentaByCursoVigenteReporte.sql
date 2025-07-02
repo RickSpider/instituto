@@ -10,11 +10,12 @@ cu.curso
 
 from estadoscuentas ec
 left join conceptos c on c.conceptoid = ec.conceptoid
-left join personas a on a.personaid = ec.alumnoid
+left join alumnos al on al.alumnoid = ec.alumnoid
+left join personas a on a.personaid = al.personaid
 left join cursosvigentes cv on cv.cursovigenteid = ec.cursovigenteid
 left join cursos cu on cu.cursoid = cv.cursoid
 where ec.inactivo = false 
-and alumnoid is not null
+and al.alumnoid is not null
 
 --1 and ec.cursovigenteid = ?1 
 --2 and ec.alumnoid = ?4
