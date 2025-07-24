@@ -15,6 +15,7 @@ import com.instituto.fe.model.ComprobanteElectronicoDetalle;
 import com.instituto.fe.model.CondicionOperacion;
 import com.instituto.fe.model.ConsultaCDC;
 import com.instituto.fe.model.Contribuyente;
+import com.instituto.fe.model.InfoComprasPublicas;
 import com.instituto.fe.model.Kude;
 import com.instituto.fe.model.Receptor;
 import com.instituto.fe.model.Tarjeta;
@@ -69,6 +70,33 @@ public class MetodosCE extends Control {
 		ce.setSucursal(sede.getSede());
 
 		Receptor r = new Receptor();
+		
+		if (cobranza.getPersona().isGubernamental()) {
+			
+			r.setTipoOperacion(3L);
+			
+			if (cobranza.getModalidad() != null
+					&& cobranza.getSecuencia() != null
+					&& cobranza.getEntidad() != null
+					&& cobranza.getAno() != null
+					&& cobranza.getFechaEmisionCP() != null) {
+				
+				InfoComprasPublicas icp = new InfoComprasPublicas();
+				
+				icp.setModalidad(cobranza.getModalidad());
+				icp.setEntidad(cobranza.getEntidad());
+				icp.setAno(cobranza.getAno());
+				icp.setSecuencia(cobranza.getSecuencia());
+				icp.setFechaEmision(cobranza.getFechaEmisionCP());
+				
+				ce.setInfComprasPublicas(icp);
+				
+			}
+			
+			
+			
+		}
+		
 		r.setRazonSocial(cobranza.getRazonSocial());
 
 		if (cobranza.getRuc().contains("-")) {
@@ -207,6 +235,14 @@ public class MetodosCE extends Control {
 				det.setAfectacionTributaria(1l);
 				det.setProporcionIVA(100);
 				det.setTasaIVA(10);
+			}
+			
+			if (cdx.getDncpG() != null && cdx.getDncpE() != null) {
+				
+				det.setDncpG(cdx.getDncpG());
+				det.setDncpE(cdx.getDncpE());
+				
+				
 			}
 
 			ce.getDetalles().add(det);

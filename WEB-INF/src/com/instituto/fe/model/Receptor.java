@@ -23,6 +23,8 @@ public class Receptor {
 	private Long departamento;
 	private Long distrito;
 	private Long ciudad;
+	
+	private Long tipoOperacion;
 
 	public Receptor() {
 	}
@@ -165,6 +167,16 @@ public class Receptor {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	public Long getTipoOperacion() {
+		return tipoOperacion;
+	}
+
+	public void setTipoOperacion(Long tipoOperacion) {
+		this.tipoOperacion = tipoOperacion;
+	}
+	
+	
 
 //	public static void main(String[] args) {
 //		Receptor r = new Receptor();

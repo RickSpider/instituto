@@ -1853,6 +1853,9 @@ public class CobranzaServicioVM extends TemplateViewModelLocal {
 	}
 
 	// =====================================================================
+	
+	
+	
 
 	public Cobranza getCobranzaSelected() {
 		return cobranzaSelected;

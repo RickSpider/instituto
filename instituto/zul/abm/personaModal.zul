@@ -209,6 +209,8 @@
 
 				</hlayout>
 				
+				
+				
 				<hlayout>
 					<hbox width="130px">
 						<label value="Razon Social: "
@@ -632,6 +634,16 @@
 							</vbox>
 						</bandpopup>
 					</bandbox>
+					
+					<hlayout>
+						<hbox width="130px">
+							<label value="Gubernamental: "
+								style="font-weight:bold" />
+						</hbox>
+						<checkbox
+						checked ="@bind(vm.personaSelected.gubernamental)"/>
+					</hlayout>
+				
 
 
 				</hlayout>

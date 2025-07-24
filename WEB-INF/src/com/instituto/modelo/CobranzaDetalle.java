@@ -36,6 +36,9 @@ public class CobranzaDetalle extends Modelo implements Serializable {
 
 	private String descripcion;
 	
+	private String dncpG;
+	private String dncpE;
+	
 	@ColumnDefault("0.0")
 	private double exento = 0;
 	@ColumnDefault("0.0")
@@ -147,5 +150,23 @@ public class CobranzaDetalle extends Modelo implements Serializable {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
+
+	public String getDncpG() {
+		return dncpG;
+	}
+
+	public void setDncpG(String dncpG) {
+		this.dncpG = dncpG;
+	}
+
+	public String getDncpE() {
+		return dncpE;
+	}
+
+	public void setDncpE(String dncpE) {
+		this.dncpE = dncpE;
+	}
+	
+	
 	
 }

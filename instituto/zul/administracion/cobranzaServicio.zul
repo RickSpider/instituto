@@ -149,6 +149,9 @@
 						
 						 
 						<listheader label="Pago" align="right" />
+						
+						<listheader label="DNCPG" visible="@load(vm.cobranzaSelected.persona.gubernamental)"/>
+						<listheader label="DNCPE" visible="@load(vm.cobranzaSelected.persona.gubernamental)"/>
 
 
 
@@ -160,7 +163,7 @@
 
 					<auxhead>
 
-						<auxheader colspan="6" align="center">
+						<auxheader colspan="8" align="center">
 							<button label="Agregar Detalle Servicio"
 								iconSclass=" z-icon-plus"
 								onClick="@command('modalCobranzaDetalleServicio')"
@@ -196,6 +199,9 @@
 	 					<auxheader label="Saldo" align="center" />  
 	 
 						<auxheader label="Pago" align="center" />
+						
+						<auxheader label="DNCPG" align="center" visible="@load(vm.cobranzaSelected.persona.gubernamental)"/>
+						<auxheader label="DNCPE" align="center" visible="@load(vm.cobranzaSelected.persona.gubernamental)"/>
 
 						<auxheader />
 
@@ -230,6 +236,18 @@
 									readonly="@load(vm.disableCobranza)" style="text-align:right"
 									onChange="@command('onChangePago', detalle=each)" hflex="1" visible="@load(!vm.condicionHabilitada)"/>
 									
+							</listcell>
+							
+							<listcell>
+							
+								<textbox value="@bind(each.dncpG)" maxlength="8" constraint="/[0-9]*/: Solo números" hflex="1" style="text-align:right"/>
+							
+							</listcell>
+							
+							<listcell>
+							
+								<textbox value="@bind(each.dncpE)" maxlength="4" constraint="/[0-9]*/: Solo números" hflex="1" style="text-align:right"/>
+							
 							</listcell>
 
 							<listcell>
@@ -362,13 +380,62 @@
 			</vlayout>
 
 			<vlayout vflex="2">
-
-
-
-				<tablelayout columns="2">
+			
+				<tablelayout columns="2" visible="@load(vm.cobranzaSelected.persona.gubernamental)">
+				
+				<tablechildren colspan="2" >
+						<label value="Inf. Compras Publicas"
+							style="font-weight: bold;" />
+					</tablechildren>
 
 					<tablechildren>
-						<label value="Total:" />
+						<label value="Modalidad:" style="font-weight:bold" />
+					</tablechildren>
+					<tablechildren>
+						<textbox width="100px" value="@bind(vm.cobranzaSelected.modalidad)"/>
+					</tablechildren>
+					
+					<tablechildren>
+						<label value="Entidad:" style="font-weight:bold" />
+					</tablechildren>
+					<tablechildren>
+						<textbox width="100px" value="@bind(vm.cobranzaSelected.entidad)"/>
+					</tablechildren>
+					
+					<tablechildren>
+						<label value="Año" style="font-weight:bold" />
+					</tablechildren>
+					<tablechildren>
+						<textbox width="100px" value="@bind(vm.cobranzaSelected.ano)"/>
+					</tablechildren>
+					
+					<tablechildren>
+						<label value="secuencia:" style="font-weight:bold" />
+					</tablechildren>
+					<tablechildren>
+						<textbox width="100px" value="@bind(vm.cobranzaSelected.secuencia)"/>
+					</tablechildren>
+					
+					<tablechildren>
+						<label value="Fecha Emision:" style="font-weight:bold" />
+					</tablechildren>
+					<tablechildren>
+						<datebox width="100px" value="@bind(vm.cobranzaSelected.fechaEmisionCP)"/>
+					</tablechildren>
+
+				</tablelayout>
+
+
+
+				<tablelayout columns="2" >
+				
+					<tablechildren colspan="2">
+						<label value="Resumen"
+							style="font-weight: bold;" />
+					</tablechildren>
+
+					<tablechildren>
+						<label value="Total:" style="font-weight:bold" />
 					</tablechildren>
 					<tablechildren>
 						<doublebox value="@load(vm.totalDetalle)"
@@ -377,7 +444,7 @@
 					</tablechildren>
 
 					<tablechildren>
-						<label value="Pago:" />
+						<label value="Pago:" style="font-weight:bold" />
 					</tablechildren>
 					<tablechildren>
 						<doublebox value="@load(vm.totalDetalleCobro)"
@@ -386,7 +453,7 @@
 					</tablechildren>
 
 					<tablechildren>
-						<label value="Vuelto:" />
+						<label value="Vuelto:" style="font-weight:bold" />
 					</tablechildren>
 					<tablechildren>
 						<doublebox value="@load(vm.totalesDiferencia)"
@@ -399,7 +466,7 @@
 					</tablechildren>
 
 					<tablechildren>
-						<label value="EXENTA" />
+						<label value="EXENTA" style="font-weight:bold"  />
 					</tablechildren>
 					<tablechildren>
 						<doublebox value="@load(vm.exento)"
@@ -407,7 +474,7 @@
 					</tablechildren>
 
 					<tablechildren>
-						<label value="IVA5" />
+						<label value="IVA5" style="font-weight:bold" />
 					</tablechildren>
 					<tablechildren>
 						<doublebox value="@load(vm.iva5)" format="#,###"
@@ -415,7 +482,7 @@
 					</tablechildren>
 
 					<tablechildren>
-						<label value="IVA10" />
+						<label value="IVA10" style="font-weight:bold" />
 					</tablechildren>
 					<tablechildren>
 						<doublebox value="@load(vm.iva10)"

@@ -68,6 +68,8 @@ public class ComprobanteElectronico {
 	private String cdc;
 
 	private String motivoEvento;
+	
+	private InfoComprasPublicas infComprasPublicas;
 
 	public DocAsociado getDocAsociadoObject(){
 		DocAsociado out = this.getDocAsociados().get(0);
@@ -255,6 +257,14 @@ public class ComprobanteElectronico {
 
 	public void setTipoTransaccion(Long tipoTransaccion) {
 		this.tipoTransaccion = tipoTransaccion;
+	}
+
+	public InfoComprasPublicas getInfComprasPublicas() {
+		return infComprasPublicas;
+	}
+
+	public void setInfComprasPublicas(InfoComprasPublicas infComprasPublicas) {
+		this.infComprasPublicas = infComprasPublicas;
 	}
 
 	

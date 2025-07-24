@@ -16,8 +16,6 @@ public class ComprobanteElectronicoDetalle {
 	private Long itemUndMedida;
 	private String itemUndMedidaStr;
 
-	private double descuento;
-
 	private double cantidad;
 	private double precioUnitario;
 
@@ -28,6 +26,16 @@ public class ComprobanteElectronicoDetalle {
 	private Long afectacionTributaria;
 	private int proporcionIVA;
 	private int tasaIVA;
+	
+	   
+    private double descuento;
+    private double descuentoGlobal;
+    
+    private double anticipo;
+    private double anticipoGlobal;
+    
+    private String dncpG;
+    private String dncpE;
 
 	public String getItemCodigo() {
 		return itemCodigo;
@@ -140,5 +148,47 @@ public class ComprobanteElectronicoDetalle {
 	public void setItemUndMedidaStr(String itemUndMedidaStr) {
 		this.itemUndMedidaStr = itemUndMedidaStr;
 	}
+
+	public double getDescuentoGlobal() {
+		return descuentoGlobal;
+	}
+
+	public void setDescuentoGlobal(double descuentoGlobal) {
+		this.descuentoGlobal = descuentoGlobal;
+	}
+
+	public double getAnticipo() {
+		return anticipo;
+	}
+
+	public void setAnticipo(double anticipo) {
+		this.anticipo = anticipo;
+	}
+
+	public double getAnticipoGlobal() {
+		return anticipoGlobal;
+	}
+
+	public void setAnticipoGlobal(double anticipoGlobal) {
+		this.anticipoGlobal = anticipoGlobal;
+	}
+
+	public String getDncpG() {
+		return dncpG;
+	}
+
+	public void setDncpG(String dncpG) {
+		this.dncpG = dncpG;
+	}
+
+	public String getDncpE() {
+		return dncpE;
+	}
+
+	public void setDncpE(String dncpE) {
+		this.dncpE = dncpE;
+	}
+	
+	
 
 }

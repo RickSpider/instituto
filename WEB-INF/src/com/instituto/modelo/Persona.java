@@ -14,6 +14,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import com.doxacore.modelo.Ciudad;
 import com.doxacore.modelo.Modelo;
 import com.doxacore.modelo.Pais;
@@ -78,6 +80,9 @@ public class Persona extends Modelo implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "institucionid")
 	private Institucion institucion;
+	
+	@Column(columnDefinition = "boolean default false")
+	private boolean gubernamental;
 	
 	@Override
 	public Object[] getArrayObjectDatos() {
@@ -259,6 +264,15 @@ public class Persona extends Modelo implements Serializable {
 	public void setRazonSocial(String razonSocial) {
 		this.razonSocial = razonSocial;
 	}
+
+	public boolean isGubernamental() {
+		return gubernamental;
+	}
+
+	public void setGubernamental(boolean gubernamental) {
+		this.gubernamental = gubernamental;
+	}
+
 	
 	
 

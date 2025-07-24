@@ -91,6 +91,14 @@ public class Cobranza extends Modelo implements Serializable {
 	@ColumnDefault("false")
 	private boolean comprobanteElectronico;
 	
+	 
+	//Secion compras publicas
+	 private String modalidad;
+	 private Long entidad;
+	 private Long ano;
+	 private Long secuencia;
+	 private Date fechaEmisionCP;
+	
 	//seccion facturacion electronica
 	
 	/*@Column(columnDefinition="text")
@@ -355,6 +363,48 @@ public class Cobranza extends Modelo implements Serializable {
 	public void setComprobanteElectronico(boolean comprobanteElectronico) {
 		this.comprobanteElectronico = comprobanteElectronico;
 	}
+
+	public String getModalidad() {
+		return modalidad;
+	}
+
+	public void setModalidad(String modalidad) {
+		this.modalidad = modalidad;
+	}
+
+	public Long getEntidad() {
+		return entidad;
+	}
+
+	public void setEntidad(Long entidad) {
+		this.entidad = entidad;
+	}
+
+	public Long getAno() {
+		return ano;
+	}
+
+	public void setAno(Long ano) {
+		this.ano = ano;
+	}
+
+	public Long getSecuencia() {
+		return secuencia;
+	}
+
+	public void setSecuencia(Long secuencia) {
+		this.secuencia = secuencia;
+	}
+
+	public Date getFechaEmisionCP() {
+		return fechaEmisionCP;
+	}
+
+	public void setFechaEmisionCP(Date fechaEmisionCP) {
+		this.fechaEmisionCP = fechaEmisionCP;
+	}
+
+
 
 	
 
