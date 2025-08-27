@@ -3,7 +3,6 @@ package com.instituto.fe.util;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 import com.doxacore.util.Control;
@@ -71,7 +70,7 @@ public class MetodosCE extends Control {
 
 		Receptor r = new Receptor();
 		
-		if (cobranza.getPersona().isGubernamental()) {
+		if (cobranza.getPersona() != null && cobranza.getPersona().isGubernamental()) {
 			
 			r.setTipoOperacion(3L);
 			
