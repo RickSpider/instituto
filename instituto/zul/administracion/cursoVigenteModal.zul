@@ -82,6 +82,15 @@
 					value="@bind(vm.cursoVigenteSelected.sede.sede)" width="250px"
 					readonly="true" />
 			</hlayout>
+			
+			<hlayout>
+				<hbox width="130px">
+					<label value="Inscripcion Online: " style="font-weight:bold" />
+				</hbox>
+				
+				<checkbox checked="@bind(vm.cursoVigenteSelected.inscripcionOnline)" mold="switch"/>
+				
+			</hlayout>
 
 			<hlayout>
 				<hbox width="130px">

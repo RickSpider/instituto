@@ -308,7 +308,7 @@ public class CobrosVM extends TemplateViewModelLocal{
 		
 		ReporteKudePDF rk = new ReporteKudePDF(id, "kude"+id);
 		
-		esm.sent(email, "Facturacion Electronica", "El archivo adjunto es una representacion grafica del Documento Electronico.", rk.getPDF());
+		esm.send(email, "Facturacion Electronica", "El archivo adjunto es una representacion grafica del Documento Electronico.", rk.getPDF());
 		
 	}
 

@@ -274,7 +274,7 @@ public class AlumnoVM extends TemplateViewModelLocal {
 
 		};
 
-		this.mensajeEliminar("La Alumno sera eliminada. \n Continuar?", event);
+		this.mensajeEliminar("Se eliminara el Alumno. \n Continuar?", event);
 	}
 
 	private void borrarAlumno(Alumno alumno) {

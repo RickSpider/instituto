@@ -1,0 +1,477 @@
+<?page title="Inscripcion Online" contentType="text/html;charset=UTF-8"?>
+
+<?link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous"?>
+
+<?script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"?>
+<?script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"?>
+
+<?link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"?>
+
+<?link rel="stylesheet" href="/noLogin/css/inscripcion.css" ?>
+
+<zk xmlns:h="http://www.w3.org/1999/xhtml">
+
+	<h:head>
+		<h:style>
+			.logo { position: absolute; top: 10px; left: 10px; width:
+			100%; max-width: 150px; height: auto; }
+
+			@media (max-width: 600px) { .logo { position: static;
+			display: block; margin: 0 auto 10px auto; max-width: 100px;
+			} }
+			
+			.my-searchbox .z-dropdown {
+			    left: 50% !important;
+			    transform: translateX(-50%) !important;
+			}
+
+		
+
+		</h:style>
+	</h:head>
+
+
+	<h:div class="container"
+		viewModel="@id('vm') @init('com.instituto.noLogin.InscripcionOnlineVM')"
+		apply="org.zkoss.bind.BindComposer">
+		<h:div class="form-container">
+			<!-- Header -->
+
+
+
+			<h:div class="form-header position-relative  text-center">
+				<image id="image" content="@load(vm.logo)" class="logo" />
+				<h:h2 class="text-center">
+
+					Ficha de Inscripcion
+				</h:h2>
+				<h:p>Complete todos los campos para registrarse</h:p>
+			</h:div>
+
+			<!-- Form Body -->
+			<h:div class="form-body"
+				visible="@load(vm.visibleBodyForm)">
+				<!-- Alert Info -->
+				<h:div class="alert alert-info" role="alert">
+					<h:i class="fas fa-info-circle mr-2"></h:i>
+					<h:strong>Información importante:</h:strong>
+					Todos los campos marcados con asterisco (*) son
+					obligatorios. Asegúrese de proporcionar información
+					precisa para completar su inscripción.
+				</h:div>
+
+				<div>
+
+
+					<h:div class="section-title">
+						<h:i class="fas fa-user mr-2"></h:i>
+						Curso
+					</h:div>
+
+					<h:div class="input-group">
+						<h:div class="input-group-prepend">
+							<h:span class="input-group-text">
+								<h:i
+									class="fas fa-graduation-cap mr-3">
+								</h:i>
+							</h:span>
+						</h:div>
+						<searchbox 
+						    
+							model="@init(vm.cursosVigentesModel)" height="35px"
+							selectedItem="@bind(vm.cursoVigenteSelected)" autoclose="true"
+							>
+							
+							
+							<template name="model">
+
+								
+									<html>
+										<![CDATA[
+										
+										<span style="font-weight:bold;">
+										${each.nombre} </span> 
+										<span style="font-size:0.85em;
+										color:#666;"> ${each.dias} </span>
+										
+										]]>
+									</html>
+
+							
+							</template>
+
+						</searchbox>
+
+
+					</h:div>
+
+
+
+
+					<h:div class="section-title">
+						<h:i class="fas fa-user mr-2"></h:i>
+						Información Personal
+					</h:div>
+
+					<h:div class="row">
+						<h:div class="col-md-6">
+							<h:div class="input-group">
+								<h:label>
+									Cédula de Identidad (CI)
+									<h:span class="required">*</h:span>
+								</h:label>
+								<h:div class="input-group">
+
+									<h:div
+										class="input-group-prepend">
+										<h:span
+											class="input-group-text">
+											<h:i
+												class="fas fa-id-card">
+											</h:i>
+										</h:span>
+									</h:div>
+									<textbox class="form-control"
+										value="@bind(vm.inscriptoOnlineSelected.ci)"
+										constraint="/^[0-9]*$/ : Solo se permiten números Ej:1234567"
+										onChange="@command('buscarCI')" readonly="@load(vm.readOnly)" />
+								</h:div>
+							</h:div>
+
+						</h:div>
+
+						<h:div class="col-md-6">
+
+							<h:div class="input-group">
+								<h:label>
+									Correo
+									<h:span class="required">*</h:span>
+								</h:label>
+								<h:div class="input-group">
+
+									<h:div
+										class="input-group-prepend">
+										<h:span
+											class="input-group-text">
+											<h:i
+												class="fas fa-envelope">
+											</h:i>
+										</h:span>
+									</h:div>
+									<textbox class="form-control"
+										value="@bind(vm.inscriptoOnlineSelected.email)"
+										 />
+								</h:div>
+							</h:div>
+
+						</h:div>
+
+
+						<h:div class="col-md-6">
+
+							<h:div>
+								<h:label>
+									Nombre
+									<h:span class="required">*</h:span>
+								</h:label>
+								<h:div class="input-group">
+
+									<h:div
+										class="input-group-prepend">
+										<h:span
+											class="input-group-text">
+											<h:i class="fas fa-user"></h:i>
+										</h:span>
+									</h:div>
+									<textbox class="form-control"
+										value="@bind(vm.inscriptoOnlineSelected.nombre)"
+										readonly="@load(vm.readOnly)" />
+								</h:div>
+							</h:div>
+
+						</h:div>
+
+						<h:div class="col-md-6">
+
+							<h:div class="input-group">
+								<h:label>
+									Apellido
+									<h:span class="required">*</h:span>
+								</h:label>
+								<h:div class="input-group">
+
+									<h:div
+										class="input-group-prepend">
+										<h:span
+											class="input-group-text">
+											<h:i class="fas fa-user"></h:i>
+										</h:span>
+									</h:div>
+									<textbox class="form-control"
+										value="@bind(vm.inscriptoOnlineSelected.apellido)"
+										readonly="@load(vm.readOnly)" />
+								</h:div>
+							</h:div>
+
+						</h:div>
+
+						<h:div class="col-md-6">
+
+							<h:div class="input-group">
+								<h:label>
+									Nacionalidad
+									<h:span class="required">*</h:span>
+								</h:label>
+								<h:div class="input-group">
+
+									<h:div
+										class="input-group-prepend">
+										<h:span
+											class="input-group-text">
+											<h:i
+												class="fa-solid fa-globe">
+											</h:i>
+										</h:span>
+									</h:div>
+									<searchbox
+										model="@init(vm.nacionalidadModel)" height="35px"
+										selectedItem="@bind(vm.nacionalidadSelected)" autoclose="true"
+										style="text-align:center;" disabled="@load(vm.readOnly)">
+
+										<template name="model">
+
+											${each.id} -
+											${each.gentilicio}
+
+
+										</template>
+
+									</searchbox>
+								</h:div>
+							</h:div>
+
+						</h:div>
+
+						<h:div class="col-md-6">
+
+							<h:div class="input-group">
+								<h:label>
+									Ciudad
+									<h:span class="required">*</h:span>
+								</h:label>
+								<h:div class="input-group">
+
+									<h:div
+										class="input-group-prepend">
+										<h:span
+											class="input-group-text">
+											<h:i
+												class="fa-solid fa-city">
+											</h:i>
+										</h:span>
+									</h:div>
+									<searchbox
+										model="@init(vm.ciudadModel)" height="35px"
+										selectedItem="@bind(vm.ciudadSelected)" autoclose="true"
+										style="text-align:center;" >
+
+										<template name="model">
+
+											${each.id} -
+											${each.departamento} -
+											${each.ciudad}
+
+										</template>
+
+									</searchbox>
+								</h:div>
+							</h:div>
+
+						</h:div>
+
+
+						<h:div class="col-md-6">
+
+							<h:div class="input-group">
+								<h:label>
+									Telefono
+									<h:span class="required">*</h:span>
+								</h:label>
+								<h:div class="input-group">
+
+									<h:div
+										class="input-group-prepend">
+										<h:span
+											class="input-group-text">
+											<h:i class="fas fa-phone"></h:i>
+										</h:span>
+									</h:div>
+									<textbox class="form-control"
+										value="@bind(vm.inscriptoOnlineSelected.telefono)"
+										 />
+								</h:div>
+							</h:div>
+
+						</h:div>
+
+						<h:div class="col-md-6" colspan="2">
+
+							<h:div class="input-group" hflex="1">
+
+								<h:label>
+									Direccion
+									<h:span class="required">*</h:span>
+								</h:label>
+
+								<h:div class="input-group">
+
+									<h:div
+										class="input-group-prepend">
+										<h:span
+											class="input-group-text">
+											<h:i
+												class="fas fa-map-marker-alt">
+											</h:i>
+										</h:span>
+									</h:div>
+									<textbox class="form-control"
+										value="@bind(vm.inscriptoOnlineSelected.direccion)" rows="2"
+										/>
+
+								</h:div>
+
+
+								<div hflex="1" /><!-- Con esto hace que el div de arriba agarre todo el espacio necesario -->
+
+							</h:div>
+
+						</h:div>
+
+					</h:div>
+
+
+
+					<h:div class="section-title">
+						<h:i class="fas fa-user mr-2"></h:i>
+						Información de Facturación
+					</h:div>
+
+
+					<h:div class="row">
+						<h:div class="col-md-6">
+
+							<h:div class="input-group">
+								<h:label>RUC</h:label>
+								<h:div class="input-group">
+
+									<h:div
+										class="input-group-prepend">
+										<h:span
+											class="input-group-text">
+											<h:i
+												class="fas fa-file-alt">
+											</h:i>
+										</h:span>
+									</h:div>
+									<textbox class="form-control"
+										value="@bind(vm.inscriptoOnlineSelected.ruc)"
+										 />
+								</h:div>
+							</h:div>
+
+						</h:div>
+
+						<h:div class="col-md-6">
+
+							<h:div class="input-group">
+								<h:label>Razon Social</h:label>
+								<h:div class="input-group">
+
+									<h:div
+										class="input-group-prepend">
+										<h:span
+											class="input-group-text">
+											<h:i
+												class="fas fa-file-alt">
+											</h:i>
+										</h:span>
+									</h:div>
+									<textbox class="form-control"
+										value="@bind(vm.inscriptoOnlineSelected.razonSocial)"
+										 />
+								</h:div>
+							</h:div>
+
+						</h:div>
+
+					</h:div>
+
+
+					<h:br />
+
+					<div xmlns:c="client" xmlns:x="xhtml">
+
+						<script
+							src="https://www.google.com/recaptcha/api.js" defer="true" />
+						<script>
+
+
+
+
+
+							
+							<![CDATA[ function afterValidate(response){
+							zkbind.$('$recaptcha').command('verify',
+							{"response":response}); } ]]>
+							
+							
+							
+							
+							
+
+						</script>
+
+						<x:div id="recaptcha" class="g-recaptcha"
+							data-sitekey="6LeHmqErAAAAAN0ov7HICQKCUDxSGGfWfcB6Qm1M"
+							data-callback="afterValidate" />
+
+					</div>
+
+					<button label="Enviar"
+						onClick="@command('guardarIncripcion')"
+						disabled="@load(vm.disabledEnviar)" 
+						sclass=" btn-submit"
+						style="font-size:18px; padding:12px 20px;"/>
+
+				</div>
+
+			</h:div>
+
+			<h:div class="form-body"
+				visible="@load(!vm.visibleBodyForm)">
+				<!-- Alert Info -->
+				<h:div class="alert alert-info" role="alert">
+					<h:i class="fas fa-info-circle mr-2"></h:i>
+					<h:strong>Inscripcion Registrada:</h:strong>
+					Se envio un correo al mail indicado, para confirmar
+					la inscripcion, por favor verifica tu correo, si el
+					mail no se encuentra en la Bandeja de Entrada,
+					por favor verifica la carpeta de spam.
+				</h:div>
+			</h:div>
+
+		</h:div>
+
+
+
+
+
+
+	</h:div>
+
+
+
+
+
+</zk>
+

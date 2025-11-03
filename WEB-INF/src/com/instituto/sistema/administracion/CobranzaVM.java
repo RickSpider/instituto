@@ -1019,8 +1019,8 @@ public class CobranzaVM extends TemplateViewModelLocal {
 
 				}
 
-				if (buscarSelectedAlumno.getPersona().getRuc() != null
-						&& buscarSelectedAlumno.getPersona().getRuc().length() > 0) {
+				if (buscarSelectedAlumno.getPersonaFacturacion().getRuc() != null
+						&& buscarSelectedAlumno.getPersonaFacturacion().getRuc().length() > 0) {
 
 					this.cobranzaSelected.setRuc(buscarSelectedAlumno.getPersonaFacturacion().getRuc());
 
@@ -1714,7 +1714,7 @@ public class CobranzaVM extends TemplateViewModelLocal {
 		
 		System.out.println("enviando mensaje");
 		
-		esm.sent(email, "Facturacion Electronica", "El archivo adjunto es una representacion grafica del Documento Electronico.", pdf);
+		esm.send(email, "Facturacion Electronica", "El archivo adjunto es una representacion grafica del Documento Electronico.", pdf);
 		
 		System.out.println("mensaje enviado");
 		

@@ -217,8 +217,8 @@
 							style="font-weight:bold" />
 					</hbox>
 					<textbox
-						value="@load(vm.personaSelected.razonSocial) @save(vm.personaSelected.razonSocial, before='guardar')"
-						width="200px" constraint="no empty: Es campo obligatorio." />
+						value="@bind(vm.personaSelected.razonSocial)"
+						width="200px" />
 				</hlayout>
 
 			</hlayout>

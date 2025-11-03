@@ -24,7 +24,6 @@ import com.instituto.modelo.CursoConcepto;
 import com.instituto.modelo.CursoMateria;
 import com.instituto.modelo.Escala;
 import com.instituto.modelo.Materia;
-import com.instituto.modelo.Rubro;
 
 
 public class CursoVM extends TemplateViewModel {
@@ -417,13 +416,12 @@ public class CursoVM extends TemplateViewModel {
 	}
 
 	@Command
-	@NotifyChange("*")
 	public void onSelectetItemFinder(@BindingParam("id") Long id, @BindingParam("finder") String finder) {
 
 		if (finder.compareTo(this.escalaFinder.getNameFinder()) == 0) {
 
 			this.cursoSelected.setEscala(this.reg.getObjectById(Escala.class.getName(), id));
-
+			BindUtils.postNotifyChange(null, null, this.cursoSelected, "escala");
 			return;
 		}
 

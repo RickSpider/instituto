@@ -15,6 +15,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import com.doxacore.modelo.Modelo;
 
 @Entity
@@ -47,6 +49,9 @@ public class CursoVigente extends Modelo implements Serializable{
 	
 	// do;lu;ma;mi;ju;vi;sa
 	private String dias = "false;false;false;false;false;false;false";
+	
+	@ColumnDefault("false")
+	private boolean inscripcionOnline;
 	
 
 	public static long getSerialversionuid() {
@@ -102,6 +107,18 @@ public class CursoVigente extends Modelo implements Serializable{
 		this.sede = sede;
 	}
 	
+	
+	
+	public boolean isInscripcionOnline() {
+		return inscripcionOnline;
+	}
+
+
+	public void setInscripcionOnline(boolean inscripcionOnline) {
+		this.inscripcionOnline = inscripcionOnline;
+	}
+
+
 	@Override
 	public Object[] getArrayObjectDatos() {
 		
@@ -136,6 +153,7 @@ public class CursoVigente extends Modelo implements Serializable{
 		return bDias;
 		
 	}
+	
 	
 	
 }

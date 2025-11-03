@@ -1,0 +1,95 @@
+<?page title="inscriptoOnlineModal" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="InscriptoOnline Crear/Ver/Editar" border="normal"
+		position="center,center" closable="true" mode="modal"
+		action="show: slideDown;hide: slideUp">
+
+		<vlayout>
+
+			<tablelayout columns="2">
+			
+				<tablechildren>
+					<label value="Curso:" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<textbox value="@load(vm.inscriptoOnlineSelected.cursoVigente.curso.curso)" readonly="true" />
+				</tablechildren>
+				
+				<tablechildren>
+					<label value="Fecha Inscripcion:" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<textbox value="@load(vm.inscriptoOnlineSelected.fechaInscripcion)" readonly="true" />
+				</tablechildren>
+				
+				<tablechildren>
+					<label value="Nombre:" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<textbox value="@load(vm.inscriptoOnlineSelected.nombre)" readonly="true" />
+				</tablechildren>
+				
+				<tablechildren>
+					<label value="Apellido:" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<textbox value="@load(vm.inscriptoOnlineSelected.apellido)" readonly="true" />
+				</tablechildren>
+				
+				<tablechildren>
+					<label value="Documento #:" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<textbox value="@load(vm.inscriptoOnlineSelected.ci)" readonly="true" />
+				</tablechildren>
+				
+				<tablechildren>
+					<label value="Telefono:" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<textbox value="@bind(vm.inscriptoOnlineSelected.telefono)" readonly="@load(vm.inscriptoOnlineSelected.emailVerificado)"/>
+				</tablechildren>
+				
+				<tablechildren>
+					<label value="Email:" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<textbox value="@bind(vm.inscriptoOnlineSelected.email)" readonly="@load(vm.inscriptoOnlineSelected.emailVerificado)"/>
+				</tablechildren>
+				
+				<tablechildren>
+					<label value="Ciudad:" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<textbox value="@load(vm.inscriptoOnlineSelected.ciudad.ciudad)" readonly="true" />
+				</tablechildren>
+				
+				<tablechildren>
+					<label value="Direccion:" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<textbox value="@load(vm.inscriptoOnlineSelected.direccion)" readonly="true" />
+				</tablechildren>
+				
+				<tablechildren>
+					<label value="Verificado" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<checkbox checked="@load(vm.inscriptoOnlineSelected.emailVerificado)" disabled="true"/>
+				</tablechildren>
+			
+			</tablelayout>
+
+			<space height="10px" />
+
+			<hlayout>
+
+				<button label="Aceptar" onClick="@command('guardar')"/>
+
+			</hlayout>
+
+		</vlayout>
+
+
+	</window>
+</zk>

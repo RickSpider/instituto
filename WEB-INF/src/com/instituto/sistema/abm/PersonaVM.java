@@ -129,11 +129,22 @@ public class PersonaVM extends TemplateViewModel {
 			this.personaSelected = this.reg.getObjectById(Persona.class.getName(), personaid);
 			this.buscarDocumento = this.personaSelected.getDocumentoTipo().getTipo();
 			this.buscarEstadoCivil = "";
-			this.buscarPais = this.personaSelected.getNacionalidad().getGentilicio();
-			this.buscarCiudad = this.personaSelected.getCiudad().getCiudad();			
+			this.buscarPais = "";
+			this.buscarCiudad = "";			
 			this.buscarGradoAcademico = "";
 			this.buscarInstitucion = "";
 			this.buscarPersonaTipo = "";
+			
+			if (this.personaSelected.getCiudad().getCiudad() != null) {
+				
+				this.buscarCiudad = this.personaSelected.getCiudad().getCiudad();
+			}
+			
+			if(this.personaSelected.getNacionalidad() != null) {
+				
+				this.buscarPais = this.personaSelected.getNacionalidad().getGentilicio();
+				
+			}
 
 			if (this.personaSelected.getEstadoCivil() != null) {
 				

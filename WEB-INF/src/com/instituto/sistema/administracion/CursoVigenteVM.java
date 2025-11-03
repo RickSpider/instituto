@@ -1813,7 +1813,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	@Command
 	public void planillaCalificacionesGenerales() {
 		
-		ReportExcel re = new ReportExcel("PlanillaCalificacionesCurso"+"cursoVigenteid");
+		ReportExcel re = new ReportExcel("PlanillaCalificacionesCursoVigente_"+this.cursoVigenteSelected.getCursovigenteid());
 		
 		
 		List<String[]> titulos = new ArrayList<String[]>();
@@ -1837,6 +1837,8 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		
 		
 		String sql = this.um.getSql("cursoVigente/cursoVigenteMateriaLista.sql").replace("?1", this.cursoVigenteSelected.getCursovigenteid()+"");
+		
+	
 		List<Object[]> result = this.reg.sqlNativo(sql);
 		
 		

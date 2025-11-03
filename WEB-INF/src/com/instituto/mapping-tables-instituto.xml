@@ -47,3 +47,5 @@
 <mapping class="com.instituto.modelo.EscalaDetalle" />
 <mapping class="com.instituto.modelo.Evaluacion" />
 <mapping class="com.instituto.modelo.EvaluacionDetalle" />
+<mapping class="com.instituto.modelo.EvaluacionDetalle" />
+<mapping class="com.instituto.modelo.InscriptoOnline" />

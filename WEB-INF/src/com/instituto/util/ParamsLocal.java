@@ -15,11 +15,18 @@ public class ParamsLocal extends Params {
 
 	// SIGLA TIPOTIPOS
 	public static final String SIGLA_ESTADO_CIVIL = "ESTADO_CIVIL";
-	public static final String SIGLA_DOCUMENTO = "DOCUMENTO";
+	
 	public static final String SIGLA_IMPUESTO = "IMPUESTO";
 	public static final String SIGLA_IMPUESTO_IVA_10 = "IVA_10";
 	public static final String SIGLA_IMPUESTO_IVA_5 = "IVA_5";
 	public static final String SIGLA_IMPUESTO_IVA_EXENTO = "IVA_EXENTO";
+	
+	public static final String SIGLA_DOCUMENTO = "DOCUMENTO";
+	public static final String SIGLA_DOCUMENTO_CI = "DOCUMENTO_CI";
+	public static final String SIGLA_DOCUMENTO_DNI = "DOCUMENTO_DNI";
+	public static final String SIGLA_DOCUMENTO_RUC = "DOCUMENTO_RUC";
+	
+	
 	
 	public static final String SIGLA_MATERIA = "MATERIA";
 	public static final String SIGLA_MATERIA_AULA = "MATERIA_AULA";
@@ -28,6 +35,8 @@ public class ParamsLocal extends Params {
 	
 	
 	public static final String SIGLA_PERSONA = "PERSONA";
+	public static final String SIGLA_PERSONA_FISICA = "PERSONA_FISICA";
+	public static final String SIGLA_PERSONA_JURIDICA = "PERSONA_JURIDICA";
 	
 	public static final String SIGLA_ESTADO_CV_MATERIA = "ESTADO_CV_MATERIA";
 	public static final String SIGLA_ESTAOD_CV_MATERIA_PENDIENTE = "ESTADO_CV_MATERIA_PENDIENTE";
@@ -286,5 +295,9 @@ public class ParamsLocal extends Params {
 	
 	public static final String OP_CREAR_TOTALCURSOREPORTE = "CrearTotalCursoReporte";
 	
+	// InscriptoOnline
+	public static final String OP_CREAR_INSCRIPTOONLINE = "CrearInscriptoOnline";
+	public static final String OP_EDITAR_INSCRIPTOONLINE = "EditarInscriptoOnline";
+	public static final String OP_BORRAR_INSCRIPTOONLINE = "BorrarInscriptoOnline";
 
 }

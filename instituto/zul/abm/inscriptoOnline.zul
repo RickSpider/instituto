@@ -1,0 +1,149 @@
+<?page title="InscriptosOnline" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="InscriptoOnline" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.abm.InscriptoOnlineVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+		<hlayout vflex="1">
+			
+				<vlayout hflex="1" vflex="1">
+
+					<!-- <hbox pack="end" hflex="1" >
+
+						<button label="Agregar"
+							iconSclass=" z-icon-plus" onClick="@command('modalInscriptoOnlineAgregar')" disabled="@load(!vm.opCrearInscriptoOnline)" />
+
+					</hbox> -->
+
+					<listbox emptyMessage="lista vacía..." mold="paging"
+						vflex="1" model="@load(vm.lInscriptosOnline)" checkmark="true">
+
+						<listhead>
+
+							<listheader hflex="min" align="center" />
+							<listheader label="ID" align="right" hflex="min" />
+							<listheader label="Curso" align="left"/>
+							<listheader label="FechaInscripcion" align="left" />
+							<listheader label="Nombre Completo" align="left"/>
+							<listheader label="CI" align="left"/>
+							<listheader label="Telefono" align="left"/>
+							<listheader label="Email" align="left"/>
+							<listheader label="Verificado" hflex='min'/>
+							
+							<listheader hflex="min"/>
+
+
+						</listhead>
+
+
+						<auxhead>
+
+							<auxheader />
+							<auxheader />
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[1])" instant="true"
+									onChange="@command('filtrarInscriptoOnline')" hflex="1" />
+							</auxheader>
+
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[2])" instant="true"
+									onChange="@command('filtrarInscriptoOnline')" hflex="1" />
+							</auxheader>
+							
+							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[3])" instant="true"
+									onChange="@command('filtrarInscriptoOnline')" hflex="1" />
+							</auxheader>
+							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[4])" instant="true"
+									onChange="@command('filtrarInscriptoOnline')" hflex="1" />
+							</auxheader>
+							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[5])" instant="true"
+									onChange="@command('filtrarInscriptoOnline')" hflex="1" />
+							</auxheader>
+							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[6])" instant="true"
+									onChange="@command('filtrarInscriptoOnline')" hflex="1" />
+							</auxheader>
+							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[7])" instant="true"
+									onChange="@command('filtrarInscriptoOnline')" hflex="1" />
+							</auxheader>
+							
+							
+							
+							<auxheader/>
+
+					
+						</auxhead>
+
+						<template name="model">
+
+							<listitem>
+								<listcell />
+								<listcell label="@load(each[0])" />
+								<listcell label="@load(each[1])" />
+								<listcell label="@load(each[2])" />
+								<listcell label="@load(each[3])" />
+								<listcell label="@load(each[4])" />
+								<listcell label="@load(each[5])" />
+								<listcell label="@load(each[6])" />
+								<listcell label="@load(each[7])" />
+								
+								<listcell>
+									<hlayout>
+									
+										<button iconSclass="z-icon-edit"
+											onClick="@command('modalInscriptoOnline', inscriptoOnlineid=each[0])"
+											tooltiptext="Editar" disabled="@load(!vm.opEditarInscriptoOnline)"/>
+										
+										<button	iconSclass="z-icon-trash-o" style="background-color:red"
+											onClick="@command('borrarInscriptoOnlineConfirmacion', inscriptoOnlineid=each[0])"
+											tooltiptext="Borrar" disabled="@load(!vm.opBorrarInscriptoOnline)"/>
+
+
+									</hlayout>
+
+
+								</listcell>
+
+
+							</listitem>
+
+
+						</template>
+
+						<listfoot>
+							<listfooter span="4" align="left">
+								<hlayout>
+									<label
+										value="@load(vm.lInscriptosOnline.size())" />
+									<label value="items" />
+								</hlayout>
+							</listfooter>
+						</listfoot>
+
+
+					</listbox>
+
+				</vlayout>
+
+		
+			
+		</hlayout>
+
+	</window>
+</zk>
