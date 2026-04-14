@@ -1,0 +1,92 @@
+<?page title="servicioModal" contentType="text/html;charset=UTF-8"?>
+
+<?component name="finder" templateURI="/doxacore/zul/component/finder.zul"?>
+
+<zk>
+	<window title="Agregar Detalle Crear/Ver/Editar" border="normal"
+		position="center,center" closable="true" mode="modal"
+		action="show: slideDown;hide: slideUp">
+
+		<vlayout>
+
+			<tablelayout columns="2">
+			
+				
+			
+			
+				<tablechildren>
+
+					<label value="Tipo Documento:" style="font-weight:bold"/>
+
+				</tablechildren>
+				
+				<tablechildren>
+				
+					<textbox value="@bind(vm.cvadocumentodetalleSelected.cvadocumento.documentoAlumnoTipo.tipo)" readonly="true"/>
+				
+				</tablechildren>
+				
+				<tablechildren>
+
+					<label value="Fecha:" style="font-weight:bold"/>
+
+				</tablechildren>
+				
+				<tablechildren>
+				
+					<datebox format="dd/MM/yyyy HH:mm:ss" value="@bind(vm.cvadocumentodetalleSelected.fecha)" width="200px"/>
+				
+				</tablechildren>
+			
+
+				<tablechildren>
+
+					<label value="Estado:" style="font-weight:bold"/>
+
+				</tablechildren>
+				<tablechildren>
+
+					<searchbox model="@load(vm.lDocumentoEstadoSearchModel)" placeholder="Seleccione Estado."
+						selectedItem="@bind(vm.documentoEstadoSearchModelSelected)"
+						autoclose="true"  multiple="false" tooltiptext="@load(vm.cursoVigenteSearchModelSelected.nombre)"
+						 width="350px"
+						 onSelect="@command('cargarDatos')"
+						>
+
+						<template name="model">
+							
+							${each.tipo}
+							
+						</template>
+
+					</searchbox>
+
+				</tablechildren>
+
+
+				<tablechildren>
+
+					<label value="Observacion:" style="font-weight:bold"/>
+
+				</tablechildren>
+				<tablechildren>
+				
+					<textbox value="@bind(vm.cvadocumentodetalleSelected.observacion)"  rows="3" width="250px"/>
+				
+				</tablechildren>				
+
+			</tablelayout>
+			
+			<space height="10px" />
+
+			<hlayout>
+
+				<button label="Aceptar" onClick="@command('guardarDetalle')" />
+
+			</hlayout>
+
+		</vlayout>
+
+
+	</window>
+</zk>

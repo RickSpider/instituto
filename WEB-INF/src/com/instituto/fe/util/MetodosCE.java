@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import com.doxacore.modelo.Tipo;
 import com.doxacore.util.Control;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,8 +15,10 @@ import com.instituto.fe.model.ComprobanteElectronicoDetalle;
 import com.instituto.fe.model.CondicionOperacion;
 import com.instituto.fe.model.ConsultaCDC;
 import com.instituto.fe.model.Contribuyente;
+import com.instituto.fe.model.DocAsociado;
 import com.instituto.fe.model.InfoComprasPublicas;
 import com.instituto.fe.model.Kude;
+import com.instituto.fe.model.NotaCreditoDebito;
 import com.instituto.fe.model.Receptor;
 import com.instituto.fe.model.Tarjeta;
 import com.instituto.fe.model.Timbrado;
@@ -25,6 +28,8 @@ import com.instituto.fe.util.conexionRest.ResultRest;
 import com.instituto.modelo.Cobranza;
 import com.instituto.modelo.CobranzaDetalle;
 import com.instituto.modelo.CobranzaDetalleCobro;
+import com.instituto.modelo.NotaCD;
+import com.instituto.modelo.NotaCDDetalle;
 import com.instituto.modelo.Sede;
 import com.instituto.modelo.SifenDocumento;
 import com.instituto.util.ParamsLocal;
@@ -32,7 +37,9 @@ import com.instituto.util.ParamsLocal;
 public class MetodosCE extends Control {
 	
 	public static String FACTURA = "/factura";
+	public static String NOTACREDITO ="/notacredito";
 	public static String EVENTO_CANCELAR_FACTURA = "/evento/cancelarfactura";
+	public static String EVENTO_CANCELAR_NOTACREDITO = "/evento/cancelarnotacredito";
 	public static String CONSULTA_CDC = "/consultar/comprobante/";
 
 	public SifenDocumento convertAndSend(Long cobranzaid, Long sedeid) {
@@ -102,13 +109,13 @@ public class MetodosCE extends Control {
 
 			String[] ruc = cobranza.getRuc().split("-");
 
-			r.setDocNro(ruc[0]);
-			r.setDv(ruc[1]);
+			r.setDocNro(ruc[0].trim());
+			r.setDv(ruc[1].trim());
 
 		} else {
 
 			r.setTipoDocumento(1L);
-			r.setDocNro(cobranza.getRuc());
+			r.setDocNro(cobranza.getRuc().trim());
 
 		}
 
@@ -252,6 +259,7 @@ public class MetodosCE extends Control {
 
 		SifenDocumento sd = new SifenDocumento();
 		sd.setCobranza(cobranza);
+		sd.setComprobanteTipo(this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_COMPROBANTE_FACTURA));
 		// this.cobranzaSelected.setComprobanteElectronico(true);
 
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
@@ -261,8 +269,122 @@ public class MetodosCE extends Control {
 
 		return this.enviarComprobante(sd, MetodosCE.FACTURA);
 		
+	}
+	
+	public SifenDocumento convertNCDAndSend(Long ncdid, Long sedeid) {
+		
+		Sede sede = this.reg.getObjectById(Sede.class.getName(), sedeid);
+		NotaCD notacd = this.reg.getObjectById(NotaCD.class.getName(), ncdid);
+		
+		ComprobanteElectronico ce = new ComprobanteElectronico();
+
+		Contribuyente c = new Contribuyente();
+		c.setContribuyenteid(Long.parseLong(this.getSistemaPropiedad("FE_ID").getValor()));
+		c.setPass(this.getSistemaPropiedad("FE_PASS").getValor());
+
+		ce.setContribuyente(c);
+
+		Timbrado t = new Timbrado();
+		t.setTimbrado(notacd.getTimbrado().toString());
+
+		// comp = this.reg.getObjectByCondicion(Comprobante.class.getName(), "timbrado =
+		// "+this.cobranzaSelected.getTimbrado());
+
+		String[] comprobanteNum = notacd.getComprobanteNum().split("-");
+		t.setEstablecimiento(comprobanteNum[0]);
+		t.setPuntoExpedicion(comprobanteNum[1]);
+		t.setDocumentoNro(comprobanteNum[2]);
+		t.setFecIni(notacd.getComprobanteEmision());
+
+		ce.setTimbrado(t);
+		ce.setSucursal(sede.getSede());
+
+		Receptor r = new Receptor();
+		
+	
+		
+		r.setRazonSocial(notacd.getRazonSocial());
+
+		if (notacd.getRuc().contains("-")) {
+
+			String[] ruc = notacd.getRuc().split("-");
+
+			r.setDocNro(ruc[0]);
+			r.setDv(ruc[1]);
+
+		} else {
+
+			r.setTipoDocumento(1L);
+			r.setDocNro(notacd.getRuc());
+
+		}
+		
+	
+
+		ce.setReceptor(r);
+		ce.setFecha(notacd.getFecha());
+	
+		NotaCreditoDebito ncd = new NotaCreditoDebito();
+		ncd.setMotivoEmision(1L);
+		
+		ce.setNotaCreditoDebito(ncd);
+		
+		DocAsociado da = new DocAsociado();
+		da.setTipo(1L);
+		da.setCdc(notacd.getCdcAsociado());
+		ce.setDocAsociados(new ArrayList<DocAsociado>());
+		ce.getDocAsociados().add(da);
+		
+		for (NotaCDDetalle cdx : notacd.getDetalles()) {
+
+			ComprobanteElectronicoDetalle det = new ComprobanteElectronicoDetalle();
+
+			det.setItemCodigo(cdx.getEstadoCuenta().getEstadocuentaid() + "");
+			det.setItemDescripcion(cdx.getDescripcion());
+			det.setCantidad(1);
+			det.setPrecioUnitario(cdx.getMonto());
+
+			if (cdx.getExento() > 0) {
+
+				det.setAfectacionTributaria(3l);
+				det.setProporcionIVA(0);
+				det.setTasaIVA(0);
+
+			} else if (cdx.getIva5() > 0) {
+
+				det.setAfectacionTributaria(1l);
+				det.setProporcionIVA(100);
+				det.setTasaIVA(5);
+
+			} else if (cdx.getIva10() > 0) {
+
+				det.setAfectacionTributaria(1l);
+				det.setProporcionIVA(100);
+				det.setTasaIVA(10);
+			}
+
+			ce.getDetalles().add(det);
+
+		}
+
+		ce.setTotalComprobante(notacd.getTotalDetalleCobro());
+		
+
+		SifenDocumento sd = new SifenDocumento();
+		sd.setNotacd(notacd);
+		sd.setComprobanteTipo(this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_COMPROBANTE_NOTACREDITO));
+		
+		
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").create();
+		sd.setJson(gson.toJson(ce));
+
+		sd = this.reg.saveObject(sd, "sys");
+
+		return this.enviarComprobante(sd, MetodosCE.NOTACREDITO);
 		
 	}
+	
+	
 
 	public SifenDocumento enviarComprobante(SifenDocumento sd, String ruta ){
 
@@ -295,8 +417,6 @@ public class MetodosCE extends Control {
 			sd.setEnviado(true);
 
 			return this.reg.saveObject(sd, "sys");
-			
-	
 
 	}
 	

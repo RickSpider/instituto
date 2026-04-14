@@ -32,7 +32,7 @@ import com.instituto.modelo.CursoVigenteAlumno;
 import com.instituto.modelo.Empresa;
 import com.instituto.modelo.InscriptoOnline;
 import com.instituto.modelo.Persona;
-import com.instituto.sistema.reporte.DataModelCursoVigente;
+import com.instituto.serchModel.CursoVigenteSearchModel;
 import com.instituto.util.EmailServiceModoboa;
 
 import net.sf.jasperreports.engine.JRException;
@@ -43,11 +43,11 @@ import org.zkoss.util.media.Media;
 @ToServerCommand("verify")
 public class InscripcionOnlineVM  extends TemplateNoLoginViewModel{
 
-	private ListModelArray<DataModelCursoVigente> cursosVigentesModel;
+	private ListModelArray<CursoVigenteSearchModel> cursosVigentesModel;
 	private ListModelArray<DataModelCiudad> ciudadModel;
 	private ListModelArray<DataModelNacionalidad> nacionalidadModel;
 	
-	private DataModelCursoVigente cursoVigenteSelected;
+	private CursoVigenteSearchModel cursoVigenteSelected;
 	private DataModelCiudad ciudadSelected;
 	private DataModelNacionalidad nacionalidadSelected;
 	
@@ -85,7 +85,7 @@ public class InscripcionOnlineVM  extends TemplateNoLoginViewModel{
 		List<Object[]> lCiudades = this.reg.sqlNativo(ciudadSQL);
 		List<Object[]> lPaises = this.reg.sqlNativo(paisSQL);
 
-		List<DataModelCursoVigente> lcv = new ArrayList<>();
+		List<CursoVigenteSearchModel> lcv = new ArrayList<>();
 		List<DataModelCiudad> lc = new ArrayList<>();
 		List<DataModelNacionalidad> ln = new ArrayList<>();
 
@@ -95,7 +95,7 @@ public class InscripcionOnlineVM  extends TemplateNoLoginViewModel{
 
 			Object[] ocv = lCursosVigentes.get(i);
 
-			lcv.add(new DataModelCursoVigente(Long.parseLong(ocv[0].toString()), ocv[1].toString(), ocv[2].toString(),
+			lcv.add(new CursoVigenteSearchModel(Long.parseLong(ocv[0].toString()), ocv[1].toString(), ocv[2].toString(),
 					ocv[3].toString(), ocv[4].toString()));
 
 		}
@@ -439,11 +439,11 @@ public class InscripcionOnlineVM  extends TemplateNoLoginViewModel{
 		this.disabledEnviar = disabledEnviar;
 	}
 
-	public ListModelArray<DataModelCursoVigente> getCursosVigentesModel() {
+	public ListModelArray<CursoVigenteSearchModel> getCursosVigentesModel() {
 		return cursosVigentesModel;
 	}
 
-	public void setCursosVigentesModel(ListModelArray<DataModelCursoVigente> cursosVigentesModel) {
+	public void setCursosVigentesModel(ListModelArray<CursoVigenteSearchModel> cursosVigentesModel) {
 		this.cursosVigentesModel = cursosVigentesModel;
 	}
 
@@ -455,11 +455,11 @@ public class InscripcionOnlineVM  extends TemplateNoLoginViewModel{
 		this.inscriptoOnlineSelected = inscriptoOnlineSelected;
 	}
 
-	public DataModelCursoVigente getCursoVigenteSelected() {
+	public CursoVigenteSearchModel getCursoVigenteSelected() {
 		return cursoVigenteSelected;
 	}
 
-	public void setCursoVigenteSelected(DataModelCursoVigente cursoVigenteSelected) {
+	public void setCursoVigenteSelected(CursoVigenteSearchModel cursoVigenteSelected) {
 		this.cursoVigenteSelected = cursoVigenteSelected;
 	}
 

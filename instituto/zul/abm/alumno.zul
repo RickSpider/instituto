@@ -38,6 +38,9 @@
 							
 							<listheader label="Activo" align="center"
 								width="80px"/>
+								
+							<listheader label="Cursos Incriptos" align="center"
+								hflex="min"/>
 							<listheader align="center" 
 								hflex="min"/>
 
@@ -94,6 +97,13 @@
 									value="@bind(vm.filtroColumns[7])" instant="true"
 									onChange="@command('filtrarAlumno')" hflex="1" />
 							</auxheader>
+							
+							
+							<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[8])" instant="true"
+									onChange="@command('filtrarAlumno')" hflex="1" />
+							</auxheader>
 						
 							<auxheader />
 						</auxhead>
@@ -110,6 +120,7 @@
 								<listcell label="@load(each[5])" />
 								<listcell label="@load(each[6])" />
 								<listcell label="@load(each[7])" />
+								<listcell label="@load(each[8])" />
 								
 								
 								<listcell>
@@ -144,7 +155,7 @@
 						</template>
 
 						<listfoot>
-							<listfooter span="4" align="left">
+							<listfooter span="9" align="left">
 								<hlayout>
 									<label
 										value="@load(vm.lAlumnos.size())" />

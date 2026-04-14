@@ -49,3 +49,9 @@
 <mapping class="com.instituto.modelo.EvaluacionDetalle" />
 <mapping class="com.instituto.modelo.EvaluacionDetalle" />
 <mapping class="com.instituto.modelo.InscriptoOnline" />
+
+<mapping class="com.instituto.modelo.NotaCD" />
+<mapping class="com.instituto.modelo.NotaCDDetalle" />
+
+<mapping class="com.instituto.modelo.CVADocumento" />
+<mapping class="com.instituto.modelo.CVADocumentoDetalle" />

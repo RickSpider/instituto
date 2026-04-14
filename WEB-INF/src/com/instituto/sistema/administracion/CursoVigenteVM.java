@@ -28,6 +28,8 @@ import com.doxacore.modelo.Tipo;
 import com.doxacore.modelo.Tipotipo;
 import com.doxacore.report.ReportExcel;
 import com.instituto.modelo.Alumno;
+import com.instituto.modelo.CVADocumento;
+import com.instituto.modelo.CVADocumentoDetalle;
 import com.instituto.modelo.CobranzaDetalle;
 import com.instituto.modelo.Concepto;
 import com.instituto.modelo.Convenio;
@@ -155,8 +157,8 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 		this.filtroColumnsAlumnos = new String[2];
 		this.filtroColumnsConceptos = new String[2];
-		this.filtroColumnsMaterias = new String[5];
-		this.filtroColumnsConvenios = new String[2];
+		this.filtroColumnsMaterias = new String[6];
+		this.filtroColumnsConvenios = new String[1];
 
 		for (int i = 0; i < this.filtroColumns.length; i++) {
 
@@ -221,6 +223,15 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		this.lMateriasCursosVigentes = this.filtrarLT(this.filtroColumnsMaterias, this.lMateriasCursosVigentesOri);
 
 	}
+	
+	@Command
+	@NotifyChange("lConveniosCursosVigentes")
+	public void filtrarCursoVigenteConvenio() {
+
+		this.lConveniosCursosVigentes = this.filtrarLT(this.filtroColumnsConvenios, this.lConveniosCursosVigentesOri);
+
+	}
+
 
 	// fin seccion
 
@@ -344,13 +355,21 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			return;
 		}
 
-		this.save(cursoVigenteSelected);
+		this.cursoVigenteSelected = this.save(cursoVigenteSelected);
+		
+		if(this.cursoVigenteSelected.isFinalizado()) {
+			
+			generarDocumentos();
+			
+		}
 
 		this.cursoVigenteSelected = null;
 
 		this.cargarCursosVigentes();
 
 		this.modal.detach();
+		
+		
 
 		if (editar) {
 
@@ -361,6 +380,62 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			Notification.show("El Curso Vigente fue agregado.");
 		}
 
+	}
+	
+	public void generarDocumentos() {
+		
+		
+		List<CursoVigenteAlumno> lcva = this.reg.getAllObjectsByCondicionOrder(CursoVigenteAlumno.class.getName(),
+				"cursoVigenteid = " + this.cursoVigenteSelected.getCursovigenteid()+" AND inscripcionAnulada = false", "alumnoid asc");
+		
+		Tipo estado = this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_DOCUMENTO_ESTADO_ACTIVO);
+		Tipo titulo = this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_DOCUMENTO_ALUMNO_TITULO);
+		Tipo certEstudio = this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_DOCUMENTO_ALUMNO_CERTIFICADO_ESTUDIO);
+		
+		for (CursoVigenteAlumno x : lcva) {
+			
+			//titulo
+			
+			CVADocumento titulodoc = new CVADocumento();
+			
+			titulodoc.setAlumnoid(x.getAlumno());
+			titulodoc.setCursoVigente(x.getCursoVigente());
+			titulodoc.setDocumentoEstadoTipo(estado);
+			titulodoc.setDocumentoAlumnoTipo(titulo);
+			
+			CVADocumentoDetalle cvadet = new CVADocumentoDetalle();
+			cvadet.setCvadocumento(titulodoc);
+			cvadet.setDocumentoEstadoTipo(estado);
+			cvadet.setObservacion("Creacion de Documento");
+			cvadet.setFecha(new Date());
+			
+			titulodoc.getDetalles().add(cvadet);
+			
+			
+			//cert
+			CVADocumento CertEst = new CVADocumento();
+			
+			CertEst.setAlumnoid(x.getAlumno());
+			CertEst.setCursoVigente(x.getCursoVigente());
+			CertEst.setDocumentoEstadoTipo(estado);
+			CertEst.setDocumentoAlumnoTipo(certEstudio);
+			
+			CVADocumentoDetalle cvadetce = new CVADocumentoDetalle();
+			cvadetce.setCvadocumento(CertEst);
+			cvadetce.setDocumentoEstadoTipo(estado);
+			cvadetce.setObservacion("Creacion de Documento");
+			cvadetce.setFecha(new Date());
+			
+			CertEst.getDetalles().add(cvadetce);
+			
+			this.save(titulodoc);
+			this.save(CertEst);
+			
+			
+		}
+		
+		
+		
 	}
 
 	// fin modal
@@ -1850,7 +1925,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		
 		String [] hd1 =  new String[totalCol];
 		hd1[0] = "Nro";
-		hd1[1] = "Nombre y Apellido";
+		hd1[1] = "Apellido y Nombre";
 		hd1[2] = "C.I.";
 		hd1[3] = "Fecha de Inscripcion";
 		hd1[totalCol-1] = "Promedio General";

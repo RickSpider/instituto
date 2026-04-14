@@ -26,8 +26,6 @@ public class ParamsLocal extends Params {
 	public static final String SIGLA_DOCUMENTO_DNI = "DOCUMENTO_DNI";
 	public static final String SIGLA_DOCUMENTO_RUC = "DOCUMENTO_RUC";
 	
-	
-	
 	public static final String SIGLA_MATERIA = "MATERIA";
 	public static final String SIGLA_MATERIA_AULA = "MATERIA_AULA";
 	public static final String SIGLA_MATERIA_TALLER = "MATERIA_TALLER";
@@ -50,6 +48,7 @@ public class ParamsLocal extends Params {
 	public static final String SIGLA_COMPROBANTE = "COMPROBANTE";
 	public static final String SIGLA_COMPROBANTE_FACTURA = "COMPROBANTE_FACTURA";
 	public static final String SIGLA_COMPROBANTE_RECIBO = "COMPROBANTE_RECIBO";
+	public static final String SIGLA_COMPROBANTE_NOTACREDITO = "COMPROBANTE_NOTACREDITO";
 	
 	public static final String SIGLA_FORMA_PAGO = "FORMA_PAGO";
 	public static final String SIGLA_FORMA_PAGO_EFECTIVO = "FORMA_PAGO_EFECTIVO";
@@ -87,6 +86,15 @@ public class ParamsLocal extends Params {
 	public static final String SIGLA_EVALUACION_ORDINARIO = "EVALUACION_ORDINARIO";
 	public static final String SIGLA_EVALUACION_COMPLEMENTARIO = "EVALUACION_COMPLEMENTARIO";
 	public static final String SIGLA_EVALUACION_REGULARIZACION = "EVALUACION_REGULARIZACION";
+	
+	
+	public static final String SIGLA_DOCUMENTO_ESTADO = "DOCUMENTO_ESTADO";
+	public static final String SIGLA_DOCUMENTO_ESTADO_ACTIVO = "DOCUMENTO_ESTADO_ACTIVO";
+	public static final String SIGLA_DOCUMENTO_ESTADO_ENTREGADO = "DOCUMENTO_ESTADO_ENTREGADO";
+	
+	public static final String SIGLA_DOCUMENTO_ALUMNO_TIPO = "DOCUMENTO_ALUMNO_TIPO";
+	public static final String SIGLA_DOCUMENTO_ALUMNO_TITULO = "DOCUMENTO_ALUMNO_TITULO";
+	public static final String SIGLA_DOCUMENTO_ALUMNO_CERTIFICADO_ESTUDIO = "DOCUMENTO_ALUMNO_CERTIFICADO_ESTUDIO";
 	
 
 	// Sede
@@ -235,7 +243,7 @@ public class ParamsLocal extends Params {
 	public static final String OP_EDITAR_TRANSACCION = "EditarTransaccion";
 	public static final String OP_BORRAR_TRANSACCION = "BorrarTransaccion";
 
-	// Transaccion
+	// SERVICIO
 	public static final String OP_CREAR_SERVICIO = "CrearServicio";
 	public static final String OP_EDITAR_SERVICIO = "EditarServicio";
 	public static final String OP_BORRAR_SERVICIO = "BorrarServicio";
@@ -299,5 +307,16 @@ public class ParamsLocal extends Params {
 	public static final String OP_CREAR_INSCRIPTOONLINE = "CrearInscriptoOnline";
 	public static final String OP_EDITAR_INSCRIPTOONLINE = "EditarInscriptoOnline";
 	public static final String OP_BORRAR_INSCRIPTOONLINE = "BorrarInscriptoOnline";
+	
+	// Transaccion
+	public static final String OP_CREAR_NOTACD = "CrearNotacd";
+	public static final String OP_EDITAR_NOTACD = "EditarNotacd";
+	public static final String OP_BORRAR_NOTACD = "BorrarNotacd";
+	
+	
+	// Transaccion
+	public static final String OP_CREAR_DOCUMENTACIONDETALLE = "CrearDocumentacionDetalle";
+	public static final String OP_EDITAR_DOCUMENTACIONDETALLE = "EditarDocumentacionDetalle";
+	public static final String OP_BORRAR_DOCUMENTACIONDETALLE = "BorrarDocumentacionDetalle";
 
 }

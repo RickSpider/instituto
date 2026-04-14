@@ -17,6 +17,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.ColumnDefault;
 
 import com.doxacore.modelo.Modelo;
+import com.doxacore.modelo.Tipo;
 
 
 @Entity
@@ -51,6 +52,10 @@ public class SifenDocumento extends Modelo implements Serializable{
 	@JoinColumn(name="cobranzaid")
 	private Cobranza cobranza;
 	
+	@ManyToOne
+	@JoinColumn(name="notacdid")
+	private NotaCD notacd;
+	
 	@ColumnDefault("false")
 	private boolean cancelado;
 	
@@ -60,6 +65,10 @@ public class SifenDocumento extends Modelo implements Serializable{
 	private String canceladoJson;
 	
 	private String canceladoEstado;
+	
+	@ManyToOne
+	@JoinColumn(name = "comprobanteTipoid")
+	private Tipo comprobanteTipo;
 
 	@Override
 	public Object[] getArrayObjectDatos() {
@@ -168,6 +177,23 @@ public class SifenDocumento extends Modelo implements Serializable{
 	public void setCanceladoEstado(String canceladoEstado) {
 		this.canceladoEstado = canceladoEstado;
 	}
+
+	public Tipo getComprobanteTipo() {
+		return comprobanteTipo;
+	}
+
+	public void setComprobanteTipo(Tipo comprobanteTipo) {
+		this.comprobanteTipo = comprobanteTipo;
+	}
+
+	public NotaCD getNotacd() {
+		return notacd;
+	}
+
+	public void setNotacd(NotaCD notacd) {
+		this.notacd = notacd;
+	}
+	
 	
 
 }

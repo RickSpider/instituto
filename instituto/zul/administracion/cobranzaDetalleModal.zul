@@ -13,27 +13,18 @@
 				
 
 
-				<listhead visible="false">
+				<listhead >
 					<listheader width="30px"/>
-					<listheader label="Vencimiento" align="center" />
-					<listheader label="Curso" width="300px" align="left" />
-					<listheader label="Concepto" align="Center" />
-					<listheader label="Periodo" align="Center" />
-					<listheader label="Saldo" align="right" />
-					<listheader label="Monto Total" align="right" />
+					<listheader label="Vencimiento" align="center" hflex="min"/>
+					<listheader label="Curso" width="180px"  align="center" />
+					<listheader label="Concepto"  align="Center" />
+					<listheader label="Periodo" align="Center" hflex="min"/>
+					<listheader label="Saldo"  align="Center" hflex="min"/>
+					<listheader label="Monto Total" hflex="min" align="center" />
 
 				</listhead>
 				
-				<auxhead>
-					<auxheader />
-					<auxheader label="Vencimiento" align="center" />
-					<auxheader label="Curso" align="center" />
-					<auxheader label="Concepto" align="center" />
-					<auxheader label="Periodo/Cuota #" align="center" />
-					<auxheader label="Saldo" align="center" />
-					<auxheader label="Monto Total" align="center" />
-
-				</auxhead>
+			
 
 
 
@@ -44,12 +35,12 @@
 						<listcell
 							label="@load(each.vencimiento) @converter('formatedDate', format='dd/MM/yyyy')" />
 						<listcell
-							label="@load(each.cursoVigente.curso.curso)" tooltiptext="@load(each.cursoVigente.curso.curso)"/>
-						<listcell label="@load(each.concepto.concepto)" tooltiptext="@load(each.concepto.concepto)"/>
+							label="@load(each.cursoVigente.curso.curso)" tooltiptext="@load(each.cursoVigente.curso.curso)"  style="text-align:left;white-space:nowrap;text-overflow: ellipsis;" />
+						<listcell label="@load(each.concepto.concepto)" tooltiptext="@load(each.concepto.concepto)" style="text-align:left;white-space:nowrap;text-overflow: ellipsis;"/>
 						<listcell label="@load(each.periodo)" />
-						<listcell label="@load(each.saldo) @converter('formatedNumber', format='#,###')"  />
+						<listcell label="@load(each.saldo) @converter('formatedNumber', format='#,###')"  style="text-align:right"/>
 						<listcell
-							label="@load(each.monto) @converter('formatedNumber', format='#,###')" />
+							label="@load(each.monto) @converter('formatedNumber', format='#,###')" style="text-align:right"/>
 
 					</listitem>
 

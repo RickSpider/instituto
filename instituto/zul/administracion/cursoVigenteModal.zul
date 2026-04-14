@@ -80,7 +80,7 @@
 				</hbox>
 				<textbox
 					value="@bind(vm.cursoVigenteSelected.sede.sede)" width="250px"
-					readonly="true" />
+					readonly="true" disabled="@load(vm.cursoVigenteSelected.finalizado)"/>
 			</hlayout>
 			
 			<hlayout>
@@ -88,7 +88,7 @@
 					<label value="Inscripcion Online: " style="font-weight:bold" />
 				</hbox>
 				
-				<checkbox checked="@bind(vm.cursoVigenteSelected.inscripcionOnline)" mold="switch"/>
+				<checkbox checked="@bind(vm.cursoVigenteSelected.inscripcionOnline)" mold="switch" disabled="@load(vm.cursoVigenteSelected.finalizado)"/>
 				
 			</hlayout>
 
@@ -100,7 +100,7 @@
 				<datebox
 					value="@load(vm.cursoVigenteSelected.fechaInicio) @save(vm.cursoVigenteSelected.fechaInicio, before='guardar')"
 					format="short " width="150px"
-					constraint="no empty: Es campo obligatorio." />
+					constraint="no empty: Es campo obligatorio." disabled="@load(vm.cursoVigenteSelected.finalizado)"/>
 			</hlayout>
 
 			<hlayout>
@@ -110,7 +110,7 @@
 				<datebox
 					value="@load(vm.cursoVigenteSelected.fechaFin) @save(vm.cursoVigenteSelected.fechaFin, before='guardar')"
 					format="short " width="150px"
-					constraint="no empty: Es campo obligatorio." />
+					constraint="no empty: Es campo obligatorio." disabled="@load(vm.cursoVigenteSelected.finalizado)"/>
 			</hlayout>
 
 			<hlayout>
@@ -122,20 +122,29 @@
 				<vbox>
 
 					<hbox>
-						<checkbox label="Domingo" checked="@bind(vm.bDias[0])" />
-						<checkbox label="Lunes" checked="@bind(vm.bDias[1])" />
-						<checkbox label="Martes" checked="@bind(vm.bDias[2])" />
-						<checkbox label="Miercoles" checked="@bind(vm.bDias[3])" />
+						<checkbox label="Domingo" checked="@bind(vm.bDias[0])" disabled="@load(vm.cursoVigenteSelected.finalizado)"/>
+						<checkbox label="Lunes" checked="@bind(vm.bDias[1])" disabled="@load(vm.cursoVigenteSelected.finalizado)"/>
+						<checkbox label="Martes" checked="@bind(vm.bDias[2])" disabled="@load(vm.cursoVigenteSelected.finalizado)"/>
+						<checkbox label="Miercoles" checked="@bind(vm.bDias[3])" disabled="@load(vm.cursoVigenteSelected.finalizado)"/>
 					</hbox>
 
 					<hbox>
-						<checkbox label="Jueves" checked="@bind(vm.bDias[4])" />
-						<checkbox label="Viernes" checked="@bind(vm.bDias[5])" />
-						<checkbox label="Sabado" checked="@bind(vm.bDias[6])" />
+						<checkbox label="Jueves" checked="@bind(vm.bDias[4])" disabled="@load(vm.cursoVigenteSelected.finalizado)"/>
+						<checkbox label="Viernes" checked="@bind(vm.bDias[5])" disabled="@load(vm.cursoVigenteSelected.finalizado)"/>
+						<checkbox label="Sabado" checked="@bind(vm.bDias[6])" disabled="@load(vm.cursoVigenteSelected.finalizado)"/>
 					</hbox>
 
 				</vbox>
 
+			</hlayout>
+			
+			<hlayout>
+				<hbox width="130px">
+					<label value="Finalizado: " style="font-weight:bold" />
+				</hbox>
+				
+				<checkbox checked="@bind(vm.cursoVigenteSelected.finalizado)" mold="switch" disabled="@load(vm.cursoVigenteSelected.finalizado)"/>
+				
 			</hlayout>
 
 			<space height="10px" />

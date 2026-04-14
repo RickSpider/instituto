@@ -3,6 +3,7 @@ package com.instituto.sistema.administracion;
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 
@@ -101,12 +102,16 @@ public class CobrosVM extends TemplateViewModelLocal{
 		
 		Cobranza cobranza = this.reg.getObjectById(Cobranza.class.getName(), cobranzaid);
 		
+		
+		
 		if(cobranza.isAnulado()) {
 			
 			this.mensajeError("El cobro ya esta anulado");
 			return;
 			
 		}
+		
+		
 		
 		EventListener event = new EventListener () {
 
@@ -128,13 +133,13 @@ public class CobrosVM extends TemplateViewModelLocal{
 	
 	private void anularCobranza(Cobranza cobranza) {
 		
-		/*SifenDocumento sd = null ;
+		SifenDocumento sd = null ;
 		
-		if (cobranza.isComprobanteElectronico()) {
+		//if (cobranza.isComprobanteElectronico()) {
 			
 			sd = this.reg.getObjectByCondicion(SifenDocumento.class.getName(), "cobranzaid = "+cobranza.getCobranzaid());
 			
-			if (sd != null) {
+			/*if (sd != null) {
 				
 				if (sd.getCdc() == null || sd.getCdc().length() == 0) {
 					
@@ -143,9 +148,42 @@ public class CobrosVM extends TemplateViewModelLocal{
 					
 				}
 				
+			}*/
+			
+		//}
+		
+		if (cobranza.isComprobanteElectronico()) {
+			
+		//	sd = this.reg.getObjectByCondicion(SifenDocumento.class.getName(), "cobranzaid = "+cobranza.getCobranzaid());
+			
+			
+			if (sd == null || sd.getEstado() == null || sd.getEstado().isEmpty() || sd.getEstado().compareTo("Pendiente") == 0) {
+				
+				 this.mensajeInfo("Verifica que el estado del Comprobante electronico sea Aprobado o Rechazado antes de Cancelar");
+		         return;
+				
 			}
 			
-		}*/
+			if (sd.getEstado().compareTo("Aprobado") == 0) {
+				
+				/*LocalDateTime current1 = new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+				LocalDateTime fechaFactura = cobranza.getFecha().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+				long horas = Math.abs(ChronoUnit.HOURS.between(fechaFactura, current1));*/
+				
+				long horas = Duration.between(cobranza.getFecha().toInstant(), new Date().toInstant())
+	                     .toHours();
+				
+				 if (horas >= 40) {
+			         System.out.println("La diferencia es mayor a 40 horas.");
+			         this.mensajeInfo("Ya paso el tiempo limite de anulacion, debes generar una nota de credito.");
+			         return;
+			     } 
+				
+			} 
+			
+			
+		}
 		
 		List<CobranzaDetalle> lDetalles = this.reg.getAllObjectsByCondicionOrder(CobranzaDetalle.class.getName(), "cobranzaid = "+cobranza.getCobranzaid(), null);
 		
@@ -193,14 +231,19 @@ public class CobrosVM extends TemplateViewModelLocal{
 		
 		if (cobranza.isComprobanteElectronico()) {
 			
-			SifenDocumento sd = this.reg.getObjectByCondicion(SifenDocumento.class.getName(), "cobranzaid = "+cobranza.getCobranzaid());
+			//SifenDocumento sd = this.reg.getObjectByCondicion(SifenDocumento.class.getName(), "cobranzaid = "+cobranza.getCobranzaid());
 			
 			if (sd != null ) {
 				
 				
 				if (sd.getCdc() == null || sd.getCdc().length() == 0) {
 		
-					sd.setEstado("Anulado antes del envio");
+					sd.setEstado("Cancelado antes del envio");
+					sd.setCancelado(true);
+					sd.setEnviado(true);
+				}else if (sd.getEstado().compareTo("Rechazado") == 0 ) {
+					
+					sd.setEstado("Cancelado por Rechazo");
 					sd.setCancelado(true);
 					sd.setEnviado(true);
 					
@@ -220,6 +263,7 @@ public class CobrosVM extends TemplateViewModelLocal{
 					
 					sd.setCanceladoFecha(eventoC.getFecha());
 					sd.setCanceladoJson(gson.toJson(eventoC));
+					sd.setCancelado(true);
 					
 					this.save(sd);
 					

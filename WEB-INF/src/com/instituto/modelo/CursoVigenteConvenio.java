@@ -45,8 +45,8 @@ public class CursoVigenteConvenio extends Modelo implements Serializable {
 
 	@Override
 	public Object[] getArrayObjectDatos() {
-		// TODO Auto-generated method stub
-		return null;
+		Object [] o = {this.getConvenio().getDescripcion()};
+		return o;
 	}
 
 	@Override

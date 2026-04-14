@@ -87,7 +87,7 @@
 
 			</tablelayout>
 			<vlayout width="150px" height="180px">
-			<image id="image" content="@load(vm.logoFile)" width="100%" height="100%"/>
+				<image id="image" content="@load(vm.logoFile)" width="100%" height="100%"/>
 			</vlayout>
 			
 		</hbox>

@@ -1,6 +1,6 @@
-package com.instituto.sistema.reporte;
+package com.instituto.serchModel;
 
-public class DataModelCursoVigente {
+public class CursoVigenteSearchModel {
 
 	private long id;
 	private String nombre;
@@ -8,14 +8,14 @@ public class DataModelCursoVigente {
 	private String fin;
 	private String dias;
 	
-	public DataModelCursoVigente(long id, String nombre, String inicio, String fin) {
+	public CursoVigenteSearchModel(long id, String nombre, String inicio, String fin) {
 		this.id = id;
 		this.nombre = nombre;
 		this.inicio =  inicio;
 		this.fin = fin;
 	}
 	
-	public DataModelCursoVigente(long id, String nombre, String inicio, String fin, String dias) {
+	public CursoVigenteSearchModel(long id, String nombre, String inicio, String fin, String dias) {
 		this.id = id;
 		this.nombre = nombre;
 		this.inicio =  inicio;
@@ -83,7 +83,7 @@ public class DataModelCursoVigente {
 	@Override
 	public String toString() {
 		
-		return this.nombre;
+		return this.nombre+" - "+this.inicio+" - "+this.fin;
 	}
 	
 }

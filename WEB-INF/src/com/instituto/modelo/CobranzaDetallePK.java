@@ -44,9 +44,5 @@ public class CobranzaDetallePK  implements Serializable {
 		this.estadoCuenta = estadoCuenta;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-	
 	
 }

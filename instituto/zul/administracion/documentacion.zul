@@ -1,0 +1,244 @@
+<?page title="Documentacion" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="Documentacion" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.administracion.DocumentacionVM')"
+		vflex="1" id="Body">
+		
+	
+	<vlayout vflex="1" >
+		
+		<vbox>
+			<tablelayout columns="2">
+			
+				<!-- <tablechildren>
+					<label value="Alumno:" style="font-weight:bold"/>
+				</tablechildren>
+					
+				<tablechildren>
+					<searchbox model="@init(vm.lAlumnoSearchModel)" placeholder="Seleccione un Alumno."
+							selectedItem="@bind(vm.alumnoSearchModelSelected)"
+							autoclose="true"  multiple="false"
+							onSelect="@command('generarSearchModelCVA')" width="350px">
+	
+							<template name="model">
+								
+								${each.documento} - ${each.fullNombre} 
+								
+							</template>
+	
+						</searchbox>
+				</tablechildren>  -->
+				
+				
+				<tablechildren>
+					<label value="Curso Vigente:" style="font-weight:bold"/>
+				</tablechildren>
+				
+				<tablechildren>
+					<searchbox model="@load(vm.lCursoVigenteSearchModel)" placeholder="Seleccione Curso."
+							selectedItem="@bind(vm.cursoVigenteSearchModelSelected)"
+							autoclose="true"  multiple="false" tooltiptext="@load(vm.cursoVigenteSearchModelSelected.nombre)"
+							 width="450px"
+							 onSelect="@command('cargarAlumnos')"
+							>
+	
+							<template name="model">
+								
+								${each.nombre} - ${each.inicio} -${each.fin}
+								
+							</template>
+	
+						</searchbox>
+				</tablechildren>
+				
+				<tablechildren colspan="2">
+				
+					<listbox emptyMessage="lista vacía..." hflex="min" height="115px"
+							model="@load(vm.conteoDocs)" >
+						
+								<listhead>
+									
+									<listheader label="Documento" hflex="min" align="center"/>
+									<listheader label="Activo" align="center"/>
+									<listheader label="Curso no Finalizado" align="center"/>
+									<listheader label="No titulo habilitante" align="center"/>
+									<listheader label="Proceso Mec" align="center"/>
+									<listheader label="Entregado" align="center"/>
+									<listheader label="TOTAL" align="center"/>
+									
+								</listhead>
+								
+						<template name="model">
+						
+							<listitem>
+							
+								<listcell label = "@load(each[0])" style="font-weight:bold"/>
+								<listcell label = "@load(each[1])" />
+								<listcell label = "@load(each[2])" />
+								<listcell label = "@load(each[3])" />
+								<listcell label = "@load(each[4])" />
+								<listcell label = "@load(each[5])" />
+								<listcell label = "@load(each[1]+each[2]+each[3]+each[4]+each[5])" style="font-weight:bold"/>
+								
+								
+							</listitem>
+						
+						
+						</template>
+								
+					</listbox>
+		
+				
+				</tablechildren>
+						
+			</tablelayout>
+			
+			
+		
+		</vbox>
+		
+		<hlayout vflex="1" hflex="1">
+		
+			<listbox emptyMessage="lista vacía..." hflex="1" vflex="1" 
+				model="@load(vm.lAlumnos)" checkmark="true"
+				selectedItem="@bind(vm.alumnoObjectSelected)"
+				onSelect="@command('cargarDatos')" autopaging="true">
+			
+					<listhead>
+					
+						<listheader hflex="min"/>
+						<listheader hflex="min"/>
+						<listheader label="Documento #" hflex="min"/>
+						<listheader label="Apellido, Nombre" />
+						
+					</listhead>
+					
+					<auxhead>
+					
+						<auxheader />
+						<auxheader />
+						<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[3])" instant="true"
+									onChange="@command('filtrarAlumno')" onOk="@command('filtrarAlumno')" hflex="1" />
+							</auxheader>
+						
+						<auxheader>
+								<textbox
+									value="@bind(vm.filtroColumns[5])" instant="true"
+									onChange="@command('filtrarAlumno')" onOk="@command('filtrarAlumno')" hflex="1" />
+							</auxheader>
+						
+					</auxhead>
+					
+					<template name="model">
+					
+						<listitem>
+					
+							<listcell />
+							<listcell label="@load(forEachStatus.index+1)"  />
+							<listcell label="@load(each[3])"/>
+							
+							<listcell label="@load(each[5])" />
+							
+							
+						</listitem>
+					
+					</template>
+					
+					<listfoot>
+							<listfooter span="3" align="left">
+								<hlayout>
+									<label
+										value="@load(vm.lAlumnos.size())" />
+									<label value="items" />
+								</hlayout>
+							</listfooter>
+						</listfoot>
+	
+			
+			</listbox>
+		
+		
+			<listbox emptyMessage="lista vacía..." hflex="2" vflex="1">
+	
+					<custom-attributes
+						org.zkoss.zul.listbox.groupSelect="false" />
+	
+					<listhead>
+						
+						<listheader label="FECHA" hflex="min"/>
+						<listheader label="ESTADO" hflex="min"/>
+						<listheader label="OBSERVACION" />
+						<listheader hflex="min"/>
+	
+					</listhead>
+	
+	
+	
+					<forEach items="@load(vm.lCVADocumentos)" var="each">
+	
+						<listgroup open="true">
+							<listcell >
+								<label value="@load(each.documentoAlumnoTipo.tipo)" />
+							</listcell>
+							<listcell />
+							<listcell>
+	
+								<label value="Estado: " />
+								<label value="@load(each.documentoEstadoTipo.tipo)" />
+	
+							</listcell>
+							<listcell>
+								<button 
+								iconSclass=" z-icon-plus"
+								tooltiptext="Agregar Estado"			
+								onClick="@command('modalDocumentoDetalle', documento=each)"			/>
+														
+							</listcell>
+	
+	
+						</listgroup>
+	
+	
+						<forEach items="@load(each.detalles)" var="x">
+	
+							<listitem>
+						
+								<listcell label="@load(x.fecha)" />
+								<listcell label="@load(x.documentoEstadoTipo.tipo)" />
+								<listcell label="@load(x.observacion)" />
+								
+								<listcell  >
+								
+								<button 
+									iconSclass=" z-icon-edit"
+									tooltiptext="Editar"			
+									onClick="@command('editarDetalleModal',detalle=x)" 
+									disabled="@load(!vm.opEditarDocumentoDetalle)"/>
+									
+									<button 
+									iconSclass=" z-icon-trash" style="background-color:red"
+									tooltiptext="Borrar"			
+									onClick="@command('borrarPersonaConfirmacion',detalle=x)" 
+									disabled="@load(!vm.opBorrarDocumentoDetalle)"/>
+								
+								</listcell>
+		
+	
+							</listitem>
+						</forEach>
+	
+					</forEach>
+	
+	
+				</listbox>
+
+		</hlayout>
+		
+	
+	
+	</vlayout>
+
+</window>
+</zk>

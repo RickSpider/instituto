@@ -35,7 +35,8 @@ public class EstadoCuentaPersonaVM extends TemplateViewModelLocal {
 	private Persona personaSelected;
 	private CursoVigente cursoVigenteSelected;
 	private List<EstadoCuenta> lEstadosCuentas;
-	private List<CobranzaDetalle> lCobranzasDetalles;
+	//private List<CobranzaDetalle> lCobranzasDetalles;
+	private List<Object[]> lCobranzasDetalles;
 	
 	private EstadoCuenta estadoCuentaSelected;
 	
@@ -263,12 +264,17 @@ public class EstadoCuentaPersonaVM extends TemplateViewModelLocal {
 	@NotifyChange({ "lCobranzasDetalles" })
 	public void refrescarCobranzaDetalle(@BindingParam("estadoCuenta") EstadoCuenta estadoCuenta) {
 		
-		this.lCobranzasDetalles = this.reg.getAllObjectsByCondicionOrder(CobranzaDetalle.class.getName(),
-				"estadocuentaid = " + estadoCuenta.getEstadocuentaid(), null);
+		/*this.lCobranzasDetalles = this.reg.getAllObjectsByCondicionOrder(CobranzaDetalle.class.getName(),
+				"estadocuentaid = " + estadoCuenta.getEstadocuentaid(), null);*/
+		
+		
+		String detalles = this.um.getSql("estadoCuentaAlumno/detallesPagos.sql").replace("?1", estadoCuenta.getEstadocuentaid()+"");
+		
+		this.lCobranzasDetalles = this.reg.sqlNativo(detalles);
 		
 	}
 	
-	@Command
+	/*@Command
 	public void verComprobante(@BindingParam("cobranza") Cobranza cobranza) {
 		
 		if (cobranza.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_RECIBO) == 0) {
@@ -282,6 +288,44 @@ public class EstadoCuentaPersonaVM extends TemplateViewModelLocal {
 			Executions.getCurrent().sendRedirect("/instituto/zul/administracion/facturaReporte.zul?id="+cobranza.getCobranzaid(),"_blank");
 			
 		}
+
+	}*/
+	
+	@Command
+	public void verComprobante(@BindingParam("dato") Object[] dato) {
+		
+		
+		if (dato[3].toString().compareTo("Nota Credito ") != 0) {
+			
+			Cobranza cobranza = this.reg.getObjectById(Cobranza.class.getName(), Long.parseLong(dato[0].toString()));
+			
+			if (cobranza.isComprobanteElectronico()) {
+				
+				if (cobranza.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_FACTURA) == 0) {
+					
+					Executions.getCurrent().sendRedirect("/instituto/zul/administracion/kudeReporte.zul?id="+cobranza.getCobranzaid(),"_blank");
+					
+				}
+				
+			}else {
+			
+			
+				if (cobranza.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_RECIBO) == 0) {
+					
+					Executions.getCurrent().sendRedirect("/instituto/zul/administracion/reciboReporte.zul?id="+cobranza.getCobranzaid(),"_blank");
+					
+				}
+				
+				if (cobranza.getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_FACTURA) == 0) {
+					
+					Executions.getCurrent().sendRedirect("/instituto/zul/administracion/facturaReporte.zul?id="+cobranza.getCobranzaid(),"_blank");
+					
+				}
+			}
+			
+		}		
+		
+		
 
 	}
 
@@ -487,11 +531,13 @@ public class EstadoCuentaPersonaVM extends TemplateViewModelLocal {
 		this.lEstadosCuentas = lEstadosCuentas;
 	}
 
-	public List<CobranzaDetalle> getlCobranzasDetalles() {
+	
+
+	public List<Object[]> getlCobranzasDetalles() {
 		return lCobranzasDetalles;
 	}
 
-	public void setlCobranzasDetalles(List<CobranzaDetalle> lCobranzasDetalles) {
+	public void setlCobranzasDetalles(List<Object[]> lCobranzasDetalles) {
 		this.lCobranzasDetalles = lCobranzasDetalles;
 	}
 

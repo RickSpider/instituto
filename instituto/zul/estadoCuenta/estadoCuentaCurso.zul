@@ -155,15 +155,7 @@
 
 						</template>
 
-						<listfoot>
-							<listfooter span="6" align="left">
-								<hlayout>
-									<label
-										value="@load(vm.lEstadosCuentasSumaGeneral.size())" />
-									<label value="items" />
-								</hlayout>
-							</listfooter>
-						</listfoot>
+						
 
 					</listbox>
 
@@ -238,15 +230,7 @@
 
 						</template>
 
-						<listfoot>
-							<listfooter span="6" align="left">
-								<hlayout>
-									<label
-										value="@load(vm.lEstadosCuentas.size())" />
-									<label value="items" />
-								</hlayout>
-							</listfooter>
-						</listfoot>
+					
 
 					</listbox>
 

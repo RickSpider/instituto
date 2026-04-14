@@ -1,0 +1,124 @@
+<?page title="Documentacion" contentType="text/html;charset=UTF-8"?>
+<zk>
+<window title="Documentacion" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.administracion.DocAlumnoVM')"
+		vflex="1" id="Body">
+		
+	
+	<vlayout vflex="1" >
+	
+		<tablelayout columns="2">
+		
+			<tablechildren>
+				<label value="Alumno:" style="font-weight:bold"/>
+			</tablechildren>
+				
+			<tablechildren>
+				<searchbox model="@init(vm.lAlumnoSearchModel)" placeholder="Seleccione un Alumno."
+						selectedItem="@bind(vm.alumnoSearchModelSelected)"
+						autoclose="true"  multiple="false"
+						onSelect="@command('generarSearchModelCVA')" width="350px">
+
+						<template name="model">
+							
+							${each.documento} - ${each.fullNombre} 
+							
+						</template>
+
+					</searchbox>
+			</tablechildren>
+			
+			
+			<tablechildren>
+				<label value="Curso Vigente:" style="font-weight:bold"/>
+			</tablechildren>
+			
+			<tablechildren>
+				<searchbox model="@load(vm.lCursoVigenteSearchModel)" placeholder="Seleccione Curso."
+						selectedItem="@bind(vm.cursoVigenteSearchModelSelected)"
+						autoclose="true"  multiple="false" tooltiptext="@load(vm.cursoVigenteSearchModelSelected.nombre)"
+						 width="350px"
+						 onSelect="@command('cargarDatos')"
+						>
+
+						<template name="model">
+							
+							${each.nombre}
+							
+						</template>
+
+					</searchbox>
+			</tablechildren>
+			
+		
+					
+		</tablelayout>
+		
+		<listbox emptyMessage="lista vacía..." hflex="1" vflex="1">
+
+				<custom-attributes
+					org.zkoss.zul.listbox.groupSelect="false" />
+
+				<listhead>
+
+					
+					
+					<listheader label="FECHA" hflex="min"/>
+					<listheader label="ESTADO" hflex="min"/>
+					<listheader label="OBSERVACION" />
+					<listheader hflex="min"/>
+
+				</listhead>
+
+
+
+				<forEach items="@load(vm.lCVADocumentos)" var="each">
+
+					<listgroup open="true">
+						<listcell >
+							<label value="@load(each.documentoAlumnoTipo.tipo)" />
+						</listcell>
+						<listcell />
+						<listcell>
+
+							<label value="Estado: " />
+							<label value="@load(each.documentoEstadoTipo.tipo)" />
+
+						</listcell>
+						<listcell>
+							<button 
+							iconSclass=" z-icon-plus"
+							tooltiptext="Agregar Estado"			
+							onClick="@command('modalDocumentoDetalle', documento=each)"			/>
+													
+						</listcell>
+
+
+					</listgroup>
+
+
+					<forEach items="@load(each.detalles)" var="x">
+
+						<listitem>
+					
+							<listcell label="@load(x.fecha)" />
+							<listcell label="@load(x.documentoEstadoTipo.tipo)" />
+							<listcell label="@load(x.observacion)" />
+							<listcell  />
+	
+
+						</listitem>
+					</forEach>
+
+				</forEach>
+
+
+			</listbox>
+
+		
+	
+	
+	</vlayout>
+
+</window>
+</zk>

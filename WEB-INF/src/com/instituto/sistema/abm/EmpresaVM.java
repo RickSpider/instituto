@@ -101,7 +101,7 @@ public class EmpresaVM extends TemplateViewModelLocal {
 		    this.empresaSelected.setLogo(file.getByteData());
 		    this.logoFile = file;
 
-		    this.mensajeInfo("Archivo subido correctamente.");
+		    //this.mensajeInfo("Archivo subido correctamente.");
 
 	}
 

@@ -1,4 +1,4 @@
-select e.evaluacionid, e.evaluaciontipoid ,ed.alumnoid, p.nombre ||' '||p.apellido,p.documentonum ,e.cursovigenteid, e.materiaid, m.materia ,cvm.orden ,ed.evaluaciondetalleid, ed.calificacion,TO_CHAR(cva.fechainscripcion, 'DD/MM/YYYY') as Inscripcion  
+select e.evaluacionid, e.evaluaciontipoid ,ed.alumnoid, p.apellido||', '||p.nombre ,p.documentonum ,e.cursovigenteid, e.materiaid, m.materia ,cvm.orden ,ed.evaluaciondetalleid, ed.calificacion,TO_CHAR(cva.fechainscripcion, 'DD/MM/YYYY') as Inscripcion  
 from evaluacionesdetalles ed
 join evaluaciones e on e.evaluacionid = ed.evaluacionid
 left join cursosvigentesalumnos cva on cva.cursovigenteid = e.cursovigenteid 
@@ -7,6 +7,6 @@ join materias m on m.materiaid = e.materiaid
 join alumnos a on a.alumnoid = ed.alumnoid
 join personas p on p.personaid = a.personaid
 where e.cursovigenteid = ?1 and e.evaluaciontipoid = ?2
-order by p.apellido asc, a.alumnoid desc, cvm.orden asc;
+order by p.apellido asc, p.nombre asc, a.alumnoid desc, cvm.orden asc;
 
 

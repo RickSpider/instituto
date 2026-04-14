@@ -17,6 +17,7 @@ import org.zkoss.zul.ListModelArray;
 import com.doxacore.modelo.Tipo;
 import com.doxacore.report.ReportExcel;
 import com.instituto.modelo.Empresa;
+import com.instituto.serchModel.CursoVigenteSearchModel;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
 
@@ -29,7 +30,7 @@ public class TotalCursoReporteVM extends TemplateViewModelLocal {
 	private List<String> listaComprobantes = new ArrayList<String>();
 	private String tipoComprobanteSelected ="Todos";
 	
-	private ListModelArray<DataModelCursoVigente> cursosVigentesModel;
+	private ListModelArray<CursoVigenteSearchModel> cursosVigentesModel;
 	
 	
 
@@ -50,7 +51,7 @@ public class TotalCursoReporteVM extends TemplateViewModelLocal {
 		
 		List<Object[]> lCursosVigentes = this.reg.sqlNativo(cursoVigenteSQL);
 		
-		List<DataModelCursoVigente> lcv = new ArrayList<>();
+		List<CursoVigenteSearchModel> lcv = new ArrayList<>();
 		
 		int lcvSize = lCursosVigentes.size();
 		
@@ -58,7 +59,7 @@ public class TotalCursoReporteVM extends TemplateViewModelLocal {
 			
 			Object [] ocv = lCursosVigentes.get(i);
 			
-			lcv.add(new DataModelCursoVigente(Long.parseLong(ocv[0].toString()), ocv[1].toString(), ocv[2].toString(), ocv[3].toString()));
+			lcv.add(new CursoVigenteSearchModel(Long.parseLong(ocv[0].toString()), ocv[1].toString(), ocv[2].toString(), ocv[3].toString()));
 			
 		}
 
@@ -327,11 +328,11 @@ public class TotalCursoReporteVM extends TemplateViewModelLocal {
 		this.listaComprobantes = listaComprobantes;
 	}
 
-	public ListModelArray<DataModelCursoVigente> getCursosVigentesModel() {
+	public ListModelArray<CursoVigenteSearchModel> getCursosVigentesModel() {
 		return cursosVigentesModel;
 	}
 
-	public void setCursosVigentesModel(ListModelArray<DataModelCursoVigente> cursosVigentesModel) {
+	public void setCursosVigentesModel(ListModelArray<CursoVigenteSearchModel> cursosVigentesModel) {
 		this.cursosVigentesModel = cursosVigentesModel;
 	}
 

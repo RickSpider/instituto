@@ -106,7 +106,7 @@
 
 			<hlayout vflex="1">
 
-				<vlayout vflex="1" hflex="1">
+				<vlayout vflex="1" hflex="2">
 
 					<listbox emptyMessage="lista vacía..." mold="paging"
 						autopaging="true" vflex="1" model="@load(vm.lEstadosCuentas)">
@@ -127,16 +127,16 @@
 
 						<listhead>
 
-							<listheader label="Fecha Vencimiento"
-								align="center" />
+							<listheader label="Vencimiento"
+								align="center" hflex="min"/>
 
 							<listheader label="Concepto" align="Center" />
-							<listheader label="Periodo" align="Center" />
+							<listheader label="Periodo" align="Center" hflex="min"/>
 
 							<listheader label="Monto Total"
-								align="center" />
-							<listheader label="Pago" align="center" />
-							<listheader label="Descuento" align="center" />
+								align="center" hflex="min"/>
+							<listheader label="Pago" align="center" hflex="min"/>
+							<listheader label="Descuento" align="center" hflex="min" />
 							<listheader label="Saldo" align="center" hflex="min" />
 							<listheader label="Inactivo" align="center" hflex="min" />
 							<listheader hflex="min"  align="center"/>
@@ -154,7 +154,7 @@
 								<listcell
 									label="@load(each.vencimiento) @converter('formatedDate', format='dd/MM/yyyy')" />
 								<listcell
-									label="@load(each.concepto.concepto)" />
+									label="@load(each.concepto.concepto)" tooltiptext="@load(each.concepto.concepto)" style="text-align:left;white-space:nowrap;text-overflow: ellipsis;"/>
 								<listcell label="@load(each.periodo)" />
 								<listcell
 									label="@load(each.monto) @converter('formatedNumber', format='#,###')" />
@@ -195,7 +195,7 @@
 
 						</template>
 
-						<listfoot>
+						<!-- <listfoot>
 							<listfooter span="6" align="left">
 								<hlayout>
 									<label
@@ -203,7 +203,7 @@
 									<label value="items" />
 								</hlayout>
 							</listfooter>
-						</listfoot>
+						</listfoot> -->
 
 					</listbox>
 
@@ -236,7 +236,7 @@
 						
 							<listitem>
 							
-								<listcell label="@load(each.cobranza.fecha) @converter('formatedDate', format='dd/MM/yyyy HH:mm')" />
+								<!--  <listcell label="@load(each.cobranza.fecha) @converter('formatedDate', format='dd/MM/yyyy HH:mm')" />
 								<listcell label="@load(each.cobranza.comprobanteTipo.tipo)" />
 								<listcell label="@load(each.cobranza.comprobanteNum)" />
 								
@@ -251,13 +251,18 @@
 										<label value="No" />
 									</if>
 
-								</listcell>
+								</listcell>-->
+								
+								<listcell label="@load(each[2])" />
+								<listcell label="@load(each[3])" />
+								<listcell label="@load(each[4])" />
+								<listcell label="@load(each[5])" />
 								
 								<listcell>
 								
 									<button iconSclass="z-icon-print" 
 									style="background-color:green"
-									onClick="@command('verComprobante', cobranza=each.cobranza)"
+									onClick="@command('verComprobante', dato=each)"
 									tooltiptext="Imprimir Comprobante"/>
 								
 								</listcell>
@@ -268,15 +273,7 @@
 						
 						</template>
 						
-						<listfoot>
-							<listfooter span="6" align="left">
-								<hlayout>
-									<label
-										value="@load(vm.lCobranzasDetalles.size())" />
-									<label value="items" />
-								</hlayout>
-							</listfooter>
-						</listfoot>
+						
 
 					</listbox>
 

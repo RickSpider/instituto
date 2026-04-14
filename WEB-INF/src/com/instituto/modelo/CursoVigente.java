@@ -53,6 +53,9 @@ public class CursoVigente extends Modelo implements Serializable{
 	@ColumnDefault("false")
 	private boolean inscripcionOnline;
 	
+	@ColumnDefault("false")
+	private boolean finalizado;
+	
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -153,7 +156,15 @@ public class CursoVigente extends Modelo implements Serializable{
 		return bDias;
 		
 	}
-	
-	
+
+
+	public boolean isFinalizado() {
+		return finalizado;
+	}
+
+
+	public void setFinalizado(boolean finalizado) {
+		this.finalizado = finalizado;
+	}	
 	
 }

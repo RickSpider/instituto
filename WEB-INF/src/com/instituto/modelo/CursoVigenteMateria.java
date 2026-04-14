@@ -94,7 +94,12 @@ public class CursoVigenteMateria extends Modelo implements Serializable {
 	
 	@Override
 	public Object[] getArrayObjectDatos() {
-		Object [] o = {this.getOrden(), this.getCursoVigente().getCurso().getCurso() ,this.getMateria().getMateria(),this.getProveedor().getPersona().getNombreCompleto() ,getMateria().getMateriaTipo().getTipo(),this.estado.getTipo()}; 
+		Object [] o = {this.getOrden(), 
+				this.getCursoVigente().getCurso().getCurso() ,
+				this.getMateria().getMateria(),
+				this.proveedor != null ? this.getProveedor().getPersona().getNombreCompleto() : "" ,
+				this.getMateria().getMateriaTipo().getTipo(),this.estado.getTipo(),
+				this.getEstado().getTipo()}; 
 		return o;
 	}
 

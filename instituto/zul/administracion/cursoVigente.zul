@@ -410,11 +410,11 @@
 
 											<listcell
 												label="@load(each.cursovigenteconveniopk.convenio.descripcion)"
-												tooltiptext="@load(each.cursovigenteconveniopk.convenio.descripcion)" />
+												tooltiptext="@load(each.cursovigenteconveniopk.convenio.descripcion)" style="text-align:left;white-space:nowrap;text-overflow: ellipsis;"/>
 												
 											<listcell
 												label="@load(each.cursovigenteconveniopk.convenio.institucion.institucion)"
-												tooltiptext="@load(each.cursovigenteconveniopk.convenio.institucion.institucion)" />
+												tooltiptext="@load(each.cursovigenteconveniopk.convenio.institucion.institucion)" style="text-align:left;white-space:nowrap;text-overflow: ellipsis;"/>
 
 
 											<listcell>
@@ -516,18 +516,18 @@
 
 										<auxheader>
 											<textbox
-												value="@bind(vm.filtroColumnsMaterias[1])" instant="true"
+												value="@bind(vm.filtroColumnsMaterias[2])" instant="true"
 												onChange="@command('filtrarCursoVigenteMateria')" hflex="1" />
 										</auxheader>
 										<auxheader>
 											<textbox
-												value="@bind(vm.filtroColumnsMaterias[2])" instant="true"
+												value="@bind(vm.filtroColumnsMaterias[3])" instant="true"
 												onChange="@command('filtrarCursoVigenteMateria')" hflex="1" />
 										</auxheader>
 										
 										<auxheader>
 											<textbox
-												value="@bind(vm.filtroColumnsMaterias[3])" instant="true"
+												value="@bind(vm.filtroColumnsMaterias[4])" instant="true"
 												onChange="@command('filtrarCursoVigenteMateria')" hflex="1" />
 										</auxheader>
 										
@@ -535,7 +535,7 @@
 										<auxheader />
 										<auxheader>
 											<textbox
-												value="@bind(vm.filtroColumnsMaterias[4])" instant="true"
+												value="@bind(vm.filtroColumnsMaterias[5])" instant="true"
 												onChange="@command('filtrarCursoVigenteMateria')" hflex="1" />
 										</auxheader>
 									</auxhead>
@@ -551,11 +551,11 @@
 
 											<listcell
 												label="@load(each.materia.materia)"
-												tooltiptext="@load(each.materia.materia)" />
+												tooltiptext="@load(each.materia.materia)" style="text-align:left;white-space:nowrap;text-overflow: ellipsis;"/>
 												
 											<listcell
 												label="@load(each.proveedor.persona.fullNombre)"
-												tooltiptext="@load(each.proveedor.persona.fullNombre)" />
+												tooltiptext="@load(each.proveedor.persona.fullNombre)" style="text-align:left;white-space:nowrap;text-overflow: ellipsis;"/>
 											
 											<listcell
 												label="@load(each.materia.materiaTipo.tipo)"
@@ -705,7 +705,7 @@
 												label="@load(forEachStatus.index+1)" />
 											<listcell
 												label="@load(each.cursovigentealumnopk.alumno.fullNombre)"
-												tooltiptext="@load(each.cursovigentealumnopk.alumno.fullNombre)" />
+												tooltiptext="@load(each.cursovigentealumnopk.alumno.fullNombre)" style="text-align:left;white-space:nowrap;text-overflow: ellipsis;"/>
 											<listcell
 												label="@load(each.cursovigentealumnopk.alumno.persona.documentoNum)"
 												tooltiptext="@load(each.cursovigentealumnopk.alumno.persona.documentoNum)" />

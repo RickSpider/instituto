@@ -246,7 +246,7 @@
 
 							<listitem>
 
-								<listcell
+							<!--  	<listcell
 									label="@load(each.cobranza.fecha) @converter('formatedDate', format='dd/MM/yyyy HH:mm')" />
 								<listcell
 									label="@load(each.cobranza.comprobanteTipo.tipo)" />
@@ -268,13 +268,18 @@
 										<label value="No" />
 									</if>
 
-								</listcell>
+								</listcell>-->
+								
+								<listcell label="@load(each[2])" />
+								<listcell label="@load(each[3])" />
+								<listcell label="@load(each[4])" />
+								<listcell label="@load(each[5])" />
 
 								<listcell>
 
 									<button iconSclass="z-icon-print"
 										style="background-color:green"
-										onClick="@command('verComprobante', cobranza=each.cobranza)"
+										onClick="@command('verComprobante',dato=each)"
 										tooltiptext="Imprimir Comprobante" />
 
 								</listcell>

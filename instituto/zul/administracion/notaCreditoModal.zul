@@ -1,0 +1,118 @@
+<?page title="sedeModal" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window title="Nota de Credito/Debito Crear/Ver/Editar" border="normal"
+		position="center,center" closable="true" mode="modal" 
+		action="show: slideDown;hide: slideUp">
+
+		<tablelayout columns="4">
+		
+			<tablechildren>
+				<label value="ID:" style="font-weight:bold"  />
+			</tablechildren>
+
+			<tablechildren colspan="3">
+				<textbox value="@load(vm.notacdSelected.notacdid)"
+					readonly="true" width="50px" />
+			</tablechildren>
+			
+			<tablechildren>
+				<label value="Comprobante #:" style="font-weight:bold" />
+			</tablechildren>
+
+			<tablechildren>
+				<searchbox model="@init(vm.lSifenDocumentoSearchModel)" placeholder="Seleccione un comprobante."
+						selectedItem="@bind(vm.sifenDocumentoSearchModelSelected)"
+						autoclose="true"  multiple="false" 
+						onSelect="@command('onSelectedSifenComprogante')">
+
+						<template name="model">
+							
+							${each.fecha} - ${each.comprobanteNum} - ${each.total}
+							
+						</template>
+
+					</searchbox>
+			</tablechildren>
+			
+			<tablechildren>
+				<label value="CDC Asociado:" style="font-weight:bold" />
+			</tablechildren>
+
+			<tablechildren>
+				<textbox value="@load(vm.notacdSelected.cdcAsociado)" width="310px" readonly="true" />
+			</tablechildren>
+			
+			
+			<tablechildren>
+				<label value="Ruc/DocNum:" style="font-weight:bold" />
+			</tablechildren>
+
+			<tablechildren>
+				<textbox value="@load(vm.notacdSelected.ruc)" readonly="true" />
+			</tablechildren>
+			
+			
+			
+			<tablechildren>
+				<label value="Razon Social:" style="font-weight:bold" />
+			</tablechildren>
+
+			<tablechildren>
+				<textbox value="@load(vm.notacdSelected.razonSocial)" readonly="true" />
+			</tablechildren>
+			
+			
+			
+			
+		</tablelayout>	
+		
+		<space width="10px"/>
+		
+		<listbox width="700px" height="400px" emptyMessage="lista vacía..." mold="paging" autopaging="true"
+		 model="@load(vm.notacdSelected.detalles)">
+		
+			<listhead>
+				
+				<listheader label="DESCRIPCION" align="center" />
+				<listheader label="EXENTO" hflex="min" align="center"/>
+				<listheader label="IVA5" hflex="min" align="center"/>
+				<listheader label="IVA10" hflex="min" align="center"/>
+				<listheader label="MONTO" hflex="min" align="center"/>
+			
+			</listhead>
+			
+			<template name="model">
+				
+				<listitem>
+					
+					<listcell label="@load(each.descripcion)" style="text-align:left" tooltiptext="@load(each.descripcion)"/>
+					<listcell >
+						<doublebox value="@load(each.exento)" readonly="true" style="text-align:right"/>
+					</listcell>
+					<listcell >
+						<doublebox value="@load(each.iva5)" readonly="true" style="text-align:right"/>
+					</listcell>
+					<listcell >
+						<doublebox value="@load(each.iva10)" readonly="true" style="text-align:right"/>
+					</listcell>
+					<listcell >
+						<doublebox value="@load(each.monto)" readonly="true" style="text-align:right"/>
+					</listcell>
+				</listitem>
+				
+			</template>
+			
+			
+		
+		</listbox>
+		
+		<space height="10px" />
+
+			<hlayout>
+
+				<button label="Aceptar" onClick="@command('guardar')" />
+
+			</hlayout>
+
+	</window>
+</zk>

@@ -12,8 +12,6 @@ import org.zkoss.zk.ui.select.Selectors;
 import org.zkoss.zk.ui.util.Notification;
 import org.zkoss.zul.Window;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.instituto.fe.model.ConsultaCDC;
 import com.instituto.fe.util.MetodosCE;
 import com.instituto.modelo.SifenDocumento;
@@ -68,7 +66,7 @@ public class SifenDocumentoVM extends TemplateViewModelLocal{
 
 	private void inicializarFiltros() {
 
-		this.filtroColumns = new String[8]; 
+		this.filtroColumns = new String[9]; 
 
 		for (int i = 0; i < this.filtroColumns.length; i++) {
 
