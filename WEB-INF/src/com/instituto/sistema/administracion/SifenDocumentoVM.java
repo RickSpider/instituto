@@ -127,7 +127,7 @@ public class SifenDocumentoVM extends TemplateViewModelLocal{
 		
 		MetodosCE ctce = new MetodosCE();
 		
-		if (sd.getCobranza().getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_FACTURA) == 0) {
+	/*	if (sd.getCobranza().getComprobanteTipo().getSigla().compareTo(ParamsLocal.SIGLA_COMPROBANTE_FACTURA) == 0) {
 			
 			SifenDocumento sd2 = ctce.enviarComprobante(sd, MetodosCE.FACTURA);
 			
@@ -142,8 +142,32 @@ public class SifenDocumentoVM extends TemplateViewModelLocal{
 				this.cargarSifenDocumentos();
 			}
 			
+		}*/
+
+		SifenDocumento sd2 = null;
+		
+		if (sd.getCobranza() != null){
+			
+			sd2 = ctce.enviarComprobante(sd, MetodosCE.FACTURA);
+			
+		}else if (sd.getNotacd() != null) {
+			
+			sd2 = ctce.enviarComprobante(sd, MetodosCE.NOTACREDITO);
+			
 		}
-	
+			
+		if (sd2 == null) {
+				
+			this.mensajeError("Problema al envia, intentelo mas tarde.");
+			return;
+				
+		}else {
+				
+			this.mensajeInfo("Enviado Correctamente");
+			this.cargarSifenDocumentos();
+		
+		}
+
 	}
 	
 	@Command
