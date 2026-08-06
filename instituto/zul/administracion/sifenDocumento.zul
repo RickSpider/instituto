@@ -21,13 +21,13 @@
 						<listheader label="CDC" align="center" width="350px" />
 						
 						<listheader label="Comprobante #"
-							align="center" />
+							align="center" hflex="min"/>
 							
-						<listheader label="Enviado" align="center" />
+						<listheader label="Enviado" align="center" hflex="min"/>
 							
-						<listheader label="Estado" width="250px" align="center" />
-						<listheader label="Cancelado" width="250px" align="center" />
-						<listheader label="Cancelado Fecha" width="250px" align="center" />
+						<listheader label="Estado" width="250px" align="center" hflex="min"/>
+						<listheader label="Cancelado" width="250px" align="center" hflex="min"/>
+						<listheader label="Cancelado Fecha" width="250px" align="center" hflex="min"/>
 						<listheader label="Tipo Comprobante" align="center" />
 						<listheader hflex="min"/>
 
