@@ -34,7 +34,7 @@
 					<tablechildren>
 	
 						<finder
-							finderValue="@load(vm.cursoVigenteSelected.curso.curso)"
+							finderValue="@load(vm.cursoVigenteSelected.cursovigenteid)"
 							finderModel="@load(vm.cursoFinder)" 
 							disabled = "@load(vm.disabledCursoFinder)"/>
 						
@@ -56,13 +56,9 @@
 							style="text-align:right" readonly="true" />
 					</tablechildren>
 					
-					<tablechildren >
-						<label value="Saldo Total:" style="font-weight:bold" />
-					</tablechildren>
-					<tablechildren >
-						<doublebox width="120px"
-							value="@load(vm.saldoTotal)" format="#,###"
-							style="text-align:right" readonly="true" />
+					<tablechildren colspan="3" >
+						<label
+							value="@load(vm.cursoVigenteSelected.diasString)" />
 					</tablechildren>
 	
 					<tablechildren >
@@ -74,13 +70,12 @@
 							style="text-align:right" readonly="true" />
 					</tablechildren>
 					
-					
 					<tablechildren >
-						<label value="Saldo Vencido:" style="font-weight:bold"/>
+						<label value="Saldo Total:" style="font-weight:bold" />
 					</tablechildren>
 					<tablechildren >
 						<doublebox width="120px"
-							value="@load(vm.saldoVencido)" format="#,###"
+							value="@load(vm.saldoTotal)" format="#,###"
 							style="text-align:right" readonly="true" />
 					</tablechildren>
 					
@@ -91,7 +86,16 @@
 						<doublebox width="120px"
 							value="@load(vm.importeDescuento)" format="#,###"
 							style="text-align:right" readonly="true" />
-					</tablechildren>				
+					</tablechildren>	
+					
+					<tablechildren >
+						<label value="Saldo Vencido:" style="font-weight:bold"/>
+					</tablechildren>
+					<tablechildren >
+						<doublebox width="120px"
+							value="@load(vm.saldoVencido)" format="#,###"
+							style="text-align:right" readonly="true" />
+					</tablechildren>			
 					
 				</tablelayout>
 				

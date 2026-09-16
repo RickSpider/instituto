@@ -24,8 +24,99 @@
 			    left: 50% !important;
 			    transform: translateX(-50%) !important;
 			}
+			
+			.datebox-igual-textbox {
+			    flex: 1 1 auto !important;
+			    width: auto ;
+			    min-width: 0;
+			    box-sizing: border-box;
+			    
+			}
+			
+			.datebox-igual-textbox .z-datebox-input {
+			    height: 30px !important;
+			    min-height: 30px !important;
+			    max-height: 30px !important;
+			
+			    box-sizing: border-box !important;
+			
+			    border-left: 0 !important;
+			    border-radius: 0 !important;
+			}
+			
+			.datebox-igual-textbox .z-datebox-button {
+			    width: 30px !important;
+			    height: 30px !important;
+			    min-height: 30px !important;
+			    max-height: 30px !important;
+			
+			    box-sizing: border-box !important;
+			
+			}
 
+			.form-control::placeholder,
+		        .z-textbox::placeholder,
+		        .z-datebox-input::placeholder,
+		        .z-combobox-input::placeholder {
+		            color: #bfc4c9 !important;
+		            opacity: 1 !important;
+		        }
 		
+			.checkbox-form {
+			    font-family: 'Poppins', sans-serif;
+			    color: #555;
+			}
+			
+			.checkbox-form .z-checkbox-content {
+			    display: inline-flex !important;
+			    align-items: center !important;
+			    font-size: 16px !important;
+			    font-weight: 500;
+			    cursor: pointer;
+			}
+			
+			.checkbox-form input[type="checkbox"] {
+			    width: 17px;
+			    height: 17px;
+			    transform: scale(2);
+			    transform-origin: left center;
+			    margin: 0 25px 0 0 !important;
+			    accent-color: #209cd8;
+			    cursor: pointer;
+			}
+			
+			.combo-formulario {
+			    flex: 1 1 auto !important;
+			    
+			    min-width: 0 !important;
+			    height: 34px ;
+			}
+			
+			.combo-formulario .z-combobox-input {
+			    width: calc(100% - 34px) !important;
+			    height: 34px !important;
+			    box-sizing: border-box !important;
+			
+			    font-family: 'Poppins', sans-serif;
+			    font-size: 13px;
+			
+			    border: 1px solid #dee2e6;
+			    border-radius: 0 !important;
+			}
+			
+			.combo-formulario .z-combobox-button {
+			    width: 34px !important;
+			    height: 34px !important;
+			    box-sizing: border-box !important;
+			}
+			
+			.combo-formulario .z-combobox-input {
+			    border-radius: 0 !important;
+			}
+			
+			.combo-formulario .z-combobox-button {
+			    border-radius: 0 8px 8px 0 !important;
+			}
 
 		</h:style>
 	</h:head>
@@ -51,22 +142,20 @@
 			<!-- Form Body -->
 			<h:div class="form-body"
 				visible="@load(vm.visibleBodyForm)">
-				<!-- Alert Info -->
+				<!-- Alert Info
 				<h:div class="alert alert-info" role="alert">
 					<h:i class="fas fa-info-circle mr-2"></h:i>
 					<h:strong>Información importante:</h:strong>
 					Todos los campos marcados con asterisco (*) son
 					obligatorios. Asegúrese de proporcionar información
 					precisa para completar su inscripción.
-				</h:div>
+				</h:div> -->
 
 				<div>
 
 
-					<h:div class="section-title">
-						<h:i class="fas fa-user mr-2"></h:i>
-						Curso
-					</h:div>
+
+
 
 					<h:div class="input-group">
 						<h:div class="input-group-prepend">
@@ -80,6 +169,7 @@
 						    
 							model="@init(vm.cursosVigentesModel)" height="35px"
 							selectedItem="@bind(vm.cursoVigenteSelected)" autoclose="true"
+							placeholder="Seleccione un Curso"
 							>
 							
 							
@@ -105,20 +195,11 @@
 
 					</h:div>
 
-
-
-
-					<h:div class="section-title">
-						<h:i class="fas fa-user mr-2"></h:i>
-						Información Personal
-					</h:div>
-
 					<h:div class="row">
 						<h:div class="col-md-6">
-							<h:div class="input-group">
+							<h:div >
 								<h:label>
-									Cédula de Identidad (CI)
-									<h:span class="required">*</h:span>
+									
 								</h:label>
 								<h:div class="input-group">
 
@@ -133,6 +214,7 @@
 									</h:div>
 									<textbox class="form-control"
 										value="@bind(vm.inscriptoOnlineSelected.ci)"
+										placeholder="CI (sin puntos) ej: 7654321"
 										constraint="/^[0-9]*$/ : Solo se permiten números Ej:1234567"
 										onChange="@command('buscarCI')" readonly="@load(vm.readOnly)" />
 								</h:div>
@@ -142,10 +224,9 @@
 
 						<h:div class="col-md-6">
 
-							<h:div class="input-group">
+							<h:div>
 								<h:label>
-									Correo
-									<h:span class="required">*</h:span>
+									
 								</h:label>
 								<h:div class="input-group">
 
@@ -159,7 +240,10 @@
 										</h:span>
 									</h:div>
 									<textbox class="form-control"
+										constraint="/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/:Email inválido"
+   										maxlength="100"
 										value="@bind(vm.inscriptoOnlineSelected.email)"
+										placeholder="Ingrese Correo"
 										 />
 								</h:div>
 							</h:div>
@@ -169,10 +253,9 @@
 
 						<h:div class="col-md-6">
 
-							<h:div>
+							<h:div >
 								<h:label>
-									Nombre
-									<h:span class="required">*</h:span>
+									
 								</h:label>
 								<h:div class="input-group">
 
@@ -185,6 +268,7 @@
 									</h:div>
 									<textbox class="form-control"
 										value="@bind(vm.inscriptoOnlineSelected.nombre)"
+										placeholder="Nombre"
 										readonly="@load(vm.readOnly)" />
 								</h:div>
 							</h:div>
@@ -193,10 +277,9 @@
 
 						<h:div class="col-md-6">
 
-							<h:div class="input-group">
+							<h:div >
 								<h:label>
-									Apellido
-									<h:span class="required">*</h:span>
+									
 								</h:label>
 								<h:div class="input-group">
 
@@ -209,7 +292,33 @@
 									</h:div>
 									<textbox class="form-control"
 										value="@bind(vm.inscriptoOnlineSelected.apellido)"
+										placeholder="Apellido"
 										readonly="@load(vm.readOnly)" />
+								</h:div>
+							</h:div>
+
+						</h:div>
+						
+						<h:div class="col-md-6">
+
+							<h:div >
+								<h:label>
+								
+								</h:label>
+								<h:div class="input-group">
+
+									<h:div
+										class="input-group-prepend">
+										<h:span
+											class="input-group-text">
+											<h:i class="fa-solid fa-cake-candles"></h:i>
+										</h:span>
+									</h:div>
+									<datebox  
+									value="@bind(vm.inscriptoOnlineSelected.fechaNacimiento)" 
+									format="dd/MM/yyyy"  
+									sclass="datebox-igual-textbox" 
+									placeholder="Fecha de Nacimiento ej: 25/01/2026"/>
 								</h:div>
 							</h:div>
 
@@ -217,10 +326,10 @@
 
 						<h:div class="col-md-6">
 
-							<h:div class="input-group">
+							<h:div>
 								<h:label>
-									Nacionalidad
-									<h:span class="required">*</h:span>
+									
+									
 								</h:label>
 								<h:div class="input-group">
 
@@ -236,7 +345,7 @@
 									<searchbox
 										model="@init(vm.nacionalidadModel)" height="35px"
 										selectedItem="@bind(vm.nacionalidadSelected)" autoclose="true"
-										style="text-align:center;" disabled="@load(vm.readOnly)">
+										style="text-align:center;" disabled="@load(vm.readOnly)" placeholder="Seleccione una Nacionalidad">
 
 										<template name="model">
 
@@ -252,12 +361,16 @@
 
 						</h:div>
 
+						
+
+
+					
+						
 						<h:div class="col-md-6">
 
-							<h:div class="input-group">
+							<h:div >
 								<h:label>
-									Ciudad
-									<h:span class="required">*</h:span>
+									
 								</h:label>
 								<h:div class="input-group">
 
@@ -273,7 +386,7 @@
 									<searchbox
 										model="@init(vm.ciudadModel)" height="35px"
 										selectedItem="@bind(vm.ciudadSelected)" autoclose="true"
-										style="text-align:center;" >
+										style="text-align:center;" placeholder="Seleccione una Ciudad">
 
 										<template name="model">
 
@@ -289,38 +402,12 @@
 
 						</h:div>
 
-
-						<h:div class="col-md-6">
-
-							<h:div class="input-group">
-								<h:label>
-									Telefono
-									<h:span class="required">*</h:span>
-								</h:label>
-								<h:div class="input-group">
-
-									<h:div
-										class="input-group-prepend">
-										<h:span
-											class="input-group-text">
-											<h:i class="fas fa-phone"></h:i>
-										</h:span>
-									</h:div>
-									<textbox class="form-control"
-										value="@bind(vm.inscriptoOnlineSelected.telefono)"
-										 />
-								</h:div>
-							</h:div>
-
-						</h:div>
-
 						<h:div class="col-md-6" colspan="2">
 
-							<h:div class="input-group" hflex="1">
+							<h:div  hflex="1">
 
 								<h:label>
-									Direccion
-									<h:span class="required">*</h:span>
+									
 								</h:label>
 
 								<h:div class="input-group">
@@ -336,7 +423,7 @@
 									</h:div>
 									<textbox class="form-control"
 										value="@bind(vm.inscriptoOnlineSelected.direccion)" rows="2"
-										/>
+										placeholder="Dirección"/>
 
 								</h:div>
 
@@ -346,22 +433,109 @@
 							</h:div>
 
 						</h:div>
+						
+						<h:div class="col-md-6">
+
+							<h:div >
+								<h:label>
+								
+								</h:label>
+								<h:div class="input-group">
+
+									<h:div
+										class="input-group-prepend">
+										<h:span
+											class="input-group-text">
+											<h:i class="fas fa-phone"></h:i>
+										</h:span>
+									</h:div>
+									<textbox class="form-control"
+										value="@bind(vm.inscriptoOnlineSelected.telefono)"
+										 placeholder="Telefono/Celular ej: 0981654321"/>
+								</h:div>
+							</h:div>
+
+						</h:div>
+						
+						<h:div class="col-md-6">
+
+							<h:div >
+								<h:label>
+								
+								</h:label>
+								<h:div class="input-group">
+
+									<h:div
+										class="input-group-prepend">
+										<h:span
+											class="input-group-text">
+											<h:i class="fa-solid fa-graduation-cap"></h:i>
+										</h:span>
+									</h:div>
+									<textbox class="form-control"
+										value="@bind(vm.inscriptoOnlineSelected.tituloObtenido)"
+										 placeholder="Titulo Obtenido"/>
+								</h:div>
+							</h:div>
+
+						</h:div>
+						
+						<h:div class="col-md-6">
+
+							<h:div >
+							
+							<h:label>
+								
+								</h:label>
+							
+								<h:div class="input-group">
+
+									<h:div
+										class="input-group-prepend">
+										<h:span
+											class="input-group-text">
+											<h:i class="fa-solid fa-graduation-cap"></h:i>
+										</h:span>
+									</h:div>
+									<combobox placeholder="Como conociste IMAI" sclass="combo-formulario"
+										readonly="true" value="@bind(vm.inscriptoOnlineSelected.encuesta)">
+									
+										 <comboitem label="Es exalumno" value="Es Exalumno"/>
+										 <comboitem label="Por referencia" value="Por referencia"/>
+										 <comboitem label="Instagram" value="Instagram"/>
+										 <comboitem label="Tiktok" value="Tiktok"/>
+										 <comboitem label="Pagina Web" value="Pagina Web"/>
+										 <comboitem label="Emisora de Radio" value="Emisora de Radio"/>
+										 <comboitem label="Expocarreras" value="Expocarreras"/>
+										 <comboitem label="Pasacalle" value="Pasacalle"/>
+										 <comboitem label="Visita a Colegio" value="Visita a colegio"/>
+										 <comboitem label="Otro" value="Otro"/>
+									
+									</combobox>
+								</h:div>
+							</h:div>
+
+						</h:div> 
+						
 
 					</h:div>
+					
+				  
+					
 
 
 
 					<h:div class="section-title">
 						<h:i class="fas fa-user mr-2"></h:i>
 						Información de Facturación
-					</h:div>
+					</h:div> 
 
 
 					<h:div class="row">
 						<h:div class="col-md-6">
 
-							<h:div class="input-group">
-								<h:label>RUC</h:label>
+							<h:div >
+								<h:label> </h:label>
 								<h:div class="input-group">
 
 									<h:div
@@ -374,7 +548,9 @@
 										</h:span>
 									</h:div>
 									<textbox class="form-control"
+   								 	maxlength="10"
 										value="@bind(vm.inscriptoOnlineSelected.ruc)"
+										placeholder="RUC (sin puntos, sin espacios) ej: 7654321-0"
 										 />
 								</h:div>
 							</h:div>
@@ -383,8 +559,8 @@
 
 						<h:div class="col-md-6">
 
-							<h:div class="input-group">
-								<h:label>Razon Social</h:label>
+							<h:div >
+								<h:label> </h:label>
 								<h:div class="input-group">
 
 									<h:div
@@ -398,7 +574,19 @@
 									</h:div>
 									<textbox class="form-control"
 										value="@bind(vm.inscriptoOnlineSelected.razonSocial)"
-										 />
+										 placeholder="Razon Social ej: Bruno Diaz"/>
+								</h:div>
+							</h:div>
+
+						</h:div>
+						
+						<h:div class="col-md-6">
+
+							<h:div >
+								<h:label> </h:label>
+								<h:div class="input-group">
+									<checkbox checked="@bind(vm.inscriptoOnlineSelected.facturaTercero)" 
+									label="Marca si la Factura es a Terceros." sclass="checkbox-form"/>
 								</h:div>
 							</h:div>
 
@@ -414,21 +602,11 @@
 						<script
 							src="https://www.google.com/recaptcha/api.js" defer="true" />
 						<script>
-
-
-
-
-
 							
 							<![CDATA[ function afterValidate(response){
 							zkbind.$('$recaptcha').command('verify',
 							{"response":response}); } ]]>
-							
-							
-							
-							
-							
-
+		
 						</script>
 
 						<x:div id="recaptcha" class="g-recaptcha"
@@ -452,11 +630,11 @@
 				<!-- Alert Info -->
 				<h:div class="alert alert-info" role="alert">
 					<h:i class="fas fa-info-circle mr-2"></h:i>
-					<h:strong>Inscripcion Registrada:</h:strong>
-					Se envio un correo al mail indicado, para confirmar
-					la inscripcion, por favor verifica tu correo, si el
-					mail no se encuentra en la Bandeja de Entrada,
-					por favor verifica la carpeta de spam.
+					<h:strong>Instrucciones para finaliza Inscripcion:</h:strong>
+					Dirigite a tu correo electronico, para confirmar
+					la inscripcion, si el
+					correo de confirmacion no se encuentra en la Bandeja de Entrada,
+					por favor verifica la carpeta de spam o correos no deseados.
 				</h:div>
 			</h:div>
 

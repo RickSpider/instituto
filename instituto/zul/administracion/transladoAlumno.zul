@@ -1,0 +1,337 @@
+<?page title="transladoAlumnos" contentType="text/html;charset=UTF-8"?>
+<zk>
+
+	<window title="Translado Alumno" border="normal"
+		viewModel="@id('vm') @init('com.instituto.sistema.administracion.TransladoAlumnoVM')"
+		vflex="1" id="Body" apply="org.zkoss.bind.BindComposer">
+
+	<vlayout visible="@load(!vm.transladarVisible)"  hflex="1" vflex="1" >
+	
+		<vlayout hflex="1" vflex="1">
+
+				<hbox pack="end" hflex="1">
+
+					<button label="Agregar" iconSclass=" z-icon-plus"
+						onClick="@command('cambiarPantalla')"
+						disabled="@load(!vm.opCrearTransladoAlumno)" />
+
+				</hbox>
+
+				<listbox emptyMessage="lista vacía..." mold="paging"
+					vflex="1" model="@load(vm.lTranslados)" checkmark="true">
+
+					<listhead>
+
+						<listheader hflex="min" align="center" />
+						<listheader label="ID" align="right"
+							hflex="min" />
+						<listheader label="Fecha" align="left" />
+						<listheader label="Transalado #" align="left" />
+						<listheader label="Documento #" align="left" />
+						<listheader label="Alumno" align="left" />
+						<listheader label="Curso Origen" align="left" />
+						<listheader label="Curso Destino" align="left" />
+						<listheader hflex="min" />
+
+					</listhead>
+
+
+					<auxhead>
+
+						<auxheader />
+						<auxheader />
+						
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[1])"
+								instant="true" onChange="@command('filtrarEscala')" hflex="1" />
+						</auxheader>
+
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[2])"
+								instant="true" onChange="@command('filtrarEscala')" hflex="1" />
+						</auxheader>
+						
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[3])"
+								instant="true" onChange="@command('filtrarEscala')" hflex="1" />
+						</auxheader>	
+						
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[4])"
+								instant="true" onChange="@command('filtrarEscala')" hflex="1" />
+						</auxheader>	
+						
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[5])"
+								instant="true" onChange="@command('filtrarEscala')" hflex="1" />
+						</auxheader>	
+						
+						<auxheader>
+							<textbox value="@bind(vm.filtroColumns[6])"
+								instant="true" onChange="@command('filtrarEscala')" hflex="1" />
+						</auxheader>		
+
+						<auxheader />
+					</auxhead>
+
+					<template name="model">
+
+						<listitem>
+							<listcell />
+							<listcell label="@load(each[0])" />
+							<listcell label="@load(each[1])" />
+							<listcell label="@load(each[2])" />
+							<listcell label="@load(each[3])" />
+							<listcell label="@load(each[4])" />
+							<listcell label="@load(each[5])" />
+							<listcell label="@load(each[6])" />
+						
+							<listcell>
+								<hlayout>
+
+									
+
+
+								</hlayout>
+
+
+							</listcell>
+
+
+						</listitem>
+
+
+					</template>
+
+					<listfoot>
+						<listfooter span="4" align="left">
+							<hlayout>
+								<label
+									value="@load(vm.lTranslados.size())" />
+								<label value="items" />
+							</hlayout>
+						</listfooter>
+					</listfoot>
+
+
+				</listbox>
+
+			</vlayout>
+	
+	</vlayout>
+
+	<vlayout vflex="1" visible="@load(vm.transladarVisible)">
+
+		<tablelayout columns="3" >
+
+			<tablechildren>
+				<label value="Alumno" style="font-weight:bold" />
+			</tablechildren>
+
+			<tablechildren colspan="2">
+				<searchbox model="@init(vm.lAlumnoSearchModel)" placeholder="Seleccione un Alumno."
+						selectedItem="@bind(vm.alumnoSMSelected)"
+						autoclose="true"  multiple="false"
+						onSelect="@command('onSelectedAlumno')" width="350px">
+
+						<template name="model">
+							
+							${each.documento} - ${each.fullNombre} 
+							
+						</template>
+
+					</searchbox>
+			</tablechildren>
+
+			<tablechildren>
+				<label value="Curso Origen" style="font-weight:bold" />
+			</tablechildren>
+
+			<tablechildren>
+				<searchbox model="@load(vm.cursosVigentesOriModel)"
+					selectedItem="@bind(vm.cvSMOri)"
+					autoclose="true" width="350px"
+					onSelect="@command('onSelectedCVOri')">
+					
+				</searchbox>
+			</tablechildren>
+
+			<tablechildren>
+				<label />
+			</tablechildren>
+			
+			<tablechildren>
+				<label value="Monto Abonado Origen:" style="font-weight:bold" />
+			</tablechildren>
+
+			<tablechildren colspan="2">
+				<doublebox value="@load(vm.transladoSelected.montoTransladado)" 
+				format="#,###" style="text-align:right"
+				readonly="true"/>
+			</tablechildren>
+
+			<tablechildren>
+				<label value="Curso Destino" style="font-weight:bold" />
+			</tablechildren>
+
+			<tablechildren>
+				<searchbox model="@load(vm.cursosVigentesDestinoModel)"
+					selectedItem="@bind(vm.cvSMDestino)"
+					autoclose="true" width="350px"
+					onSelect="@command('onSelectedCVDestino')">
+					
+				</searchbox>
+			</tablechildren>
+
+			<tablechildren>
+					<button label="Generar Translado" 
+						onClick="@command('transladoConfirmacion')" disabled="@load(!vm.opCrearTransladoAlumno)"/>
+					
+					<button label="Salir" style="background-color:red"
+						onClick="@command('cambiarPantalla')"/>
+			</tablechildren>
+			
+			
+		</tablelayout>
+
+
+		<hlayout vflex="1">
+
+			<listbox hflex="1" vflex="1" emptyMessage="lista vacía..." model="@load(vm.lEstadosCuentasOri)">
+
+				<auxhead>
+
+					<auxheader colspan="8" align="center">
+
+						<label value="Estado Cuenta Origen" />
+
+					</auxheader>
+
+				</auxhead>
+
+				<listhead>
+
+					<listheader label="Vencimiento" align="center"
+						hflex="min" />
+
+					<listheader label="Concepto" align="Center" />
+					<listheader label="Periodo" align="Center"
+						hflex="min" />
+
+					<listheader label="Monto Total" align="center"
+						hflex="min" />
+					<listheader label="Pago" align="center" hflex="min" />
+					<listheader label="Descuento" align="center"
+						hflex="min" />
+					<listheader label="Saldo" align="center"
+						hflex="min" />
+					<listheader label="Inactivo" align="center"
+						hflex="min" />
+
+
+				</listhead>
+				
+				<template name="model">
+
+							<listitem>
+
+								<listcell
+									label="@load(each.vencimiento) @converter('formatedDate', format='dd/MM/yyyy')" />
+								<listcell
+									label="@load(each.concepto.concepto)" tooltiptext="@load(each.concepto.concepto)" style="text-align:left;white-space:nowrap;text-overflow: ellipsis;"/>
+								<listcell label="@load(each.periodo)" />
+								<listcell
+									label="@load(each.monto) @converter('formatedNumber', format='#,###')" />
+								<listcell
+									label="@load(each.pago) @converter('formatedNumber', format='#,###')" />
+								<listcell
+									label="@load(each.montoDescuento)  @converter('formatedNumber', format='#,###')"   />
+								
+								<listcell
+									label="@load(each.saldo)  @converter('formatedNumber', format='#,###')" />
+									
+								<listcell>
+								
+									<if test="@load(each.inactivo)">
+									
+										<image src="/doxacore/img/un-check.png" style=" width: 15px; height: 15px;"
+										tooltiptext="@load(each.motivoInactivacion)"/>
+									
+									</if>
+								
+								</listcell>
+									
+							</listitem>
+
+						</template>
+
+			</listbox>
+
+			<listbox hflex="1" vflex="1" emptyMessage="lista vacía..."  model="@load(vm.lEstadosCuentasDestino)">
+			
+				<auxhead>
+
+					<auxheader colspan="6" align="center">
+
+						<label value="Estado Cuenta Destino" />
+
+					</auxheader>
+
+				</auxhead>
+
+				<listhead>
+
+					<listheader label="Vencimiento" align="center"
+						hflex="min" />
+
+					<listheader label="Concepto" align="Center" />
+					<listheader label="Periodo" align="Center"
+						hflex="min" />
+
+					<listheader label="Monto Total" align="center"
+						hflex="min" />
+					<listheader label="Pago" align="center" hflex="min" />
+					<listheader label="Descuento" align="center"
+						hflex="min" />
+					
+
+
+				</listhead>
+				
+				<template name="model">
+
+							<listitem>
+
+								<listcell
+									label="@load(each.vencimiento) @converter('formatedDate', format='dd/MM/yyyy')" />
+								<listcell
+									label="@load(each.concepto.concepto)" tooltiptext="@load(each.concepto.concepto)" style="text-align:left;white-space:nowrap;text-overflow: ellipsis;"/>
+								<listcell label="@load(each.periodo)" />
+								<listcell
+									label="@load(each.monto) @converter('formatedNumber', format='#,###')" />
+								<listcell>
+								
+									<doublebox value="@bind(each.pago)"
+									format="#,###"
+									style="text-align:right"
+									hflex="1" onChange="@command('onChangePago',estadoCuenta=each)"/>
+									
+								</listcell>
+								<listcell
+									label="@load(each.montoDescuento)  @converter('formatedNumber', format='#,###')" />
+								
+								
+									
+							</listitem>
+
+						</template>
+				
+
+			</listbox>
+
+		</hlayout>
+		
+		</vlayout>
+
+	</window>
+</zk>

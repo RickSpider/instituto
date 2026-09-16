@@ -105,33 +105,75 @@ public class InscripcionConfirmarVM extends TemplateNoLoginViewModel {
 		if (p == null) {
 			
 			p = new Persona();
-			p.setNombre(io.getNombre());
-			p.setApellido(io.getApellido());
+			p.setNombre(io.getNombre().trim());
+			p.setApellido(io.getApellido().trim());
 			p.setDocumentoTipo(this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_DOCUMENTO_CI));
 			p.setPersonaTipo(this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_PERSONA_FISICA));
-			p.setDocumentoNum(io.getCi());
+			p.setDocumentoNum(io.getCi().trim());
 			p.setNacionalidad(io.getPais());
 
-			
 			//p = this.reg.saveObject(p, "sys");
 			
 		}
 		
 		p.setCiudad(io.getCiudad());
-		p.setDireccion(io.getDireccion());
-		//p.setRuc(io.getRuc());
-		p.setEmail(io.getEmail());
-		p.setTelefono(io.getTelefono());
+		p.setDireccion(io.getDireccion().trim());
+		p.setEmail(io.getEmail().trim());
+		p.setTelefono(io.getTelefono().trim());
 		
-		if (io.getRazonSocial() != null && !io.getRazonSocial().isEmpty()) {
+		Persona pFacturacion = null;
+		
+		if (io.getFacturaTercero()) {
 			
-			p.setRazonSocial(io.getRazonSocial());
+			pFacturacion = this.reg.getObjectByColumnString(Persona.class.getName(), "ruc", io.getRuc().trim());
+			
+			if (pFacturacion == null) {
+				
+				pFacturacion = new Persona();
+				
+				pFacturacion.setNombre(io.getRazonSocial().trim());
+				pFacturacion.setRuc(io.getRuc().trim());
+				pFacturacion.setRazonSocial(io.getRazonSocial().trim());
+				pFacturacion.setTelefono(io.getTelefono().trim());
+				pFacturacion.setEmail(io.getEmail().trim());
+				pFacturacion.setDireccion(io.getDireccion().trim());
+				
+				String [] ruc = io.getRuc().split("-");
+				int rucNum = Integer.valueOf(ruc[0]);
+				
+				if (rucNum >= 80000000) {
+					
+					pFacturacion.setPersonaTipo(this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_PERSONA_JURIDICA));	
+					
+				}else {
+					
+					pFacturacion.setPersonaTipo(this.reg.getObjectBySigla(Tipo.class.getName(), ParamsLocal.SIGLA_PERSONA_FISICA));	
+					
+				}
+
+				pFacturacion = this.reg.saveObject(pFacturacion, "sys");
+
+			}
+			
+			
+		}else {
+			
+			if (io.getRazonSocial() != null && !io.getRazonSocial().isEmpty()) {
+				
+				p.setRazonSocial(io.getRazonSocial().trim());
+			}
+			
+			if (io.getRuc() != null && !io.getRuc().isEmpty()) {
+				
+				p.setRuc(io.getRuc().trim());
+			}
+			
+			
 		}
 		
-		if (io.getRuc() != null && !io.getRuc().isEmpty()) {
-			
-			p.setRuc(io.getRuc());
-		}
+		
+		
+		
 		
 		p = this.reg.saveObject(p, "sys");
 		
@@ -148,6 +190,11 @@ public class InscripcionConfirmarVM extends TemplateNoLoginViewModel {
 		
 		a.setActivo(true);
 
+		if(pFacturacion != null) {
+			
+			a.setPersonaFacturacion(pFacturacion);
+			
+		}
 		
 		a = this.reg.saveObject(a, "sys");
 		
@@ -165,8 +212,7 @@ public class InscripcionConfirmarVM extends TemplateNoLoginViewModel {
 		CursoVigenteAlumno cursoVigenteAlumno = new CursoVigenteAlumno();
 		
 		cursoVigenteAlumno.setAlumno(io.getAlumno());
-		
-		
+
 		cursoVigenteAlumno.setCursoVigente(io.getCursoVigente());
 		
 		cursoVigenteAlumno = this.reg.saveObject(cursoVigenteAlumno, "sys");

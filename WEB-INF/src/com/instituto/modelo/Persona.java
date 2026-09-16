@@ -13,9 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.hibernate.annotations.ColumnDefault;
-
 import com.doxacore.modelo.Ciudad;
 import com.doxacore.modelo.Modelo;
 import com.doxacore.modelo.Pais;

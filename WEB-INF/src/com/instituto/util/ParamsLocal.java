@@ -49,6 +49,7 @@ public class ParamsLocal extends Params {
 	public static final String SIGLA_COMPROBANTE_FACTURA = "COMPROBANTE_FACTURA";
 	public static final String SIGLA_COMPROBANTE_RECIBO = "COMPROBANTE_RECIBO";
 	public static final String SIGLA_COMPROBANTE_NOTACREDITO = "COMPROBANTE_NOTACREDITO";
+	public static final String SIGLA_COMPROBANTE_TRANSLADO = "COMPROBANTE_TRANSLADO";
 	
 	public static final String SIGLA_FORMA_PAGO = "FORMA_PAGO";
 	public static final String SIGLA_FORMA_PAGO_EFECTIVO = "FORMA_PAGO_EFECTIVO";
@@ -319,4 +320,8 @@ public class ParamsLocal extends Params {
 	public static final String OP_EDITAR_DOCUMENTACIONDETALLE = "EditarDocumentacionDetalle";
 	public static final String OP_BORRAR_DOCUMENTACIONDETALLE = "BorrarDocumentacionDetalle";
 
+	
+	//TransladoAlumno
+	public static final String OP_CREAR_TRANSLADOALUMNO = "CrearTransladoAlumno";
+	
 }

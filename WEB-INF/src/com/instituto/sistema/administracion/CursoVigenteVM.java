@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import org.zkoss.bind.BindUtils;
 import org.zkoss.bind.annotation.AfterCompose;
@@ -648,7 +649,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 
 		this.cursoVigenteSelectedAlumnoConceptoMateriaConvenio = cursoVigente;
 		this.lAlumnosCursosVigentes = this.reg.getAllObjectsByCondicionOrder(CursoVigenteAlumno.class.getName(),
-				"cursoVigenteid = " + cursoVigente.getCursovigenteid()+" AND inscripcionAnulada = false", "alumnoid asc");
+				"cursoVigenteid = " + cursoVigente.getCursovigenteid(), "inscripcionanulada asc, alumnoid asc");
 
 		this.lAlumnosCursosVigentesOri = this.lAlumnosCursosVigentes;
 
@@ -949,7 +950,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	@Command
 	public void confirmacionIncremento() {
 		
-		this.mensajeEliminar("Se incrementaran los estasdos de cuentas de los alumnos que no han pagado apartir de fecha establecida"+" \n Continuar?", new EventListener() {
+		this.mensajeEliminar("Se incrementaran los estados de cuentas de los alumnos que no han pagado apartir de fecha establecida"+" \n Continuar?", new EventListener() {
 
 					@Override
 					public void onEvent(Event evt) throws Exception {
@@ -1003,8 +1004,15 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 			return;
 
 		}
+		
+		if (ca.isInscripcionAnulada()) {
+			
+			this.mensajeInfo("La inscripcion ya se encuentra anulada");
+			return;
+			
+		}
 
-		this.mensajeEliminar("Se anulara la inscripcion del Alumno " + ca.getAlumno().getFullNombre() + " al Curso Vigente"
+		this.mensajeEliminar("Se anulara la inscripcion del Alumno " + ca.getAlumno().getFullNombre() + " al Curso Vigente "
 				+ ca.getCursoVigente().getCurso().getCurso() + " \n Continuar?", new EventListener() {
 
 					@Override
@@ -1049,6 +1057,81 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		BindUtils.postNotifyChange(null, null, this, "lAlumnosCursosVigentes");
 		
 	}
+	
+	
+	@Command
+	public void recuperarInscripcionAlumnoConfirmacion(@BindingParam("cursoVigenteAlumno") final CursoVigenteAlumno ca) {
+		
+		if (ca.getTranslado() != null) {
+			
+			this.mensajeInfo("El alumno fue transladado no puede ser recuperada la inscripcion.");
+			
+			return;
+		}
+
+		if (!this.opAnularCursoVigenteAlumno) {
+
+			this.mensajeError("No tienes permisos para Recuperar un Alumnos a un CursoVigente.");
+
+			return;
+
+		}
+		
+		if (!ca.isInscripcionAnulada()) {
+			
+			this.mensajeInfo("La inscripcion no se encuentra anulada");
+			return;
+			
+		}
+		
+
+		this.mensajeEliminar("Se Recuperará la inscripcion del Alumno " + ca.getAlumno().getFullNombre() + " al Curso Vigente "
+				+ ca.getCursoVigente().getCurso().getCurso() + " \n Continuar?", new EventListener() {
+
+					@Override
+					public void onEvent(Event evt) throws Exception {
+
+						if (evt.getName().equals(Messagebox.ON_YES)) {
+
+							recuperarInscriptionAlumnoCursoVigente(ca);
+
+						}
+
+					}
+
+				});
+
+	}
+	
+	private void recuperarInscriptionAlumnoCursoVigente(CursoVigenteAlumno cva) {
+		
+
+		List<EstadoCuenta> lEstadoCuenta = this.reg.getAllObjectsByCondicionOrder(EstadoCuenta.class.getName(),
+				"cursovigenteid = "+cva.getCursoVigente().getCursovigenteid()+" AND alumnoid = "+cva.getAlumno().getAlumnoid() , "estadocuentaid asc");
+		
+		for (EstadoCuenta x : lEstadoCuenta) {
+			
+			if (x.getPago() == 0) {
+				
+				x.setInactivo(false);
+				x.setMotivoInactivacion("");
+				this.save(x);
+				
+			}
+			
+		}
+		
+		cva.setInscripcionAnulada(false);
+		
+		this.save(cva);
+		
+		this.refrescarAlumnos(this.cursoVigenteSelectedAlumnoConceptoMateriaConvenio);
+
+		BindUtils.postNotifyChange(null, null, this, "lAlumnosCursosVigentes");
+		
+	}
+	
+	
 
 	private List<Object[]> lConceptosbuscarOri;
 	private List<Object[]> lConceptosBuscar;
@@ -1781,12 +1864,54 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 	            default: return "Número fuera de rango";
 	        }
 	    }
+	 
+	@Command
+	public void planillaCalificaciones2(@BindingParam("cursoVigenteid") Long cursoVigenteid) {
+		 
+		 this.planillaCalificaciones(cursoVigenteid, null);
+	 }
 	
 	@Command
-	public void planillaCalificaciones(@BindingParam("cursoVigenteid") Long cursoVigenteid) {
+	public void planillaCalificaciones3(@BindingParam("cursovigentemateria") CursoVigenteMateria cvm ) {
+		 
+		 this.planillaCalificaciones(null, cvm);
+	 }
+	
+	public static String toPascalCase(String texto) {
+	    return Arrays.stream(texto.trim().split("\\s+"))
+	            .filter(s -> !s.isEmpty())
+	            .map(s -> Character.toUpperCase(s.charAt(0)) + s.substring(1))
+	            .collect(Collectors.joining());
+	}
+	
+	@Command
+	public void planillaCalificaciones(@BindingParam("cursoVigenteid") Long cursoVigenteid, @BindingParam("cursovigentemateria") CursoVigenteMateria cvm ) {
 		
-		ReportExcel re = new ReportExcel("PlanillaCalificacionesCurso"+"cursoVigenteid");
-		CursoVigente cv = this.reg.getObjectById(CursoVigente.class.getName(), cursoVigenteid);
+		CursoVigente cv = null;
+		ReportExcel re = null;
+		String profesor = "";
+		String materia = "";
+				
+		if (cursoVigenteid == null) {
+					
+			cv = cvm.getCursoVigente();
+			re = new ReportExcel("PlanillaCalificacionesCurso_"+toPascalCase(cv.getCurso().getCurso())+"_"+toPascalCase(cvm.getMateria().getMateria()));
+			
+			if (cvm.getProveedor() != null) {
+				
+				profesor = cvm.getProveedor().getPersona().getNombreCompleto();
+				
+			}
+			
+			materia = cvm.getMateria().getMateria();
+					
+		}else {
+					
+			cv = this.reg.getObjectById(CursoVigente.class.getName(), cursoVigenteid);
+			re = new ReportExcel("PlanillaCalificacionesCurso_"+toPascalCase(cv.getCurso().getCurso()));
+			
+		}
+
 		
 		List<String[]> titulos = new ArrayList<String[]>();
 		
@@ -1796,12 +1921,14 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		
 		//String[] t1 = {"INSTITUTO SANTO TOMAS"};
 		//String[] t2 = {"Resolucion M.E.C. Nº 841/98"};
+		
+		
 		String[] espacioBlanco = {""};
 		String[] t3 = {"Sede:",this.getCurrentSede().getSede()};
 		String[] t4 = {"Curso:", cv.getCurso().getCurso()};
-		String[] t5 = {"ASIGNATURA:"};
+		String[] t5 = {"ASIGNATURA:", materia};
 		String[] t6 = {"FECHA:"};
-		String[] t7 = {"PROFESOR/A:"};
+		String[] t7 = {"PROFESOR/A:", profesor};
 		
 		//titulos.add(t1);
 		//titulos.add(t2);
@@ -1818,7 +1945,7 @@ public class CursoVigenteVM extends TemplateViewModelLocal {
 		headersDatos.add(hd1);
 		headersDatos.add(hd2);
 		
-		String sql = this.um.getSql("cursoVigenteListaAlumnosPlanillaCalif.sql").replace("?1", cursoVigenteid.toString());
+		String sql = this.um.getSql("cursoVigenteListaAlumnosPlanillaCalif.sql").replace("?1", cv.getCursovigenteid().toString());
 		List<Object[]> datos = this.reg.sqlNativo(sql);
 		
 		for (int i = 0 ; i<datos.size() ; i++) {

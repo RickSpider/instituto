@@ -55,3 +55,6 @@
 
 <mapping class="com.instituto.modelo.CVADocumento" />
 <mapping class="com.instituto.modelo.CVADocumentoDetalle" />
+
+<mapping class="com.instituto.modelo.Translado" />
+<mapping class="com.instituto.modelo.TransladoDetalle" />

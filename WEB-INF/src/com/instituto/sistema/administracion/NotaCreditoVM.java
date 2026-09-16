@@ -439,6 +439,15 @@ public class NotaCreditoVM extends TemplateViewModelLocal{
 		}
 		
 	}
+	
+	@Command
+	public void verComprobante(@BindingParam("dato") Object[] dato) {
+		
+		NotaCD nc =  this.reg.getObjectById(NotaCD.class.getName(), Long.parseLong(dato[0].toString()));
+		
+		Executions.getCurrent().sendRedirect("/instituto/zul/administracion/kudeNCDReporte.zul?id="+nc.getNotacdid(),"_blank");
+		
+	}
 
 	public List<Object[]> getlNotacds() {
 		return lNotacds;

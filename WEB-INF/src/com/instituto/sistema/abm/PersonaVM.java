@@ -127,7 +127,7 @@ public class PersonaVM extends TemplateViewModel {
 				return;
 
 			this.personaSelected = this.reg.getObjectById(Persona.class.getName(), personaid);
-			this.buscarDocumento = this.personaSelected.getDocumentoTipo().getTipo();
+			this.buscarDocumento = this.personaSelected.getDocumentoTipo() != null ? this.personaSelected.getDocumentoTipo().getTipo(): null ;
 			this.buscarEstadoCivil = "";
 			this.buscarPais = "";
 			this.buscarCiudad = "";			
@@ -135,7 +135,7 @@ public class PersonaVM extends TemplateViewModel {
 			this.buscarInstitucion = "";
 			this.buscarPersonaTipo = "";
 			
-			if (this.personaSelected.getCiudad().getCiudad() != null) {
+			if (this.personaSelected.getCiudad() != null) {
 				
 				this.buscarCiudad = this.personaSelected.getCiudad().getCiudad();
 			}
@@ -247,7 +247,27 @@ public class PersonaVM extends TemplateViewModel {
 		if (!verificarCampos()) {
 			return;
 		}
-
+		
+		
+		this.personaSelected.setNombre(this.personaSelected.getNombre() != null 
+		        ? this.personaSelected.getNombre().trim() 
+		                : null);
+		
+		this.personaSelected.setApellido(this.personaSelected.getApellido()!= null 
+		        ? this.personaSelected.getApellido().trim() 
+		                : null);
+		this.personaSelected.setDocumentoNum(this.personaSelected.getDocumentoNum()!= null 
+		        ? this.personaSelected.getDocumentoNum().trim() 
+		                : null);
+		
+		this.personaSelected.setRuc(this.personaSelected.getRuc() != null 
+		        ? this.personaSelected.getRuc().trim() 
+		                : null);
+		
+		this.personaSelected.setRazonSocial(this.personaSelected.getRazonSocial() != null 
+		        ? this.personaSelected.getRazonSocial().trim() 
+		                : null);
+		
 		this.save(personaSelected);
 
 		this.personaSelected = null;

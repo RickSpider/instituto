@@ -1,4 +1,4 @@
-<?page title="Comprobantes" contentType="text/html;charset=UTF-8"?>
+<?page title="Nota de Credito" contentType="text/html;charset=UTF-8"?>
 <zk>
 	<window title="Notacds" border="normal"
 		viewModel="@id('vm') @init('com.instituto.sistema.administracion.NotaCreditoVM')"
@@ -111,10 +111,10 @@
 								
 									
 
-								<!-- 	<button iconSclass="z-icon-print"
+									<button iconSclass="z-icon-print"
 										class="doxa-button-green"
-										onClick="@command('verComprobante', cobranzaid=each[0])"
-										tooltiptext="Imprimir Comprobante" /> -->
+										onClick="@command('verComprobante', dato=each)"
+										tooltiptext="Imprimir Comprobante" /> 
 										
 								<!-- 	<button iconSclass="z-icon-envelope "
 										class="doxa-button-orange"

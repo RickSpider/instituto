@@ -170,7 +170,7 @@
 								
 									<button iconSclass="z-icon-list-alt " 
 										class="doxa-button-green"
-										onClick="@command('planillaCalificaciones', cursoVigenteid=each.cursovigenteid)"
+										onClick="@command('planillaCalificaciones2', cursoVigenteid=each.cursovigenteid)"
 										tooltiptext="Planilla de Calificaciones"/>
 								
 									
@@ -576,6 +576,11 @@
 
 											<listcell>
 												<hlayout>
+												
+													<button iconSclass="z-icon-list-alt " 
+														class="doxa-button-green"
+														onClick="@command('planillaCalificaciones3', cursovigentemateria=each)"
+														tooltiptext="Planilla de Calificaciones"/>
 
 													<button
 														iconSclass="z-icon-edit"
@@ -666,7 +671,7 @@
 											align="center" hflex="min" visible = "false"/>
 											
 										<listheader align="center"
-											width="100px" />
+											hflex="min" />
 
 
 									</listhead>
@@ -705,7 +710,9 @@
 												label="@load(forEachStatus.index+1)" />
 											<listcell
 												label="@load(each.cursovigentealumnopk.alumno.fullNombre)"
-												tooltiptext="@load(each.cursovigentealumnopk.alumno.fullNombre)" style="text-align:left;white-space:nowrap;text-overflow: ellipsis;"/>
+												tooltiptext="@load(each.cursovigentealumnopk.alumno.fullNombre)" 
+												
+												style="@load(each.inscripcionAnulada ? 'text-decoration: line-through;text-align:left;white-space:nowrap;text-overflow: ellipsis;' : 'text-align:left;white-space:nowrap;text-overflow: ellipsis;')"/>
 											<listcell
 												label="@load(each.cursovigentealumnopk.alumno.persona.documentoNum)"
 												tooltiptext="@load(each.cursovigentealumnopk.alumno.persona.documentoNum)" />
@@ -719,6 +726,12 @@
 
 											<listcell>
 												<hlayout>
+												
+												<button
+														iconSclass="z-icon-link " class="doxa-button-green"
+														onClick="@command('recuperarInscripcionAlumnoConfirmacion', cursoVigenteAlumno=each)"
+														tooltiptext="Recuperar Inscripcion"
+														disabled="@load(!vm.opAnularCursoVigenteAlumno)" />
 												
 												<button
 														iconSclass="z-icon-unlink " class="doxa-button-red"

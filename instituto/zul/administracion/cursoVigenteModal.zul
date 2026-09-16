@@ -99,7 +99,7 @@
 				</hbox>
 				<datebox
 					value="@load(vm.cursoVigenteSelected.fechaInicio) @save(vm.cursoVigenteSelected.fechaInicio, before='guardar')"
-					format="short " width="150px"
+					format="dd/MM/yyyy" width="150px"
 					constraint="no empty: Es campo obligatorio." disabled="@load(vm.cursoVigenteSelected.finalizado)"/>
 			</hlayout>
 
@@ -109,7 +109,7 @@
 				</hbox>
 				<datebox
 					value="@load(vm.cursoVigenteSelected.fechaFin) @save(vm.cursoVigenteSelected.fechaFin, before='guardar')"
-					format="short " width="150px"
+					format="dd/MM/yyyy" width="150px"
 					constraint="no empty: Es campo obligatorio." disabled="@load(vm.cursoVigenteSelected.finalizado)"/>
 			</hlayout>
 

@@ -124,7 +124,7 @@
 					</hbox>
 					<datebox
 						value="@bind(vm.personaSelected.fechaNacimiento)"
-						format="short " width="200px"
+						format="dd/MM/yyyy " width="200px"
 						/>
 				</hlayout>
 

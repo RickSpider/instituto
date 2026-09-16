@@ -167,4 +167,23 @@ public class CursoVigente extends Modelo implements Serializable{
 		this.finalizado = finalizado;
 	}	
 	
+	public String getDiasString() {
+		
+		String[] DIAS = {"DOMINGO","LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SABADO"};
+		
+		 String[] valores = this.dias.split(";");
+	        StringBuilder resultado = new StringBuilder();
+
+	        for (int i = 0; i < valores.length && i < DIAS.length; i++) {
+	            if ("true".equalsIgnoreCase(valores[i].trim())) {
+	                if (resultado.length() > 0) {
+	                    resultado.append(" - ");
+	                }
+	                resultado.append(DIAS[i]);
+	            }
+	        }
+
+	        return resultado.toString();
+		
+	}
 }

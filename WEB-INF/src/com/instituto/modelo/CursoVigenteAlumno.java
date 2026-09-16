@@ -5,6 +5,8 @@ import java.util.Date;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -30,6 +32,24 @@ public class CursoVigenteAlumno extends Modelo implements Serializable {
 	
 	@ColumnDefault("false")
 	private boolean inscripcionAnulada;
+	
+	@ManyToOne
+	@JoinColumn(name="transladoid")
+	private Translado translado;
+	
+	@Override
+	public Object[] getArrayObjectDatos() {
+		
+		Object[] o = {this.getAlumno().getPersona().getApellido()+", "+this.getAlumno().getPersona().getNombre(), this.getAlumno().getPersona().getDocumentoNum()};
+		
+		return o;
+	}
+
+	@Override
+	public String getStringDatos() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -67,20 +87,6 @@ public class CursoVigenteAlumno extends Modelo implements Serializable {
 		
 	}
 
-	@Override
-	public Object[] getArrayObjectDatos() {
-		
-		Object[] o = {this.getAlumno().getPersona().getApellido()+", "+this.getAlumno().getPersona().getNombre(), this.getAlumno().getPersona().getDocumentoNum()};
-		
-		return o;
-	}
-
-	@Override
-	public String getStringDatos() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public Date getFechaInscripcion() {
 		return fechaInscripcion;
 	}
@@ -97,5 +103,17 @@ public class CursoVigenteAlumno extends Modelo implements Serializable {
 		this.inscripcionAnulada = inscripcionAnulada;
 	}
 
+	public Translado getTranslado() {
+		return translado;
+	}
+
+	public void setTranslado(Translado translado) {
+		this.translado = translado;
+	}
+
+	
+	
+
+	
 	
 }

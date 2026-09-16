@@ -97,7 +97,7 @@ public class AgendamientoVM extends TemplateViewModelLocal {
 	@NotifyChange("calendarModel")
 	public void cargarCumpleaños() {
 		
-		String sql = "select \r\n" + 
+		String sql = "select DISTINCT ON (cva.alumnoid) \r\n" + 
 				"cva.cursovigenteid, \r\n" + 
 				"cva.alumnoid, \r\n" + 
 				"p.nombre, \r\n" + 
@@ -107,8 +107,8 @@ public class AgendamientoVM extends TemplateViewModelLocal {
 				"left join alumnos a on a.alumnoid = cva.alumnoid \r\n" + 
 				"left join personas p on p.personaid = a.personaid\r\n" + 
 				"left join cursosvigentes cv on cv.cursovigenteid = cva.cursovigenteid\r\n" + 
-				"where fechafin <= current_date\r\n" + 
-				"order by cursovigenteid asc, alumnoid asc;";
+				"where p.fechanacimiento is not null \r\n" + 
+				"order by alumnoid asc;";
 		
 		List<Object[]> lcumpleaños = this.reg.sqlNativo(sql);
 		

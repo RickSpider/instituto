@@ -238,6 +238,23 @@ public class InscripcionOnlineVM  extends TemplateNoLoginViewModel{
 			return false;
 		}
 		
+		if (this.getInscriptoOnlineSelected().getFechaNacimiento() == null) {
+			
+			return false;
+		}
+		
+		if (this.inscriptoOnlineSelected.getDireccion() == null || this.inscriptoOnlineSelected.getDireccion().isEmpty()) {
+			
+			return false;
+			
+		}
+		
+		if (this.inscriptoOnlineSelected.getTelefono() == null || this.inscriptoOnlineSelected.getTelefono().isEmpty()) {
+			
+			return false;
+			
+		}
+		
 		return true;
 	}
 
@@ -247,9 +264,29 @@ public class InscripcionOnlineVM  extends TemplateNoLoginViewModel{
 		
 		if(!verificarCampos()) {
 			
-			Notification.show("Todos los campos con * son obligatorios.");
+			Notification.show("Todos los campos de informacion del Alumno con son obligatorios.");
 			
 			return;
+		}
+		
+		if (this.inscriptoOnlineSelected.getRuc() != null && this.inscriptoOnlineSelected.getRazonSocial() != null|| 
+				this.inscriptoOnlineSelected.getFacturaTercero() && this.inscriptoOnlineSelected.getRuc() != null && this.inscriptoOnlineSelected.getRazonSocial() != null) {
+			
+			if (this.inscriptoOnlineSelected.getRuc() == null || !this.inscriptoOnlineSelected.getRuc().matches("\\d{6,8}-\\d")) {
+				
+				Notification.show("Formato de Ruc no es correcto.");
+				
+				return;
+			}
+			
+			if (this.inscriptoOnlineSelected.getRazonSocial() == null || this.inscriptoOnlineSelected.getRazonSocial().isEmpty() || this.inscriptoOnlineSelected.getRazonSocial().length() < 5) {
+				
+				Notification.show("La Razon Social no valida.");
+				
+				return;
+			}
+		
+			
 		}
 
 		if (this.cursoVigenteSelected == null) {
@@ -294,9 +331,7 @@ public class InscripcionOnlineVM  extends TemplateNoLoginViewModel{
 			Notification.show("Esta persona ya se encuentra dentro de curso.");
 			return;
 			
-		}
-		
-		
+		}		
 		
 		this.inscriptoOnlineSelected.setKeyTemporal(this.um.getSHA512(this.um.RandomStringGenerator()));
 
@@ -400,6 +435,7 @@ public class InscripcionOnlineVM  extends TemplateNoLoginViewModel{
 			this.inscriptoOnlineSelected.setTelefono(p.getTelefono() != null ? p.getTelefono() : this.inscriptoOnlineSelected.getTelefono());
 			this.inscriptoOnlineSelected.setCiudad(p.getCiudad() != null ? p.getCiudad() : this.inscriptoOnlineSelected.getCiudad());
 			this.inscriptoOnlineSelected.setPais(p.getNacionalidad() != null ? p.getNacionalidad() : this.inscriptoOnlineSelected.getPais());
+			this.inscriptoOnlineSelected.setFechaNacimiento(p.getFechaNacimiento() != null ? p.getFechaNacimiento() : null);
 			
 			this.readOnly = true;
 			

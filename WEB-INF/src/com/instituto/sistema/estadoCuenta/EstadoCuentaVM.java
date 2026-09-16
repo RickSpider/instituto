@@ -25,6 +25,7 @@ import com.instituto.modelo.CobranzaDetalle;
 import com.instituto.modelo.Concepto;
 import com.instituto.modelo.CursoVigente;
 import com.instituto.modelo.EstadoCuenta;
+import com.instituto.modelo.NotaCD;
 import com.instituto.util.ParamsLocal;
 import com.instituto.util.TemplateViewModelLocal;
 
@@ -269,7 +270,7 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 	public void verComprobante(@BindingParam("dato") Object[] dato) {
 		
 		
-		if (dato[3].toString().compareTo("Nota Credito ") != 0) {
+		if (dato[3].toString().compareTo("Nota Credito") != 0) {
 			
 			Cobranza cobranza = this.reg.getObjectById(Cobranza.class.getName(), Long.parseLong(dato[0].toString()));
 			
@@ -280,6 +281,8 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 					Executions.getCurrent().sendRedirect("/instituto/zul/administracion/kudeReporte.zul?id="+cobranza.getCobranzaid(),"_blank");
 					
 				}
+				
+				
 				
 			}else {
 			
@@ -296,6 +299,12 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 					
 				}
 			}
+			
+		}else {
+			
+			NotaCD nc =  this.reg.getObjectById(NotaCD.class.getName(), Long.parseLong(dato[0].toString()));
+			
+			Executions.getCurrent().sendRedirect("/instituto/zul/administracion/kudeNCDReporte.zul?id="+nc.getNotacdid(),"_blank");
 			
 		}		
 		
@@ -648,4 +657,7 @@ public class EstadoCuentaVM extends TemplateViewModelLocal {
 	public void setImporteDescuento(double importeDescuento) {
 		this.importeDescuento = importeDescuento;
 	}
+	
+	
+	
 }

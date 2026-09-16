@@ -2,4 +2,6 @@ select cv.cursovigenteid as id, c.curso as curso, TO_CHAR(cv.fechainicio, 'DD/MM
 left join cursos c on c.cursoid = cv.cursoid
 where cv.sedeid = ?1
 --1 and cv.finalizado = ?2 
+--2 and cv.cursovigenteid != ?3
+--3 and cv.fechaFin > CURRENT_DATE
 order by cv.cursovigenteid desc;

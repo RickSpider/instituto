@@ -6,7 +6,7 @@
 
 		<vlayout>
 
-			<tablelayout columns="2">
+			<tablelayout columns="4">
 			
 				<tablechildren>
 					<label value="Curso:" style="font-weight:bold" />
@@ -19,7 +19,7 @@
 					<label value="Fecha Inscripcion:" style="font-weight:bold" />
 				</tablechildren>
 				<tablechildren>
-					<textbox value="@load(vm.inscriptoOnlineSelected.fechaInscripcion)" readonly="true" />
+					<textbox value="@load(vm.inscriptoOnlineSelected.fechaInscripcion)  @converter('formatedDate', format='dd/MM/yyyy HH:mm:ss')" readonly="true" />
 				</tablechildren>
 				
 				<tablechildren>
@@ -37,10 +37,38 @@
 				</tablechildren>
 				
 				<tablechildren>
+					<label value="Fecha Nacimiento:" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<textbox value="@load(vm.inscriptoOnlineSelected.fechaNacimiento) @converter('formatedDate', format='dd/MM/yyyy')" readonly="true" />
+				</tablechildren>
+				
+				<tablechildren>
 					<label value="Documento #:" style="font-weight:bold" />
 				</tablechildren>
 				<tablechildren>
 					<textbox value="@load(vm.inscriptoOnlineSelected.ci)" readonly="true" />
+				</tablechildren>
+				
+				<tablechildren>
+					<label value="RUC:" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<textbox value="@load(vm.inscriptoOnlineSelected.ruc)" readonly="true" />
+				</tablechildren>
+				
+				<tablechildren>
+					<label value="Razon Social:" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<textbox value="@load(vm.inscriptoOnlineSelected.razonSocial)" readonly="true" />
+				</tablechildren>
+				
+				<tablechildren>
+					<label value="Fact. Otro:" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<checkbox checked="@load(vm.inscriptoOnlineSelected.facturaTercero)" disabled="true"/>
 				</tablechildren>
 				
 				<tablechildren>
@@ -72,6 +100,20 @@
 				</tablechildren>
 				
 				<tablechildren>
+					<label value="Titulo Obtenido:" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<textbox value="@load(vm.inscriptoOnlineSelected.tituloObtenido)" readonly="true" />
+				</tablechildren>
+				
+				<tablechildren>
+					<label value="Donde Conocio Imai:" style="font-weight:bold" />
+				</tablechildren>
+				<tablechildren>
+					<textbox value="@load(vm.inscriptoOnlineSelected.encuesta)" readonly="true" />
+				</tablechildren>
+				
+				<tablechildren>
 					<label value="Verificado" style="font-weight:bold" />
 				</tablechildren>
 				<tablechildren>
@@ -85,6 +127,7 @@
 			<hlayout>
 
 				<button label="Aceptar" onClick="@command('guardar')"/>
+				<button label="Enviar Email de Verficacion" onClick="@command('enviarCorreo')"/>
 
 			</hlayout>
 

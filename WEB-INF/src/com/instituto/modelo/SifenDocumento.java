@@ -57,7 +57,7 @@ public class SifenDocumento extends Modelo implements Serializable{
 	private NotaCD notacd;
 	
 	@ColumnDefault("false")
-	private boolean cancelado;
+	private boolean cancelado = false;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date canceladoFecha;

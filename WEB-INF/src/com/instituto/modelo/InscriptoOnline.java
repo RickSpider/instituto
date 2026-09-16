@@ -41,8 +41,14 @@ public class InscriptoOnline extends Modelo implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaInscripcion;
 	
+	
+	
 	private String nombre;
 	private String apellido;
+	
+	@Temporal(TemporalType.DATE)
+	private Date fechaNacimiento;
+	
 	private String email;
 	private String telefono;
 	
@@ -75,6 +81,17 @@ public class InscriptoOnline extends Modelo implements Serializable {
 	
 	
 	private String keyTemporal;
+	
+	
+	@ColumnDefault("false")
+	private Boolean facturaTercero = false;
+	
+	/*private String emailTercero;
+	private String telefonoTercero;*/
+	
+	private String tituloObtenido;
+	
+	private String encuesta;
 	
 	@Override
 	public Object[] getArrayObjectDatos() {
@@ -183,7 +200,29 @@ public class InscriptoOnline extends Modelo implements Serializable {
 	public void setPais(Pais pais) {
 		this.pais = pais;
 	}
-	
-	
+	public Boolean getFacturaTercero() {
+		return facturaTercero;
+	}
+	public void setFacturaTercero(Boolean facturaTercero) {
+		this.facturaTercero = facturaTercero;
+	}
+	public String getTituloObtenido() {
+		return tituloObtenido;
+	}
+	public void setTituloObtenido(String tituloObtenido) {
+		this.tituloObtenido = tituloObtenido;
+	}
+	public Date getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+	public String getEncuesta() {
+		return encuesta;
+	}
+	public void setEncuesta(String encuesta) {
+		this.encuesta = encuesta;
+	}
 	
 }
